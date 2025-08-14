@@ -1,0 +1,4 @@
+mkdocs-material
+plantuml-markdown
+pymdown-extensions
+mkdocs
