@@ -11,9 +11,9 @@
 
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/my7nmfcm92k)
 
-This is my Home Assistant configuration, updated on 2025-08-14.
+This is my Home Assistant configuration, updated on 2025-08-15.
 
-I started using Home Assistant in 2018. Now, it has grown significantly, with a total of 1544 entities for now.
+I started using Home Assistant in 2018. Now, it has grown significantly, with a total of 1535 entities for now.
 
 > [!CAUTION]
 > I constantly improve my home. It evolves as I add new devices and services. It's changing as my daily routines are changing.
@@ -48,11 +48,11 @@ binary_sensors | 153
 device_trackers | 14
 lights | 18
 media_players | 9
-sensors | 840
+sensors | 831
 switches | 148
 switches | 148
 others | 332
-**Total** | **1544**
+**Total** | **1535**
 
 ## Integrations
 
