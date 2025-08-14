@@ -1,0 +1,45 @@
+# Example .gitignore file for your config dir.
+# An * ensures that everything will be ignored.
+*
+
+# Keep directories
+!.github/workflows/
+!docs/
+!docs/assets/
+!docs/config/
+!docs/images/
+!www/
+
+# Files
+!.github/workflows/*
+
+!.gitignore
+
+!configuration.yaml
+!README.md
+!LICENSE
+!ui-lovelace.yaml
+!mkdocs.yml
+
+!www/lovelace.png
+!www/thread-map.png
+!www/monitoring.png
+!www/energy.png
+
+!docs/index.md
+!docs/hardware.md
+!docs/retired.md
+!docs/resources.md
+
+!docs/assets/*
+!docs/config/*
+!docs/images/*
+
+!packages/shell_commands.yaml
+
+# !packages/alerts_and_notifications.yaml
+# !packages/domain_counter.yaml
+# !packages/forecast.yaml
+# !packages/naver_map_url.yaml
+# !packages/subway_tracker.yaml
+# !packages/weather_teukbo.yaml
