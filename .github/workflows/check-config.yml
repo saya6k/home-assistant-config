@@ -1,12 +1,20 @@
 name: Check HA config
+
 on: [push, pull_request]
+
 jobs:
   home-assistant:
     name: Home Assistant Core Configuration Check
     runs-on: ubuntu-latest
+
     steps:
       - name: ⤵️ Check out configuration from GitHub
         uses: actions/checkout@v3
+
+      - name: 🗝️ Create secrets file
+        run: |
+          echo "${{ secrets.HA_SECRETS }}" > secrets.fake.yaml
+
       - name: 🚀 Run Home Assistant Configuration Check
         uses: frenck/action-home-assistant@v1
         with:
