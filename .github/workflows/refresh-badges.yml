@@ -2,12 +2,11 @@
 name: 🪄 Refresh Repository Badges
 
 on:
+  push:
+  pull_request:
   schedule:
     - cron: '0 0 * * *'  # ⏰ Run daily at 00:00 UTC
-  push:
-    branches:
-      - main
-
+  
 jobs:
   refresh:
     name: 🔄 Update Badges

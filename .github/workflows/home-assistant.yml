@@ -1,5 +1,5 @@
 ---
-name: Home Assistant CI
+name: 🏠 Home Assistant CI
 
 # yamllint disable-line rule:truthy
 on:
@@ -9,33 +9,8 @@ on:
     - cron: 0 12 * * *
 
 jobs:
-  yamllint:
-    name: 🧹 yamllint
-    runs-on: ubuntu-latest
-    steps:
-      - name: ⤵️ Check out configuration from GitHub
-        uses: actions/checkout@v5
-      # Disabled temporary
-      # - name: 🚀 Run yamllint
-      #   uses: frenck/action-yamllint@v1.5.0
-
-  remarklint:
-    name: 📝 Lint Markdown Files
-    runs-on: ubuntu-18.04
-    steps:
-      - name: ⤵️ Check out repository
-        uses: actions/checkout@v5
-        with:
-          ref: main
-      - name: 🧐 Run Remark Lint
-        uses: "docker://pipelinecomponents/remark-lint:latest"
-        continue-on-error: true
-        with:
-          args: |
-            remark --no-stdout --color --frail --use preset-lint-recommended .
-
   home-assistant:
-    name: 🧪 Home Assistant Core – Config Check (${{ matrix.version }})
+    name: 🧪 Home Assistant Core Config Check (${{ matrix.version }})
     needs: [yamllint]
     runs-on: ubuntu-latest
     strategy:

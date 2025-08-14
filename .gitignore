@@ -120,10 +120,13 @@ secrets.yaml
 
 # Specific keeps
 !.gitkeep
+!.gitignore
+!.pre-commit-config.yaml
+!.yaml-lint.yaml
 
 # Keep directories
 !.github/
-!.github/workflows/
+!.github/*
 !.github/workflows/*
 
 !blueprints
@@ -141,7 +144,6 @@ secrets.yaml
 !www/
 
 # Files
-!.gitignore
 
 !configuration.yaml
 !automations.yaml
