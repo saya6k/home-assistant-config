@@ -11,7 +11,7 @@ on:
 jobs:
   home-assistant:
     name: 🧪 Home Assistant Core Config Check (${{ matrix.version }})
-    needs: [yamllint]
+    # needs: [yamllint]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -37,7 +37,7 @@ jobs:
   esphome:
     name: 🔌 ESPHome Configuration Check
     runs-on: ubuntu-latest
-    needs: [yamllint]
+    # needs: [yamllint]
     steps:
       - name: ⤵️ Check out repository
         uses: actions/checkout@v5
