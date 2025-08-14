@@ -1,18 +1,19 @@
 ---
-name: Refresh Badges
+name: 🪄 Refresh Repository Badges
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Run at 00:00 UTC every day
+    - cron: '0 0 * * *'  # ⏰ Run daily at 00:00 UTC
   push:
     branches:
       - main
 
 jobs:
   refresh:
+    name: 🔄 Update Badges
     runs-on: ubuntu-latest
     steps:
-      - name: Refresh badges
+      - name: 🏷️ Refresh badges for Home Assistant config
         uses: b3b00/refreshBadgesAction@v1.0.7
         with:
           repository: 'saya6k/home-assistant-config'
