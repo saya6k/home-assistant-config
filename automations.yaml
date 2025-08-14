@@ -1431,3 +1431,19 @@
             notification_id: '{{ trigger.to_state.attributes.link }}'
   mode: parallel
   max: 100
+- id: '1755190192909'
+  alias: Let’s Encrypt 자동 시작 – 인증서 만료 시
+  description: '인증서 유효성 검사 실패(is_valid: false) 시 Let’s Encrypt Addon(core_letsencrypt)를
+    시작합니다.'
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.lyz_kr_cert_expiry
+    attribute: is_valid
+    to: 'false'
+  conditions: []
+  actions:
+  - action: hassio.addon_start
+    data:
+      addon: core_letsencrypt
+  mode: single
