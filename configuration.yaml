@@ -1,3 +1,4 @@
+---
 #
 #     ______            _____                        __  _
 #    / ____/___  ____  / __(_)___ ___  ___________ _/ /_(_)___  ____
@@ -16,7 +17,7 @@ homeassistant:
   packages: !include_dir_named ./packages/
   # allowlist_external_dirs:
   #   - /config/www
-    
+
   # Disable any Auth providers except OIDC
   # auth_providers: []
 
@@ -86,9 +87,9 @@ http:
   trusted_proxies:
     - fd00::/8
     - !secret ha_main_ip_address
-    - 172.30.32.0/24 # ha dns info
-    - 172.30.232.0/24 # ha dns info
-    - 172.30.33.0/24 # mqtt setting
+    - 172.30.32.0/24       # HA DNS info
+    - 172.30.232.0/24      # HA DNS info
+    - 172.30.33.0/24       # MQTT setting
     - '127.0.0.1'
   ip_ban_enabled: true
   login_attempts_threshold: 10
@@ -202,7 +203,7 @@ recorder:
 
       - binary_sensor.truenas_snapshot_tasks*
       - sensor.truenas_snapshot_tasks*
-      
+
       # Exclude Places sensors
       - sensor.*_place
 
@@ -210,11 +211,11 @@ recorder:
       - binary_sensor.*_occupancy
       - binary_sensor.*_motion
 
-      # Exclude all traffic informations      
+      # Exclude all traffic informations
       - sensor.*beoseu_docag_jeongbo*
       - sensor.subway*
 
-      # Exclude all anniversaries      
+      # Exclude all anniversaries
       - sensor.anniversary_*
 
       # Exclude all Version Sensors
@@ -244,7 +245,8 @@ recorder:
       # - sensor.template_domain_counter
       - binary_sensor.workday_sensor
 
-    event_types: # Exclude an event_type
+    # Exclude an event_type
+    event_types:
       - call_service
       - system_log_event
 
@@ -276,84 +278,84 @@ prometheus:
       #             Energy            #
       #                               #
       #################################
-      
+
       #             Total
       - sensor.utility_total_electricity
       - sensor.utility_total_gas
       - sensor.utility_total_water
-      #
+
       #         Monthly Energy
       - sensor.utility_this_month_electricity
       - sensor.utility_this_month_gas
       - sensor.utility_this_month_water
-      
+
       #          Daily Energy
       - sensor.utility_this_day_electricity
       - sensor.utility_this_day_gas
       - sensor.utility_this_day_water
-      
+
       #          Energy per Area
       - sensor.all_bedroom_energy_use
       - sensor.all_kitchen_energy_use
       - sensor.all_living_room_energy_use
       - sensor.all_unaccounted_energy_use
-      
+
       #         Energy per Domain
       - sensor.all_hvac_energy_use
       - sensor.all_light_energy_use
       - sensor.all_media_player_energy_use
-      
+
       #          Power Total
       - sensor.template_total_power
-      
+
       #         Power per Area
       - sensor.all_bedroom_power_use
       - sensor.all_kitchen_power_use
       - sensor.all_living_room_power_use
       - sensor.all_unaccounted_power_use
-      
+
       #         Power per Domain
       - sensor.all_hvac_power_use
       - sensor.all_light_power_use
       - sensor.all_media_player_power_use
-      
+
       #################################
       #                               #
       #       Indoor Environment      #
       #                               #
       #################################
-      
+
       #          Total
       - sensor.indoor_average_temperature
       - sensor.indoor_average_humidity
-      
+
       #          Living Room
       - sensor.living_room_average_temperature
       - sensor.living_room_average_humidity
-      
+
       #          Bedroom
       - sensor.bedroom_average_temperature
       - sensor.bedroom_average_humidity
-      
+
       #          Kitchen
       - sensor.kitchen_average_temperature
       - sensor.kitchen_average_humidity
-      
+
       #          Powder Room
       - sensor.powder_room_average_humidity
       - sensor.powder_room_average_humidity
-      
+
       #################################
       #                               #
       #        Home Assistant         #
       #                               #
       #################################
-      
+
       # Home Assistant System Monitor
       - sensor.processor_use
       - sensor.disk_use_percent
       - sensor.memory_use_percent
-      
+
       # Home Assistant Network
       - sensor.speedtest_download
       - sensor.speedtest_upload
@@ -363,6 +365,7 @@ prometheus:
       - sensor.integrations
       - sensor.custom_integrations
       - sensor.areas
+
       # - sensor.zones # In Entity Domains Counter
       - sensor.devices
       - sensor.entities
