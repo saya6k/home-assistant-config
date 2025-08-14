@@ -72,15 +72,15 @@
       color_temp_kelvin: 1000
       color_temp_mired: 1000
       rgb_color:
-      - 255
-      - 56
-      - 0
+        - 255
+        - 56
+        - 0
       xy_color:
-      - 0.682
-      - 0.315
+        - 0.682
+        - 0.315
       hs_color:
-      - 13.882
-      - 100
+        - 13.882
+        - 100
       sun_position: -0.9459031571676579
       force_rgb_color: false
       autoreset_time_remaining: {}
@@ -109,34 +109,34 @@
   entities:
     light.living_room_ceiling_light:
       supported_color_modes:
-      - onoff
+        - onoff
       color_mode:
       entity_id:
-      - light.esp_wallpad_room_1_light_1
+        - light.esp_wallpad_room_1_light_1
       icon: phu:ceiling-aurelle
       friendly_name: 거실 천장
       supported_features: 8
       state: 'off'
     light.kitchen_ceiling_light:
       supported_color_modes:
-      - onoff
+        - onoff
       color_mode:
       entity_id:
-      - light.esp_wallpad_room_1_light_2
+        - light.esp_wallpad_room_1_light_2
       icon: phu:ceiling-aurelle
       friendly_name: 주방 천장
       supported_features: 8
       state: 'off'
     light.bathroom_ceiling_light:
       supported_color_modes:
-      - onoff
+        - onoff
       icon: phu:ceiling-aurelle
       friendly_name: 화장실 천장
       supported_features: 0
       state: unavailable
     light.bathroom_shower_box:
       supported_color_modes:
-      - onoff
+        - onoff
       icon: mdi:shower-head
       friendly_name: 화장실 샤워부스
       supported_features: 0
@@ -206,7 +206,7 @@
       min_mireds: 153
       max_mireds: 370
       supported_color_modes:
-      - color_temp
+        - color_temp
       icon: mdi:floor-lamp-torchiere
       friendly_name: 거실 플로어
       supported_features: 32
@@ -249,15 +249,15 @@
       color_temp_kelvin: 2000
       color_temp_mired: 500
       rgb_color:
-      - 255
-      - 136.86832541739756
-      - 13.904070298965905
+        - 255
+        - 136.86832541739756
+        - 13.904070298965905
       xy_color:
-      - 0.598
-      - 0.383
+        - 0.598
+        - 0.383
       hs_color:
-      - 30.504
-      - 93.333
+        - 30.504
+        - 93.333
       sun_position: -0.9482159803168572
       force_rgb_color: false
       autoreset_time_remaining: {}
@@ -407,26 +407,26 @@
       state: idle
     media_player.living_room_apple_tv:
       source_list:
-      - App Store
-      - Arcade
-      - B tv
-      - FaceTime
-      - Jellyfin
-      - Netflix
-      - NordVPN
-      - Plex
-      - Steam Link
-      - TV
-      - Twitch
-      - Winter Fireplace
-      - YouTube
-      - 검색
-      - 사진
-      - 설정
-      - 음악
-      - 컴퓨터
-      - 쿠팡플레이
-      - 팟캐스트
+        - App Store
+        - Arcade
+        - B tv
+        - FaceTime
+        - Jellyfin
+        - Netflix
+        - NordVPN
+        - Plex
+        - Steam Link
+        - TV
+        - Twitch
+        - Winter Fireplace
+        - YouTube
+        - 검색
+        - 사진
+        - 설정
+        - 음악
+        - 컴퓨터
+        - 쿠팡플레이
+        - 팟캐스트
       friendly_name: 거실 Apple TV
       supported_features: 450487
       state: idle
@@ -453,15 +453,15 @@
       color_temp_kelvin: 2000
       color_temp_mired: 500
       rgb_color:
-      - 255
-      - 136.86832541739756
-      - 13.904070298965905
+        - 255
+        - 136.86832541739756
+        - 13.904070298965905
       xy_color:
-      - 0.598
-      - 0.383
+        - 0.598
+        - 0.383
       hs_color:
-      - 30.504
-      - 93.333
+        - 30.504
+        - 93.333
       sun_position: -0.9504782221674871
       force_rgb_color: false
       autoreset_time_remaining: {}
@@ -477,10 +477,10 @@
   entities:
     light.kitchen_ceiling_light:
       supported_color_modes:
-      - onoff
+        - onoff
       color_mode: onoff
       entity_id:
-      - light.esp_wallpad_room_1_light_2
+        - light.esp_wallpad_room_1_light_2
       icon: phu:ceiling-aurelle
       friendly_name: 주방 천장
       supported_features: 8
@@ -533,7 +533,7 @@
       min_mireds: 153
       max_mireds: 370
       supported_color_modes:
-      - color_temp
+        - color_temp
       color_mode:
       brightness:
       color_temp_kelvin:
@@ -563,33 +563,33 @@
       state: 'off'
     select.comfort_category_adaptive_climate:
       options:
-      - I
-      - II
+        - I
+        - II
       icon: mdi:account-group
       friendly_name: Comfort Category (Adaptive Climate)
       state: I
     climate.air_conditioner:
       hvac_modes:
-      - 'off'
-      - fan_only
-      - auto
-      - dry
-      - cool
+        - 'off'
+        - fan_only
+        - auto
+        - dry
+        - cool
       min_temp: 16
       max_temp: 30
       target_temp_step: 0.5
       fan_modes:
-      - high
-      - mid
-      - auto
-      - low
-      - power
+        - high
+        - mid
+        - auto
+        - low
+        - power
       swing_modes:
-      - 'on'
-      - 'off'
+        - 'on'
+        - 'off'
       swing_horizontal_modes:
-      - 'on'
-      - 'off'
+        - 'on'
+        - 'off'
       current_temperature: 26.5
       temperature:
       target_temp_high:
@@ -618,20 +618,20 @@
   entities:
     light.living_room_ceiling_light:
       supported_color_modes:
-      - onoff
+        - onoff
       color_mode:
       entity_id:
-      - light.esp_wallpad_room_1_light_1
+        - light.esp_wallpad_room_1_light_1
       icon: phu:ceiling-aurelle
       friendly_name: 거실 천장
       supported_features: 8
       state: 'off'
     light.kitchen_ceiling_light:
       supported_color_modes:
-      - onoff
+        - onoff
       color_mode:
       entity_id:
-      - light.esp_wallpad_room_1_light_2
+        - light.esp_wallpad_room_1_light_2
       icon: phu:ceiling-aurelle
       friendly_name: 주방 천장
       supported_features: 8
@@ -677,7 +677,7 @@
       min_mireds: 153
       max_mireds: 370
       supported_color_modes:
-      - color_temp
+        - color_temp
       color_mode:
       brightness:
       color_temp_kelvin:
