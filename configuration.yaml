@@ -49,8 +49,6 @@ alarm_control_panel:
       - armed_night
       - armed_vacation
 
-adaptive_lighting:
-
 ####################################################
 #                                                  #
 #                        UI                        #
