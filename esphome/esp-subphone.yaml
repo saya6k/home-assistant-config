@@ -1,3 +1,4 @@
+---
 substitutions:
   name: esp-subphone
   friendly_name: ESP SubPhone
@@ -27,7 +28,7 @@ uart:
 
 external_components:
   - source: github://eigger/espcomponents/relreases/latest
-    components: [ uartex ]
+    components: [uartex]
     refresh: always
 
 uartex:
@@ -42,11 +43,11 @@ uartex:
   tx_footer: [0xEE]
 
   version:
-    disabled: False
+    disabled: false
   error:
-    disabled: False
+    disabled: false
   log:
-    disabled: False
+    disabled: false
 
 # (W: Wallpad, S: Sub 주방폰)
 # ​
@@ -123,21 +124,21 @@ button:
     id: id_door_open
     name: "Door Open"
     icon: "mdi:door-sliding-open"
-    command_on: 
+    command_on:
       data: [0x61, 0x00, 0x00]
 
   - platform: uartex
     id: id_door_call_on
     name: "Door Call On"
     icon: "mdi:phone"
-    command_on: 
+    command_on:
       data: [0x5F, 0x00, 0x00]
 
   - platform: uartex
     id: id_door_call_off
     name: "Door Call Off"
     icon: "mdi:phone-off"
-    command_on: 
+    command_on:
       data: [0x60, 0x00, 0x00]
 
 switch:
@@ -145,7 +146,7 @@ switch:
     id: id_enable_auto_open
     name: "Enable Auto Door Opening"
     icon: "mdi:door-open"
-    optimistic: True
+    optimistic: true
     restore_mode: ALWAYS_ON
     on_turn_off:
       then:

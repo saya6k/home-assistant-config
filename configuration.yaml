@@ -116,11 +116,9 @@ recorder:
   commit_interval: 30
   # max_event_size: 32168
   include:
-    # entities:
     entity_globs:
       # Include Github stars
       - sensor.saya6k_*_stars
-    # domains:
   exclude:
     domains:
       - automation
