@@ -11,6 +11,9 @@
 !docs/assets/
 !docs/config/
 !docs/images/
+
+!esphome/
+
 !www/
 
 # Files
