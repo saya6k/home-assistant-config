@@ -73,24 +73,11 @@ lovelace:
 #                                                  #
 ####################################################
 http:
-  # server_host: "0.0.0.0, ::"
-  # server_port: 8123
-  cors_allowed_origins:
-    - !secret ha_external_url
-    - https://www.home-assistant.io
-    - https://google.com
-  use_x_forwarded_for: true
-  # ssl_certificate: /ssl/fullchain.pem
-  # ssl_key: /ssl/privkey.pem
-  trusted_proxies:
-    - fd00::/8
-    - !secret ha_main_ip_address
-    - 172.30.32.0/24       # HA DNS info
-    - 172.30.232.0/24      # HA DNS info
-    - 172.30.33.0/24       # MQTT setting
-    - '127.0.0.1'
-  ip_ban_enabled: true
-  login_attempts_threshold: 10
+  cors_allowed_origins: !secret cors_allowed_origins
+  use_x_forwarded_for: !secret use_x_forwarded_for
+  trusted_proxies: !secret trusted_proxies
+  ip_ban_enabled: !secret ip_ban_enabled
+  login_attempts_threshold: !secret login_attempts_threshold
 
 auth_oidc:
   client_id: !secret oidc_client_id
