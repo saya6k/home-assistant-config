@@ -1,4 +1,3 @@
----
 - id: '1714009521553'
   alias: ESPHome Auto-Update
   description: 'Trigger: The automation triggers when any ESPHome device is marked
@@ -43,6 +42,9 @@
   - action: script.unknown
     metadata: {}
     data: {}
+  - data:
+      convert_lovelace: true
+    action: readme.generate
   - wait_for_trigger:
     - trigger: state
       entity_id:
@@ -50,7 +52,7 @@
       to: idle
     timeout:
       hours: 0
-      minutes: 10
+      minutes: 5
       seconds: 0
       milliseconds: 0
   - action: camera.snapshot
@@ -59,15 +61,25 @@
       filename: /config/www/lovelace.png
     target:
       entity_id: camera.ha_lovelace_dashboard
-  - action: camera.snapshot
+  - action: shell_command.git_push
     metadata: {}
-    data:
-      filename: /config/homedocs/images/lovelace.png
-    target:
-      entity_id: camera.ha_lovelace_dashboard
+    data: {}
     enabled: false
-  - data: {}
-    action: readme.generate
+    response_variable: todo_response
+  - if:
+    - condition: template
+      value_template: '{{ todo_response[''returncode''] == 0 }}'
+    then:
+    - action: notify.mobile_app_ys_iphone
+      data:
+        title: ToDo
+        message: '{{ todo_response[''stdout''] }}'
+    else:
+    - action: notify.mobile_app_ys_iphone
+      data:
+        title: ToDo file error
+        message: '{{ todo_response[''stderr''] }}'
+    enabled: false
   mode: single
 - id: '1722165897301'
   alias: Apply Welcome Scene when Person Enter Zone
