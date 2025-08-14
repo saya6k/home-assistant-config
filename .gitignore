@@ -123,6 +123,8 @@ secrets.yaml
 !.github/workflows/
 !.github/workflows/*
 
+!blueprints
+
 !docs/
 !docs/assets/
 !docs/config/
@@ -137,6 +139,9 @@ secrets.yaml
 !.gitignore
 
 !configuration.yaml
+!automations.yaml
+!scenes.yaml
+!scripts.yaml
 !README.md
 !LICENSE
 !mkdocs.yml

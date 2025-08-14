@@ -1,0 +1,479 @@
+'1714009131244':
+  alias: 'ESPHome: Update All Devices'
+  sequence:
+  - repeat:
+      for_each: '{{ states.update | selectattr(''state'', ''eq'', ''on'') | map(attribute=''entity_id'')
+        | select(''in'', integration_entities(''esphome'')) | list }} '
+      sequence:
+      - action: update.install
+        data: {}
+        target:
+          entity_id: '{{ repeat.item }}'
+      - wait_template: '{{ is_state(repeat.item, ''off'') }}'
+        continue_on_timeout: true
+  mode: single
+  icon: si:esphome
+turn_off_all_lights:
+  alias: Turn Off All Lights
+  sequence:
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - light.all_lights
+  description: ''
+ring_morning_song:
+  alias: Ring Morning Song
+  sequence:
+  - metadata: {}
+    data:
+      volume_level: 0.7
+    target:
+      device_id: 03b47ade8600df7168f3676b477dee1a
+    action: media_player.volume_set
+  - data:
+      media_content_id: spotify://playlist/37i9dQZEVXcF14wWEMS3xo
+      media_content_type: playlist
+      enqueue: replace
+    action: media_player.play_media
+    target:
+      device_id: 03b47ade8600df7168f3676b477dee1a
+  description: ''
+grocy_add_product_purchase_to_stock:
+  sequence:
+  - action: grocy.add_product_to_stock
+    metadata: {}
+    data:
+      amount: '{{ amount }}'
+      product_id: '{{ product_id }}'
+  fields:
+    product_id:
+      selector:
+        number:
+          step: 1
+          min: 1
+          max: 500
+      name: Purchase Product
+      description: ID given by Grocy to Product you purchase
+      required: true
+    amount:
+      selector:
+        number:
+          min: 1
+          step: 1
+          max: 100
+      name: Amount
+      description: Amount you have purchased
+      default: 1
+      required: true
+  alias: Grocy Add Product Purchase to Stock
+  description: Script to input purchased product to Grocy Stock
+grocy_consume_product_from_stock:
+  sequence:
+  - action: grocy.consume_product_from_stock
+    metadata: {}
+    data:
+      amount: '{{ amount }}'
+      product_id: '{{ product_id }}'
+      spoiled: false
+      allow_subproduct_substitution: true
+  fields:
+    product_id:
+      selector:
+        number:
+          step: 1
+          min: 1
+          max: 500
+      name: Consume Product
+      description: ID given by Grocy to Consume Product
+      required: true
+    amount:
+      selector:
+        number:
+          min: 1
+          step: 1
+          max: 100
+      name: Amount
+      description: Amount you have purchased
+      default: 1
+      required: true
+  alias: Grocy Consume Product from Stock
+  description: Script to input consumed product from Grocy Stock
+grocy_remove_spoiled_product_from_stock:
+  sequence:
+  - action: grocy.consume_product_from_stock
+    metadata: {}
+    data:
+      amount: '{{ amount }}'
+      product_id: '{{ product_id }}'
+      spoiled: true
+      allow_subproduct_substitution: true
+      transaction_type: CONSUME
+  fields:
+    product_id:
+      selector:
+        number:
+          step: 1
+          min: 1
+          max: 500
+      name: Consume Product
+      description: ID given by Grocy to Consume Product
+      required: true
+    amount:
+      selector:
+        number:
+          min: 1
+          step: 1
+          max: 100
+      name: Amount
+      description: Amount you have purchased
+      default: 1
+      required: true
+  alias: Grocy Remove Spoiled Product from Stock
+  description: Script to remove Spoiled product from Grocy Stock
+17track_archive_all_arrived_packages:
+  sequence:
+  - action: seventeentrack.get_packages
+    data:
+      config_entry_id: f7e51c74066b2ffda66d5ee83c8e703c
+    response_variable: packages
+  - repeat:
+      for_each: '{{ state_attr("sensor.17track_packages_delivered", "packages") |
+        map(attribute="tracking_number") | list }}'
+      sequence:
+      - data:
+          config_entry_id: f7e51c74066b2ffda66d5ee83c8e703c
+          package_tracking_number: '{{ repeat.item }}'
+        action: seventeentrack.archive_package
+        metadata: {}
+  alias: 17Track Archive All Arrived packages
+  description: ''
+grocy_remove_all_expired_product_from_stock:
+  sequence:
+  - repeat:
+      for_each: '{{ state_attr("binary_sensor.grocy_expired_products", "expired_products")
+        | map(attribute="id") | list }}'
+      sequence:
+      - action: grocy.consume_product_from_stock
+        metadata: {}
+        data:
+          spoiled: true
+          transaction_type: CONSUME
+          product_id: '{{ repeat.item }}'
+          amount: 1
+  alias: Grocy Remove All Expired Product from Stock
+  description: ''
+grocy_open_product:
+  sequence:
+  - action: grocy.open_product
+    metadata: {}
+    data:
+      amount: '{{ amount }}'
+      product_id: '{{ product_id }}'
+      allow_subproduct_substitution: true
+  fields:
+    product_id:
+      selector:
+        number:
+          step: 1
+          min: 1
+          max: 500
+      name: Consume Product
+      description: ID given by Grocy to Consume Product
+      required: true
+    amount:
+      selector:
+        number:
+          min: 1
+          step: 1
+          max: 100
+      name: Amount
+      description: Amount you have purchased
+      default: 1
+      required: true
+  alias: Grocy Open Product
+  description: Script to input open product from Grocy Stock
+llm_script_for_music_assistant_voice_requests:
+  alias: LLM Script for Music Assistant voice requests
+  use_blueprint:
+    path: music-assistant/llm_voice_script.yaml
+    input:
+      default_player: media_player.living_room
+  description: ''
+assist_search_google:
+  sequence:
+  - action: conversation.process
+    metadata: {}
+    data:
+      agent_id: conversation.gemini_2_5_flash
+      text: '{{ query }}'
+    response_variable: result
+  - variables:
+      result:
+        response: '{{ result.response.speech.plain.speech }}'
+  - stop: ''
+    response_variable: result
+  alias: 'Assist: Search Google'
+  description: Makes a Google search to answer questions that are completely unrelated
+    with the smart home and are exclusively about current events or information in
+    real-time like the current president, results of last night's game, release dates,
+    etc.
+  fields:
+    query:
+      selector:
+        text:
+      name: Query
+      description: The query to search Google for
+      required: true
+track_costal_respiration:
+  sequence:
+  - action: habitica.score_habit
+    metadata: {}
+    data:
+      config_entry: 01JN09KX5PH66P7V5C4EX4BKM1
+      task: 흉곽 호흡하기
+      direction: up
+    response_variable: response
+  alias: Track Costal Respiration
+  description: ''
+  icon: mdi:lungs
+track_water_intake:
+  sequence:
+  - action: habitica.score_habit
+    metadata: {}
+    data:
+      config_entry: 01JN09KX5PH66P7V5C4EX4BKM1
+      direction: up
+      task: 물 마시기
+    response_variable: response
+  alias: Track water intake
+  description: ''
+  icon: mdi:water
+track_hand_cream:
+  sequence:
+  - action: habitica.score_habit
+    metadata: {}
+    data:
+      config_entry: 01JN09KX5PH66P7V5C4EX4BKM1
+      direction: up
+      task: 핸드크림 바르기
+    response_variable: response
+  alias: Track hand cream
+  description: ''
+  icon: mdi:lotion-plus
+track_lip_balm:
+  sequence:
+  - action: habitica.score_habit
+    metadata: {}
+    data:
+      config_entry: 01JN09KX5PH66P7V5C4EX4BKM1
+      direction: up
+      task: 립밤 바르기
+    response_variable: response
+  alias: Track lip balm
+  description: ''
+  icon: mdi:lipstick
+track_kegel_practice:
+  sequence:
+  - action: habitica.score_habit
+    metadata: {}
+    data:
+      config_entry: 01JN09KX5PH66P7V5C4EX4BKM1
+      direction: up
+      task: 케겔 운동하기
+    response_variable: response
+  alias: Track kegel practice
+  description: ''
+  icon: fapro:female-hips-and-waist
+unknown:
+  alias: 날씨 및 쾌적성 보고서
+  sequence:
+  - action: ai_task.generate_data
+    data:
+      task_name: weather comfort report
+      instructions: 'Based on the current conditions:
+
+        - Outdoor temperature: {{ states(''sensor.seoul_temperature'') }}°C
+
+        - Weather condition: {{ states(''weather.home'') }}
+
+        - Indoor temperature: {{ states(''sensor.indoor_average_temperature'') }}°C
+
+        - Indoor humidity: {{ states(''sensor.indoor_average_humidity'') }}%
+
+
+        Generate a funny weather description and assess indoor comfort level in Korean.
+
+        '
+      structure:
+        weather_description:
+          description: A humorous description of the current weather outside
+          required: true
+          selector:
+            text:
+        indoor_comfort:
+          description: Assessment of how comfortable it is inside compared to outside
+          required: true
+          selector:
+            text:
+    response_variable: comfort_report
+  - action: notify.persistent_notification
+    data:
+      title: "\U0001F3E0 우리 집 환경 보고"
+      message: "\U0001F324️ **바깥 날씨:**\n{{ comfort_report.data.weather_description
+        }}\n\n\U0001F6CB️ **실내 쾌적성:**\n{{ comfort_report.data.indoor_comfort }}\n"
+  description: 현재 날씨와 쾌적한 실내 환경을 유머러스하게 보고합니다.
+entity_history:
+  alias: Entity History
+  icon: mdi:chart-timeline-variant
+  description: "You HAVE TO KNOW the entity_ids before searching for the history.
+    If you don't have them yet, try to find them using the tool \"Entity Index\" first.\nPass
+    entity_ids as a single comma-separated string (e.g. \"sensor.temp_1, sensor.temp_2\").\nentity_ids
+    is MANDATORY and has to be ALWAYS provided!\n\nAttention: \nAlways provide dates
+    in local time like '2025-07-30 14:00:00'. \nReturned dates and times will be in
+    the same format and local time.\n\n A hint about power and energy sensors:\n  -
+    A PowerSensor returns an up-to-date value for a given moment in Watt. Interesting
+    historic values might be min, max, or mean values in a timespan.\n  - An EnergySensor
+    provides the complete kWh usage since the installation of the device and is always
+    cumulative, monotonic increasing. Interesting values might be change per day,
+    or the change from a given time until now.\n"
+  mode: single
+  fields:
+    entity_ids:
+      name: Entity IDs (comma separated)
+      description: comma-separated string of a single or multiple entity_id names
+        (e.g. "sensor.roomname_temperature). MANDATORY!
+      required: true
+      selector:
+        text: {}
+    start_time:
+      name: Start time
+      description: Set the start date / time of your search. Always provide dates
+        in localtime like '2025-07-30 14:00:00'
+      required: true
+      selector:
+        datetime: {}
+    end_time:
+      name: End time
+      description: Set the end date / time of your search. If not provided, the current
+        time is used. Always provide dates in localtime like '2025-07-30 14:00:00'
+      required: false
+      selector:
+        datetime: {}
+    period:
+      name: Period
+      description: Time based grouping / aggregation period. If the search is for
+        a short time period which not divisible by full hours, use 5minute as aggregation
+        and calculate the sum using the Calculator tool.
+      required: true
+      selector:
+        select:
+          options:
+          - 5minute
+          - hour
+          - day
+          - week
+          - month
+    aggregation_types:
+      name: Aggregation Types
+      description: Aggregated values that should be returned. Multiple allowed. State
+        is mostly interesting for non-numeric values. Use mean as a default for getting
+        a simple single value if not requested otherwise. For cumulative, monotinic
+        increasing sensors like energy sensors (kWh) use "change" to get how much
+        was added to the counter between start and end time.
+      required: true
+      selector:
+        select:
+          multiple: true
+          options:
+          - change
+          - max
+          - mean
+          - min
+          - state
+  sequence:
+  - action: logbook.log
+    data:
+      name: 'ENTITY HISTORY:'
+      message: ids={{ entity_ids }}, period={{ period | default('n/a') }}, aggregation_types={{
+        aggregation_types | default('n/a') }}, start={{ start_time | default('n/a')
+        }}, end={{ end_time | default('n/a') }}
+      entity_id: '{{ this.entity_id }}'
+  - variables:
+      stat_ids: "{% set raw = entity_ids | string | trim %}\n{% if raw.startswith('[')
+        %}\n  {% set lst = raw | from_json %}\n{% else %}\n  {% set lst = raw.split(',')
+        | map('trim') | select('ne', '') | list %}\n{% endif %}\n{{ lst | map('lower')
+        | list }}"
+      typelist: "{% if aggregation_types is not defined or aggregation_types is none
+        %}\n  {{ none }}\n{% elif aggregation_types is string %}\n  {% set s = aggregation_types
+        | trim %}\n  {% if s == '' %}\n    {{ none }}\n  {% elif s.startswith('[')
+        %}\n    {{ s | from_json }}\n  {% else %}\n    {{ s.split(',') | map('trim')
+        | select('ne','') | list }}\n  {% endif %}\n{% else %}\n  {{ aggregation_types
+        }}\n{% endif %}"
+  - variables:
+      missing_entities: "{% set all_ids = states | map(attribute='entity_id') | list
+        %}\n{% set ns = namespace(missing=[]) %}\n{% for eid in stat_ids %}\n  {%
+        if eid not in all_ids %}\n    {% set ns.missing = ns.missing + [eid] %}\n
+        \ {% endif %}\n{% endfor %}\n{{ ns.missing }}"
+  - if:
+    - condition: template
+      value_template: '{{ (missing_entities | length) > 0 }}'
+    then:
+    - variables:
+        result: "{{ {\n  'error': 'You provided some not existing entity ids. Use
+          only names returned from \"Entitiy Index\" or that you looked up in the
+          data provided to you.',\n  'code': 'entity_not_found',\n  'missing_entities':
+          missing_entities\n} }}"
+    - stop: ''
+      response_variable: result
+  - variables:
+      call_data: "{% set d = {'statistic_ids': stat_ids} %} {% if start_time is defined
+        and start_time %}\n  {% set d = d | combine({'start_time': start_time}) %}\n{%
+        endif %} {% if end_time is defined and end_time %}\n  {% set d = d | combine({'end_time':
+        end_time}) %}\n{% endif %} {% if period is defined and period %}\n  {% set
+        d = d | combine({'period': period}) %}\n{% endif %} {% if typelist is not
+        none %}\n  {% set d = d | combine({'types': typelist}) %}\n{% endif %} {{
+        d }}"
+  - action: recorder.get_statistics
+    response_variable: stats_raw
+    data: '{{ call_data }}'
+  - variables:
+      no_data: "{% if stats_raw is not defined or stats_raw == none %}\n  true\n{%
+        elif stats_raw | length == 0 %}\n  true\n{% else %}\n  {% set ns = namespace(total=0)
+        %}\n  {% for _k, v in stats_raw.items() %}\n    {% set ns.total = ns.total
+        + (v | length) %}\n  {% endfor %}\n  {{ ns.total == 0 }}\n{% endif %}"
+      result: "{% if no_data %}\n  {{ {\n    'error': \"No history values found. Either
+        the entity_ids have no long-term statistics enabled, or there are no datapoints
+        in the requested timespan.\",\n    'code': 'no_history_data'\n  } }}\n{% else
+        %}\n  {%- set ns = namespace(out={}) -%}\n  {%- for entity_id, entries in
+        stats_raw.statistics.items() -%}\n    {%- set e = namespace(items=[]) -%}\n
+        \   {%- for it in entries -%}\n      {%- set start_local = (it['start'] |
+        as_datetime | as_local).strftime('%Y-%m-%d %H:%M:%S') -%}\n      {%- set end_local
+        \  = (it['end']   | as_datetime | as_local).strftime('%Y-%m-%d %H:%M:%S')
+        -%}\n      {%- set obj = (it | tojson | from_json)\n        | combine({'start':
+        start_local, 'end': end_local}) -%}\n      {%- set e.items = e.items + [obj]
+        -%}\n    {%- endfor -%}\n    {%- set ns.out = ns.out | combine({ entity_id:
+        e.items }) -%}\n  {%- endfor -%}\n  {{ {'result': ns.out} }}\n{% endif %}"
+  - stop: ''
+    response_variable: result
+unknown_2:
+  sequence:
+  - action: ai_task.generate_data
+    metadata: {}
+    data:
+      attachments:
+        media_content_id: media-source://camera/camera.baengbaeng_junction
+        media_content_type: image/jpeg
+      task_name: Traffic cameras
+      instructions: 'These are public traffic camera in my route to office.
+
+
+        Is there traffic jam exists?'
+      structure:
+        true_or_false:
+          selector:
+            boolean:
+    response_variable: traffic_jam
+  alias: '교통 카메라: 교통 체증 여부 확인'
+  description: 공개 교통 카메라를 통해 경로의 교통 체증 여부를 확인합니다.
