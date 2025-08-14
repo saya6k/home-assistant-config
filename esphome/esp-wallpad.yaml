@@ -130,7 +130,7 @@ switch:
   - platform: uartex
     name: "Room 1 Plug 0"
     icon: "mdi:power-socket-de"
-    state: 
+    state:
       data: [0x00, 0x01, 0x1f, 0x04, 0x40, 0x10]
       mask: [0x00, 0xff, 0xff, 0xff, 0xff, 0xff]
     state_on:
@@ -149,7 +149,7 @@ switch:
   - platform: uartex
     name: "Room 1 Plug 1"
     icon: "mdi:power-socket-de"
-    state: 
+    state:
       data: [0x00, 0x01, 0x1f, 0x04, 0x40, 0x11]
       mask: [0x00, 0xff, 0xff, 0xff, 0xff, 0xff]
     state_on:
@@ -168,7 +168,7 @@ switch:
   - platform: uartex
     name: "Room 1 Plug 2"
     icon: "mdi:power-socket-de"
-    state: 
+    state:
       data: [0x00, 0x01, 0x1f, 0x04, 0x40, 0x12]
       mask: [0x00, 0xff, 0xff, 0xff, 0xff, 0xff]
     state_on:
@@ -422,7 +422,7 @@ light:
   # - platform: uartex
   #   name: "Room 1 Fan 1"
   #   speed_cnt: 3
-  #   state: 
+  #   state:
   #     data: [0x00, 0x01, 0x2b, 0x04, 0x40, 0x11]
   #     mask: [0x00, 0xff, 0xff, 0xff, 0xff, 0xff]
   #   state_on:
