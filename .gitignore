@@ -123,6 +123,8 @@ secrets.yaml
 !.gitignore
 !.pre-commit-config.yaml
 !.yaml-lint.yaml
+!.prettierignore
+!.prettierrc
 
 # Keep directories
 !.github/

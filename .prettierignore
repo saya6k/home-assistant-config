@@ -1,0 +1,14 @@
+automations.yaml
+scripts.yaml
+scenes.yaml
+blueprints
+custom_components
+www
+.cloud
+.ssh
+.storage
+deps
+
+*.db*
+*.conf
+*.log
