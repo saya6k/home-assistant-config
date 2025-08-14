@@ -1,0 +1,34 @@
+name: "PR Semantic Version Labels"
+on:
+  pull_request:
+    types: [opened, edited]
+
+jobs:
+  add-semver-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Label PR based on semantic version
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prBody = context.payload.pull_request.body.toLowerCase();
+            const prNumber = context.payload.pull_request.number;
+            let label = null;
+
+            if (prBody.includes('type of change: patch')) {
+              label = 'patch';
+            } else if (prBody.includes('type of change: minor')) {
+              label = 'minor';
+            } else if (prBody.includes('type of change: major')) {
+              label = 'major';
+            }
+
+            if (label) {
+              await github.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                labels: [label],
+              });
+            }
