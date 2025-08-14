@@ -245,7 +245,6 @@ logger:
     homeassistant.setup: error
     # homeassistant.components.conversation: debug
     # homeassistant.components.intent: debug
-    homeassistant.components.shell_command: debug
 
 ####################################################
 #                                                  #
