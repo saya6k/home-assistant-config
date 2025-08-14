@@ -226,66 +226,6 @@ assist_search_google:
       name: Query
       description: The query to search Google for
       required: true
-track_costal_respiration:
-  sequence:
-  - action: habitica.score_habit
-    metadata: {}
-    data:
-      config_entry: 01JN09KX5PH66P7V5C4EX4BKM1
-      task: 흉곽 호흡하기
-      direction: up
-    response_variable: response
-  alias: Track Costal Respiration
-  description: ''
-  icon: mdi:lungs
-track_water_intake:
-  sequence:
-  - action: habitica.score_habit
-    metadata: {}
-    data:
-      config_entry: 01JN09KX5PH66P7V5C4EX4BKM1
-      direction: up
-      task: 물 마시기
-    response_variable: response
-  alias: Track water intake
-  description: ''
-  icon: mdi:water
-track_hand_cream:
-  sequence:
-  - action: habitica.score_habit
-    metadata: {}
-    data:
-      config_entry: 01JN09KX5PH66P7V5C4EX4BKM1
-      direction: up
-      task: 핸드크림 바르기
-    response_variable: response
-  alias: Track hand cream
-  description: ''
-  icon: mdi:lotion-plus
-track_lip_balm:
-  sequence:
-  - action: habitica.score_habit
-    metadata: {}
-    data:
-      config_entry: 01JN09KX5PH66P7V5C4EX4BKM1
-      direction: up
-      task: 립밤 바르기
-    response_variable: response
-  alias: Track lip balm
-  description: ''
-  icon: mdi:lipstick
-track_kegel_practice:
-  sequence:
-  - action: habitica.score_habit
-    metadata: {}
-    data:
-      config_entry: 01JN09KX5PH66P7V5C4EX4BKM1
-      direction: up
-      task: 케겔 운동하기
-    response_variable: response
-  alias: Track kegel practice
-  description: ''
-  icon: fapro:female-hips-and-waist
 unknown:
   alias: 날씨 및 쾌적성 보고서
   sequence:

@@ -1,3 +1,4 @@
+---
 - id: '1714009521553'
   alias: ESPHome Auto-Update
   description: 'Trigger: The automation triggers when any ESPHome device is marked
