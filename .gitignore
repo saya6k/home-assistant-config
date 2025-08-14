@@ -150,6 +150,7 @@ secrets.yaml
 !scenes.yaml
 !scripts.yaml
 !README.md
+!ui-lovelace.yaml
 !LICENSE
 !mkdocs.yml
 !requirements.txt
