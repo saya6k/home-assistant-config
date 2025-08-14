@@ -21,6 +21,7 @@
 !LICENSE
 !ui-lovelace.yaml
 !mkdocs.yml
+!requirements.txt
 
 !www/lovelace.png
 !www/thread-map.png
