@@ -1,5 +1,121 @@
 # Example .gitignore file for your config dir.
 # An * ensures that everything will be ignored.
+
+# ---------------------------
+# Operating System Files
+# ---------------------------
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.Trashes
+.Spotlight-V100
+.DocumentRevisions-V100
+.fseventsd
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+*~
+.nfs*
+
+# ---------------------------
+# Editor / IDE Files
+# ---------------------------
+
+# Vim
+*.swp
+*.swo
+*.swn
+
+# Emacs
+*~
+\#*\#
+
+# JetBrains IDEs (IntelliJ, PyCharm, WebStorm, etc.)
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# VS Code
+.vscode/
+.history/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# ---------------------------
+# Build / Temp Files
+# ---------------------------
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Node.js / JavaScript
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp.*
+
+# Java / Gradle / Maven
+*.class
+*.jar
+*.war
+*.ear
+*.iml
+*.log
+*.out
+target/
+build/
+
+# C / C++
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.dylib
+*.out
+
+# Rust
+target/
+
+# Go
+bin/
+*.exe
+
+# ---------------------------
+# Temporary Files
+# ---------------------------
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*.old
+*.orig
+
+# ---------------------------
+# Secrets / Config Templates
+# ---------------------------
+*.env
+*.local
+secret.yml
+secrets.yaml
+
 *
 
 # Keep directories
@@ -25,6 +141,7 @@
 !LICENSE
 !mkdocs.yml
 !requirements.txt
+!secrets.fake.yaml
 
 !www/lovelace.png
 !www/thread-map.png
