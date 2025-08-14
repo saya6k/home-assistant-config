@@ -1,0 +1,82 @@
+site_name: Home Assistant Documentation by saya6k
+site_author: saya6k
+site_url: https://lyz.kr/home-assistant-config
+site_description: 🏡 My home automation setup built with Home Assistant
+
+use_directory_urls: False
+repo_url: https://github.com/saya6k/home-assistant-config
+repo_name: home-assistant-config
+
+copyright: 'Copyright &copy; 2025 saya6k'
+
+theme:
+  name: material
+  logo: assets/home_assistant.png
+  features:
+    - toc.integrate
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.footer
+    - content.action.edit
+    - content.action.view
+  include_search_page: false
+  search_index_only: true
+  palette:
+    # Palette toggle for automatic mode
+    - media: '(prefers-color-scheme)'
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    # Light mode
+    - media: '(prefers-color-scheme: light)'
+      scheme: default
+      primary: light-blue
+      accent: light-blue
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    # Dark mode
+    - media: '(prefers-color-scheme: dark)'
+      scheme: slate
+      primary: light-blue
+      accent: light-blue
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+extra_css:
+  - assets/stylesheet.css
+
+nav:
+  - Home: index.md
+  - Hardware: hardware.md
+  - Configuration:
+      - config/index.md
+      - config/dashboards.md
+      - config/automations.md
+      - config/services.md
+      - config/monitoring.md
+  - Retired: retired.md
+  - Inspiration: resources.md
+    
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.highlight
+  - pymdownx.keys
+  - pymdownx.superfences
+  - pymdownx.tasklist
+  - pymdownx.tilde
+  - attr_list
+  - md_in_html
+  - plantuml_markdown:
+      server: "http://www.plantuml.com/plantuml"
+  - meta
+  - toc:
+      permalink: true
+  - pymdownx.tabbed:
+      alternate_style: true
+    
+plugins: []
