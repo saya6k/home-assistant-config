@@ -13,7 +13,7 @@
 
 This is my Home Assistant configuration, updated on 2025-08-14.
 
-I started using Home Assistant in 2018. Now, it has grown significantly, with a total of 1537 entities for now.
+I started using Home Assistant in 2018. Now, it has grown significantly, with a total of 1544 entities for now.
 
 > [!CAUTION]
 > I constantly improve my home. It evolves as I add new devices and services. It's changing as my daily routines are changing.
@@ -44,15 +44,15 @@ Or you can directly go to:
 Domain | Value
 -- | --
 automations | 30
-binary_sensors | 152
+binary_sensors | 153
 device_trackers | 14
 lights | 18
 media_players | 9
-sensors | 836
+sensors | 840
 switches | 148
 switches | 148
-others | 330
-**Total** | **1537**
+others | 332
+**Total** | **1544**
 
 ## Integrations
 
@@ -142,6 +142,9 @@ Integration | Name
 > [!TIP]
 > If you want to see my automation details other than list, go to [Automations](./docs/config/automations.md)
 
+> [!TIP]
+> Or if you want to see `automations.yaml`, click [automations.yaml](./automations.yaml)
+
 Name | Description
 -- | --
   Apply Away Scene when no person is home | mode: single
@@ -185,36 +188,38 @@ Name | Description
 
 Name | Version | Description
 -- | -- | --
-[Advanced SSH & Web Terminal](/hassio/addon/a0d7b954_ssh) | 21.0.2 | 
-[DbStats](/hassio/addon/8bce8ef4_dbstats) | 0.5.12 | 
-[ESPHome Device Builder](/hassio/addon/5c53de3b_esphome) | 2025.7.5 | 
-[File editor](/hassio/addon/core_configurator) | 5.8.0 | 
-[Firefly iii](/hassio/addon/db21ed7f_fireflyiii) | 6.2.21 | 
-[Grafana](/hassio/addon/a0d7b954_grafana) | 11.0.0 | 
-[Grocy](/hassio/addon/a0d7b954_grocy) | 0.24.0 | 
-[HassOS SSH port 22222 Configurator](/hassio/addon/2ad4c73a_hassos_ssh_configurator_addon) | 0.9.3 | 
-[iSponsorBlockTV add-on](/hassio/addon/932a64e5_isponsorblocktv) | 2.3.0 | 
-[KNXD daemon](/hassio/addon/ecaeb50e_knxd) | 0.6.1 | 
-[Let's Encrypt](/hassio/addon/core_letsencrypt) | 5.4.9 | 
-[Mailfilter](/hassio/addon/32b8266a_mailfilter) | 4.2.2 | 
-[Mailserver](/hassio/addon/32b8266a_mailserver) | 4.3.0 | 
-[MariaDB](/hassio/addon/core_mariadb) | 2.7.2 | 
-[Matter Server](/hassio/addon/core_matter_server) | 8.1.0 | 
-[MCP Proxy Server](/hassio/addon/adfd7a46_mcp_proxy_server) | 0.4.1 | 
-[Mosquitto broker](/hassio/addon/core_mosquitto) | 6.5.1 | 
-[MQTT Explorer](/hassio/addon/2ad4c73a_mqtt-explorer) | browser-1.0.1 | 
-[Music Assistant Server](/hassio/addon/d5369777_music_assistant) | 2.5.8 | 
-[NGINX Home Assistant SSL proxy](/hassio/addon/core_nginx_proxy) | 3.13.0 | 
-[OpenThread Border Router](/hassio/addon/core_openthread_border_router) | 2.13.0 | 
-[Paperless-ngx](/hassio/addon/ca5234a0_paperless-ngx) | 3.0.2 | 
-[phpMyAdmin](/hassio/addon/a0d7b954_phpmyadmin) | 0.12.0 | 
-[Pocket ID](/hassio/addon/c80c7555_pocket-id) | 1.1.9 | 
-[Puppet](/hassio/addon/0f1cc410_puppet) | 1.19.0 | 
-[Roundcube](/hassio/addon/32b8266a_roundcube) | 1.1.1 | 
-[Studio Code Server](/hassio/addon/a0d7b954_vscode) | 5.19.3 | 
-[Tika-Gotenberg](/hassio/addon/ca5234a0_tika-gotenberg) | 0.1.0 | 
-[VictoriaMetrics](/hassio/addon/8f49de54_victoria_metrics) | 1.123.0 | 
-[Whisper](/hassio/addon/core_whisper) | 2.6.0 | 
+[Advanced SSH & Web Terminal](https://my.home-assistant.io/redirect/supervisor_addon/?addon=a0d7b954_ssh) | 21.0.2 | started
+[DbStats](https://my.home-assistant.io/redirect/supervisor_addon/?addon=8bce8ef4_dbstats) | 0.5.12 | started
+[ESPHome Device Builder](https://my.home-assistant.io/redirect/supervisor_addon/?addon=5c53de3b_esphome) | 2025.7.5 | started
+[File editor](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_configurator) | 5.8.0 | started
+[Firefly iii](https://my.home-assistant.io/redirect/supervisor_addon/?addon=db21ed7f_fireflyiii) | 6.2.21 | started
+[Git pull](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_git_pull) | 8.0.1 | unknown
+[Grafana](https://my.home-assistant.io/redirect/supervisor_addon/?addon=a0d7b954_grafana) | 11.0.0 | started
+[Grocy](https://my.home-assistant.io/redirect/supervisor_addon/?addon=a0d7b954_grocy) | 0.24.0 | started
+[HassOS SSH port 22222 Configurator](https://my.home-assistant.io/redirect/supervisor_addon/?addon=2ad4c73a_hassos_ssh_configurator_addon) | 0.9.3 | stopped
+[iSponsorBlockTV add-on](https://my.home-assistant.io/redirect/supervisor_addon/?addon=932a64e5_isponsorblocktv) | 2.3.0 | started
+[KNXD daemon](https://my.home-assistant.io/redirect/supervisor_addon/?addon=ecaeb50e_knxd) | 0.6.1 | started
+[Let's Encrypt](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_letsencrypt) | 5.4.9 | stopped
+[Mailfilter](https://my.home-assistant.io/redirect/supervisor_addon/?addon=32b8266a_mailfilter) | 4.2.2 | started
+[Mailserver](https://my.home-assistant.io/redirect/supervisor_addon/?addon=32b8266a_mailserver) | 4.3.0 | started
+[MariaDB](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_mariadb) | 2.7.2 | started
+[Matter Server](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_matter_server) | 8.1.0 | started
+[MCP Proxy Server](https://my.home-assistant.io/redirect/supervisor_addon/?addon=adfd7a46_mcp_proxy_server) | 0.4.1 | started
+[Mosquitto broker](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_mosquitto) | 6.5.1 | started
+[MQTT Explorer](https://my.home-assistant.io/redirect/supervisor_addon/?addon=2ad4c73a_mqtt-explorer) | browser-1.0.1 | started
+[Music Assistant Server](https://my.home-assistant.io/redirect/supervisor_addon/?addon=d5369777_music_assistant) | 2.5.8 | started
+[NGINX Home Assistant SSL proxy](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_nginx_proxy) | 3.13.0 | started
+[OpenThread Border Router](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_openthread_border_router) | 2.13.0 | started
+[Paperless-ngx](https://my.home-assistant.io/redirect/supervisor_addon/?addon=ca5234a0_paperless-ngx) | 3.0.2 | started
+[phpMyAdmin](https://my.home-assistant.io/redirect/supervisor_addon/?addon=a0d7b954_phpmyadmin) | 0.12.0 | started
+[Pocket ID](https://my.home-assistant.io/redirect/supervisor_addon/?addon=c80c7555_pocket-id) | 1.1.9 | started
+[Puppet](https://my.home-assistant.io/redirect/supervisor_addon/?addon=0f1cc410_puppet) | 1.19.0 | started
+[Roundcube](https://my.home-assistant.io/redirect/supervisor_addon/?addon=32b8266a_roundcube) | 1.1.1 | started
+[Samba share](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_samba) | 12.5.2 | unknown
+[Studio Code Server](https://my.home-assistant.io/redirect/supervisor_addon/?addon=a0d7b954_vscode) | 5.19.3 | started
+[Tika-Gotenberg](https://my.home-assistant.io/redirect/supervisor_addon/?addon=ca5234a0_tika-gotenberg) | 0.1.0 | started
+[VictoriaMetrics](https://my.home-assistant.io/redirect/supervisor_addon/?addon=8f49de54_victoria_metrics) | 1.123.0 | started
+[Whisper](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_whisper) | 2.6.0 | started
 
 ## Dashboards
 
