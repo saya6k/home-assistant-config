@@ -4,23 +4,20 @@ title: Welcome to my Home Assistant Config!
 
 === "Home"
 
-    ![Home](https://github.com/saya6k/home-assistant-config/assets/3459374/6085c456-0842-4313-934b-44245888c59f)
+    ![Home](https://github.com/saya6k/home-assistant-config/blob/main/www/lovelace.png)
 
-=== "Living Room"
+=== "Thread Network Map"
 
-    ![Living Room](https://github.com/saya6k/home-assistant-config/assets/3459374/65ed0e5a-e736-4e00-8d03-5a6b245b36d3){: loading=lazy }
+    ![Living Room](https://github.com/saya6k/home-assistant-config/blob/main/www/thread-map.png){: loading=lazy }
 
-=== "Bedroom"
+=== "Monitoring"
 
-    ![Bedroom](https://github.com/saya6k/home-assistant-config/assets/3459374/10993656-8fb3-403f-bf5d-a88ef3466aa9){: loading=lazy }
+    ![Bedroom](https://github.com/saya6k/home-assistant-config/blob/main/www/monitoring.png){: loading=lazy }
 
-=== "Balcony"
+=== "Energy"
 
-    ![Balcony](https://github.com/saya6k/home-assistant-config/assets/3459374/ce707134-27ee-4bc2-a9fd-f3476c38bc4e){: loading=lazy }
+    ![Balcony](https://github.com/saya6k/home-assistant-config/blob/main/www/energy.png){: loading=lazy }
 
-=== "System"
-
-    ![System](https://github.com/saya6k/home-assistant-config/assets/3459374/0cb9d64b-bb0f-4faf-8b7e-88852ecbd03b){: loading=lazy }
 
 [![GitHub Workflow Status][github-img]][github-url]
 [![Last Commit][last-commit-img]][github-url]
@@ -81,7 +78,7 @@ I have a [public kanban board][kanban-board] with ideas and tasks for my smart h
 
 [kanban-board]: https://github.com/users/saya6k/projects/3
 [github-url]: https://github.com/saya6k/home-assistant-config
-[github-img]: https://img.shields.io/github/actions/workflow/status/saya6k/home-assistant-config/homeassistant.yml?style=flat-square
+[github-img]: https://img.shields.io/github/actions/workflow/status/saya6k/home-assistant-config/deploy-github-pages.yml?style=flat-square
 [last-commit-img]: https://img.shields.io/github/last-commit/saya6k/home-assistant-config?style=flat-square
 [commit-activity-img]: https://img.shields.io/github/commit-activity/m/saya6k/home-assistant-config?style=flat-square
 [license-url]: https://github.com/saya6k/home-assistant-config/blob/main/LICENSE.md
