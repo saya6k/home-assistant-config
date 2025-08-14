@@ -19,8 +19,8 @@ homeassistant:
   allowlist_external_dirs:
     - /config/www
 
-  # Disable any Auth providers except OIDC
-  # auth_providers: []
+  auth_providers:
+    - type: homeassistant
 
 ####################################################
 #                                                  #
@@ -122,7 +122,6 @@ recorder:
       - worldclock
 
     entity_globs:
-
       - sensor.clock*
       - sensor.date*
       - sensor.load_*m
@@ -257,7 +256,6 @@ prometheus:
   namespace: hass
   filter:
     include_entities:
-
       #################################
       #                               #
       #             Energy            #
@@ -417,25 +415,25 @@ command_line:
   - sensor:
       name: Home Assistant Log Size
       icon: mdi:file-document
-      command: "du -m home-assistant.log | cut -f1"
+      command: 'du -m home-assistant.log | cut -f1'
       device_class: data_size
       unit_of_measurement: MB
       scan_interval: 600
 
   - sensor:
-      name: "VictoriaMetrics DB Size"
+      name: 'VictoriaMetrics DB Size'
       icon: mdi:database
-      command: "/usr/bin/du -s /share/victoria-metrics-data | cut -f1"
+      command: '/usr/bin/du -s /share/victoria-metrics-data | cut -f1'
       value_template: "{{ (value.split('\t')[0]|int/1000)|round(1) }}"
       device_class: data_size
-      unit_of_measurement: "MB"
-      unique_id: "victoriametrics_db_size"
+      unit_of_measurement: 'MB'
+      unique_id: 'victoriametrics_db_size'
       scan_interval: 600
 
   - sensor:
       name: System Monitor Fan Speed
       unique_id: system_monitor_fan_speed
       scan_interval: 15
-      command: "cat /sys/devices/platform/cooling_fan/hwmon/*/fan1_input"
-      unit_of_measurement: "RPM"
+      command: 'cat /sys/devices/platform/cooling_fan/hwmon/*/fan1_input'
+      unit_of_measurement: 'RPM'
       # value_template: {{value}}

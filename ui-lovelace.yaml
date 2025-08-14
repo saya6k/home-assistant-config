@@ -18,7 +18,8 @@ views:
                   type: vertical-stack
                   cards:
                     - type: markdown
-                      content: "{% set start_time_raw = state_attr('calendar.personal',\
+                      content:
+                        "{% set start_time_raw = state_attr('calendar.personal',\
                         \ 'start_time') %}\n{% set today = now().date() %}\n{% set\
                         \ tomorrow = (now() + timedelta(days=1)).date() %}\n\n{% if\
                         \ is_state('calendar.personal', 'off') %}\n  {% if start_time_raw\
@@ -84,9 +85,10 @@ views:
                                 action: navigate
                                 navigation_path: '#saya6k'
                               entity: person.saya6k
-                              picture: '{{ state_attr(entity, ''entity_picture'')
-                                }}'
-                              content: "{% if is_state('sensor.saya6k_place', 'unavailable')\
+                              picture: "{{ state_attr(entity, 'entity_picture')
+                                }}"
+                              content:
+                                "{% if is_state('sensor.saya6k_place', 'unavailable')\
                                 \ or is_state('sensor.saya6k_place', 'unknown') %}\n\
                                 \  {{ state_translated(entity) }}\n{% elif is_state('sensor.saya6k_place',\
                                 \ 'Home') %}\n  집\n{% else %}\n  {{ state_translated('sensor.saya6k_place')\
@@ -117,9 +119,11 @@ views:
                               chip:
                                 type: template
                                 entity: person.eunbi
-                                picture: '{{ state_attr(entity, ''entity_picture'')
-                                  }}'
-                                content: "{% if is_state(entity, 'unavailable') or\
+                                picture:
+                                  "{{ state_attr(entity, 'entity_picture')
+                                  }}"
+                                content:
+                                  "{% if is_state(entity, 'unavailable') or\
                                   \ is_state(entity, 'unknown') %}\n  {{ state_translated(entity)\
                                   \ }}\n{% elif is_state(entity, 'home') %}\n  집\n\
                                   {% else %}\n  {{ state_translated(entity) }}\n{%\
@@ -144,7 +148,8 @@ views:
                           sort:
                             method: entity_id
                           filter:
-                            template: "{% for ENTITY in states.person\n  | map(attribute='entity_id')\n\
+                            template:
+                              "{% for ENTITY in states.person\n  | map(attribute='entity_id')\n\
                               \  | list\n  | reject('is_state_attr', 'friendly_name',\
                               \ 'Administrator')\n  | reject('is_state_attr', 'friendly_name',\
                               \ '원규')\n  | reject('is_state_attr', 'friendly_name',\
@@ -270,7 +275,8 @@ views:
                       sort:
                         method: entity_id
                       filter:
-                        template: "{% for ENTITY in states.media_player\n  | map(attribute='entity_id')\
+                        template:
+                          "{% for ENTITY in states.media_player\n  | map(attribute='entity_id')\
                           \      \n  | list\n  | select('in', integration_entities('music_assistant'))\n\
                           \  | select('is_state', 'playing')\n  | reject('is_hidden_entity')\
                           \ -%}\n{{\n  {\n    'entity': ENTITY,\n    'show_name':\
@@ -300,7 +306,8 @@ views:
                       sort:
                         method: entity_id
                       filter:
-                        template: "{%- for AREA in areas() -%} {{\n  {\n    'show_name':\
+                        template:
+                          "{%- for AREA in areas() -%} {{\n  {\n    'show_name':\
                           \ 'true',\n    'show_background': 'true',\n    'name': area_name(AREA),\n\
                           \    'tap_action': {\n      'action': 'navigate',\n    \
                           \  'navigation_path': '/lovelace/' ~ AREA\n    }\n  }\n\
@@ -331,7 +338,8 @@ views:
                 icon: mdi:ear-hearing
             button_type: state
             name: Climate
-            styles: " \n  ha-card {\n    --bubble-main-background-color: rgba(1,255,255,0.3)\
+            styles:
+              " \n  ha-card {\n    --bubble-main-background-color: rgba(1,255,255,0.3)\
               \ !important;\n  }"
             tap_action:
               action: navigate
@@ -369,7 +377,8 @@ views:
                 show_background: false
             button_type: state
             name: Energy
-            styles: " \n  ha-card {\n    --bubble-main-background-color: rgba(255,255,1,0.3)\
+            styles:
+              " \n  ha-card {\n    --bubble-main-background-color: rgba(255,255,1,0.3)\
               \ !important;\n  }"
             button_action:
               tap_action:
@@ -413,7 +422,8 @@ views:
                   navigation_path: '#system_check_jellyfin'
             button_type: state
             name: System
-            styles: " \n  ha-card {\n    --bubble-main-background-color: rgba(255,1,255,0.3)\
+            styles:
+              " \n  ha-card {\n    --bubble-main-background-color: rgba(255,1,255,0.3)\
               \ !important;\n  }"
             tap_action:
               action: navigate
@@ -566,7 +576,7 @@ views:
                         - type: custom:auto-entities
                           card:
                             type: custom:map-card
-                            tile_layer_url: '{{ states(''sensor.naver_map_url'') }}'
+                            tile_layer_url: "{{ states('sensor.naver_map_url') }}"
                             tile_layer_attribution: naver.com
                           filter:
                             include:
@@ -700,7 +710,8 @@ views:
                             type: custom:mushroom-chips-card
                             alignment: center
                           filter:
-                            template: "{% for ENTITY in states.sensor\n  | map(attribute='entity_id')\
+                            template:
+                              "{% for ENTITY in states.sensor\n  | map(attribute='entity_id')\
                               \      \n  | list          \n  | select('match', 'sensor\\\
                               .fireflyiii_.*_asset_account')\n  | reject('is_hidden_entity')\
                               \ -%}\n{{\n  {\n    'type': 'entity',\n    'entity':\
@@ -742,7 +753,8 @@ views:
                         - type: custom:auto-entities
                           filter:
                             include: []
-                            template: "{% for ENTITY in states.sensor\n  | map(attribute='entity_id')\
+                            template:
+                              "{% for ENTITY in states.sensor\n  | map(attribute='entity_id')\
                               \      \n  | list          \n  | select('match', 'sensor\\\
                               .fireflyiii_.*_budget')\n  | reject('is_hidden_entity')\
                               \ -%}\n{{\n  {\n    'type': 'custom:entity-progress-card',\n\
@@ -798,9 +810,11 @@ views:
                                 options:
                                   type: custom:mushroom-template-card
                                   entity: this.entity_id
-                                  primary: '{{ state_attr(entity, ''display_name'')
-                                    }}'
-                                  secondary: "{% if is_state(entity, 'offline') %}\n\
+                                  primary:
+                                    "{{ state_attr(entity, 'display_name')
+                                    }}"
+                                  secondary:
+                                    "{% if is_state(entity, 'offline') %}\n\
                                     \  {{ state_translated(entity) }}\n{% elif state_attr(entity,\
                                     \ 'game') is not none %}\n  {{ state_attr(entity,\
                                     \ 'game') }}\n{% elif state_attr(entity, 'streaming')\
@@ -814,7 +828,8 @@ views:
                                   icon: ''
                                   tap_action:
                                     action: more-info
-                                  picture: "{% if is_state(entity, 'offline') %}\n\
+                                  picture:
+                                    "{% if is_state(entity, 'offline') %}\n\
                                     \  {{ state_attr(entity, 'avatar_url') }}\n{%\
                                     \ elif state_attr(entity, 'game') is not none\
                                     \ %}\n  {{ state_attr(entity, 'game_image_small')\
@@ -855,9 +870,11 @@ views:
                                     options:
                                       type: custom:mushroom-template-card
                                       entity: this.entity_id
-                                      primary: '{{ state_attr(entity, ''display_name'')
-                                        }}'
-                                      secondary: "{% if is_state(entity, 'offline')\
+                                      primary:
+                                        "{{ state_attr(entity, 'display_name')
+                                        }}"
+                                      secondary:
+                                        "{% if is_state(entity, 'offline')\
                                         \ %}\n  {{ state_translated(entity) }}\n{%\
                                         \ elif state_attr(entity, 'game') is not none\
                                         \ %}\n  {{ state_attr(entity, 'game') }}\n\
@@ -872,7 +889,8 @@ views:
                                       icon: ''
                                       tap_action:
                                         action: more-info
-                                      picture: "{% if is_state(entity, 'offline')\
+                                      picture:
+                                        "{% if is_state(entity, 'offline')\
                                         \ %}\n  {{ state_attr(entity, 'avatar_url')\
                                         \ }}\n{% elif state_attr(entity, 'game') is\
                                         \ not none %}\n  {{ state_attr(entity, 'game_image_small')\
@@ -1034,7 +1052,8 @@ views:
                   - entity: sensor.truenas_system_cpu_usage
                     name: Cpu
                     card_mod:
-                      style: "hui-generic-entity-row {\n  background:\n    {% set\
+                      style:
+                        "hui-generic-entity-row {\n  background:\n    {% set\
                         \ perc = states(config.entity) | float(0) %}\n    {% set rest\
                         \ = 100 - perc %}\n\n    {% if perc >= 59 %}\n      {% set\
                         \ bar = '255,0,0' %}\n    {% elif perc >= 44 %}\n      {%\
@@ -1048,7 +1067,8 @@ views:
                   - entity: sensor.truenas_system_memory_usage
                     name: Memory
                     card_mod:
-                      style: "hui-generic-entity-row {\n  background:\n    {% set\
+                      style:
+                        "hui-generic-entity-row {\n  background:\n    {% set\
                         \ perc = states(config.entity) | float(0) %}\n    {% set rest\
                         \ = 100 - perc %}\n\n    {% if perc >= 59 %}\n      {% set\
                         \ bar = '255,0,0' %}\n    {% elif perc >= 44 %}\n      {%\
@@ -1063,7 +1083,8 @@ views:
                   - entity: binary_sensor.truenas_system_apps_healthy
                     name: Apps - 806.25GiB
                     card_mod:
-                      style: "hui-generic-entity-row {\n  {% set total = state_attr(config.entity,\
+                      style:
+                        "hui-generic-entity-row {\n  {% set total = state_attr(config.entity,\
                         \ 'Total GiB') | float(0) %}\n  {% set available = state_attr(config.entity,\
                         \ 'Available GiB') | float(0) %}\n  {% set used = total -\
                         \ available %}\n\n  {% if total > 0 %}\n    {% set percent_used\
@@ -1083,7 +1104,8 @@ views:
                   - entity: binary_sensor.truenas_system_data_healthy
                     name: Data - 92.96 TiB
                     card_mod:
-                      style: "hui-generic-entity-row {\n  {% set total = state_attr(config.entity,\
+                      style:
+                        "hui-generic-entity-row {\n  {% set total = state_attr(config.entity,\
                         \ 'Total GiB') | float(0) %}\n  {% set available = state_attr(config.entity,\
                         \ 'Available GiB') | float(0) %}\n  {% set used = total -\
                         \ available %}\n\n  {% if total > 0 %}\n    {% set percent_used\
@@ -1103,7 +1125,8 @@ views:
                   - entity: binary_sensor.truenas_system_temp_healthy
                     name: Temp - 2.91 TiB
                     card_mod:
-                      style: "hui-generic-entity-row {\n  {% set total = state_attr(config.entity,\
+                      style:
+                        "hui-generic-entity-row {\n  {% set total = state_attr(config.entity,\
                         \ 'Total GiB') | float(0) %}\n  {% set available = state_attr(config.entity,\
                         \ 'Available GiB') | float(0) %}\n  {% set used = total -\
                         \ available %}\n\n  {% if total > 0 %}\n    {% set percent_used\
@@ -1268,7 +1291,8 @@ views:
             sort:
               method: entity_id
             filter:
-              template: "{% for ENTITY in states.scene\n  | map(attribute='entity_id')\
+              template:
+                "{% for ENTITY in states.scene\n  | map(attribute='entity_id')\
                 \      \n  | list\n  | reject('in', area_entities('living_room'))\n\
                 \  | reject('in', area_entities('bedroom'))\n  | reject('in', area_entities('kitchen'))\n\
                 \  | reject('in', area_entities('bathroom'))\n  | reject('in', area_entities('front_door'))\n\
@@ -1287,7 +1311,8 @@ views:
             sort:
               method: friendly_name
             filter:
-              template: "{% for ENTITY in label_entities('favorite')\n  | reject('match',\
+              template:
+                "{% for ENTITY in label_entities('favorite')\n  | reject('match',\
                 \ 'scene\\..*')\n  | reject('is_hidden_entity') -%}\n{{\n  {\n   \
                 \ 'type': 'tile',\n    'entity': ENTITY,\n    'name': state_attr(ENTITY,'friendly_name')|\
                 \ replace(' 조명', ''),\n    'icon_tap_action': {\n      'action': 'perform-action',\n\
@@ -1317,7 +1342,8 @@ views:
                 hold_action:
                   action: none
                 card_mod:
-                  style: "ha-card {\n  {% if states(config.entity) == 'on' -%}\n \
+                  style:
+                    "ha-card {\n  {% if states(config.entity) == 'on' -%}\n \
                     \   --card-mod-icon: mdi:washing-machine;\n  {% elif states(config.entity)\
                     \ == 'off' -%}\n    --card-mod-icon: mdi:washing-machine-off;\n\
                     \  {%- else -%}\n    --card-mod-icon: mdi:washing-machine-alert;\n\
@@ -1342,7 +1368,8 @@ views:
                 hold_action:
                   action: none
                 card_mod:
-                  style: "ha-card {\n  {% if states(config.entity) == 'power_off'\
+                  style:
+                    "ha-card {\n  {% if states(config.entity) == 'power_off'\
                     \ -%}\n    --card-mod-icon: mdi:fridge-industrial-off-outline;\n\
                     \  {% elif states(config.entity) == 'initial' -%}\n    --card-mod-icon:\
                     \ mdi:iron;\n  {% elif states(config.entity) == 'complete' -%}\n\
@@ -1374,7 +1401,8 @@ views:
                 hold_action:
                   action: none
                 card_mod:
-                  style: "ha-card {\n  {% if states(config.entity) == 'ready' -%}\n\
+                  style:
+                    "ha-card {\n  {% if states(config.entity) == 'ready' -%}\n\
                     \    --card-mod-icon: mdi:microwave-off;\n  {% elif states(config.entity)\
                     \ == 'running' -%}\n    --card-mod-icon: mdi:microwave;\n  {%\
                     \ elif states(config.entity) == 'paused' -%}\n    --card-mod-icon:\
@@ -1401,7 +1429,8 @@ views:
                 hold_action:
                   action: none
                 card_mod:
-                  style: "ha-card {\n  {% if states(config.entity) == 'playing' -%}\n\
+                  style:
+                    "ha-card {\n  {% if states(config.entity) == 'playing' -%}\n\
                     \    --card-mod-icon: mdi:coffee-outline;\n  {% elif states(config.entity)\
                     \ == 'paused' -%}\n    --card-mod-icon: mdi:coffee-to-go-outline;\n\
                     \  {%- else -%}\n    --card-mod-icon: mdi:coffee-off-outline;\n\
@@ -1625,7 +1654,8 @@ views:
                           sort:
                             method: entity_id
                           filter:
-                            template: "{% for ENTITY in states.media_player\n  | map(attribute='entity_id')\n\
+                            template:
+                              "{% for ENTITY in states.media_player\n  | map(attribute='entity_id')\n\
                               \  | select('in', expand('media_player.all_media_players')\
                               \ | map(attribute='entity_id') | list)\n  | select('in',\
                               \ integration_entities('music_assistant'))\n  | reject('is_hidden_entity')\
@@ -2045,7 +2075,8 @@ views:
                       data: expiring_products.amount_opened
                     - name: 소비기한
                       data: expiring_products.best_before_date
-                      modify: "if(x.length == 0)\n{\"-\"}\nelse {\n  var date = new\
+                      modify:
+                        "if(x.length == 0)\n{\"-\"}\nelse {\n  var date = new\
                         \ Date(x);\n  date.getFullYear()+\". \"+\n  (String(date.getMonth()+\
                         \ 1).padStart(2,'0')+\". \"+\n  String(date.getDate()).padStart(2,'0')\n\
                         \ )\n}"
@@ -2087,7 +2118,8 @@ views:
                     modify: "if(x.length == 0)\n{\"-\"}\nelse {\n  x\n}"
                   - name: 소비기한
                     data: expired_products.best_before_date
-                    modify: "if(x.length == 0)\n{\"-\"}\nelse {\n  var date = new\
+                    modify:
+                      "if(x.length == 0)\n{\"-\"}\nelse {\n  var date = new\
                       \ Date(x);\n  date.getFullYear()+\". \"+\n  (String(date.getMonth()+\
                       \ 1).padStart(2,'0')+\". \"+\n  String(date.getDate()).padStart(2,'0')\n\
                       \ )\n}"
@@ -2117,7 +2149,8 @@ views:
                       data: expiring_products.amount_opened
                     - name: 소비기한
                       data: expiring_products.best_before_date
-                      modify: "if(x.length == 0)\n{\"-\"}\nelse {\n  var date = new\
+                      modify:
+                        "if(x.length == 0)\n{\"-\"}\nelse {\n  var date = new\
                         \ Date(x);\n  date.getFullYear()+\". \"+\n  (String(date.getMonth()+\
                         \ 1).padStart(2,'0')+\". \"+\n  String(date.getDate()).padStart(2,'0')\n\
                         \ )\n}"
@@ -2353,7 +2386,8 @@ views:
         card_mod:
           style:
             hui-entity-badge$:
-              ha-badge$: "{% if states(config.card.entity) == 'triggered' %} \n  .badge\
+              ha-badge$:
+                "{% if states(config.card.entity) == 'triggered' %} \n  .badge\
                 \ {\n    border-radius: 22px !important;\n    border: 1.5px solid\
                 \ var(--accent-color) !important;\n  }\n{% elif states(config.card.entity)\
                 \ == 'arming' %} \n  .badge {\n    border-radius: 22px !important;\n\
@@ -2363,7 +2397,8 @@ views:
                 \ var(--primary-color) !important;\n  }\n{% else %}\n  .badge {\n\
                 \    border-radius: 22px !important;\n    border: 1px solid light-grey\
                 \ !important;\n  }     \n{% endif %}}\n"
-              .: "{% if states(config.card.entity) == 'triggered' %}\n  ha-state-icon\
+              .:
+                "{% if states(config.card.entity) == 'triggered' %}\n  ha-state-icon\
                 \ {\n    animation: blinking 1s linear infinite;\n  }\n  @keyframes\
                 \ blinking {\n    50% {\n      opacity: 0.2;\n    }\n  }\n{% elif\
                 \ states(config.card.entity) == 'arming' %}\n  ha-state-icon {\n \
@@ -2390,13 +2425,15 @@ views:
         card_mod:
           style:
             hui-entity-badge$:
-              ha-badge$: ".badge {\n  --card-mod-icon: {{ 'mdi:lightbulb' if states(config.card.entity)\
+              ha-badge$:
+                ".badge {\n  --card-mod-icon: {{ 'mdi:lightbulb' if states(config.card.entity)\
                 \ |int(0) > 0 else 'mdi:lightbulb-off' }};\n  --card-mod-icon-color:\
                 \ {{ 'amber' if states(config.card.entity) |int(0) > 0 else 'grey'\
                 \ }};\n   border: {{'1.5px solid var(--primary-color) !important'\
                 \ if states(config.card.entity) |int(0) > 0 else '1px solid light-grey\
                 \ !important' }};\n}\n"
-              .: "ha-state-icon {\n  animation: {{ 'blinking 1.5s ease infinite' if\
+              .:
+                "ha-state-icon {\n  animation: {{ 'blinking 1.5s ease infinite' if\
                 \ states(config.card.entity) | int(0) > 0 else 'none' }};\n}\n@keyframes\
                 \ blinking {\n  50% {\n    opacity: 0.25;\n  }\n}\n"
             .: "ha-card {\n  background: none; \n  border: none;\n}\n"
@@ -2419,13 +2456,15 @@ views:
         card_mod:
           style:
             hui-entity-badge$:
-              ha-badge$: ".badge {\n  --card-mod-icon: {{ 'mdi:fan' if states(config.card.entity)\
+              ha-badge$:
+                ".badge {\n  --card-mod-icon: {{ 'mdi:fan' if states(config.card.entity)\
                 \ |int(0) > 0 else 'mdi:fan-off' }};\n  --card-mod-icon-color: {{\
                 \ 'var(--primary-color)' if states(config.card.entity) |int(0) > 0\
                 \ else 'grey' }};\n   border: {{'1.5px solid var(--primary-color)\
                 \ !important' if states(config.card.entity) |int(0) > 0 else '1px\
                 \ solid light-grey !important' }};\n}\n"
-              .: "ha-state-icon {\n  animation: {{ 'spin 1s linear infinite' if states(config.card.entity)\
+              .:
+                "ha-state-icon {\n  animation: {{ 'spin 1s linear infinite' if states(config.card.entity)\
                 \ |int(0) > 0 else 'none' }};\n}\n@keyframes spin {\n  0% {\n    transform:\
                 \ rotate(0deg);\n  }\n  100% {\n    transform: rotate(359deg);\n \
                 \ }\n}\n"
@@ -2450,13 +2489,15 @@ views:
         card_mod:
           style:
             hui-entity-badge$:
-              ha-badge$: ".badge {\n  --card-mod-icon: {{ 'mdi:television-speaker'\
+              ha-badge$:
+                ".badge {\n  --card-mod-icon: {{ 'mdi:television-speaker'\
                 \ if states(config.card.entity) |int(0) > 0 else 'mdi:television-speaker-off'\
                 \ }};\n  --card-mod-icon-color: {{ 'violet' if states(config.card.entity)\
                 \ |int(0) > 0 else 'grey' }};\n   border: {{'1.5px solid var(--primary-color)\
                 \ !important' if states(config.card.entity) |int(0) > 0 else '1px\
                 \ solid light-grey !important' }};\n}\n"
-              .: "ha-state-icon {\n  animation: {{ 'resizing 0.3s linear infinite\
+              .:
+                "ha-state-icon {\n  animation: {{ 'resizing 0.3s linear infinite\
                 \ alternate' if states(config.card.entity) |int(0) > 0 else 'none'\
                 \ }};\n}\n@keyframes resizing {\n  0% {\n    transform: scale(1,1);\n\
                 \  }\n  25% {\n    transform: scale(1.025,1.025);\n  }\n  50% {\n\
@@ -2483,13 +2524,15 @@ views:
         card_mod:
           style:
             hui-entity-badge$:
-              ha-badge$: ".badge {\n  --card-mod-icon: {{ 'mdi:curtains' if states(config.card.entity)\
+              ha-badge$:
+                ".badge {\n  --card-mod-icon: {{ 'mdi:curtains' if states(config.card.entity)\
                 \ |int(0) > 0 else 'mdi:curtains-closed' }};\n  --card-mod-icon-color:\
                 \ {{ 'indigo' if states(config.card.entity) |int(0) > 0 else 'grey'\
                 \ }};\n   border: {{'1.5px solid var(--primary-color) !important'\
                 \ if states(config.card.entity) |int(0) > 0 else '1px solid light-grey\
                 \ !important' }};\n}\n"
-              .: "ha-state-icon {\n  animation: {{ 'blinking 1.5s ease infinite' if\
+              .:
+                "ha-state-icon {\n  animation: {{ 'blinking 1.5s ease infinite' if\
                 \ states(config.card.entity) | int(0) > 0 else 'none' }};\n}\n@keyframes\
                 \ blinking {\n  50% {\n    opacity: 0.25;\n  }\n}\n"
             .: "ha-card {\n  background: none; \n  border: none;\n}\n"
@@ -2513,13 +2556,15 @@ views:
         card_mod:
           style:
             hui-entity-badge$:
-              ha-badge$: ".badge {\n  --card-mod-icon: {{ 'mdi:window-open-variant'\
+              ha-badge$:
+                ".badge {\n  --card-mod-icon: {{ 'mdi:window-open-variant'\
                 \ if states(config.card.entity) |int(0) > 0 else 'mdi:window-closed-variant'\
                 \ }};\n  --card-mod-icon-color: {{ 'purple' if states(config.card.entity)\
                 \ |int(0) > 0 else 'grey' }};\n   border: {{'1.5px solid var(--accent-color)\
                 \ !important' if states(config.card.entity) |int(0) > 0 else '1px\
                 \ solid light-grey !important' }};\n}\n"
-              .: "ha-state-icon {\n  animation: {{ 'blinking 0.4s linear infinite\
+              .:
+                "ha-state-icon {\n  animation: {{ 'blinking 0.4s linear infinite\
                 \ alternate' if states(config.card.entity) |int(0) > 0 else 'none'\
                 \ }};\n}\n@keyframes blinking {\n  50% {\n    opacity: 0.2;\n  }\n\
                 }\n"
@@ -2548,13 +2593,15 @@ views:
         card_mod:
           style:
             hui-entity-badge$:
-              ha-badge$: ".badge {\n  --card-mod-icon: {{ 'mdi:door-open' if states(config.card.entity)\
+              ha-badge$:
+                ".badge {\n  --card-mod-icon: {{ 'mdi:door-open' if states(config.card.entity)\
                 \ |int(0) > 0 else 'mdi:door-closed' }};\n  --card-mod-icon-color:\
                 \ {{ 'lime' if states(config.card.entity) |int(0) > 0 else 'grey'\
                 \ }};\n   border: {{'1.5px solid var(--accent-color) !important' if\
                 \ states(config.card.entity) |int(0) > 0 else '1px solid light-grey\
                 \ !important' }};\n}\n"
-              .: "ha-state-icon {\n  animation: {{ 'blinking 0.4s linear infinite\
+              .:
+                "ha-state-icon {\n  animation: {{ 'blinking 0.4s linear infinite\
                 \ alternate' if states(config.card.entity) |int(0) > 0 else 'none'\
                 \ }};\n}\n@keyframes blinking {\n  50% {\n    opacity: 0.2;\n  }\n\
                 }\n"
@@ -2586,12 +2633,14 @@ views:
         card_mod:
           style:
             hui-entity-badge$:
-              ha-badge$: ".badge {\n  --card-mod-icon: mdi:package-variant-closed;\n\
+              ha-badge$:
+                ".badge {\n  --card-mod-icon: mdi:package-variant-closed;\n\
                 \  --card-mod-icon-color: {{ 'orange' if states(config.card.entity)\
                 \ |int(0) > 0 else 'grey' }};\n   border: {{'1.5px solid var(--accent-color)\
                 \ !important' if states('alert.any_package_delivering') == 'on' else\
                 \ '1px solid light-grey !important' }};\n}\n"
-              .: "ha-state-icon {\n  animation: {{ 'shifting 0.3s linear infinite\
+              .:
+                "ha-state-icon {\n  animation: {{ 'shifting 0.3s linear infinite\
                 \ alternate' if states('alert.any_package_delivering') == 'on' else\
                 \ 'none' }};\n}\n@keyframes shifting {\n  0% {\n    transform: translate(-2px,0);\n\
                 \  }\n  100% {\n    transform: translate(2px,0);\n  }\n}\n"
@@ -2623,12 +2672,14 @@ views:
         card_mod:
           style:
             hui-entity-badge$:
-              ha-badge$: ".badge {\n  --card-mod-icon: mdi:broom;\n  --card-mod-icon-color:\
+              ha-badge$:
+                ".badge {\n  --card-mod-icon: mdi:broom;\n  --card-mod-icon-color:\
                 \ {{ 'green' if states(config.card.entity) |int(0) > 0 else 'grey'\
                 \ }};\n   border: {{'1.5px solid var(--accent-color) !important' if\
                 \ states('alert.any_chores_due') == 'on' else '1px solid light-grey\
                 \ !important' }};\n}\n"
-              .: "ha-state-icon {\n  animation: {{ 'sweeping 0.5s linear infinite\
+              .:
+                "ha-state-icon {\n  animation: {{ 'sweeping 0.5s linear infinite\
                 \ alternate' if states('alert.any_chores_due') == 'on' else 'none'\
                 \ }};\n}\n@keyframes sweeping {\n  0% {\n    transform: rotate(-60deg)\
                 \ translate(0,2px);\n  }\n  100% {\n    transform: rotate(-20deg)\
@@ -2661,12 +2712,14 @@ views:
         card_mod:
           style:
             hui-entity-badge$:
-              ha-badge$: ".badge {\n  --card-mod-icon: {{ 'mdi:battery-alert' if states(config.card.entity)\
+              ha-badge$:
+                ".badge {\n  --card-mod-icon: {{ 'mdi:battery-alert' if states(config.card.entity)\
                 \ |int(0) > 0 else 'mdi:battery' }};\n  --card-mod-icon-color: {{\
                 \ 'red' if states(config.card.entity) |int(0) > 0 else 'grey' }};\n\
                 \   border: {{'1.5px solid var(--accent-color) !important' if states('alert.any_battery_low')\
                 \ == 'on' else '1px solid light-grey !important' }};\n}\n"
-              .: "ha-state-icon {\n  animation: {{ 'blinking 0.4s linear infinite\
+              .:
+                "ha-state-icon {\n  animation: {{ 'blinking 0.4s linear infinite\
                 \ alternate' if states('alert.any_battery_low') == 'on' else 'none'\
                 \ }};\n}\n@keyframes blinking {\n  0% {\n    opacity: 0;\n  }\n  100%\
                 \ {\n    opacity: 1;\n  }\n}\n"
@@ -2698,13 +2751,15 @@ views:
         card_mod:
           style:
             hui-entity-badge$:
-              ha-badge$: ".badge {\n  --card-mod-icon: {{ 'mdi:cellphone-arrow-down'\
+              ha-badge$:
+                ".badge {\n  --card-mod-icon: {{ 'mdi:cellphone-arrow-down'\
                 \ if states(config.card.entity) |int(0) > 0 else 'mdi:cellphone' }};\n\
                 \  --card-mod-icon-color: {{ 'primary' if states(config.card.entity)\
                 \ |int(0) > 0 else 'grey' }};\n   border: {{'1.5px solid var(--accent-color)\
                 \ !important' if states('alert.any_updates_available') == 'on' else\
                 \ '1px solid light-grey !important' }};\n}\n"
-              .: "ha-state-icon {\n  animation: {{ 'blinking 0.4s linear infinite\
+              .:
+                "ha-state-icon {\n  animation: {{ 'blinking 0.4s linear infinite\
                 \ alternate' if states('alert.any_updates_available') == 'on' else\
                 \ 'none' }};\n}\n@keyframes blinking {\n  0% {\n    opacity: 0;\n\
                 \  }\n  100% {\n    opacity: 1;\n  }\n}\n"
@@ -2736,11 +2791,13 @@ views:
         card_mod:
           style:
             hui-entity-badge$:
-              ha-badge$: ".badge {\n  --card-mod-icon: mdi:clock-fast;\n  --card-mod-icon-color:\
+              ha-badge$:
+                ".badge {\n  --card-mod-icon: mdi:clock-fast;\n  --card-mod-icon-color:\
                 \ {{ 'orange' if states(config.card.entity) == 'on' else 'grey'}};\n\
                 \   border: {{'1.5px solid var(--accent-color) !important' if states('alert.grocy_expiring_products')\
                 \ == 'on' else '1px solid light-grey !important' }};\n}\n"
-              .: "ha-state-icon {\n  animation: {{ 'shifting 0.3s linear infinite\
+              .:
+                "ha-state-icon {\n  animation: {{ 'shifting 0.3s linear infinite\
                 \ alternate' if states('alert.grocy_expiring_products') == 'on' else\
                 \ 'none' }};\n}\n@keyframes shifting {\n  0% {\n    transform: translate(-2px,0);\n\
                 \  }\n  100% {\n    transform: translate(2px,0);\n  }\n}\n"
@@ -2772,12 +2829,14 @@ views:
         card_mod:
           style:
             hui-entity-badge$:
-              ha-badge$: ".badge {\n  --card-mod-icon: mdi:delete-alert-outline;\n\
+              ha-badge$:
+                ".badge {\n  --card-mod-icon: mdi:delete-alert-outline;\n\
                 \  --card-mod-icon-color: {{ 'red' if states(config.card.entity) ==\
                 \ 'on' else 'grey'}};\n   border: {{'1.5px solid var(--accent-color)\
                 \ !important' if states('alert.grocy_expired_products') == 'on' else\
                 \ '1px solid light-grey !important' }};\n}\n"
-              .: "ha-state-icon {\n  animation: {{ 'jumping 0.2s linear infinite alternate'\
+              .:
+                "ha-state-icon {\n  animation: {{ 'jumping 0.2s linear infinite alternate'\
                 \ if states('alert.grocy_expired_products') == 'on' else 'none' }};\n\
                 }\n@keyframes jumping {\n  0% {\n    transform: translate(0,-3px);\n\
                 \  }\n  100% {\n    transform: translate(0,0px);\n  }\n}\n"
@@ -2809,12 +2868,14 @@ views:
         card_mod:
           style:
             hui-entity-badge$:
-              ha-badge$: ".badge {\n  --card-mod-icon: mdi:flask-round-bottom-empty-outline;\n\
+              ha-badge$:
+                ".badge {\n  --card-mod-icon: mdi:flask-round-bottom-empty-outline;\n\
                 \  --card-mod-icon-color: {{ 'purple' if states(config.card.entity)\
                 \ == 'on' else 'grey'}};\n   border: {{'1.5px solid var(--accent-color)\
                 \ !important' if states('alert.grocy_missing_products') == 'on' else\
                 \ '1px solid light-grey !important' }};\n}\n"
-              .: "ha-state-icon {\n  animation: {{ 'wobbling 0.3s linear infinite\
+              .:
+                "ha-state-icon {\n  animation: {{ 'wobbling 0.3s linear infinite\
                 \ alternate' if states('alert.grocy_missing_products') == 'on' else\
                 \ 'none' }};\n}\n@keyframes wobbling {\n  0% {\n    transform: rotate(-20deg);\n\
                 \  }\n  100% {\n    transform: rotate(+20deg);\n  }\n}\n"
@@ -2843,11 +2904,13 @@ views:
         card_mod:
           style:
             hui-entity-badge$:
-              ha-badge$: ".badge {\n  --card-mod-icon: mdi:shopping;\n  --card-mod-icon-color:\
+              ha-badge$:
+                ".badge {\n  --card-mod-icon: mdi:shopping;\n  --card-mod-icon-color:\
                 \ {{ 'brown' if states(config.card.entity) |int(0) > 0 else 'grey'}};\n\
                 \   border: {{'1.5px solid var(--accent-color) !important' if states(config.card.entity)\
                 \ |int(0) > 0 else '1px solid light-grey !important' }};\n}\n"
-              .: "ha-state-icon {\n  animation: {{ 'wobbling 0.3s linear infinite\
+              .:
+                "ha-state-icon {\n  animation: {{ 'wobbling 0.3s linear infinite\
                 \ alternate' if states(config.card.entity) |int(0) > 0 else 'none'\
                 \ }};\n}\n@keyframes wobbling {\n  0% {\n    transform: rotate(-20deg);\n\
                 \  }\n  100% {\n    transform: rotate(+20deg);\n  }\n}\n"
@@ -2879,12 +2942,14 @@ views:
         card_mod:
           style:
             hui-entity-badge$:
-              ha-badge$: ".badge {\n  --card-mod-icon: {{ 'mdi:cash-fast' if states(config.card.entity)\
+              ha-badge$:
+                ".badge {\n  --card-mod-icon: {{ 'mdi:cash-fast' if states(config.card.entity)\
                 \ == 'on' else 'mdi:cash' }};\n  --card-mod-icon-color: {{ 'green'\
                 \ if states(config.card.entity) == 'on' else 'grey'}};\n   border:\
                 \ {{'1.5px solid var(--accent-color) !important' if states('alert.any_bills_to_pay')\
                 \ == 'on' else '1px solid light-grey !important' }};\n}\n"
-              .: "ha-state-icon {\n  animation: {{ 'shifting 0.3s linear infinite\
+              .:
+                "ha-state-icon {\n  animation: {{ 'shifting 0.3s linear infinite\
                 \ alternate' if states('alert.any_bills_to_pay') == 'on' else 'none'\
                 \ }};\n}\n@keyframes shifting {\n  0% {\n    transform: translate(-2px,0);\n\
                 \  }\n  100% {\n    transform: translate(2px,0);\n  }\n}\n"
@@ -2913,11 +2978,13 @@ views:
         card_mod:
           style:
             hui-entity-badge$:
-              ha-badge$: ".badge {\n  --card-mod-icon: mdi:shopping;\n  --card-mod-icon-color:\
+              ha-badge$:
+                ".badge {\n  --card-mod-icon: mdi:shopping;\n  --card-mod-icon-color:\
                 \ {{ 'green' if states(config.card.entity) |int(0) > 0 else 'grey'}};\n\
                 \   border: {{'1.5px solid var(--accent-color) !important' if states(config.card.entity)\
                 \ |int(0) > 0 else '1px solid light-grey !important' }};\n}\n"
-              .: "ha-state-icon {\n  animation: {{ 'wobbling 0.3s linear infinite\
+              .:
+                "ha-state-icon {\n  animation: {{ 'wobbling 0.3s linear infinite\
                 \ alternate' if states(config.card.entity) |int(0) > 0 else 'none'\
                 \ }};\n}\n@keyframes wobbling {\n  0% {\n    transform: rotate(-20deg);\n\
                 \  }\n  100% {\n    transform: rotate(+20deg);\n  }\n}\n"
@@ -2931,10 +2998,11 @@ views:
         type: vertical-stack
         cards:
           - type: markdown
-            content: '# {{ now().strftime(''%Y년 %-m월 %-d일'') }} ({{ [''월'',''화'',''수'',''목'',''금'',''토'',''일''][now().weekday()]
-              }}), {{ now().strftime(''%H:%M'') }}
+            content:
+              "# {{ now().strftime('%Y년 %-m월 %-d일') }} ({{ ['월','화','수','목','금','토','일'][now().weekday()]
+              }}), {{ now().strftime('%H:%M') }}
 
-              '
+              "
             text_only: true
             visibility:
               - condition: user
@@ -2965,7 +3033,7 @@ views:
                   action: none
               - layout: name|state|icon
                 entity: weather.forecast_home
-                name: '{{ state_attr(config.entity, ''temperature'') }}°, '
+                name: "{{ state_attr(config.entity, 'temperature') }}°, "
                 state_text:
                   clear-night: 맑은 밤
                   cloudy: 흐림
@@ -2982,7 +3050,7 @@ views:
                   windy: null
                   windy-variant: null
                   exceptional: null
-                icon: '{{ ''wi:'' + states(config.entity) }}'
+                icon: "{{ 'wi:' + states(config.entity) }}"
                 styles:
                   icon:
                     color: var(--primary-text-color)
@@ -3027,7 +3095,7 @@ views:
                   action: none
               - layout: name
                 entity: weather.forecast_home
-                name: '{{ state_attr(''weather.forecast_home'', ''temperature'') }}°🔺'
+                name: "{{ state_attr('weather.forecast_home', 'temperature') }}°🔺"
                 styles:
                   name:
                     color: var(--primary-text-color)
@@ -3054,7 +3122,7 @@ views:
                   action: none
               - layout: name
                 entity: weather.forecast_home
-                name: '{{ state_attr(''weather.forecast_home'', ''temperature'') }}°🔻'
+                name: "{{ state_attr('weather.forecast_home', 'temperature') }}°🔻"
                 styles:
                   name:
                     color: var(--primary-text-color)
@@ -3112,7 +3180,8 @@ views:
             icon: mdi:thermometer
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -3141,7 +3210,8 @@ views:
             icon: mdi:water
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -3283,7 +3353,8 @@ views:
                       - entity: sensor.system_monitor_processor_temperature
                         name: Temp
                         card_mod:
-                          style: "hui-generic-entity-row {\n  background:\n    {%\
+                          style:
+                            "hui-generic-entity-row {\n  background:\n    {%\
                             \ set perc = states(config.entity) | float(0) %}\n   \
                             \ {% set rest = 100 - perc %}\n\n    {% if perc >= 95\
                             \ %}\n      {% set bar = '255,0,0' %}\n    {% elif perc\
@@ -3299,7 +3370,8 @@ views:
                         name: Fan
                         icon: mdi:fan
                         card_mod:
-                          style: "hui-generic-entity-row {\n  background:\n    {%\
+                          style:
+                            "hui-generic-entity-row {\n  background:\n    {%\
                             \ set perc = states(config.entity) | float(0) %}\n   \
                             \ {% set rest = 100 - perc %}\n\n    {% if perc >= 8000\
                             \ %}\n      {% set bar = '255,0,0' %}\n    {% elif perc\
@@ -3315,7 +3387,8 @@ views:
                       - entity: sensor.system_monitor_processor_use
                         name: Cpu
                         card_mod:
-                          style: "hui-generic-entity-row {\n  background:\n    {%\
+                          style:
+                            "hui-generic-entity-row {\n  background:\n    {%\
                             \ set perc = states(config.entity) | float(0) %}\n   \
                             \ {% set rest = 100 - perc %}\n\n    {% if perc >= 85\
                             \ %}\n      {% set bar = '255,0,0' %}\n    {% elif perc\
@@ -3330,7 +3403,8 @@ views:
                       - entity: sensor.system_monitor_memory_usage
                         name: Mem
                         card_mod:
-                          style: "hui-generic-entity-row {\n  background:\n    {%\
+                          style:
+                            "hui-generic-entity-row {\n  background:\n    {%\
                             \ set perc = states(config.entity) | float(0) %}\n   \
                             \ {% set rest = 100 - perc %}\n\n    {% if perc >= 85\
                             \ %}\n      {% set bar = '255,0,0' %}\n    {% elif perc\
@@ -3345,7 +3419,8 @@ views:
                       - entity: sensor.system_monitor_disk_usage
                         name: Disk
                         card_mod:
-                          style: "hui-generic-entity-row {\n  background:\n    {%\
+                          style:
+                            "hui-generic-entity-row {\n  background:\n    {%\
                             \ set perc = states(config.entity) | float(0) %}\n   \
                             \ {% set rest = 100 - perc %}\n\n    {% if perc >= 85\
                             \ %}\n      {% set bar = '255,0,0' %}\n    {% elif perc\
@@ -3572,7 +3647,8 @@ views:
                     fontSize: 14px
                   x:
                     show: true
-                    formatter: "EVAL:(timestamp) => {\n  let date = new Date(timestamp).toLocaleString('ko-KR',\
+                    formatter:
+                      "EVAL:(timestamp) => {\n  let date = new Date(timestamp).toLocaleString('ko-KR',\
                       \ {year: '2-digit', month:'long'});\n  return date.replace('\
                       \ ', ' ');\n}\n"
                 xaxis:
@@ -3591,7 +3667,8 @@ views:
                       fontSize: 15px
                       fontWeight: 500
                     offsetX: -1
-                    formatter: "EVAL:(timestamp) => {\n  return new Date(timestamp).toLocaleString('en-US',\
+                    formatter:
+                      "EVAL:(timestamp) => {\n  return new Date(timestamp).toLocaleString('en-US',\
                       \ {year: '2-digit', month: 'short'}).replace(' ', ' ');\n}\n"
                 chart:
                   height: 300px
@@ -3638,7 +3715,8 @@ views:
             action: more-info
         card_mod:
           style:
-            hui-entity-badge: "ha-card {      \n  border: 1px solid {{'green' if is_state('binary_sensor.rpi_power_status',\
+            hui-entity-badge:
+              "ha-card {      \n  border: 1px solid {{'green' if is_state('binary_sensor.rpi_power_status',\
               \ 'off') else 'red'}} !important;\n  border-radius: 24px;\n  --ha-card-background:\
               \ {{'rgba(0,255,0,0.1)' if is_state('binary_sensor.rpi_power_status',\
               \ 'off') else 'rgba(255,0,0,0.1)'}};\n  --icon-primary-color: black;\n\
@@ -3660,7 +3738,8 @@ views:
             action: more-info
         card_mod:
           style:
-            hui-entity-badge: "ha-card {      \n  border: 1px solid {{'green' if is_state('binary_sensor.openthread_border_router_running',\
+            hui-entity-badge:
+              "ha-card {      \n  border: 1px solid {{'green' if is_state('binary_sensor.openthread_border_router_running',\
               \ 'on') else 'red'}} !important;\n  border-radius: 24px;\n  --ha-card-background:\
               \ {{'rgba(0,255,0,0.1)' if is_state('binary_sensor.openthread_border_router_running',\
               \ 'on') else 'rgba(255,0,0,0.1)'}};\n  }\n"
@@ -3681,7 +3760,8 @@ views:
             action: more-info
         card_mod:
           style:
-            hui-entity-badge: "ha-card {      \n  border: 1px solid {{'green' if is_state('binary_sensor.matter_server_running',\
+            hui-entity-badge:
+              "ha-card {      \n  border: 1px solid {{'green' if is_state('binary_sensor.matter_server_running',\
               \ 'on') else 'red'}} !important;\n  border-radius: 24px;\n  --ha-card-background:\
               \ {{'rgba(0,255,0,0.1)' if is_state('binary_sensor.matter_server_running',\
               \ 'on') else 'rgba(255,0,0,0.1)'}};\n  }\n"
@@ -3702,7 +3782,8 @@ views:
             action: more-info
         card_mod:
           style:
-            hui-entity-badge: "ha-card {      \n  border: 1px solid {{'green' if is_state('binary_sensor.knxd_daemon_running',\
+            hui-entity-badge:
+              "ha-card {      \n  border: 1px solid {{'green' if is_state('binary_sensor.knxd_daemon_running',\
               \ 'on') else 'red'}} !important;\n  border-radius: 24px;\n  --ha-card-background:\
               \ {{'rgba(0,255,0,0.1)' if is_state('binary_sensor.knxd_daemon_running',\
               \ 'on') else 'rgba(255,0,0,0.1)'}};\n  }\n"
@@ -3720,7 +3801,8 @@ views:
             heading_style: title
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -3734,7 +3816,8 @@ views:
                   square: false
                 card_param: cards
                 filter:
-                  template: "{% set living_room_entities = area_entities('living_room')\
+                  template:
+                    "{% set living_room_entities = area_entities('living_room')\
                     \ | list %}\n{% for ENTITY in states.scene\n  if ENTITY.attributes.entity_id\
                     \ is defined\n  and (ENTITY.attributes.entity_id | select('in',\
                     \ living_room_entities) | list | length > 0) -%}\n{{\n  {\n  \
@@ -3754,7 +3837,8 @@ views:
                   square: false
                 card_param: cards
                 filter:
-                  template: "{% set living_room_entities = area_entities('living_room')\
+                  template:
+                    "{% set living_room_entities = area_entities('living_room')\
                     \ | list %}\n{% for ENTITY in states.scene\n  if ENTITY.attributes.entity_id\
                     \ is defined\n  and (ENTITY.attributes.entity_id | select('in',\
                     \ living_room_entities) | list | length > 0) -%}\n{{\n  {\n  \
@@ -3781,7 +3865,8 @@ views:
             heading_style: title
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -3795,7 +3880,8 @@ views:
             sort:
               method: entity_id
             filter:
-              template: "{% for ENTITY in states.media_player\n  | map(attribute='entity_id')\n\
+              template:
+                "{% for ENTITY in states.media_player\n  | map(attribute='entity_id')\n\
                 \  | select('in', expand('media_player.all_media_players') | map(attribute='entity_id')\
                 \ | list)\n  | select('in', area_entities('living_room'))\n  | reject('is_hidden_entity')\
                 \ -%}\n{{\n  {\n    'type': 'tile',\n    'entity': ENTITY,\n    'name':\
@@ -3811,7 +3897,8 @@ views:
               type: vertical-stack
             card_param: cards
             filter:
-              template: "{% for ENTITY in states.media_player\n  | map(attribute='entity_id')\n\
+              template:
+                "{% for ENTITY in states.media_player\n  | map(attribute='entity_id')\n\
                 \  | select('in', expand('media_player.all_media_players') | map(attribute='entity_id')\
                 \ | list)\n  | select('in', area_entities('living_room'))      \n\
                 \  | reject('is_hidden_entity') -%}\n{{\n  {\n    'type': 'vertical-stack',\n\
@@ -3834,7 +3921,8 @@ views:
             heading_style: title
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -3848,7 +3936,8 @@ views:
             sort:
               method: entity_id
             filter:
-              template: "{% for ENTITY in area_entities('living_room')\n  | select('match',\
+              template:
+                "{% for ENTITY in area_entities('living_room')\n  | select('match',\
                 \ 'light\\..*')\n  |  reject('is_hidden_entity') -%}\n{{\n  {\n  \
                 \  'type': 'tile',\n    'entity': ENTITY,\n    'name': state_attr(ENTITY,'friendly_name')\
                 \ | replace('거실 ', '')\n  }\n}}, {% endfor %}        "
@@ -3864,7 +3953,8 @@ views:
             heading_style: title
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -3878,7 +3968,8 @@ views:
             sort:
               method: entity_id
             filter:
-              template: "{% for ENTITY in area_entities('living_room')\n  | select('match',\
+              template:
+                "{% for ENTITY in area_entities('living_room')\n  | select('match',\
                 \ '(fan|humidifier|cover|climate)\\..*')\n  | reject('is_hidden_entity')\
                 \ -%}\n{{\n  {\n    'type': 'tile',\n    'entity': ENTITY,\n    'name':\
                 \ state_attr(ENTITY,'friendly_name') | replace('거실 ', '')\n  }\n}},\
@@ -3895,7 +3986,8 @@ views:
             heading_style: title
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -3909,7 +4001,8 @@ views:
             sort:
               method: entity_id
             filter:
-              template: "{% for ENTITY in area_entities('living_room')\n  | select('match',\
+              template:
+                "{% for ENTITY in area_entities('living_room')\n  | select('match',\
                 \ '(switch)\\..*')\n  | reject('is_hidden_entity') -%}\n{{\n  {\n\
                 \    'type': 'tile',\n    'entity': ENTITY,\n    'name': state_attr(ENTITY,'friendly_name')\
                 \ | replace('거실 ', '')\n  }\n}}, {% endfor %}  "
@@ -3976,7 +4069,8 @@ views:
             heading_style: title
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -3990,7 +4084,8 @@ views:
                   square: false
                 card_param: cards
                 filter:
-                  template: "{% set bedroom_entities = area_entities('bedroom') |\
+                  template:
+                    "{% set bedroom_entities = area_entities('bedroom') |\
                     \ list %}\n{% for ENTITY in states.scene\n  if ENTITY.attributes.entity_id\
                     \ is defined\n  and (ENTITY.attributes.entity_id | select('in',\
                     \ bedroom_entities) | list | length > 0) -%}\n{{\n  {\n    'type':\
@@ -4010,7 +4105,8 @@ views:
                   square: false
                 card_param: cards
                 filter:
-                  template: "{% set bedroom_entities = area_entities('bedroom') |\
+                  template:
+                    "{% set bedroom_entities = area_entities('bedroom') |\
                     \ list %}\n{% for ENTITY in states.scene\n  if ENTITY.attributes.entity_id\
                     \ is defined\n  and (ENTITY.attributes.entity_id | select('in',\
                     \ bedroom_entities) | list | length > 0) -%}\n{{\n  {\n    'type':\
@@ -4037,7 +4133,8 @@ views:
             heading_style: title
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -4051,7 +4148,8 @@ views:
             sort:
               method: entity_id
             filter:
-              template: "{% for ENTITY in states.media_player\n  | map(attribute='entity_id')\n\
+              template:
+                "{% for ENTITY in states.media_player\n  | map(attribute='entity_id')\n\
                 \  | select('in', expand('media_player.all_media_players') | map(attribute='entity_id')\
                 \ | list)\n  | select('in', area_entities('bedroom'))\n  | reject('is_hidden_entity')\
                 \ -%}\n{{\n  {\n    'type': 'tile',\n    'entity': ENTITY,\n    'name':\
@@ -4067,7 +4165,8 @@ views:
               type: vertical-stack
             card_param: cards
             filter:
-              template: "{% for ENTITY in states.media_player\n  | map(attribute='entity_id')\n\
+              template:
+                "{% for ENTITY in states.media_player\n  | map(attribute='entity_id')\n\
                 \  | select('in', expand('media_player.all_media_players') | map(attribute='entity_id')\
                 \ | list)\n  | select('in', area_entities('bedroom'))      \n  | reject('is_hidden_entity')\
                 \ -%}\n{{\n  {\n    'type': 'vertical-stack',\n    'cards': [\n  \
@@ -4090,7 +4189,8 @@ views:
             heading_style: title
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -4104,7 +4204,8 @@ views:
             sort:
               method: entity_id
             filter:
-              template: "{% for ENTITY in area_entities('bedroom')\n  | select('match',\
+              template:
+                "{% for ENTITY in area_entities('bedroom')\n  | select('match',\
                 \ 'light\\..*')\n  |  reject('is_hidden_entity') -%}\n{{\n  {\n  \
                 \  'type': 'tile',\n    'entity': ENTITY,\n    'name': state_attr(ENTITY,'friendly_name')\
                 \ | replace('침실 ', '')\n  }\n}}, {% endfor %}        "
@@ -4119,7 +4220,8 @@ views:
             heading_style: title
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -4133,7 +4235,8 @@ views:
             sort:
               method: entity_id
             filter:
-              template: "{% for ENTITY in area_entities('bedroom')\n  | select('match',\
+              template:
+                "{% for ENTITY in area_entities('bedroom')\n  | select('match',\
                 \ '(fan|humidifier|cover|climate)\\..*')\n  | reject('is_hidden_entity')\
                 \ -%}\n{{\n  {\n    'type': 'tile',\n    'entity': ENTITY,\n    'name':\
                 \ state_attr(ENTITY,'friendly_name') | replace('침실 ', '')\n  }\n}},\
@@ -4149,7 +4252,8 @@ views:
             heading: 스위치
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -4163,7 +4267,8 @@ views:
             sort:
               method: entity_id
             filter:
-              template: "{% for ENTITY in area_entities('bedroom')\n  | select('match',\
+              template:
+                "{% for ENTITY in area_entities('bedroom')\n  | select('match',\
                 \ '(switch)\\..*')\n  | reject('is_hidden_entity') -%}\n{{\n  {\n\
                 \    'type': 'tile',\n    'entity': ENTITY,\n    'name': state_attr(ENTITY,'friendly_name')\
                 \ | replace('침실 ', '')\n  }\n}}, {% endfor %}  "
@@ -4177,7 +4282,8 @@ views:
           type: custom:mushroom-chips-card
           alignment: center
         filter:
-          template: "{% for ENTITY in area_entities('bedroom')\n  | select('match',\
+          template:
+            "{% for ENTITY in area_entities('bedroom')\n  | select('match',\
             \ '(scene)\\..*')\n  | reject('is_hidden_entity') -%}\n{{\n  {\n    'type':\
             \ 'entity',\n    'entity': ENTITY,\n    'content_info': 'name',\n    'tap_action':\
             \ {\n      'action': 'perform-action',\n      'perform_action': 'scene.turn_on',\n\
@@ -4200,7 +4306,8 @@ views:
             heading_style: title
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -4214,7 +4321,8 @@ views:
                   square: false
                 card_param: cards
                 filter:
-                  template: "{% set kitchen_entities = area_entities('kitchen') |\
+                  template:
+                    "{% set kitchen_entities = area_entities('kitchen') |\
                     \ list %}\n{% for ENTITY in states.scene\n  if ENTITY.attributes.entity_id\
                     \ is defined\n  and (ENTITY.attributes.entity_id | select('in',\
                     \ kitchen_entities) | list | length > 0) -%}\n{{\n  {\n    'type':\
@@ -4234,7 +4342,8 @@ views:
                   square: false
                 card_param: cards
                 filter:
-                  template: "{% set kitchen_entities = area_entities('kitchen') |\
+                  template:
+                    "{% set kitchen_entities = area_entities('kitchen') |\
                     \ list %}\n{% for ENTITY in states.scene\n  if ENTITY.attributes.entity_id\
                     \ is defined\n  and (ENTITY.attributes.entity_id | select('in',\
                     \ kitchen_entities) | list | length > 0) -%}\n{{\n  {\n    'type':\
@@ -4261,7 +4370,8 @@ views:
             heading_style: title
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -4275,7 +4385,8 @@ views:
             sort:
               method: entity_id
             filter:
-              template: "{% for ENTITY in states.media_player\n  | map(attribute='entity_id')\n\
+              template:
+                "{% for ENTITY in states.media_player\n  | map(attribute='entity_id')\n\
                 \  | select('in', expand('media_player.all_media_players') | map(attribute='entity_id')\
                 \ | list)\n  | select('in', area_entities('kitchen'))\n  | reject('is_hidden_entity')\
                 \ -%}\n{{\n  {\n    'type': 'tile',\n    'entity': ENTITY,\n    'name':\
@@ -4289,7 +4400,8 @@ views:
               type: vertical-stack
             card_param: cards
             filter:
-              template: "{% for ENTITY in states.media_player\n  | map(attribute='entity_id')\n\
+              template:
+                "{% for ENTITY in states.media_player\n  | map(attribute='entity_id')\n\
                 \  | select('in', expand('media_player.all_media_players') | map(attribute='entity_id')\
                 \ | list)\n  | select('in', area_entities('kitchen'))      \n  | reject('is_hidden_entity')\
                 \ -%}\n{{\n  {\n    'type': 'vertical-stack',\n    'cards': [\n  \
@@ -4312,7 +4424,8 @@ views:
             heading_style: title
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -4326,7 +4439,8 @@ views:
             sort:
               method: entity_id
             filter:
-              template: "{% for ENTITY in area_entities('kitchen')\n  | select('match',\
+              template:
+                "{% for ENTITY in area_entities('kitchen')\n  | select('match',\
                 \ 'light\\..*')\n  |  reject('is_hidden_entity') -%}\n{{\n  {\n  \
                 \  'type': 'tile',\n    'entity': ENTITY,\n    'name': state_attr(ENTITY,'friendly_name')\
                 \ | replace('주방 ', '')\n  }\n}}, {% endfor %}        "
@@ -4341,7 +4455,8 @@ views:
             heading_style: title
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -4355,7 +4470,8 @@ views:
             sort:
               method: entity_id
             filter:
-              template: "{% for ENTITY in area_entities('kitchen')\n  | select('match',\
+              template:
+                "{% for ENTITY in area_entities('kitchen')\n  | select('match',\
                 \ '(fan|humidifier|cover|climate)\\..*')\n  |  reject('is_hidden_entity')\
                 \ -%}\n{{\n  {\n    'type': 'tile',\n    'entity': ENTITY,\n    'name':\
                 \ state_attr(ENTITY,'friendly_name') | replace('주방 ', '')\n  }\n}},\
@@ -4371,7 +4487,8 @@ views:
             heading: 스위치
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -4385,7 +4502,8 @@ views:
             sort:
               method: entity_id
             filter:
-              template: "{% for ENTITY in area_entities('kitchen')\n  | select('match',\
+              template:
+                "{% for ENTITY in area_entities('kitchen')\n  | select('match',\
                 \ '(switch)\\..*')\n  |  reject('is_hidden_entity') -%}\n{{\n  {\n\
                 \    'type': 'tile',\n    'entity': ENTITY,\n    'name': state_attr(ENTITY,'friendly_name')\
                 \ | replace('주방 ', '')\n  }\n}}, {% endfor %}  "
@@ -4399,7 +4517,8 @@ views:
           type: custom:mushroom-chips-card
           alignment: center
         filter:
-          template: "{% for ENTITY in area_entities('kitchen')\n  | select('match',\
+          template:
+            "{% for ENTITY in area_entities('kitchen')\n  | select('match',\
             \ '(scene)\\..*')\n  | reject('is_hidden_entity') -%}\n{{\n  {\n    'type':\
             \ 'entity',\n    'entity': ENTITY,\n    'content_info': 'name',\n    'tap_action':\
             \ {\n      'action': 'perform-action',\n      'perform_action': 'scene.turn_on',\n\
@@ -4422,7 +4541,8 @@ views:
             heading_style: title
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -4436,7 +4556,8 @@ views:
                   square: false
                 card_param: cards
                 filter:
-                  template: "{% set bathroom_entities = area_entities('bathroom')\
+                  template:
+                    "{% set bathroom_entities = area_entities('bathroom')\
                     \ | list %}\n{% for ENTITY in states.scene\n  if ENTITY.attributes.entity_id\
                     \ is defined\n  and (ENTITY.attributes.entity_id | select('in',\
                     \ bathroom_entities) | list | length > 0) -%}\n{{\n  {\n    'type':\
@@ -4456,7 +4577,8 @@ views:
                   square: false
                 card_param: cards
                 filter:
-                  template: "{% set bathroom_entities = area_entities('bathroom')\
+                  template:
+                    "{% set bathroom_entities = area_entities('bathroom')\
                     \ | list %}\n{% for ENTITY in states.scene\n  if ENTITY.attributes.entity_id\
                     \ is defined\n  and (ENTITY.attributes.entity_id | select('in',\
                     \ bathroom_entities) | list | length > 0) -%}\n{{\n  {\n    'type':\
@@ -4483,7 +4605,8 @@ views:
             heading_style: title
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -4497,7 +4620,8 @@ views:
             sort:
               method: entity_id
             filter:
-              template: "{% for ENTITY in states.media_player\n  | map(attribute='entity_id')\n\
+              template:
+                "{% for ENTITY in states.media_player\n  | map(attribute='entity_id')\n\
                 \  | select('in', expand('media_player.all_media_players') | map(attribute='entity_id')\
                 \ | list)\n  | select('in', area_entities('bathroom'))\n  | reject('is_hidden_entity')\
                 \ -%}\n{{\n  {\n    'type': 'tile',\n    'entity': ENTITY,\n    'name':\
@@ -4513,7 +4637,8 @@ views:
               type: vertical-stack
             card_param: cards
             filter:
-              template: "{% for ENTITY in states.media_player\n  | map(attribute='entity_id')\n\
+              template:
+                "{% for ENTITY in states.media_player\n  | map(attribute='entity_id')\n\
                 \  | select('in', expand('media_player.all_media_players') | map(attribute='entity_id')\
                 \ | list)\n  | select('in', area_entities('bathroom'))      \n  |\
                 \ reject('is_hidden_entity') -%}\n{{\n  {\n    'type': 'vertical-stack',\n\
@@ -4536,7 +4661,8 @@ views:
             heading_style: title
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -4550,7 +4676,8 @@ views:
             sort:
               method: entity_id
             filter:
-              template: "{% for ENTITY in area_entities('bathroom')\n  | select('match',\
+              template:
+                "{% for ENTITY in area_entities('bathroom')\n  | select('match',\
                 \ 'light\\..*')\n  |  reject('is_hidden_entity') -%}\n{{\n  {\n  \
                 \  'type': 'tile',\n    'entity': ENTITY,\n    'name': state_attr(ENTITY,'friendly_name')\
                 \ | replace('화장실 ', '')\n  }\n}}, {% endfor %}        "
@@ -4565,7 +4692,8 @@ views:
             heading_style: title
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -4579,7 +4707,8 @@ views:
             sort:
               method: entity_id
             filter:
-              template: "{% for ENTITY in area_entities('bathroom')\n  | select('match',\
+              template:
+                "{% for ENTITY in area_entities('bathroom')\n  | select('match',\
                 \ '(fan|humidifier|cover|climate)\\..*')\n  |  reject('is_hidden_entity')\
                 \ -%}\n{{\n  {\n    'type': 'tile',\n    'entity': ENTITY,\n    'name':\
                 \ state_attr(ENTITY,'friendly_name') | replace('화장실 ', '')\n  }\n\
@@ -4595,7 +4724,8 @@ views:
             heading_style: title
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -4609,7 +4739,8 @@ views:
             sort:
               method: entity_id
             filter:
-              template: "{% for ENTITY in area_entities('bathroom')\n  | select('match',\
+              template:
+                "{% for ENTITY in area_entities('bathroom')\n  | select('match',\
                 \ '(switch)\\..*')\n  |  reject('is_hidden_entity') -%}\n{{\n  {\n\
                 \    'type': 'tile',\n    'entity': ENTITY,\n    'name': state_attr(ENTITY,'friendly_name')\
                 \ | replace('화장실 ', '')\n  }\n}}, {% endfor %}  "
@@ -4633,7 +4764,8 @@ views:
             heading_style: title
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -4647,7 +4779,8 @@ views:
                   square: false
                 card_param: cards
                 filter:
-                  template: "{% set entrance_entities = area_entities('entrance')\
+                  template:
+                    "{% set entrance_entities = area_entities('entrance')\
                     \ | list %}\n{% for ENTITY in states.scene\n  if ENTITY.attributes.entity_id\
                     \ is defined\n  and (ENTITY.attributes.entity_id | select('in',\
                     \ entrance_entities) | list | length > 0) -%}\n{{\n  {\n    'type':\
@@ -4667,7 +4800,8 @@ views:
                   square: false
                 card_param: cards
                 filter:
-                  template: "{% set entrance_entities = area_entities('entrance')\
+                  template:
+                    "{% set entrance_entities = area_entities('entrance')\
                     \ | list %}\n{% for ENTITY in states.scene\n  if ENTITY.attributes.entity_id\
                     \ is defined\n  and (ENTITY.attributes.entity_id | select('in',\
                     \ entrance_entities) | list | length > 0) -%}\n{{\n  {\n    'type':\
@@ -4694,7 +4828,8 @@ views:
             heading: 스피커 및 TV
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -4708,7 +4843,8 @@ views:
             sort:
               method: entity_id
             filter:
-              template: "{% for ENTITY in states.media_player\n  | map(attribute='entity_id')\n\
+              template:
+                "{% for ENTITY in states.media_player\n  | map(attribute='entity_id')\n\
                 \  | select('in', expand('media_player.all_media_players') | map(attribute='entity_id')\
                 \ | list)\n  | select('in', area_entities('entrance'))\n  | reject('is_hidden_entity')\
                 \ -%}\n{{\n  {\n    'type': 'tile',\n    'entity': ENTITY,\n    'name':\
@@ -4728,7 +4864,8 @@ views:
             heading_style: title
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -4742,7 +4879,8 @@ views:
             sort:
               method: entity_id
             filter:
-              template: "{% for ENTITY in area_entities('entrance')\n  | select('match',\
+              template:
+                "{% for ENTITY in area_entities('entrance')\n  | select('match',\
                 \ 'light\\..*')\n  |  reject('is_hidden_entity') -%}\n{{\n  {\n  \
                 \  'type': 'tile',\n    'entity': ENTITY,\n    'name': state_attr(ENTITY,'friendly_name')\
                 \ | replace('현관 ', '')\n  }\n}}, {% endfor %}        "
@@ -4757,7 +4895,8 @@ views:
             heading_style: title
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -4771,7 +4910,8 @@ views:
             sort:
               method: entity_id
             filter:
-              template: "{% for ENTITY in area_entities('entrance')\n  | select('match',\
+              template:
+                "{% for ENTITY in area_entities('entrance')\n  | select('match',\
                 \ '(fan|humidifier|cover|climate)\\..*')\n  |  reject('is_hidden_entity')\
                 \ -%}\n{{\n  {\n    'type': 'tile',\n    'entity': ENTITY,\n    'name':\
                 \ state_attr(ENTITY,'friendly_name') | replace('현관 ', '')\n  }\n}},\
@@ -4787,7 +4927,8 @@ views:
             heading: 스위치
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -4801,7 +4942,8 @@ views:
             sort:
               method: entity_id
             filter:
-              template: "{% for ENTITY in area_entities('entrance')\n  | select('match',\
+              template:
+                "{% for ENTITY in area_entities('entrance')\n  | select('match',\
                 \ '(switch)\\..*')\n  |  reject('is_hidden_entity') -%}\n{{\n  {\n\
                 \    'type': 'tile',\n    'entity': ENTITY,\n    'name': state_attr(ENTITY,'friendly_name')\
                 \ | replace('현관 ', '')\n  }\n}}, {% endfor %}  "
@@ -4817,7 +4959,8 @@ views:
         sort:
           method: state
         filter:
-          template: "{% for ENTITY in area_entities('front_door')\n  | select('match',\
+          template:
+            "{% for ENTITY in area_entities('front_door')\n  | select('match',\
             \ '(air_quality|sensor)\\..*(average_temperature|average_humidity|average_illuminance)')\n\
             \  | reject('is_hidden_entity') -%}\n{{\n  {\n    'type': 'entity',\n\
             \    'entity': ENTITY,\n    'name': state_attr(ENTITY,'friendly_name')\
@@ -4827,7 +4970,8 @@ views:
           type: custom:mushroom-chips-card
           alignment: center
         filter:
-          template: "{% for ENTITY in area_entities('front_door')\n  | select('match',\
+          template:
+            "{% for ENTITY in area_entities('front_door')\n  | select('match',\
             \ '(scene)\\..*')\n  | reject('is_hidden_entity') -%}\n{{\n  {\n    'type':\
             \ 'entity',\n    'entity': ENTITY,\n    'content_info': 'name',\n    'tap_action':\
             \ {\n      'action': 'perform-action',\n      'perform_action': 'scene.turn_on',\n\
@@ -4849,7 +4993,8 @@ views:
             heading_style: title
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -4870,7 +5015,7 @@ views:
               x: 37.5490248
               y: 127.0705509
               zoom: 7
-              tile_layer_url: '{{ states(''sensor.naver_map_url'') }}'
+              tile_layer_url: "{{ states('sensor.naver_map_url') }}"
               tile_layer_attribution: naver.com
               plugins:
                 - name: korea-radar
@@ -4891,7 +5036,8 @@ views:
             sort:
               method: state
             filter:
-              template: "{% for ENTITY in integration_entities('waqi')\n  | select('match',\
+              template:
+                "{% for ENTITY in integration_entities('waqi')\n  | select('match',\
                 \ '(sensor)\\..*')\n  | reject('is_hidden_entity') -%}\n  {\n    \"\
                 entity\": \"{{ ENTITY }}\",\n    \"name\": \"{{ state_attr(ENTITY,\
                 \ 'friendly_name') | replace('Seocho-gu, Seoul, South Korea (서초구 서울)',\
@@ -4903,7 +5049,8 @@ views:
             heading_style: title
             card_mod:
               style:
-                .: "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
+                .:
+                  "ha-card {\n  border: 2px solid var(--primary-color); \n  border-radius:\
                   \ 24px;      \n  background-color: var(--primary-background-color)\
                   \ !important;\n  border-style: solid;\n}\n.title > p {\n  color:\
                   \ var(--primary-text-color); important;\n  font-size: 20px; !important;\n\
@@ -4914,7 +5061,8 @@ views:
               columns: 2
               square: false
             filter:
-              template: "{% for ENTITY in integration_entities('generic')\n  | select('match',\
+              template:
+                "{% for ENTITY in integration_entities('generic')\n  | select('match',\
                 \ '(camera)\\..*')\n  | reject('is_hidden_entity') -%}\n  {\n    \"\
                 type\": \"picture-entity\",\n    \"entity\": \"{{ ENTITY }}\",\n \
                 \   \"aspect_ratio\": \"1.6\",\n    \"camera_view\": \"auto\"\n  },\
@@ -4936,7 +5084,8 @@ views:
               method: entity_id
               reverse: false
             filter:
-              template: "{% set entities = states.sensor\n  | selectattr('entity_id',\
+              template:
+                "{% set entities = states.sensor\n  | selectattr('entity_id',\
                 \ 'search', 'beoseu_docag_jeongbo_11230661002') | list %}\n[\n  {%\
                 \ for entity in entities %}\n  {\n    \"type\": \"tile\",\n    \"\
                 entity\": \"{{ entity.entity_id }}\",\n    \"name\": \"{{ state_attr(entity.entity_id,\
@@ -4957,7 +5106,8 @@ views:
               method: entity_id
               reverse: false
             filter:
-              template: "{% set entities = states.sensor\n  | selectattr('entity_id',\
+              template:
+                "{% set entities = states.sensor\n  | selectattr('entity_id',\
                 \ 'search', 'beoseu_docag_jeongbo_11220521017') | list %}\n[\n  {%\
                 \ for entity in entities\n    | sort(attribute='arrival_time') %}\n\
                 \  {\n    \"type\": \"tile\",\n    \"entity\": \"{{ entity.entity_id\
@@ -4978,7 +5128,8 @@ views:
               method: entity_id
               reverse: true
             filter:
-              template: "{% set entities = states.sensor\n  | selectattr('entity_id',\
+              template:
+                "{% set entities = states.sensor\n  | selectattr('entity_id',\
                 \ 'search', 'subway_gangnam_line2_up') | list %}\n[\n  {% for entity\
                 \ in entities %}\n  {\n    \"type\": \"tile\",\n    \"entity\": \"\
                 {{ entity.entity_id }}\",\n    \"name\": \"{{ state_attr(entity.entity_id,\
@@ -5000,7 +5151,8 @@ views:
               method: entity_id
               reverse: true
             filter:
-              template: "{% set entities = states.sensor\n  | selectattr('entity_id',\
+              template:
+                "{% set entities = states.sensor\n  | selectattr('entity_id',\
                 \ 'search', 'subway_gangnam_line2_down') | list %}\n[\n  {% for entity\
                 \ in entities %}\n  {\n    \"type\": \"tile\",\n    \"entity\": \"\
                 {{ entity.entity_id }}\",\n    \"name\": \"{{ state_attr(entity.entity_id,\
@@ -5022,7 +5174,8 @@ views:
               method: entity_id
               reverse: true
             filter:
-              template: "{% set entities = states.sensor\n  | selectattr('entity_id',\
+              template:
+                "{% set entities = states.sensor\n  | selectattr('entity_id',\
                 \ 'search', 'subway_gangnam_sinbundang') | list %}\n[\n  {% for entity\
                 \ in entities %}\n  {\n    \"type\": \"tile\",\n    \"entity\": \"\
                 {{ entity.entity_id }}\",\n    \"name\": \"{{ state_attr(entity.entity_id,\
@@ -5044,7 +5197,8 @@ views:
               method: entity_id
               reverse: true
             filter:
-              template: "{% set entities = states.sensor\n  | selectattr('entity_id',\
+              template:
+                "{% set entities = states.sensor\n  | selectattr('entity_id',\
                 \ 'search', 'subway_yangjae_line3_up') | list %}\n[\n  {% for entity\
                 \ in entities %}\n  {\n    \"type\": \"tile\",\n    \"entity\": \"\
                 {{ entity.entity_id }}\",\n    \"name\": \"{{ state_attr(entity.entity_id,\
@@ -5066,7 +5220,8 @@ views:
               method: entity_id
               reverse: true
             filter:
-              template: "{% set entities = states.sensor\n  | selectattr('entity_id',\
+              template:
+                "{% set entities = states.sensor\n  | selectattr('entity_id',\
                 \ 'search', 'subway_yangjae_line3_down') | list %}\n[\n  {% for entity\
                 \ in entities %}\n  {\n    \"type\": \"tile\",\n    \"entity\": \"\
                 {{ entity.entity_id }}\",\n    \"name\": \"{{ state_attr(entity.entity_id,\
@@ -5082,7 +5237,8 @@ views:
           type: custom:mushroom-chips-card
           alignment: center
         filter:
-          template: "{% for ENTITY in integration_entities('rest')\n  | select('match',\
+          template:
+            "{% for ENTITY in integration_entities('rest')\n  | select('match',\
             \ '(sensor)\\..*')\n  | reject('is_state', 'unavailable') \n  | reject('is_state',\
             \ 'unknown') \n  | reject('is_state', '없음') \n  | reject('is_hidden_entity')\
             \ -%}\n{{\n  {\n    'type': 'entity',\n    'entity': ENTITY,\n    'name':\
@@ -5118,7 +5274,8 @@ views:
               sort:
                 method: entity_id
               filter:
-                template: "{% for ENTITY in expand('media_player.all_media_players')\n\
+                template:
+                  "{% for ENTITY in expand('media_player.all_media_players')\n\
                   \  | selectattr('state', 'eq', 'playing') %}\n  {\n    \"type\"\
                   : \"conditional\",\n    \"conditions\": [\n      {\n        \"condition\"\
                   : \"state\",\n        \"entity\": \"{{ ENTITY.entity_id }}\",\n\
@@ -5149,7 +5306,8 @@ views:
               sort:
                 method: entity_id
               filter:
-                template: "{% for ENTITY in expand('media_player.all_media_players')\n\
+                template:
+                  "{% for ENTITY in expand('media_player.all_media_players')\n\
                   \  | selectattr('state', 'eq', 'playing') %}\n  {\n    \"type\"\
                   : \"conditional\",\n    \"conditions\": [\n      {\n        \"condition\"\
                   : \"state\",\n        \"entity\": \"{{ ENTITY.entity_id }}\",\n\
@@ -5194,7 +5352,8 @@ views:
             card_mod:
               style:
                 ha-map $:
-                  ha-entity-marker $: ".marker {\n  outline-style: solid;\n  outline-width:\
+                  ha-entity-marker $:
+                    ".marker {\n  outline-style: solid;\n  outline-width:\
                     \ 1px;\n  outline-color: var(--accent-color);\n  animation: resizing_outline\
                     \ 1s linear infinite;\n} \n@keyframes resizing_outline {\n  0%\
                     \ {\n    outline-offset: 0;\n  }\n  25% {\n    outline-offset:\
@@ -5203,7 +5362,7 @@ views:
                     \ 20px;\n  }\n}\n"
           - type: custom:map-card
             history_start: 24 hours ago
-            tile_layer_url: '{{ states(''sensor.naver_map_url'') }}'
+            tile_layer_url: "{{ states('sensor.naver_map_url') }}"
             tile_layer_attribution: naver.com
             entities:
               - entity: person.saya6k
@@ -5226,7 +5385,8 @@ views:
               - zone.home
             card_mod:
               style:
-                map-card-entity-marker $: ".marker {\n  outline-style: solid;\n  outline-width:\
+                map-card-entity-marker $:
+                  ".marker {\n  outline-style: solid;\n  outline-width:\
                   \ 1px;\n  outline-color: var(--accent-color);\n  animation: resizing_outline\
                   \ 1s linear infinite;\n} \n@keyframes resizing_outline {\n  0% {\n\
                   \    outline-offset: 0;\n  }\n  25% {\n    outline-offset: 5px;\n\
@@ -5248,7 +5408,8 @@ views:
                     sort:
                       method: entity_id
                     filter:
-                      template: "{% for ENTITY in states.media_player\n  | map(attribute='entity_id')\n\
+                      template:
+                        "{% for ENTITY in states.media_player\n  | map(attribute='entity_id')\n\
                         \  | select('in', expand('media_player.all_media_players')\
                         \ | map(attribute='entity_id') | list)\n  | select('in', integration_entities('music_assistant'))\n\
                         \  | reject('is_hidden_entity') -%}\n{{\n  {\n    \"type\"\
@@ -5267,7 +5428,8 @@ views:
                     sort:
                       method: entity_id
                     filter:
-                      template: "{% for ENTITY in states.media_player\n  | map(attribute='entity_id')\n\
+                      template:
+                        "{% for ENTITY in states.media_player\n  | map(attribute='entity_id')\n\
                         \  | select('in', expand('media_player.all_media_players')\
                         \ | map(attribute='entity_id') | list)\n  | reject('in', integration_entities('music_assistant'))\n\
                         \  | reject('is_hidden_entity') -%}\n{{\n  {\n    \"type\"\
@@ -5338,7 +5500,8 @@ views:
             sort:
               method: entity_id
             filter:
-              template: "{% for ENTITY in states.media_player\n  | map(attribute='entity_id')\
+              template:
+                "{% for ENTITY in states.media_player\n  | map(attribute='entity_id')\
                 \      \n  | list\n  | select('in', integration_entities('music_assistant'))\n\
                 \  | select('is_state', 'playing')\n  | reject('is_hidden_entity')\
                 \ -%}\n{{\n  ENTITY\n}}, {% endfor %}        \n"
@@ -5347,7 +5510,8 @@ views:
             card:
               type: iframe
               url: https://embed.windy.com/embed2.html?lat=37.48&lon=127.03&&detailLat=37.497&detailLon=127.054&zoom=7&overlay=radar&product=radar&message=false&width=800&height=600&&play=true
-            style: "ha-card {\n  height: 100% !important;\n  width: 100% !important;\n\
+            style:
+              "ha-card {\n  height: 100% !important;\n  width: 100% !important;\n\
               \  min-height: 600px;\n}\n"
           - type: custom:mushroom-chips-card
             chips:
@@ -5440,7 +5604,8 @@ views:
             sort:
               method: entity_id
             filter:
-              template: "{%- for AREA in areas() -%} {{\n  {\n    'show_name': 'true',\n\
+              template:
+                "{%- for AREA in areas() -%} {{\n  {\n    'show_name': 'true',\n\
                 \    'show_background': 'true',\n    'name': area_name(AREA),\n  \
                 \  'tap_action': {\n      'action': 'navigate',\n      'navigation_path':\
                 \ '/lovelace/' ~ AREA\n    }\n  }\n}},{% endfor %}\n"
@@ -5450,7 +5615,8 @@ views:
               - type: template
                 icon: mdi:bell
                 card_mod:
-                  style: "ha-card {\n  position: relative;\n}\n\n{% set notifications\
+                  style:
+                    "ha-card {\n  position: relative;\n}\n\n{% set notifications\
                     \ = states('sensor.count_alerts_true') | int %}\n{% if notifications\
                     \ > 0 %}\n  ha-card:after {\n    content: \"{{ notifications }}\"\
                     ;\n    position: absolute;\n    top: -3px;\n    right: -3px;\n\
@@ -5463,7 +5629,8 @@ views:
             chips:
               - type: template
                 card_mod:
-                  style: "ha-card {\n \n  box-shadow: none;\n  ha-card-border-width:\
+                  style:
+                    "ha-card {\n \n  box-shadow: none;\n  ha-card-border-width:\
                     \ 0px;\n}\nha-card:after {\n  content: \"{{ expand(states.light.lights_off)\
                     \ | selectattr( 'state', 'eq', 'on') | list | count }}\";\n  position:\
                     \ absolute;\n  top: -10%;\n  right: 60%;\n  display: flex;\n \
@@ -5481,7 +5648,7 @@ views:
             icon: mdi:toaster-oven
             icon_color: red
             primary: Toaster
-            secondary: '{{ states(''sensor.oven_completion_time'') | round(1) }} W'
+            secondary: "{{ states('sensor.oven_completion_time') | round(1) }} W"
             tap_action:
               action: toggle
             double_action:
@@ -5490,7 +5657,8 @@ views:
               action: more-info
             vertical: true
             card_mod:
-              style: "ha-card {\n  border: none !important;\n}\nha-state-icon:before\
+              style:
+                "ha-card {\n  border: none !important;\n}\nha-state-icon:before\
                 \ {\n  content: \"\";\n  position: absolute;\n  width: 25%;\n  height:\
                 \ 30%;\n  margin: 12%;\n  animation: cook 1s linear infinite;\n}\n\
                 @keyframes cook { \n  0%, 100% { background: linear-gradient(0deg,\
@@ -5506,7 +5674,8 @@ views:
             icon: mdi:toaster-oven
             layout: vertical
             card_mod:
-              style: "ha-card {\n  border: none !important;\n}\nha-state-icon:before\
+              style:
+                "ha-card {\n  border: none !important;\n}\nha-state-icon:before\
                 \ {\n  content: \"\";\n  position: absolute;\n  width: 37%;\n  height:\
                 \ 30%;\n  left: 22px;\n  top: 30px;\n  animation: cook 1.5s linear\
                 \ infinite;\n}\n@keyframes cook { \n  0%, 100% { background: linear-gradient(0deg,\
@@ -5551,7 +5720,8 @@ views:
             sort:
               method: entity_id
             filter:
-              template: "{% for ENTITY in states.light\n  | map(attribute='entity_id')\n\
+              template:
+                "{% for ENTITY in states.light\n  | map(attribute='entity_id')\n\
                 \  | select('in', expand('light.all_lights') | map(attribute='entity_id')\
                 \ | list)\n  | reject('is_hidden_entity') -%}\n{{\n  {\n    \"type\"\
                 : \"tile\",\n    \"entity\": ENTITY,\n    \"name\": state_attr(ENTITY,\
@@ -5643,7 +5813,8 @@ views:
             entity: sensor.steam_wishlist_76561198124495822
           - type: custom:html-template-card
             ignore_line_breaks: true
-            content: "\n<style>\n  .marquee-container {\n      width: 100%;\n    \
+            content:
+              "\n<style>\n  .marquee-container {\n      width: 100%;\n    \
               \  height: 75px;\n      border-radius: 6px;\n      overflow: hidden;\n\
               \      overflow-x: scroll;\n      padding-bottom: 8px;\n      white-space:\
               \ nowrap;\n      box-sizing: border-box;\n  }\n .marquee {\n     display:\
@@ -5670,7 +5841,8 @@ views:
               \            <span>{{ entry.product.available_amount }}</span>\n   \
               \         </div>\n         </a>\n   {% endfor %}\n   </div>\n </div>\n"
             card_mod:
-              style: 'ha-card { background: none; border: none; padding-left: 0 !important;
+              style:
+                'ha-card { background: none; border: none; padding-left: 0 !important;
                 padding-right: 0 !important;}
 
                 '
@@ -5702,7 +5874,7 @@ views:
               action: none
           - layout: name|state|icon
             entity: weather.wn_seoul
-            name: '{{ state_attr(config.entity, ''temperature'') }}°,'
+            name: "{{ state_attr(config.entity, 'temperature') }}°,"
             state_text:
               cloudy: 흐림
               rainy: 비
@@ -5737,7 +5909,7 @@ views:
               action: none
           - layout: name
             entity: weather.wn_seoul
-            name: '{{ states(''sensor.wn_seoul_temp_diff_comment'') }}.'
+            name: "{{ states('sensor.wn_seoul_temp_diff_comment') }}."
             styles:
               name:
                 color: var(--primary-text-color)
@@ -5766,7 +5938,7 @@ views:
               action: none
           - layout: name
             entity: weather.wn_seoul
-            name: '{{ state_attr(''sensor.wn_seoul_temperature'', ''tmax'') }} °🔺'
+            name: "{{ state_attr('sensor.wn_seoul_temperature', 'tmax') }} °🔺"
             styles:
               name:
                 color: var(--primary-text-color)
@@ -5793,7 +5965,7 @@ views:
               action: none
           - layout: name
             entity: weather.wn_seoul
-            name: '{{ state_attr(''sensor.wn_seoul_temperature'', ''tmin'') }}°🔻'
+            name: "{{ state_attr('sensor.wn_seoul_temperature', 'tmin') }}°🔻"
             styles:
               name:
                 color: var(--primary-text-color)
@@ -5859,9 +6031,10 @@ views:
               action: more-info
           - layout: name
             entity: sensor.wn_seoul_precip_hour_today
-            name: '{{ state_attr(''sensor.wn_seoul_precip_hour_today'', ''snowrain'')
-              }}, {{ state_attr(''sensor.wn_seoul_precip_hour_today'', ''end_sum_prec'')
-              }}mm'
+            name:
+              "{{ state_attr('sensor.wn_seoul_precip_hour_today', 'snowrain')
+              }}, {{ state_attr('sensor.wn_seoul_precip_hour_today', 'end_sum_prec')
+              }}mm"
             styles:
               name:
                 color: var(--primary-text-color)

@@ -1,0 +1,51 @@
+---
+name: Pull Request
+about: Submit a pull request with semantic versioning and required details
+title: ''
+labels: ''
+assignees: ''
+
+body:
+  - type: input
+    attributes:
+      label: Summary
+      description: Provide a short description of the pull request
+      placeholder: e.g., Fixes bug with login redirect
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Detailed Description
+      description: Explain the changes made and why
+      placeholder: |
+        - What was changed
+        - Why it was necessary
+        - Any important notes for reviewers
+      required: true
+
+  - type: dropdown
+    attributes:
+      label: Type of Change
+      description: Select the type of change according to semantic versioning
+      options:
+        - patch: Bug fix (non-breaking change)
+        - minor: New feature (backwards-compatible)
+        - major: Breaking change (requires version bump)
+      required: true
+
+  - type: input
+    attributes:
+      label: Related Issues
+      description: Link related issues (if any)
+      placeholder: e.g., '#42', '#99'
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Checklist
+      description: Ensure all items are completed
+      placeholder: |
+        - [ ] Code follows project style guidelines
+        - [ ] Tests added / updated
+        - [ ] Documentation updated
+      required: true

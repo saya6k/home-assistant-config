@@ -1,6 +1,8 @@
 automations.yaml
 scripts.yaml
 scenes.yaml
+ui-lovelace.yaml
+README.md
 blueprints
 custom_components
 www

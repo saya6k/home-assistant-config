@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        version: ["stable", "beta", "dev"]
+        version: ['stable', 'beta', 'dev']
     steps:
       - name: ⤵️ Check out repository
         uses: actions/checkout@v5
@@ -30,9 +30,9 @@ jobs:
       - name: 🚀 Validate Home Assistant Configuration
         uses: frenck/action-home-assistant@v1.4.1
         with:
-          path: "."
+          path: '.'
           secrets: ./secrets.fake.yaml
-          version: "${{ matrix.version }}"
+          version: '${{ matrix.version }}'
 
   esphome:
     name: 🔌 ESPHome Configuration Check

@@ -90,8 +90,8 @@ uartex:
 
 binary_sensor:
   - platform: uartex
-    name: "Door Bell"
-    icon: "mdi:bell-ring"
+    name: 'Door Bell'
+    icon: 'mdi:bell-ring'
     state:
       data: [0xB4, 0x00, 0x00]
       mask: [0xB4, 0xFF, 0xFF]
@@ -104,8 +104,8 @@ binary_sensor:
 
   - platform: uartex
     id: id_door_bell_common
-    name: "Door Bell Common"
-    icon: "mdi:bell-ring"
+    name: 'Door Bell Common'
+    icon: 'mdi:bell-ring'
     state:
       data: [0x58, 0x00, 0x00]
       mask: [0x58, 0xFF, 0xFF]
@@ -122,30 +122,30 @@ binary_sensor:
 button:
   - platform: uartex
     id: id_door_open
-    name: "Door Open"
-    icon: "mdi:door-sliding-open"
+    name: 'Door Open'
+    icon: 'mdi:door-sliding-open'
     command_on:
       data: [0x61, 0x00, 0x00]
 
   - platform: uartex
     id: id_door_call_on
-    name: "Door Call On"
-    icon: "mdi:phone"
+    name: 'Door Call On'
+    icon: 'mdi:phone'
     command_on:
       data: [0x5F, 0x00, 0x00]
 
   - platform: uartex
     id: id_door_call_off
-    name: "Door Call Off"
-    icon: "mdi:phone-off"
+    name: 'Door Call Off'
+    icon: 'mdi:phone-off'
     command_on:
       data: [0x60, 0x00, 0x00]
 
 switch:
   - platform: template
     id: id_enable_auto_open
-    name: "Enable Auto Door Opening"
-    icon: "mdi:door-open"
+    name: 'Enable Auto Door Opening'
+    icon: 'mdi:door-open'
     optimistic: true
     restore_mode: ALWAYS_ON
     on_turn_off:

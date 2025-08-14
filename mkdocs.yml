@@ -73,7 +73,7 @@ markdown_extensions:
   - attr_list
   - md_in_html
   - plantuml_markdown:
-      server: "http://www.plantuml.com/plantuml"
+      server: 'http://www.plantuml.com/plantuml'
   - meta
   - toc:
       permalink: true

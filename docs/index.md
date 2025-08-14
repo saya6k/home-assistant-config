@@ -18,7 +18,6 @@ title: Welcome to my Home Assistant Config!
 
     ![Balcony](https://github.com/saya6k/home-assistant-config/blob/main/www/energy.png){: loading=lazy }
 
-
 [![GitHub Workflow Status][github-img]][github-url]
 [![Last Commit][last-commit-img]][github-url]
 [![Commit Activity][commit-activity-img]][github-url]
