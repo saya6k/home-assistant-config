@@ -1,63 +1,66 @@
-# Example .gitignore file for your config dir.
-# An * ensures that everything will be ignored.
-
-# Generic ignores
+# ===========================
+# Logs and Databases
+# ===========================
 *.log
 *.log.*
 *.db
 *.db-shm
 *.db-wal
-*.pyc
-._*
-__pycache__
 
-# Directory (contents) ignores
-.cloud
-.storage
-deps
+# ===========================
+# Python
+# ===========================
+__pycache__/
+*.py[cod]
+*$py.class
 
-# Specific file ignores
-core
-image
-ip_bans.yaml
-secrets.yaml
+# ===========================
+# Node.js / JavaScript
+# ===========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp.*
 
-# Build-in blueprints ignores
-blueprints/*/homeassistant
+# ===========================
+# Java / Gradle / Maven
+# ===========================
+*.class
+*.jar
+*.war
+*.ear
+*.iml
+*.log
+*.out
+target/
+build/
 
-# ESPHome ignores
-esphome/.*/
-esphome/archive/
+# ===========================
+# C / C++
+# ===========================
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.dylib
+*.out
 
-# Ignore add-on files
-addons_autoscripts
-addons_config
-image
-templates
-tts
+# ===========================
+# Rust
+# ===========================
+target/
 
-# Ignore files created by IDE's
-.vscode
-.theia
-.Trash*
+# ===========================
+# Go
+# ===========================
+bin/
+*.exe
 
-# Ignore vendored stuff
-custom_components
-themes
-www/community
-
-# Specific keeps
-!.gitkeep
-
-# Temporary ignores
-.old_config
-
-
-
-# ---------------------------
-# Operating System Files
-# ---------------------------
-
+# ===========================
+# OS-specific files
+# ===========================
 # macOS
 .DS_Store
 .AppleDouble
@@ -67,7 +70,6 @@ Icon?
 .Trashes
 .Spotlight-V100
 .DocumentRevisions-V100
-.fseventsd
 
 # Windows
 Thumbs.db
@@ -80,52 +82,16 @@ $RECYCLE.BIN/
 *~
 .nfs*
 
-# ---------------------------
-# Build / Temp Files
-# ---------------------------
+# ===========================
+# Editor / IDE
+# ===========================
+.vscode/
+.theia/
+.Trash*
 
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-
-# Node.js / JavaScript
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnp.*
-
-# Java / Gradle / Maven
-*.class
-*.jar
-*.war
-*.ear
-*.iml
-*.log
-*.out
-target/
-build/
-
-# C / C++
-*.o
-*.obj
-*.exe
-*.dll
-*.so
-*.dylib
-*.out
-
-# Rust
-target/
-
-# Go
-bin/
-*.exe
-
-# ---------------------------
-# Temporary Files
-# ---------------------------
+# ===========================
+# Temp / Backup Files
+# ===========================
 *.tmp
 *.temp
 *.bak
@@ -133,11 +99,46 @@ bin/
 *.swo
 *.old
 *.orig
+.old_config
 
-# ---------------------------
+# ===========================
 # Secrets / Config Templates
-# ---------------------------
+# ===========================
 *.env
 *.local
 secret.yml
 secrets.yaml
+core
+image
+ip_bans.yaml
+
+# ===========================
+# Project-specific / Ignored directories
+# ===========================
+.cloud/
+.storage/
+deps/
+blueprints/*/homeassistant
+esphome/.*/
+esphome/archive/
+addons_autoscripts/
+addons_config/
+templates/
+tts/
+custom_components/
+themes/
+www/community/
+
+# Keep empty directories
+!.gitkeep
+
+# ===========================
+# Git Hooks (local only)
+# ===========================
+.github/hooks/
+
+# ===========================
+# Local / generated files
+# ===========================
+.rnd
+.shopping_list.json

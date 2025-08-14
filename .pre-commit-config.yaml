@@ -2,7 +2,7 @@
 # Pre-commit configuration
 #
 # This will help ensure everything I commit is kinda clean and neat.
-#
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.1.0
@@ -21,8 +21,31 @@ repos:
     rev: v1.26.3
     hooks:
       - id: yamllint
+        exclude: |
+          ^automations\.yaml$
+          ^scenes\.yaml$
+          ^scripts\.yaml$
+          ^README\.md$
+          ^ui-lovelace\.yaml$
+          ^themes/
+          ^custom_components/
+          ^blueprints/.*/homeassistant/.*
+          ^esphome/.esphome/
+          ^ip_bans\.yaml$
 
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v2.5.1
     hooks:
       - id: prettier
+        exclude: |
+          ^automations\.yaml$
+          ^scenes\.yaml$
+          ^scripts\.yaml$
+          ^README\.md$
+          ^ui-lovelace\.yaml$
+          ^themes/
+          ^www/
+          ^custom_components/
+          ^blueprints/.*/homeassistant/.*
+          ^esphome/.esphome/
+          ^ip_bans\.yaml$
