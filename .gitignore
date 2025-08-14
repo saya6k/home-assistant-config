@@ -1,6 +1,59 @@
 # Example .gitignore file for your config dir.
 # An * ensures that everything will be ignored.
 
+# Generic ignores
+*.log
+*.log.*
+*.db
+*.db-shm
+*.db-wal
+*.pyc
+._*
+__pycache__
+
+# Directory (contents) ignores
+.cloud
+.storage
+deps
+
+# Specific file ignores
+core
+image
+ip_bans.yaml
+secrets.yaml
+
+# Build-in blueprints ignores
+blueprints/*/homeassistant
+
+# ESPHome ignores
+esphome/.*/
+esphome/archive/
+
+# Ignore add-on files
+addons_autoscripts
+addons_config
+image
+templates
+tts
+
+# Ignore files created by IDE's
+.vscode
+.theia
+.Trash*
+
+# Ignore vendored stuff
+custom_components
+themes
+www/community
+
+# Specific keeps
+!.gitkeep
+
+# Temporary ignores
+.old_config
+
+
+
 # ---------------------------
 # Operating System Files
 # ---------------------------
@@ -26,33 +79,6 @@ $RECYCLE.BIN/
 # Linux
 *~
 .nfs*
-
-# ---------------------------
-# Editor / IDE Files
-# ---------------------------
-
-# Vim
-*.swp
-*.swo
-*.swn
-
-# Emacs
-*~
-\#*\#
-
-# JetBrains IDEs (IntelliJ, PyCharm, WebStorm, etc.)
-.idea/
-*.iml
-*.iws
-*.ipr
-
-# VS Code
-.vscode/
-.history/
-
-# Sublime Text
-*.sublime-project
-*.sublime-workspace
 
 # ---------------------------
 # Build / Temp Files
@@ -115,68 +141,3 @@ bin/
 *.local
 secret.yml
 secrets.yaml
-
-*
-
-# Specific keeps
-!.gitkeep
-!.gitignore
-!.pre-commit-config.yaml
-!.yaml-lint.yaml
-!.prettierignore
-!.prettierrc
-
-# Keep directories
-!.github/
-!.github/*
-!.github/workflows/*
-
-!blueprints
-
-!custom_components
-
-!docs/
-!docs/assets/
-!docs/config/
-!docs/images/
-
-!esphome/
-!esphome/*
-
-!www/
-
-# Files
-
-!configuration.yaml
-!automations.yaml
-!scenes.yaml
-!scripts.yaml
-!README.md
-!ui-lovelace.yaml
-!LICENSE
-!mkdocs.yml
-!requirements.txt
-!secrets.fake.yaml
-
-!www/lovelace.png
-!www/thread-map.png
-!www/monitoring.png
-!www/energy.png
-
-!docs/index.md
-!docs/hardware.md
-!docs/retired.md
-!docs/resources.md
-
-!docs/assets/*
-!docs/config/*
-!docs/images/*
-
-!packages/shell_commands.yaml
-
-# !packages/alerts_and_notifications.yaml
-# !packages/domain_counter.yaml
-# !packages/forecast.yaml
-# !packages/naver_map_url.yaml
-# !packages/subway_tracker.yaml
-# !packages/weather_teukbo.yaml
