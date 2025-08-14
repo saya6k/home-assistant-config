@@ -7,6 +7,7 @@ site_description: 🏡 My home automation setup built with Home Assistant
 use_directory_urls: false
 repo_url: https://github.com/saya6k/home-assistant-config
 repo_name: home-assistant-config
+edit_uri: edit/main/docs/
 
 copyright: 'Copyright &copy; 2025 saya6k'
 
