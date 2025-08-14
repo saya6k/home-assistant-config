@@ -3,24 +3,24 @@ substitutions:
   name: esp-wallpad
   friendly_name: ESP WallPad
 
-# esphome:
-#   name: esp-wallpad
+esphome:
+  name: esp-wallpad
 
-#   devices:
-#     - id: living_room_ceiling
-#       name: "거실 천장"
-#       area_id: living_room
-#     - id: kitchen_ceiling
-#       name: "주방 천장"
-#       area_id: kitchen
-#     - id: kitchen_gasvalve
-#       name: "주방 가스밸브"
-#       area_id: kitchen
-#     - id: front_door_ceiling
-#       name: "현관 천장"
-#       area_id: front_door
-#     - id: front_door_ceiling
-#       name: "Room 1 Heater 1"
+devices:
+  - id: living_room_ceiling_light
+    name: "거실 천장등"
+  - id: living_room_front_plug
+    name: "거실 앞쪽 플러그"
+  - id: living_room_rear_plug
+    name: "거실 뒤쪽 플러그"
+  - id: kitchen_ceiling_light
+    name: "주방 천장등"
+  - id: kitchen_gasvalve
+    name: "주방 가스밸브"
+  - id: entrance_ceiling_light
+    name: "현관 천장"
+  - id: room_1_heater_1
+    name: "Room 1 Heater 1"
 
 #   areas:
 #     - id: kitchen
@@ -226,7 +226,8 @@ switch:
 
 valve:
   - platform: uartex
-    name: "Kitchen Gasvalve"
+    device_id: kitchen_gas_valve
+    name: "Gas Valve"
     device_class: gas
     state:
       data: [0x00, 0x01, 0x1B, 0x01, 0x43, 0x00]
@@ -497,40 +498,50 @@ climate:
     state:
       data: [0x00, 0x01, 0x18, 0x04, 0x45, 0x11]
       mask: [0x00, 0xff, 0xff, 0xff, 0xff, 0xff]
-    state_temperature_current:    # Required (현재온도 State, RS485 Sensor 설정 참고, sensor:로 대체 가능)
+    # Required (현재온도 State, RS485 Sensor 설정 참고, sensor:로 대체 가능)
+    state_temperature_current:
       offset: 8
       length: 1
       precision: 0
-    state_temperature_target:     # Required (설정온도 State)
+    # Required (설정온도 State)
+    state_temperature_target:
       offset: 9
       length: 1
       precision: 0
-    state_off:                    # Required (끄기 상태)
+    # Required (끄기 상태)
+    state_off:
       offset: 7
       data: [0x04]
-    state_heat:                   # Option (난방모드, 냉방모드: state_cool, 자동모드: state_auto)
+    # Option (난방모드, 냉방모드: state_cool, 자동모드: state_auto)
+    state_heat:
       offset: 7
       data: [0x01]
-    state_preset_away:            # Option (외출모드)
+    # Option (외출모드)
+    state_preset_away:
       offset: 7
       data: [0x07]
     state_preset_none:
       offset: 7
       data: [0x07]
-      inverted: True
-    command_off: #Required (끄기 명령)
+      inverted: true
+    # Required (끄기 명령)
+    command_off:
       data: [0x0B, 0x01, 0x18, 0x02, 0x46, 0x11, 0x04, 0x00]
       ack: [0x0D, 0x01, 0x18, 0x04, 0x46, 0x11, 0x04, 0x04]
-    command_heat: #Option (난방모드 켜기)
+    # Option (난방모드 켜기)
+    command_heat:
       data: [0x0B, 0x01, 0x18, 0x02, 0x46, 0x11, 0x01, 0x00]
       ack: [0x0D, 0x01, 0x18, 0x04, 0x46, 0x11, 0x01, 0x01]
-    command_preset_away: #Option (외출 켜기)
+    # Option (외출 켜기)
+    command_preset_away:
       data: [0x0B, 0x01, 0x18, 0x02, 0x46, 0x11, 0x07, 0x00]
       ack: [0x0D, 0x01, 0x18, 0x04, 0x46, 0x11, 0x07, 0x07]
-    command_preset_none: #Option (외출 끄기, 난방)
+    # Option (외출 끄기, 난방)
+    command_preset_none:
       data: [0x0B, 0x01, 0x18, 0x02, 0x46, 0x11, 0x01, 0x00]
       ack: [0x0D, 0x01, 0x18, 0x04, 0x46, 0x11, 0x01, 0x01]
-    command_temperature: !lambda |-  #Required (온도 조절)
+    # Required (온도 조절)
+    command_temperature: !lambda |-
       uint8_t target = x;
       return {{0x0B, 0x01, 0x18, 0x02, 0x45, 0x11, target, 0x00},{0x0D, 0x01, 0x18, 0x04, 0x45, 0x11, target, 0x01}};
 
@@ -546,69 +557,90 @@ climate:
   #   state:
   #     data: [0x00, 0x01, 0x1C, 0x01, 0x40, 0x11]
   #     mask: [0x00, 0xff, 0xff, 0xff, 0xff, 0xff]
-  #   state_off: #Required (끄기 상태)
+  # Required (끄기 상태)
+  #   state_off:
   #     offset: 7
   #     data: [0x04]
-  #   state_temperature_current: #Required (현재온도 State, RS485 Sensor 설정 참고, sensor:로 대체 가능)
+  # Required (현재온도 State, RS485 Sensor 설정 참고, sensor:로 대체 가능)
+  #   state_temperature_current:
   #     offset: 8
   #     length: 1
   #     precision: 0
-  #   state_temperature_target: #Required (설정온도 State)
+  # Required (설정온도 State)
+  #   state_temperature_target:
   #     offset: 9
   #     length: 1
   #     precision: 0
-  #   state_auto: #Option (자동모드: state_auto)
+  # Option (자동모드: state_auto)
+  #   state_auto:
   #     offset: 10
   #     data: [0x00]
-  #   state_cool: #Option (냉방모드: state_cool)
+  # Option (냉방모드: state_cool)
+  #   state_cool:
   #     offset: 10
   #     data: [0x01]
-  #   state_dry: #Option (제습모드: state_dry)
+  # Option (제습모드: state_dry)
+  #   state_dry:
   #     offset: 10
   #     data: [0x02]
-  #   state_fan_only: #Option (송풍모드: state_fan_only)
+  # Option (송풍모드: state_fan_only)
+  #   state_fan_only:
   #     offset: 10
   #     data: [0x03]
-  #   state_fan_auto: #Option (자동: state_fan_only)
+  # Option (자동: state_fan_only)
+  #   state_fan_auto:
   #     offset: 11
   #     data: [0x01]
-  #   state_fan_low: #Option (미풍: state_fan_only)
+  # Option (미풍: state_fan_only)
+  #   state_fan_low:
   #     offset: 11
   #     data: [0x02]
-  #   state_fan_medium: #Option (약풍: state_fan_only)
+  # Option (약풍: state_fan_only)
+  #   state_fan_medium:
   #     offset: 11
   #     data: [0x03]
-  #   state_fan_high: #Option (강풍: state_fan_only)
+  # Option (강풍: state_fan_only)
+  #   state_fan_high:
   #     offset: 11
   #     data: [0x04]
-  #   command_off: #Required (끄기 명령)
+  # Required (끄기 명령)
+  #   command_off:
   #     data: [0x0B, 0x01, 0x1C, 0x02, 0x40, 0x11, 0x02, 0x00]
   #     ack: [0x0D, 0x01, 0x1C, 0x04, 0x40, 0x11, 0x02, 0x02]
-  #   command_auto: #Option (자동모드 켜기)
+  # Option (자동모드 켜기)
+  #   command_auto:
   #     data: [0x0B, 0x01, 0x1C, 0x02, 0x5C, 0x11, 0x00, 0x00]
   #     ack: [0x0D, 0x01, 0x1C, 0x04, 0x5C, 0x11, 0x00, 0x00]
-  #   command_cool: #Option (냉방모드 켜기)
+  # Option (냉방모드 켜기)
+  #   command_cool:
   #     data: [0x0B, 0x01, 0x1C, 0x02, 0x5C, 0x11, 0x01, 0x00]
   #     ack: [0x0D, 0x01, 0x1C, 0x04, 0x5C, 0x11, 0x01, 0x01]
-  #   command_dry: #Option (제습모드 켜기)
+  # Option (제습모드 켜기)
+  #   command_dry:
   #     data: [0x0B, 0x01, 0x1C, 0x02, 0x5C, 0x11, 0x02, 0x00]
   #     ack: [0x0D, 0x01, 0x1C, 0x04, 0x5C, 0x11, 0x02, 0x02]
-  #   command_fan_only: #Option (송풍모드 켜기)
+  # Option (송풍모드 켜기)
+  #   command_fan_only:
   #     data: [0x0B, 0x01, 0x1C, 0x02, 0x5C, 0x11, 0x03, 0x00]
   #     ack: [0x0D, 0x01, 0x1C, 0x04, 0x5C, 0x11, 0x03, 0x03]
-  #   command_fan_auto: #Option (자동 바람 세기 켜기)
+  # Option (자동 바람 세기 켜기)
+  #   command_fan_auto:
   #     data: [0x0B, 0x01, 0x1C, 0x02, 0x5D, 0x11, 0x01, 0x00]
   #     ack: [0x0D, 0x01, 0x1C, 0x04, 0x5D, 0x11, 0x01, 0x01]
-  #   command_fan_low: #Option (미풍 켜기)
+  # Option (미풍 켜기)
+  #   command_fan_low:
   #     data: [0x0B, 0x01, 0x1C, 0x02, 0x5D, 0x11, 0x02, 0x00]
   #     ack: [0x0D, 0x01, 0x1C, 0x04, 0x5D, 0x11, 0x02, 0x02]
-  #   command_fan_medium: #Option (약풍 켜기)
+  # Option (약풍 켜기)
+  #   command_fan_medium:
   #     data: [0x0B, 0x01, 0x1C, 0x02, 0x5D, 0x11, 0x03, 0x00]
   #     ack: [0x0D, 0x01, 0x1C, 0x04, 0x5D, 0x11, 0x03, 0x03]
-  #   command_fan_high: #Option (강풍 켜기)
+  # Option (강풍 켜기)
+  #   command_fan_high:
   #     data: [0x0B, 0x01, 0x1C, 0x02, 0x5D, 0x11, 0x04, 0x00]
   #     ack: [0x0D, 0x01, 0x1C, 0x04, 0x5D, 0x11, 0x04, 0x04]
-  #   command_temperature: !lambda |-  #Required (온도 조절)
+  # Required (온도 조절)
+  #   command_temperature: !lambda |-
   #     // @param: const float x
   #     return {
   #               {0x0B, 0x01, 0x1C, 0x02, 0x45, 0x11, (uint8_t)x, 0x00},
