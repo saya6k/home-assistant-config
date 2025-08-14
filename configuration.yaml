@@ -160,7 +160,7 @@ recorder:
       - sensor.fireflyiii*
 
       # Exclude github sensors (except stars)
-      - sensor.saya6k_hass_config*
+      - sensor.saya6k_home_assistant_config*
       - sensor.saya6k_hassio_addons*
       - sensor.saya6k_mcp_grocy_api*
 
@@ -409,7 +409,7 @@ prometheus:
       #                               #
       #################################
 
-      - sensor.saya6k_hass_config_stars
+      - sensor.saya6k_home_assistant_config_stars
 
 command_line:
   - sensor:
