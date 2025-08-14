@@ -118,12 +118,17 @@ secrets.yaml
 
 *
 
+# Specific keeps
+!.gitkeep
+
 # Keep directories
 !.github/
 !.github/workflows/
 !.github/workflows/*
 
 !blueprints
+
+!custom_components
 
 !docs/
 !docs/assets/
