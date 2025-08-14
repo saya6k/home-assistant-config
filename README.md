@@ -1,7 +1,6 @@
 # Home Assistant Config
 
 ![Project Maintenance][maintenance-shield]
-
 [![GitHub Workflow Status][github-img]][github-url]
 [![Last Commit][last-commit-img]][github-url]
 [![Commit Activity][commit-activity-img]][github-url]
@@ -14,7 +13,7 @@
 
 This is my Home Assistant configuration, updated on 2025-08-14.
 
-I started using Home Assistant in 2018. Now, it has grown significantly, with a total of 1536 entities for now.
+I started using Home Assistant in 2018. Now, it has grown significantly, with a total of 1535 entities for now.
 
 > [!CAUTION]
 > I constantly improve my home. It evolves as I add new devices and services. It's changing as my daily routines are changing.
@@ -24,10 +23,10 @@ This repository publish it's documentation. Go to: [Documentation][docs-url]
 
 Or you can directly go to:
 
-[Hardware](./docs/hardware) |
-[Configuration](./docs/config) |
-[Retired](./docs/retired) |
-[Inspiration](./docs/resources)
+[Hardware](./docs/hardware.md) |
+[Configuration](./docs/config/index.md) |
+[Retired](./docs/retired.md) |
+[Inspiration](./docs/resources.md)
 
 ## Table of Content
 
@@ -37,7 +36,6 @@ Or you can directly go to:
 [Add-Ons](#add-ons) |
 [Dashboards](#dashboards) |
 [Custom Integrations](#custom-integrations) |
-[Monitoring](#monitoring)
 
 ----
 
@@ -53,8 +51,8 @@ media_players | 9
 sensors | 827
 switches | 152
 switches | 152
-others | 334
-**Total** | **1536**
+others | 333
+**Total** | **1535**
 
 ## Integrations
 
@@ -142,7 +140,7 @@ Integration | Name
 ## Automations
 
 > [!TIP]
-> If you want to see automation details other than list, go to [Automations](./docs/config/automations)
+> If you want to see my automation details other than list, go to [Automations](./docs/config/automations.md)
 
 Name | Description
 -- | --
@@ -180,7 +178,10 @@ Name | Description
 ## Add-Ons
 
 > [!TIP]
-> If you want to see services I'm running as add-ons, go to [Services](./docs/config/services)
+> If you want to see services I'm running as add-ons, go to [Services](./docs/config/services.md)
+
+> [!TIP]
+>  If you want to see how I built my grafana dashboards, go to [Monitoring](./docs/config/monitoring.md)
 
 Name | Version | Description
 -- | -- | --
@@ -200,7 +201,6 @@ Name | Version | Description
 [MariaDB](/hassio/addon/core_mariadb) | 2.7.2 | 
 [Matter Server](/hassio/addon/core_matter_server) | 8.0.0 | 
 [MCP Proxy Server](/hassio/addon/adfd7a46_mcp_proxy_server) | 0.4.1 | 
-[mkdocs](/hassio/addon/18ac940c_mkdocs) | 1.1.6 | 
 [Mosquitto broker](/hassio/addon/core_mosquitto) | 6.5.1 | 
 [MQTT Explorer](/hassio/addon/2ad4c73a_mqtt-explorer) | browser-1.0.1 | 
 [Music Assistant Server](/hassio/addon/d5369777_music_assistant) | 2.5.8 | 
@@ -221,90 +221,105 @@ Name | Version | Description
 > [!TIP]
 > If you want to see how I built my dashboards other than list, go to [Dashboards](./docs/config/dashboards)
 
-=== "Dashboards"
-
-    ![Dashboards](https://github.com/saya6k/home-assistant-config/blob/main/www/images/lovelace.png)
-
-=== "Monitoring"
-
-    ![Monitoring](https://github.com/saya6k/home-assistant-config/blob/main/www/images/monitoring-dashboard.png){: loading=lazy }
+<table>
+  <tr>
+    <td>
+      <img alt="Lovelace Dashboard" src="www/lovelace.png"><br>
+      Lovelace Dashboard
+    </td>
+    <td>
+      <img alt="Thread Network Visualization" src="www/thread-map.png"><br>
+      Thread Network Visualization
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img alt="Monitoring Dashboard" src="www/monitoring.png"><br>
+      Monitoring Dashboard
+    </td>
+    <td>
+      <img alt="Energy Dashboard" src="www/energy.png"><br>
+      Energy Dashboard
+    </td>
+  </tr>
+</table>
 
 ### Lovelace Plugins
 
 Name | Description
 -- | --
-[Apexcharts Card](https://github.com/RomRider/apexcharts-card) | 📈 A Lovelace card to display advanced graphs and charts based on ApexChartsJS for Home Assistant
-[Auto Entities](https://github.com/thomasloven/lovelace-auto-entities) | 🔹Automatically populate the entities-list of lovelace cards
-[Bha Icon Pack](https://github.com/hulkhaugen/hass-bha-icons) | Additional icons for Home Assistant to accompany the MDI icons
-[Bubble Card](https://github.com/Clooos/Bubble-Card) | Bubble Card is a minimalist card collection for Home Assistant with a nice pop-up touch.
-[Card Mod](https://github.com/thomasloven/lovelace-card-mod) | 🔹 Add CSS styles to (almost) any lovelace card
-[Custom Brand Icons](https://github.com/elax46/custom-brand-icons) | Custom brand icons for Home Assistant
-[Energy Entity Row](https://github.com/zeronounours/lovelace-energy-entity-row) | Lovelace HA entity row to integrate with energy-date-selection
-[Energy Flow Card Plus](https://github.com/flixlix/energy-flow-card-plus) | An upgraded Energy Distribution Card for Home Assistant, with added features like Individual Devices and refined UI enhancements, while maintaining the Energy Dashboard's original design.
-[Entity Progress Card](https://github.com/francois-le-ko4la/lovelace-entity-progress-card) | Entity progress card for Home Assistant
-[Expander Card](https://github.com/MelleD/lovelace-expander-card) | Expander card for HomeAssistant
-[Flex Table   Highly Customizable, Data Visualization](https://github.com/custom-cards/flex-table-card) | Highly Flexible Lovelace Card - arbitrary contents/columns/rows, regex matched, perfect to show appdaemon created content and anything breaking out of the entity_id + attributes concept
-[Grocy Tasks And Chores Card](https://github.com/FamousWolf/grocy-tasks-chores) | Custom Home Assistant card for displaying tasks and chores from Grocy. This card requires the custom Grocy integration to be installed in Home Assistant.
-[Ha Map Card Korea Radar](https://github.com/hwajin-me/ha-map-card-korea-radar) | Integrates a Korea rain radar overlay in the Home Assistant custom map card
-[Html Jinja2 Template Card](https://github.com/PiotrMachowski/Home-Assistant-Lovelace-HTML-Jinja2-Template-card) | This card displays provided Jinja2 template as an HTML content of a card. It uses exactly the same engine as Home Assistant in Developer tools.
-[Hui Element](https://github.com/thomasloven/lovelace-hui-element) | 🔹 Use built-in elements in the wrong place
-[Ingress Webpage Card](https://github.com/lovelylain/ha-addon-iframe-card) | HA webpage card with addon ingress support.
-[Logbook Card](https://github.com/royto/logbook-card) | Logbook card for Home Assistant UI Lovelace
-[Lovelace Grocy Chores Card](https://github.com/isabellaalstrom/lovelace-grocy-chores-card) | A card to track chores and tasks in Grocy.
-[Lovelace Home Feed Card](https://github.com/gadgetchnnel/lovelace-home-feed-card) | A custom Lovelace card for displaying a combination of persistent notifications, calendar events, and entities in the style of a feed.
-[Lovelace Weather Icons](https://github.com/scinos/lovelace-weather-icons) | Official weather icons from Home Assistant
-[Map Card](https://github.com/nathan-gs/ha-map-card) | A Map Card for Home Assistant
-[Meal Plan Card   Lovelace Style](https://github.com/firstof9/lovelace-grocy-meal-plan-card) | Meal Plan Card for Home Assistant Grocy integration
-[Mediocre Hass Media Player Cards](https://github.com/antontanderup/mediocre-hass-media-player-cards) | Media Player Cards for Homeassistant.
-[Mini Graph Card](https://github.com/kalkih/mini-graph-card) | Minimalistic graph card for Home Assistant Lovelace UI
-[Modern Circular Gauge](https://github.com/selvalt7/modern-circular-gauge) | Modern circular gauge card for Home Assistant
-[Multiple Entity Row](https://github.com/benct/lovelace-multiple-entity-row) | Show multiple entity states and attributes on entity rows in Home Assistant's Lovelace UI
-[Mushroom](https://github.com/piitaya/lovelace-mushroom) | Build a beautiful Home Assistant dashboard easily
-[Nintendo Wishlist Card](https://github.com/custom-cards/nintendo-wishlist-card) | Displays a card showing Nintendo Switch games that are on sale from your wish list.
-[Paper Buttons Row](https://github.com/jcwillox/lovelace-paper-buttons-row) | Adds highly configurable buttons that use actions and per-state styling.
-[Simple Weather Card](https://github.com/kalkih/simple-weather-card) | Minimalistic weather card for Home Assistant
-[Stack In Card](https://github.com/custom-cards/stack-in-card) | 🛠 group multiple cards into one card without the borders
-[Swipe Card](https://github.com/bramkragten/swipe-card) | Card that allows you to swipe throught multiple cards for Home Assistant Lovelace
-[Tabbed Card](https://github.com/kinghat/tabbed-card) | a custom card for home assistant that utilizes tabs to segregate individual cards.
-[Template Entity Row](https://github.com/thomasloven/lovelace-template-entity-row) | 🔹 Display whatever you want in an entities card row.
-[Timeflow Card](https://github.com/Rishi8078/TimeFlow-Card) | A beautiful countdown timer card for Home Assistant with animated progress circle and intelligent time formatting
-[Todo Swipe Card](https://github.com/nutteloost/todo-swipe-card) | A specialized swipe card for todo lists in Home Assistant with custom styling
-[Upcoming Media Card](https://github.com/custom-cards/upcoming-media-card) | 📺 A card to display upcoming episodes and movies from services like: Plex, Kodi, Radarr, Sonarr, and Trakt.
-[Week Planner Card](https://github.com/FamousWolf/week-planner-card) | Custom Home Assistant card displaying a responsive overview or multiple days with events from one of multiple calendars
-[Yet Another Media Player](https://github.com/jianyu-li/yet-another-media-player) | YAMP is a Home Assistant media card for controlling multiple entities with highly customizable actions and ui elements
+  [Apexcharts Card](https://github.com/RomRider/apexcharts-card) | 📈 A Lovelace card to display advanced graphs and charts based on ApexChartsJS for Home Assistant
+  [Auto Entities](https://github.com/thomasloven/lovelace-auto-entities) | 🔹Automatically populate the entities-list of lovelace cards
+  [Bha Icon Pack](https://github.com/hulkhaugen/hass-bha-icons) | Additional icons for Home Assistant to accompany the MDI icons
+  [Bubble Card](https://github.com/Clooos/Bubble-Card) | Bubble Card is a minimalist card collection for Home Assistant with a nice pop-up touch.
+  [Card Mod](https://github.com/thomasloven/lovelace-card-mod) | 🔹 Add CSS styles to (almost) any lovelace card
+  [Custom Brand Icons](https://github.com/elax46/custom-brand-icons) | Custom brand icons for Home Assistant
+  [Energy Entity Row](https://github.com/zeronounours/lovelace-energy-entity-row) | Lovelace HA entity row to integrate with energy-date-selection
+  [Energy Flow Card Plus](https://github.com/flixlix/energy-flow-card-plus) | An upgraded Energy Distribution Card for Home Assistant, with added features like Individual Devices and refined UI enhancements, while maintaining the Energy Dashboard's original design.
+  [Entity Progress Card](https://github.com/francois-le-ko4la/lovelace-entity-progress-card) | Entity progress card for Home Assistant
+  [Expander Card](https://github.com/MelleD/lovelace-expander-card) | Expander card for HomeAssistant
+  [Flex Table   Highly Customizable, Data Visualization](https://github.com/custom-cards/flex-table-card) | Highly Flexible Lovelace Card - arbitrary contents/columns/rows, regex matched, perfect to show appdaemon created content and anything breaking out of the entity_id + attributes concept
+  [Grocy Tasks And Chores Card](https://github.com/FamousWolf/grocy-tasks-chores) | Custom Home Assistant card for displaying tasks and chores from Grocy. This card requires the custom Grocy integration to be installed in Home Assistant.
+  [Ha Map Card Korea Radar](https://github.com/hwajin-me/ha-map-card-korea-radar) | Integrates a Korea rain radar overlay in the Home Assistant custom map card
+  [Html Jinja2 Template Card](https://github.com/PiotrMachowski/Home-Assistant-Lovelace-HTML-Jinja2-Template-card) | This card displays provided Jinja2 template as an HTML content of a card. It uses exactly the same engine as Home Assistant in Developer tools.
+  [Hui Element](https://github.com/thomasloven/lovelace-hui-element) | 🔹 Use built-in elements in the wrong place
+  [Ingress Webpage Card](https://github.com/lovelylain/ha-addon-iframe-card) | HA webpage card with addon ingress support.
+  [Logbook Card](https://github.com/royto/logbook-card) | Logbook card for Home Assistant UI Lovelace
+  [Lovelace Grocy Chores Card](https://github.com/isabellaalstrom/lovelace-grocy-chores-card) | A card to track chores and tasks in Grocy.
+  [Lovelace Home Feed Card](https://github.com/gadgetchnnel/lovelace-home-feed-card) | A custom Lovelace card for displaying a combination of persistent notifications, calendar events, and entities in the style of a feed.
+  [Lovelace Weather Icons](https://github.com/scinos/lovelace-weather-icons) | Official weather icons from Home Assistant
+  [Map Card](https://github.com/nathan-gs/ha-map-card) | A Map Card for Home Assistant
+  [Meal Plan Card   Lovelace Style](https://github.com/firstof9/lovelace-grocy-meal-plan-card) | Meal Plan Card for Home Assistant Grocy integration
+  [Mediocre Hass Media Player Cards](https://github.com/antontanderup/mediocre-hass-media-player-cards) | Media Player Cards for Homeassistant.
+  [Mini Graph Card](https://github.com/kalkih/mini-graph-card) | Minimalistic graph card for Home Assistant Lovelace UI
+  [Modern Circular Gauge](https://github.com/selvalt7/modern-circular-gauge) | Modern circular gauge card for Home Assistant
+  [Multiple Entity Row](https://github.com/benct/lovelace-multiple-entity-row) | Show multiple entity states and attributes on entity rows in Home Assistant's Lovelace UI
+  [Mushroom](https://github.com/piitaya/lovelace-mushroom) | Build a beautiful Home Assistant dashboard easily
+  [Nintendo Wishlist Card](https://github.com/custom-cards/nintendo-wishlist-card) | Displays a card showing Nintendo Switch games that are on sale from your wish list.
+  [Paper Buttons Row](https://github.com/jcwillox/lovelace-paper-buttons-row) | Adds highly configurable buttons that use actions and per-state styling.
+  [Simple Weather Card](https://github.com/kalkih/simple-weather-card) | Minimalistic weather card for Home Assistant
+  [Stack In Card](https://github.com/custom-cards/stack-in-card) | 🛠 group multiple cards into one card without the borders
+  [Swipe Card](https://github.com/bramkragten/swipe-card) | Card that allows you to swipe throught multiple cards for Home Assistant Lovelace
+  [Tabbed Card](https://github.com/kinghat/tabbed-card) | a custom card for home assistant that utilizes tabs to segregate individual cards.
+  [Template Entity Row](https://github.com/thomasloven/lovelace-template-entity-row) | 🔹 Display whatever you want in an entities card row.
+  [Timeflow Card](https://github.com/Rishi8078/TimeFlow-Card) | A beautiful countdown timer card for Home Assistant with animated progress circle and intelligent time formatting
+  [Todo Swipe Card](https://github.com/nutteloost/todo-swipe-card) | A specialized swipe card for todo lists in Home Assistant with custom styling
+  [Upcoming Media Card](https://github.com/custom-cards/upcoming-media-card) | 📺 A card to display upcoming episodes and movies from services like: Plex, Kodi, Radarr, Sonarr, and Trakt.
+  [Week Planner Card](https://github.com/FamousWolf/week-planner-card) | Custom Home Assistant card displaying a responsive overview or multiple days with events from one of multiple calendars
+  [Yet Another Media Player](https://github.com/jianyu-li/yet-another-media-player) | YAMP is a Home Assistant media card for controlling multiple entities with highly customizable actions and ui elements
 
 ### Themes
 
 Name | Description
 -- | --
-[Frosted Glass Theme](https://github.com/wessamlauf/homeassistant-frosted-glass-themes) | ✨ Beautiful and modern Theme for Home Assistant 
-[Visionos & Ios 26 Liquid Glass Theme](https://github.com/Nezz/homeassistant-visionos-theme) | Theme inspired by visionOS for Home Assistant
+  [Frosted Glass Theme](https://github.com/wessamlauf/homeassistant-frosted-glass-themes) | ✨ Beautiful and modern Theme for Home Assistant 
+  [Visionos & Ios 26 Liquid Glass Theme](https://github.com/Nezz/homeassistant-visionos-theme) | Theme inspired by visionOS for Home Assistant
 
 ## Custom Integration
 
 Name | Description
 -- | --
-[<img src="https://brands.home-assistant.io/_/gas_station_korea/icon.png" height="24"/>](https://brands.home-assistant.io/_/gas_station_korea/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/gas_station_korea/icon.png" height="24"/>](https://brands.home-assistant.io/_/gas_station_korea/icon.png#gh-light-mode-only) [[Kr] Gas Station Oil Price Sensor](https://github.com/GrecHouse/gas_station_korea) | Gas station oil price sensor #HA 주유소 유가 정보 센서
-[<img src="https://brands.home-assistant.io/_/kwh_to_won/icon.png" height="24"/>](https://brands.home-assistant.io/_/kwh_to_won/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/kwh_to_won/icon.png" height="24"/>](https://brands.home-assistant.io/_/kwh_to_won/icon.png#gh-light-mode-only) [[KR] 전기요금 계산 센서 (가정용)](https://github.com/dugurs/kwh_to_won) | 한국전력 전기요금 계산기 (가정용)
-[<img src="https://brands.home-assistant.io/_/adaptive_climate/icon.png" height="24"/>](https://brands.home-assistant.io/_/adaptive_climate/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/adaptive_climate/icon.png" height="24"/>](https://brands.home-assistant.io/_/adaptive_climate/icon.png#gh-light-mode-only) [Adaptive Climate](https://github.com/msinhore/adaptive_climate) | Advanced Home Assistant integration that automatically adjusts HVAC systems based on the ASHRAE 55 adaptive comfort standard. This intelligent climate control provides 15-30% energy savings while maintaining optimal comfort by dynamically calculating comfort zones based on outdoor temperature conditions.
-[<img src="https://brands.home-assistant.io/_/adaptive_lighting/icon.png" height="24"/>](https://brands.home-assistant.io/_/adaptive_lighting/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/adaptive_lighting/icon.png" height="24"/>](https://brands.home-assistant.io/_/adaptive_lighting/icon.png#gh-light-mode-only) [Adaptive Lighting](https://github.com/basnijholt/adaptive-lighting) | Adaptive Lighting custom component for Home Assistant
-[<img src="https://brands.home-assistant.io/_/anniversaries/icon.png" height="24"/>](https://brands.home-assistant.io/_/anniversaries/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/anniversaries/icon.png" height="24"/>](https://brands.home-assistant.io/_/anniversaries/icon.png#gh-light-mode-only) [Anniversaries](https://github.com/pinkywafer/Anniversaries) | Anniversary Countdown Sensor for Home Assistant
-[<img src="https://brands.home-assistant.io/_/discord_game/icon.png" height="24"/>](https://brands.home-assistant.io/_/discord_game/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/discord_game/icon.png" height="24"/>](https://brands.home-assistant.io/_/discord_game/icon.png#gh-light-mode-only) [Discord Game](https://github.com/LordBoos/discord_game) | Home Assistant custom component to get online and game status of Discord users
-[<img src="https://brands.home-assistant.io/_/price_tracker/icon.png" height="24"/>](https://brands.home-assistant.io/_/price_tracker/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/price_tracker/icon.png" height="24"/>](https://brands.home-assistant.io/_/price_tracker/icon.png#gh-light-mode-only) [E Commerce Integrator](https://github.com/hwajin-me/hs-price-tracker) | Home Assistant - E-commerce price tracker
-[<img src="https://brands.home-assistant.io/_/fireflyiii_integration/icon.png" height="24"/>](https://brands.home-assistant.io/_/fireflyiii_integration/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/fireflyiii_integration/icon.png" height="24"/>](https://brands.home-assistant.io/_/fireflyiii_integration/icon.png#gh-light-mode-only) [Fireflyiii Integration](https://github.com/soloam/ha-fireflyiii-integration) | FireflyIII Integration for Home Assistant
-[<img src="https://brands.home-assistant.io/_/readme/icon.png" height="24"/>](https://brands.home-assistant.io/_/readme/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/readme/icon.png" height="24"/>](https://brands.home-assistant.io/_/readme/icon.png#gh-light-mode-only) [Generate Readme](https://github.com/custom-components/readme) | Use Jinja and data from Home Assistant to generate your README.md file
-[<img src="https://brands.home-assistant.io/_/grocy/icon.png" height="24"/>](https://brands.home-assistant.io/_/grocy/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/grocy/icon.png" height="24"/>](https://brands.home-assistant.io/_/grocy/icon.png#gh-light-mode-only) [Grocy Custom Component](https://github.com/custom-components/grocy) | Custom Grocy integration for Home Assistant
-[<img src="https://brands.home-assistant.io/_/hacs/icon.png" height="24"/>](https://brands.home-assistant.io/_/hacs/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/hacs/icon.png" height="24"/>](https://brands.home-assistant.io/_/hacs/icon.png#gh-light-mode-only) [HACS](https://github.com/hacs/integration) | HACS gives you a powerful UI to handle downloads of all your custom needs.
-[<img src="https://brands.home-assistant.io/_/life360/icon.png" height="24"/>](https://brands.home-assistant.io/_/life360/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/life360/icon.png" height="24"/>](https://brands.home-assistant.io/_/life360/icon.png#gh-light-mode-only) [Life360](https://github.com/pnbruckner/ha-life360) | A Home Assistant integration for Life360.
-[<img src="https://brands.home-assistant.io/_/auth_oidc/icon.png" height="24"/>](https://brands.home-assistant.io/_/auth_oidc/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/auth_oidc/icon.png" height="24"/>](https://brands.home-assistant.io/_/auth_oidc/icon.png#gh-light-mode-only) [Openid Connect](https://github.com/christiaangoossens/hass-oidc-auth) | OpenID Connect authentication provider for Home Assistant
-[<img src="https://brands.home-assistant.io/_/places/icon.png" height="24"/>](https://brands.home-assistant.io/_/places/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/places/icon.png" height="24"/>](https://brands.home-assistant.io/_/places/icon.png#gh-light-mode-only) [Places](https://github.com/custom-components/places) | Component to integrate with OpenStreetMap Reverse Geocode (places)
-[<img src="https://brands.home-assistant.io/_/radarr_upcoming_media/icon.png" height="24"/>](https://brands.home-assistant.io/_/radarr_upcoming_media/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/radarr_upcoming_media/icon.png" height="24"/>](https://brands.home-assistant.io/_/radarr_upcoming_media/icon.png#gh-light-mode-only) [Radarr Upcoming Media](https://github.com/custom-components/sensor.radarr_upcoming_media) | 🎬 Radarr component to feed Upcoming Media Card.
-[<img src="https://brands.home-assistant.io/_/simpleicons/icon.png" height="24"/>](https://brands.home-assistant.io/_/simpleicons/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/simpleicons/icon.png" height="24"/>](https://brands.home-assistant.io/_/simpleicons/icon.png#gh-light-mode-only) [Simpleicons](https://github.com/vigonotion/hass-simpleicons) | Use Simple Icons in Home Assistant
-[<img src="https://brands.home-assistant.io/_/sonarr_upcoming_media/icon.png" height="24"/>](https://brands.home-assistant.io/_/sonarr_upcoming_media/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/sonarr_upcoming_media/icon.png" height="24"/>](https://brands.home-assistant.io/_/sonarr_upcoming_media/icon.png#gh-light-mode-only) [Sonarr Upcoming Media](https://github.com/custom-components/sensor.sonarr_upcoming_media) | 📺 Sonarr component to feed Upcoming Media Card.
-[<img src="https://brands.home-assistant.io/_/spook/icon.png" height="24"/>](https://brands.home-assistant.io/_/spook/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/spook/icon.png" height="24"/>](https://brands.home-assistant.io/_/spook/icon.png#gh-light-mode-only) [Spook 👻 Your Homie](https://github.com/frenck/spook) | A scary 👻 powerful toolbox 🧰 for Home Assistant 🏡
-[<img src="https://brands.home-assistant.io/_/steam_wishlist/icon.png" height="24"/>](https://brands.home-assistant.io/_/steam_wishlist/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/steam_wishlist/icon.png" height="24"/>](https://brands.home-assistant.io/_/steam_wishlist/icon.png#gh-light-mode-only) [Steam Wishlist](https://github.com/boralyl/steam-wishlist) | A home assistant integration that monitors games on sale on your Steam wishlist.
-[<img src="https://brands.home-assistant.io/_/truenas/icon.png" height="24"/>](https://brands.home-assistant.io/_/truenas/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/truenas/icon.png" height="24"/>](https://brands.home-assistant.io/_/truenas/icon.png#gh-light-mode-only) [Truenas](https://github.com/tomaae/homeassistant-truenas) | TrueNAS integration for Home Assistant 
-[<img src="https://brands.home-assistant.io/_/korea_bus/icon.png" height="24"/>](https://brands.home-assistant.io/_/korea_bus/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/korea_bus/icon.png" height="24"/>](https://brands.home-assistant.io/_/korea_bus/icon.png#gh-light-mode-only) [버스(대중교통) 도착 정보](https://github.com/luiseok/ha-korea-bus-arrival) | Home Assistant custom component for South Korean bus arrival information
+  [<img src="https://brands.home-assistant.io/_/gas_station_korea/icon.png" height="24"/>](https://brands.home-assistant.io/_/gas_station_korea/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/gas_station_korea/icon.png" height="24"/>](https://brands.home-assistant.io/_/gas_station_korea/icon.png#gh-light-mode-only) [[Kr] Gas Station Oil Price Sensor](https://github.com/GrecHouse/gas_station_korea) | Gas station oil price sensor #HA 주유소 유가 정보 센서
+  [<img src="https://brands.home-assistant.io/_/kwh_to_won/icon.png" height="24"/>](https://brands.home-assistant.io/_/kwh_to_won/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/kwh_to_won/icon.png" height="24"/>](https://brands.home-assistant.io/_/kwh_to_won/icon.png#gh-light-mode-only) [[KR] 전기요금 계산 센서 (가정용)](https://github.com/dugurs/kwh_to_won) | 한국전력 전기요금 계산기 (가정용)
+  [<img src="https://brands.home-assistant.io/_/adaptive_climate/icon.png" height="24"/>](https://brands.home-assistant.io/_/adaptive_climate/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/adaptive_climate/icon.png" height="24"/>](https://brands.home-assistant.io/_/adaptive_climate/icon.png#gh-light-mode-only) [Adaptive Climate](https://github.com/msinhore/adaptive_climate) | Advanced Home Assistant integration that automatically adjusts HVAC systems based on the ASHRAE 55 adaptive comfort standard. This intelligent climate control provides 15-30% energy savings while maintaining optimal comfort by dynamically calculating comfort zones based on outdoor temperature conditions.
+  [<img src="https://brands.home-assistant.io/_/adaptive_lighting/icon.png" height="24"/>](https://brands.home-assistant.io/_/adaptive_lighting/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/adaptive_lighting/icon.png" height="24"/>](https://brands.home-assistant.io/_/adaptive_lighting/icon.png#gh-light-mode-only) [Adaptive Lighting](https://github.com/basnijholt/adaptive-lighting) | Adaptive Lighting custom component for Home Assistant
+  [<img src="https://brands.home-assistant.io/_/anniversaries/icon.png" height="24"/>](https://brands.home-assistant.io/_/anniversaries/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/anniversaries/icon.png" height="24"/>](https://brands.home-assistant.io/_/anniversaries/icon.png#gh-light-mode-only) [Anniversaries](https://github.com/pinkywafer/Anniversaries) | Anniversary Countdown Sensor for Home Assistant
+  [<img src="https://brands.home-assistant.io/_/discord_game/icon.png" height="24"/>](https://brands.home-assistant.io/_/discord_game/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/discord_game/icon.png" height="24"/>](https://brands.home-assistant.io/_/discord_game/icon.png#gh-light-mode-only) [Discord Game](https://github.com/LordBoos/discord_game) | Home Assistant custom component to get online and game status of Discord users
+  [<img src="https://brands.home-assistant.io/_/price_tracker/icon.png" height="24"/>](https://brands.home-assistant.io/_/price_tracker/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/price_tracker/icon.png" height="24"/>](https://brands.home-assistant.io/_/price_tracker/icon.png#gh-light-mode-only) [E Commerce Integrator](https://github.com/hwajin-me/hs-price-tracker) | Home Assistant - E-commerce price tracker
+  [<img src="https://brands.home-assistant.io/_/fireflyiii_integration/icon.png" height="24"/>](https://brands.home-assistant.io/_/fireflyiii_integration/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/fireflyiii_integration/icon.png" height="24"/>](https://brands.home-assistant.io/_/fireflyiii_integration/icon.png#gh-light-mode-only) [Fireflyiii Integration](https://github.com/soloam/ha-fireflyiii-integration) | FireflyIII Integration for Home Assistant
+  [<img src="https://brands.home-assistant.io/_/readme/icon.png" height="24"/>](https://brands.home-assistant.io/_/readme/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/readme/icon.png" height="24"/>](https://brands.home-assistant.io/_/readme/icon.png#gh-light-mode-only) [Generate Readme](https://github.com/custom-components/readme) | Use Jinja and data from Home Assistant to generate your README.md file
+  [<img src="https://brands.home-assistant.io/_/grocy/icon.png" height="24"/>](https://brands.home-assistant.io/_/grocy/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/grocy/icon.png" height="24"/>](https://brands.home-assistant.io/_/grocy/icon.png#gh-light-mode-only) [Grocy Custom Component](https://github.com/custom-components/grocy) | Custom Grocy integration for Home Assistant
+  [<img src="https://brands.home-assistant.io/_/hacs/icon.png" height="24"/>](https://brands.home-assistant.io/_/hacs/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/hacs/icon.png" height="24"/>](https://brands.home-assistant.io/_/hacs/icon.png#gh-light-mode-only) [HACS](https://github.com/hacs/integration) | HACS gives you a powerful UI to handle downloads of all your custom needs.
+  [<img src="https://brands.home-assistant.io/_/life360/icon.png" height="24"/>](https://brands.home-assistant.io/_/life360/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/life360/icon.png" height="24"/>](https://brands.home-assistant.io/_/life360/icon.png#gh-light-mode-only) [Life360](https://github.com/pnbruckner/ha-life360) | A Home Assistant integration for Life360.
+  [<img src="https://brands.home-assistant.io/_/auth_oidc/icon.png" height="24"/>](https://brands.home-assistant.io/_/auth_oidc/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/auth_oidc/icon.png" height="24"/>](https://brands.home-assistant.io/_/auth_oidc/icon.png#gh-light-mode-only) [Openid Connect](https://github.com/christiaangoossens/hass-oidc-auth) | OpenID Connect authentication provider for Home Assistant
+  [<img src="https://brands.home-assistant.io/_/places/icon.png" height="24"/>](https://brands.home-assistant.io/_/places/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/places/icon.png" height="24"/>](https://brands.home-assistant.io/_/places/icon.png#gh-light-mode-only) [Places](https://github.com/custom-components/places) | Component to integrate with OpenStreetMap Reverse Geocode (places)
+  [<img src="https://brands.home-assistant.io/_/radarr_upcoming_media/icon.png" height="24"/>](https://brands.home-assistant.io/_/radarr_upcoming_media/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/radarr_upcoming_media/icon.png" height="24"/>](https://brands.home-assistant.io/_/radarr_upcoming_media/icon.png#gh-light-mode-only) [Radarr Upcoming Media](https://github.com/custom-components/sensor.radarr_upcoming_media) | 🎬 Radarr component to feed Upcoming Media Card.
+  [<img src="https://brands.home-assistant.io/_/simpleicons/icon.png" height="24"/>](https://brands.home-assistant.io/_/simpleicons/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/simpleicons/icon.png" height="24"/>](https://brands.home-assistant.io/_/simpleicons/icon.png#gh-light-mode-only) [Simpleicons](https://github.com/vigonotion/hass-simpleicons) | Use Simple Icons in Home Assistant
+  [<img src="https://brands.home-assistant.io/_/sonarr_upcoming_media/icon.png" height="24"/>](https://brands.home-assistant.io/_/sonarr_upcoming_media/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/sonarr_upcoming_media/icon.png" height="24"/>](https://brands.home-assistant.io/_/sonarr_upcoming_media/icon.png#gh-light-mode-only) [Sonarr Upcoming Media](https://github.com/custom-components/sensor.sonarr_upcoming_media) | 📺 Sonarr component to feed Upcoming Media Card.
+  [<img src="https://brands.home-assistant.io/_/spook/icon.png" height="24"/>](https://brands.home-assistant.io/_/spook/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/spook/icon.png" height="24"/>](https://brands.home-assistant.io/_/spook/icon.png#gh-light-mode-only) [Spook 👻 Your Homie](https://github.com/frenck/spook) | A scary 👻 powerful toolbox 🧰 for Home Assistant 🏡
+  [<img src="https://brands.home-assistant.io/_/steam_wishlist/icon.png" height="24"/>](https://brands.home-assistant.io/_/steam_wishlist/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/steam_wishlist/icon.png" height="24"/>](https://brands.home-assistant.io/_/steam_wishlist/icon.png#gh-light-mode-only) [Steam Wishlist](https://github.com/boralyl/steam-wishlist) | A home assistant integration that monitors games on sale on your Steam wishlist.
+  [<img src="https://brands.home-assistant.io/_/truenas/icon.png" height="24"/>](https://brands.home-assistant.io/_/truenas/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/truenas/icon.png" height="24"/>](https://brands.home-assistant.io/_/truenas/icon.png#gh-light-mode-only) [Truenas](https://github.com/tomaae/homeassistant-truenas) | TrueNAS integration for Home Assistant 
+  [<img src="https://brands.home-assistant.io/_/korea_bus/icon.png" height="24"/>](https://brands.home-assistant.io/_/korea_bus/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/korea_bus/icon.png" height="24"/>](https://brands.home-assistant.io/_/korea_bus/icon.png#gh-light-mode-only) [버스(대중교통) 도착 정보](https://github.com/luiseok/ha-korea-bus-arrival) | Home Assistant custom component for South Korean bus arrival information
 
 ***
 
@@ -313,7 +328,9 @@ Generated by the [custom readme integration](https://github.com/custom-component
 <!-- Footnotes -->
 
 [home-assistant]: https://home-assistant.io
-[docs-url]: https://ha.lyz.kr/docs
+
+[saya6k]: https://lyz.kr
+[docs-url]: https://lyz.kr/home-assistant-config
 
 [maintenance-shield]: https://img.shields.io/maintenance/yes/2025.svg
 [contributors]: https://github.com/saya6k/home-assistant-config/graphs/contributors
@@ -328,4 +345,3 @@ Generated by the [custom readme integration](https://github.com/custom-component
 [twitter-url]: https://twitter.com/saya6k
 [twitter-img]: https://img.shields.io/twitter/follow/saya6k?label=Follow
 [stars-img]: https://img.shields.io/github/stars/saya6k/home-assistant-config?style=social
-[saya6k]: https://lyz.kr
