@@ -3,7 +3,10 @@
 *
 
 # Keep directories
+!.github/
 !.github/workflows/
+!.github/workflows/*
+
 !docs/
 !docs/assets/
 !docs/config/
@@ -11,8 +14,6 @@
 !www/
 
 # Files
-!.github/workflows/*
-
 !.gitignore
 
 !configuration.yaml
