@@ -15,8 +15,9 @@
 
 homeassistant:
   packages: !include_dir_named ./packages/
-  # allowlist_external_dirs:
-  #   - /config/www
+  # Allow directory for camera snapshot
+  allowlist_external_dirs:
+    - /config/www
 
   # Disable any Auth providers except OIDC
   # auth_providers: []
@@ -245,6 +246,7 @@ logger:
     homeassistant.setup: error
     # homeassistant.components.conversation: debug
     # homeassistant.components.intent: debug
+    homeassistant.components.shell_command: debug
 
 ####################################################
 #                                                  #
