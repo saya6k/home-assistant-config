@@ -1,9 +1,10 @@
+---
 site_name: Home Assistant Documentation by saya6k
 site_author: saya6k
 site_url: https://docs.lyz.kr
 site_description: 🏡 My home automation setup built with Home Assistant
 
-use_directory_urls: False
+use_directory_urls: false
 repo_url: https://github.com/saya6k/home-assistant-config
 repo_name: home-assistant-config
 
@@ -60,7 +61,7 @@ nav:
       - config/monitoring.md
   - Retired: retired.md
   - Inspiration: resources.md
-    
+
 markdown_extensions:
   - admonition
   - pymdownx.details
@@ -78,5 +79,5 @@ markdown_extensions:
       permalink: true
   - pymdownx.tabbed:
       alternate_style: true
-    
+
 plugins: []
