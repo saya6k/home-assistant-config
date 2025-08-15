@@ -16,9 +16,15 @@ jobs:
     if: |
       github.repository == 'saya6k/home-assistant-config' &&
       github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.name == '🧹✨ Linting & Style Checks'
+      github.event.workflow_run.name == '🧹✨ Linting & Style Checks' &&
+      github.event.workflow_run.head_branch == 'main' &&
+      github.event.workflow_run.event == 'push'
     runs-on: ubuntu-latest
+    concurrency:
+      group: ha-${{ github.event.workflow_run.head_sha }}
+      cancel-in-progress: true
     strategy:
+      fail-fast: false
       matrix:
         version: ['stable', 'beta', 'dev']
     steps:
