@@ -6,8 +6,6 @@ on:
     branches:
       - main
   pull_request:
-    branches:
-      - main
 
 jobs:
   yamllint:
@@ -24,10 +22,8 @@ jobs:
     name: 📝 Markdown Lint
     runs-on: ubuntu-latest
     steps:
-      - name: ⤵️ Checkout Repository (main branch)
+      - name: ⤵️ Checkout Repository
         uses: actions/checkout@v5
-        with:
-          ref: main
 
       - name: 🧐 Run Remark Lint
         uses: docker://pipelinecomponents/remark-lint:latest
