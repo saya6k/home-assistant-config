@@ -6,6 +6,30 @@ title: Dashboards
 
 ![Lovelace Dashboard](../images/lovelace.png)
 
+=== "Overview"
+
+    ![Overview](https://github.com/saya6k/home-assistant-config/blob/main/www/lovelace/overview.png)
+
+=== "Overview on Mobile"
+
+    ![Mobile](https://github.com/saya6k/home-assistant-config/blob/main/www/lovelace/mobile.png){: loading=lazy }
+
+=== "System"
+
+    ![System](https://github.com/saya6k/home-assistant-config/blob/main/www/lovelace/system.png){: loading=lazy }
+
+=== "Climate"
+
+    ![Climate](https://github.com/saya6k/home-assistant-config/blob/main/www/lovelace/climate.png){: loading=lazy }
+
+=== "Energy"
+
+    ![Climate](https://github.com/saya6k/home-assistant-config/blob/main/www/lovelace/energy.png){: loading=lazy }
+
+=== "Living Room Subview"
+
+    ![Living Room](https://github.com/saya6k/home-assistant-config/blob/main/www/lovelace/living-room-subview.png){: loading=lazy }
+
 The `ui-lovelace.yaml` configuration is automatically generated using a custom Readme component. Since I use the `lovelace: mode: storage`, I might not be able to answer questions about the YAML specifics.
 
 ## Overview
