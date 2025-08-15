@@ -4,7 +4,7 @@ name: 🔖 Release (SemVer) → 📄 MkDocs → 🚀 Pages
 on:
   workflow_run:
     workflows:
-      - '🏠 Home Assistant CI'
+      - '⚙️ ESPHome CI'
     types: [completed]
 
 permissions:
@@ -22,7 +22,6 @@ jobs:
     name: 🔍 Preview Release Steps
     if: >
       github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.head_branch != 'main' &&
       github.repository == 'saya6k/home-assistant-config'
     runs-on: ubuntu-latest
     steps:
@@ -30,6 +29,7 @@ jobs:
         uses: actions/checkout@v5
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
 
       - name: 🔧 Setup Node (for semantic-release)
         uses: actions/setup-node@v4
