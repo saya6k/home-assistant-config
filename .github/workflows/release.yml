@@ -19,16 +19,31 @@ concurrency:
 
 jobs:
   preview_any_branch:
+    name: 🔍 Preview Release Steps
     if: >
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.head_branch != 'main' &&
       github.repository == 'saya6k/home-assistant-config'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - name: ⤵️ Checkout at triggering SHA
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
-      - run: echo "Preview build for ${{ github.event.workflow_run.head_branch }}"
+
+      - name: 🔧 Setup Node (for semantic-release)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 🧪 Install deps if present (optional)
+        run: |
+          if [ -f package-lock.json ] || [ -f package.json ]; then
+            npm ci
+          fi
+
+      - name: 🚀 Run semantic-release (dry run)
+        run: npx semantic-release --dry-run
 
   release:
     if: >
