@@ -42,12 +42,9 @@ repos:
           ^automations\.yaml$
           ^scenes\.yaml$
           ^scripts\.yaml$
-          ^README\.md$
-          ^ui-lovelace\.yaml$
           ^themes/
           ^www/
           ^custom_components/
           ^blueprints/.*/homeassistant/.*
           ^esphome/.esphome/
           ^ip_bans\.yaml$
-          ^ui-lovelace\.yaml$
