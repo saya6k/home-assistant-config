@@ -32,6 +32,7 @@ repos:
           ^blueprints/.*/homeassistant/.*
           ^esphome/.esphome/
           ^ip_bans\.yaml$
+          ^ui-lovelace\.yaml$
 
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v2.5.1
@@ -49,3 +50,4 @@ repos:
           ^blueprints/.*/homeassistant/.*
           ^esphome/.esphome/
           ^ip_bans\.yaml$
+          ^ui-lovelace\.yaml$
