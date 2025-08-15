@@ -33,9 +33,11 @@ jobs:
           echo "next_version=$(git describe --tags --abbrev=0 | awk -F. -v OFS=. '{$NF++; print}')" >> $GITHUB_ENV
 
       - name: Create tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: |
           git tag ${{ env.next_version }}
-          git push origin ${{ env.next_version }}
+          git push https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git ${{ env.next_version }}
 
       - name: Create Pull Request
         uses: repo-sync/pull-request@v2
