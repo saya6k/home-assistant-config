@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/saya6k/home-assistant-config/compare/v1.2.0...v1.2.1) (2025-08-15)
+
+### Bug Fixes
+
+* Add package directory ([01d6d57](https://github.com/saya6k/home-assistant-config/commit/01d6d572cbc9314c040f7b78ecac461ca00a3e5c))
+* Ignore package files ([f49292d](https://github.com/saya6k/home-assistant-config/commit/f49292da922b943becd6bc325b81370a3f42d8fa))
+
 ## [1.2.0](https://github.com/saya6k/home-assistant-config/compare/v1.1.1...v1.2.0) (2025-08-15)
 
 ### Features
