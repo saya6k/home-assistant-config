@@ -56,11 +56,8 @@ rules:
     level: error
   line-length:
     level: warning
-    max: 88
+    max: 120
     allow-non-breakable-words: true
-    ignore: |
-      .github/support.yml
-      .github/settings.yml
   new-line-at-end-of-file:
     level: error
   new-lines:
