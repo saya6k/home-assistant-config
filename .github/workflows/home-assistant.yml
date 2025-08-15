@@ -4,7 +4,11 @@ name: 🏠 Home Assistant CI
 # yamllint disable-line rule:truthy
 on:
   push:
+    branches:
+      - main
   pull_request:
+    branches:
+      - main
   schedule:
     - cron: 0 12 * * *
 

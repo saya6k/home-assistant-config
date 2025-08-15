@@ -2,6 +2,8 @@
 name: 'PR Semantic Version Labels'
 on:
   pull_request:
+    branches:
+      - main
     types: [opened, edited]
 
 jobs:
