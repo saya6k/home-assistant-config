@@ -2,9 +2,9 @@
 name: 📄 Build and 🚀 Deploy MkDocs to GitHub Pages
 
 on:
-  push:
+  pull_request:
     branches:
-      - main
+      - gh-deploy
     paths:
       - '**'
 
@@ -21,7 +21,7 @@ jobs:
       - name: ⤵️ Check out configuration from GitHub
         uses: actions/checkout@v5
         with:
-          ref: main
+          ref: gh-deploy
 
       - name: 🐍 Set up Python
         uses: actions/setup-python@v5
