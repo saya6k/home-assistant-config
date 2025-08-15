@@ -16,8 +16,7 @@
 homeassistant:
   packages: !include_dir_named ./packages/
   # Allow directory for camera snapshot
-  allowlist_external_dirs:
-    - /config/www
+  allowlist_external_dirs: !secret allowlist_external_dirs
 
   auth_providers:
     - type: homeassistant
