@@ -131,6 +131,7 @@ www/community/
 
 # Keep empty directories
 !.gitkeep
+!*/.gitkeep
 
 # ===========================
 # Git Hooks (local only)
@@ -142,3 +143,4 @@ www/community/
 # ===========================
 .rnd
 .shopping_list.json
+.aider*
