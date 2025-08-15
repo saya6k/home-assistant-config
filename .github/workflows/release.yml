@@ -40,7 +40,7 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.workflow_run.head_sha }}
 
-      - name: ✅ Verify all required workflows succeeded for this SHA
+      - name: ✅ Wait until all required workflows succeeded for this SHA
         uses: actions/github-script@v7
         with:
           script: |
@@ -52,23 +52,39 @@ jobs:
             const { owner, repo } = context.repo;
             const sha = context.payload.workflow_run.head_sha;
 
-            const runs = await github.paginate(
-              github.rest.actions.listWorkflowRunsForRepo,
-              { owner, repo, head_sha: sha, per_page: 100 }
-            );
+            const timeoutMs = 20 * 60 * 1000; // 최대 20분 대기
+            const intervalMs = 15000;         // 15초마다 체크
+            const start = Date.now();
 
-            const ok = new Set();
-            for (const r of runs) {
-              if (required.includes(r.name) &&
-                  r.head_branch === "main" &&
-                  r.conclusion === "success") {
-                ok.add(r.name);
+            async function allSucceeded() {
+              const runs = await github.paginate(
+                github.rest.actions.listWorkflowRunsForRepo,
+                { owner, repo, head_sha: sha, per_page: 100 }
+              );
+              const ok = new Set();
+              for (const r of runs) {
+                if (required.includes(r.name) &&
+                    r.head_branch === "main" &&
+                    r.conclusion === "success") {
+                  ok.add(r.name);
+                }
               }
+              const missing = required.filter(n => !ok.has(n));
+              return { done: missing.length === 0, missing };
             }
-            const missing = required.filter(n => !ok.has(n));
-            core.info(`Success runs: ${Array.from(ok).join(", ") || "(none)"}`);
-            if (missing.length) {
-              core.setFailed(`Missing success runs for ${sha}: ${missing.join(", ")}`);
+
+            while (true) {
+              const { done, missing } = await allSucceeded();
+              if (done) {
+                core.info("All required workflows succeeded.");
+                break;
+              }
+              if (Date.now() - start > timeoutMs) {
+                core.setFailed(`Timed out waiting for workflows: ${missing.join(", ")}`);
+                break;
+              }
+              core.info(`Waiting for: ${missing.join(", ")} ...`);
+              await new Promise(r => setTimeout(r, intervalMs));
             }
 
       - name: 🔧 Setup Node (for semantic-release)
