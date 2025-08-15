@@ -21,10 +21,9 @@ jobs:
       github.event.workflow_run.event == 'push'
     runs-on: ubuntu-latest
     concurrency:
-      group: ha-${{ github.event.workflow_run.head_sha }}
-      cancel-in-progress: true
+      group: release-pages
+      cancel-in-progress: false
     strategy:
-      fail-fast: false
       matrix:
         version: ['stable', 'beta', 'dev']
     steps:
