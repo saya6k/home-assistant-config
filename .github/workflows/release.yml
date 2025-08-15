@@ -115,7 +115,7 @@ jobs:
   mkdocs_deploy:
     name: 📄 Build and 🚀 Deploy MkDocs (on release)
     needs: release
-    if: needs.release.outputs.published == 'true'
+    if: needs.release.outputs.published == 'true' || github.event_name == 'push'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
