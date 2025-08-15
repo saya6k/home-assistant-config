@@ -1,3 +1,16 @@
+## [1.1.0](https://github.com/saya6k/home-assistant-config/compare/v1.0.0...v1.1.0) (2025-08-15)
+
+### Features
+
+* add echo to display semantic dry run result in release workflow ([dac24dc](https://github.com/saya6k/home-assistant-config/commit/dac24dcb2408a3204544e75031bf6db1663bc98a))
+* add preview_any_branch job to preview release steps in workflow ([7e25a79](https://github.com/saya6k/home-assistant-config/commit/7e25a791e5acd5dc02031ae6bdf1f902c10a98b5))
+* update preview job to use extra_plugins in dry run step ([d3952af](https://github.com/saya6k/home-assistant-config/commit/d3952af75bcfce4251bb41d6c3f8f4db002e63f2))
+
+### Bug Fixes
+
+* Fix CI ([096b916](https://github.com/saya6k/home-assistant-config/commit/096b916ad6e2063c01661771a30304e4c9d43118))
+* Fix CI to work properly ([0135063](https://github.com/saya6k/home-assistant-config/commit/01350635330c972dfa6daa722512efeda7fd8ca5))
+
 ## 1.0.0 (2025-08-15)
 
 ### Features
