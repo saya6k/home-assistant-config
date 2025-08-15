@@ -1,10 +1,45 @@
 ---
 name: 'PR Semantic Version Labels'
 on:
-  pull_request:
+  workflow_run:
+    workflows: ["🪄 Refresh Repository Badges", "🏠 Home Assistant CI", "🧹✨ Linting & Style Checks"]
+    types:
+      - completed
     branches:
       - main
-    types: [opened, edited]
+
+jobs:
+  add-semver-label:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Git
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+      - name: Determine next version
+        id: next_version
+        run: |
+          # Determine the next version based on the PR label
+          echo "next_version=$(git describe --tags --abbrev=0 | awk -F. -v OFS=. '{$NF++; print}')" >> $GITHUB_ENV
+
+      - name: Create tag
+        run: |
+          git tag ${{ env.next_version }}
+          git push origin ${{ env.next_version }}
+
+      - name: Create Pull Request
+        uses: repo-sync/pull-request@v2
+        with:
+          source_branch: main
+          destination_branch: gh-deploy
+          pr_title: "Deploy to GitHub Pages - ${{ env.next_version }}"
+          pr_body: "This pull request is automatically generated to deploy the latest changes to GitHub Pages."
+          pr_label: "needs approval"
 
 jobs:
   add-semver-label:
