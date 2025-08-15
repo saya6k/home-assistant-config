@@ -6,11 +6,28 @@ title: Dashboards
 
 ![Lovelace Dashboard](../images/lovelace.png)
 
-제 설정의 `ui-lovelace.yaml`는 Readme 커스텀 컴포넌트로 자동으로 만들어졌습니다. `lovelace: mode: storage` 모드를 사용하고 있으므로 yaml에 대해서는 질문해도 잘 모릅니다.
+The `ui-lovelace.yaml` configuration is automatically generated using a custom Readme component. Since I use the `lovelace: mode: storage`, I might not be able to answer questions about the YAML specifics.
 
-## 개요
+## Overview
 
-- 최대한 사람 손이 덜 가게 템플릿 센서, 그룹, 레이블, jinja2 template 등을 통해 구성 자동화.
-- 월패드 사용을 전제로 섹션 너비는 2로 설정. 기존에는 섹션 너비를 3으로 만들었으나 화면 크기에 따른 다양한 변화를 전부 고려하기 힘들어서 2로 줄였습니다.
-- 좌측 단축탭은 숨기고 사용하는걸 전제로 최대한 모든 정보를 단일 러브레이스 내에서 해결
-- 전반적으로 애플 홈킷의 디자인과 사용자 경험을 모방하였습니다. 제가 아이폰 유저라... 홈킷을 참조하기가 편했습니다.
+- **Automation and Templates**: The setup is designed to minimize manual intervention by leveraging template sensors, groups, labels, and Jinja2 templates for automation.
+- **Responsive Design**: Initially set with a section width of 3, it was adjusted to 2 to accommodate various screen sizes, especially for wall pad usage.
+- **Unified Interface**: The left shortcut tab is hidden to consolidate all information within a single Lovelace interface.
+- **Inspired by Apple HomeKit**: The design and user experience are heavily inspired by Apple HomeKit, aligning with my preference as an iPhone user.
+
+## Key Features
+
+- **Dynamic Sections**: The dashboard is divided into sections like Home, Climate, Energy, System, and more, each tailored to specific functionalities.
+- **Interactive Elements**: Includes interactive cards for media players, lights, climate control, and more, providing a seamless user experience.
+- **Custom Visuals**: Utilizes custom cards and themes to enhance the visual appeal and usability of the dashboard.
+- **Real-time Updates**: Features like weather forecasts, traffic information, and system status are updated in real-time for accurate monitoring.
+
+## Custom Integrations
+
+- **Music Assistant**: Integrated with media players for enhanced audio control.
+- **Grocy**: Manages chores and shopping lists efficiently.
+- **Home Assistant Alerts**: Provides timely notifications for system updates, battery status, and more.
+
+## Conclusion
+
+This dashboard setup is a testament to the power of Home Assistant's customization capabilities, offering a robust and visually appealing interface for smart home management.
