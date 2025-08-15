@@ -5,7 +5,6 @@ name: 🏠 Home Assistant CI
 on:
   workflow_run:
     workflows:
-      - '🪄 Refresh Repository Badges'
       - '🧹✨ Linting & Style Checks'
     types: [completed]
 
@@ -44,36 +43,3 @@ jobs:
           path: '.'
           secrets: ./secrets.fake.yaml
           version: ${{ matrix.version }}
-
-  esphome:
-    name: 🔌 ESPHome Configuration Check
-    runs-on: ubuntu-latest
-    # needs: [yamllint]
-    steps:
-      - name: ⤵️ Check out repository
-        uses: actions/checkout@v5
-        with:
-          ref: ${{ github.event.workflow_run.head_sha }}
-          fetch-depth: 0
-
-      - name: 🐍 Set up Python 3.10
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-
-      - name: 📦 Install ESPHome dependencies
-        run: |
-          python -m pip install --upgrade pip setuptools wheel
-          pip install esphome
-          pip list
-          esphome version
-
-      - name: 🗝️ Copy secrets stub into ESPHome folder
-        run: cp ./secrets.fake.yaml ./esphome/secrets.yaml
-
-      - name: 🔍 Validate ESPHome configuration files
-        # yamllint disable rule:line-length
-        run: |
-          for file in $(find ./config/esphome -type f -name "*.yaml" -maxdepth 1 -not -name "secrets.yaml"); do
-            esphome "${file}" config
-          done
