@@ -2,11 +2,11 @@
 name: 📄 Build and 🚀 Deploy MkDocs to GitHub Pages
 
 on:
-  pull_request:
-    branches:
-      - main
-    paths:
-      - '**'
+  workflow_run:
+    workflows:
+      - '🔖 Release (SemVer) → 📄 MkDocs → 🚀 Pages'
+    types: [completed]
+    branches: [main]
 
 permissions:
   contents: read
@@ -21,7 +21,7 @@ jobs:
       - name: ⤵️ Check out configuration from GitHub
         uses: actions/checkout@v5
         with:
-          ref: gh-deploy
+          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: 🐍 Set up Python
         uses: actions/setup-python@v5
@@ -47,6 +47,10 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: ⤵️ Check out configuration from GitHub
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
       - name: 📦 Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

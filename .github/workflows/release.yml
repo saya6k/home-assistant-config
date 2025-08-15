@@ -4,11 +4,8 @@ name: 🔖 Release (SemVer) → 📄 MkDocs → 🚀 Pages
 on:
   workflow_run:
     workflows:
-      - '🪄 Refresh Repository Badges'
       - '🏠 Home Assistant CI'
-      - '🧹✨ Linting & Style Checks'
     types: [completed]
-    branches: [main]
 
 permissions:
   contents: write
@@ -21,13 +18,23 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  release:
-    # 트리거된 워크플로우가 성공이고, 대상 브랜치가 main일 때만
+  preview_any_branch:
     if: >
-      ${{
-        github.event.workflow_run.conclusion == 'success' &&
-        github.event.workflow_run.head_branch == 'main'
-      }}
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch != 'main' &&
+      github.repository == 'saya6k/home-assistant-config'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+      - run: echo "Preview build for ${{ github.event.workflow_run.head_branch }}"
+
+  release:
+    if: >
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'main' &&
+      github.repository == 'saya6k/home-assistant-config'
     runs-on: ubuntu-latest
     outputs:
       published: ${{ steps.release.outputs.new_release_published }}
@@ -39,53 +46,6 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.workflow_run.head_sha }}
-
-      - name: ✅ Wait until all required workflows succeeded for this SHA
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const required = [
-              "🪄 Refresh Repository Badges",
-              "🏠 Home Assistant CI",
-              "🧹✨ Linting & Style Checks",
-            ];
-            const { owner, repo } = context.repo;
-            const sha = context.payload.workflow_run.head_sha;
-
-            const timeoutMs = 20 * 60 * 1000; // 최대 20분 대기
-            const intervalMs = 15000;         // 15초마다 체크
-            const start = Date.now();
-
-            async function allSucceeded() {
-              const runs = await github.paginate(
-                github.rest.actions.listWorkflowRunsForRepo,
-                { owner, repo, head_sha: sha, per_page: 100 }
-              );
-              const ok = new Set();
-              for (const r of runs) {
-                if (required.includes(r.name) &&
-                    r.head_branch === "main" &&
-                    r.conclusion === "success") {
-                  ok.add(r.name);
-                }
-              }
-              const missing = required.filter(n => !ok.has(n));
-              return { done: missing.length === 0, missing };
-            }
-
-            while (true) {
-              const { done, missing } = await allSucceeded();
-              if (done) {
-                core.info("All required workflows succeeded.");
-                break;
-              }
-              if (Date.now() - start > timeoutMs) {
-                core.setFailed(`Timed out waiting for workflows: ${missing.join(", ")}`);
-                break;
-              }
-              core.info(`Waiting for: ${missing.join(", ")} ...`);
-              await new Promise(r => setTimeout(r, intervalMs));
-            }
 
       - name: 🔧 Setup Node (for semantic-release)
         uses: actions/setup-node@v4
@@ -128,11 +88,10 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      # 기존 PR용 워크플로우와 동일하게 gh-deploy 브랜치를 소스로 사용
-      - name: ⤵️ Check out mkdocs source (gh-deploy)
+      - name: ⤵️ Check out mkdocs source
         uses: actions/checkout@v5
         with:
-          ref: gh-deploy
+          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: 🐍 Set up Python
         uses: actions/setup-python@v5
