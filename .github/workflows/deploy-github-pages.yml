@@ -21,7 +21,7 @@ jobs:
       - name: ⤵️ Check out configuration from GitHub
         uses: actions/checkout@v5
         with:
-          ref: ${{ github.event.workflow_run.head_sha }}
+          ref: '${github.event.workflow_run.head_sha}'
 
       - name: 🐍 Set up Python
         uses: actions/setup-python@v5
@@ -45,12 +45,12 @@ jobs:
     needs: build
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: '${steps.deployment.outputs.page_url}'
     steps:
       - name: ⤵️ Check out configuration from GitHub
         uses: actions/checkout@v5
         with:
-          ref: ${{ github.event.workflow_run.head_sha }}
+          ref: '${github.event.workflow_run.head_sha}'
       - name: 📦 Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
