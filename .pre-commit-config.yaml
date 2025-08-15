@@ -25,14 +25,11 @@ repos:
           ^automations\.yaml$
           ^scenes\.yaml$
           ^scripts\.yaml$
-          ^README\.md$
-          ^ui-lovelace\.yaml$
           ^themes/
           ^custom_components/
           ^blueprints/.*/homeassistant/.*
           ^esphome/.esphome/
           ^ip_bans\.yaml$
-          ^ui-lovelace\.yaml$
 
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v2.5.1
