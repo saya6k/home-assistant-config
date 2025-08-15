@@ -4,7 +4,7 @@ name: 📄 Build and 🚀 Deploy MkDocs to GitHub Pages
 on:
   pull_request:
     branches:
-      - gh-deploy
+      - main
     paths:
       - '**'
 

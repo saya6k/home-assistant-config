@@ -3,7 +3,11 @@ name: 🧹✨ Linting & Style Checks
 
 on:
   push:
+    branches:
+      - main
   pull_request:
+    branches:
+      - main
 
 jobs:
   yamllint:
