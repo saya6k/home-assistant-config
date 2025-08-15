@@ -38,8 +38,8 @@ jobs:
         env:
           PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: |
-          git tag ${{ env.next_version }}
-          git push https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git ${{ env.next_version }}
+          git tag $next_version
+          git push https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git $next_version
 
       - name: Create Pull Request
         uses: repo-sync/pull-request@v2
