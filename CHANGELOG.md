@@ -1,3 +1,9 @@
+## [1.1.1](https://github.com/saya6k/home-assistant-config/compare/v1.1.0...v1.1.1) (2025-08-15)
+
+### Bug Fixes
+
+* allow mkdocs_deploy to run on push to main branch ([ab49eee](https://github.com/saya6k/home-assistant-config/commit/ab49eee52b70c5d05b57ea2828529235b6142d3c))
+
 ## [1.1.0](https://github.com/saya6k/home-assistant-config/compare/v1.0.0...v1.1.0) (2025-08-15)
 
 ### Features
