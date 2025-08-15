@@ -29,7 +29,7 @@ jobs:
       - name: ⤵️ Checkout at triggering SHA
         uses: actions/checkout@v5
         with:
-          ref: '${github.event.workflow_run.head_sha}'
+          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: 🔧 Setup Node (for semantic-release)
         uses: actions/setup-node@v4
@@ -57,7 +57,7 @@ jobs:
       - name: 📄 Show Dry Run Result
         run: |
           echo "Semantic Release Dry Run Result" && \
-          echo '${steps.semantic_dry_run.outputs}'
+          echo ${{ steps.semantic_dry_run.outputs }}
 
   release:
     if: >
@@ -66,15 +66,15 @@ jobs:
       github.repository == 'saya6k/home-assistant-config'
     runs-on: ubuntu-latest
     outputs:
-      published: '${steps.release.outputs.new_release_published}'
-      version: '${steps.release.outputs.new_release_version}'
+      published: ${{ steps.release.outputs.new_release_published }}
+      version: ${{ steps.release.outputs.new_release_version }}
 
     steps:
       - name: ⤵️ Checkout at triggering SHA
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
-          ref: '${github.event.workflow_run.head_sha}'
+          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: 🔧 Setup Node (for semantic-release)
         uses: actions/setup-node@v4
@@ -100,12 +100,12 @@ jobs:
             @semantic-release/git
             @semantic-release/github
         env:
-          GITHUB_TOKEN: '${secrets.PERSONAL_ACCESS_TOKEN}'
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
       - name: 📝 Summary
         run: |
-          echo "published=${steps.release.outputs.new_release_published}" >> $GITHUB_STEP_SUMMARY
-          echo "version=${steps.release.outputs.new_release_version}" >> $GITHUB_STEP_SUMMARY
+          echo "published=${{ steps.release.outputs.new_release_published }}" >> $GITHUB_STEP_SUMMARY
+          echo "version=${{ steps.release.outputs.new_release_version }}" >> $GITHUB_STEP_SUMMARY
 
   mkdocs_deploy:
     name: 📄 Build and 🚀 Deploy MkDocs (on release)
@@ -114,13 +114,13 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: '${steps.deployment.outputs.page_url}'
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: ⤵️ Check out mkdocs source
         uses: actions/checkout@v5
         with:
-          ref: '${github.event.workflow_run.head_sha}'
+          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: 🐍 Set up Python
         uses: actions/setup-python@v5
