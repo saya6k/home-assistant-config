@@ -31,7 +31,7 @@ jobs:
       - name: ⤵️ Check out repository
         uses: actions/checkout@v5
         with:
-          ref: '${github.event.workflow_run.head_sha}'
+          ref: '${{ github.event.workflow_run.head_sha }}'
           fetch-depth: 0
 
       - name: 📥 Clone custom component - OpenID Connect for Home Assistant
