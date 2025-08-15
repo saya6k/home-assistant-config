@@ -2,7 +2,12 @@
 name: 'PR Semantic Version Labels'
 on:
   workflow_run:
-    workflows: ["🪄 Refresh Repository Badges", "🏠 Home Assistant CI", "🧹✨ Linting & Style Checks"]
+    workflows:
+      [
+        '🪄 Refresh Repository Badges',
+        '🏠 Home Assistant CI',
+        '🧹✨ Linting & Style Checks',
+      ]
     types:
       - completed
     branches:
@@ -37,14 +42,10 @@ jobs:
         with:
           source_branch: main
           destination_branch: gh-deploy
-          pr_title: "Deploy to GitHub Pages - ${{ env.next_version }}"
-          pr_body: "This pull request is automatically generated to deploy the latest changes to GitHub Pages."
-          pr_label: "needs approval"
+          pr_title: 'Deploy to GitHub Pages - ${{ env.next_version }}'
+          pr_body: 'This pull request is automatically generated to deploy the latest changes to GitHub Pages.'
+          pr_label: 'needs approval'
 
-jobs:
-  add-semver-label:
-    runs-on: ubuntu-latest
-    steps:
       - name: Label PR based on semantic version
         uses: actions/github-script@v6
         with:
