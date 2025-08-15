@@ -1,77 +1,138 @@
 ---
-name: 'PR Semantic Version Labels'
+name: 🔖 Release (SemVer) → 📄 MkDocs → 🚀 Pages
+
 on:
   workflow_run:
     workflows:
-      [
-        '🪄 Refresh Repository Badges',
-        '🏠 Home Assistant CI',
-        '🧹✨ Linting & Style Checks',
-      ]
-    types:
-      - completed
-    branches:
-      - main
+      - '🪄 Refresh Repository Badges'
+      - '🏠 Home Assistant CI'
+      - '🧹✨ Linting & Style Checks'
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  pull-requests: write
+
+concurrency:
+  group: release-pages
+  cancel-in-progress: true
 
 jobs:
-  add-semver-label:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+  release:
+    # 트리거된 워크플로우가 성공이고, 대상 브랜치가 main일 때만
+    if: >
+      ${{
+        github.event.workflow_run.conclusion == 'success' &&
+        github.event.workflow_run.head_branch == 'main'
+      }}
     runs-on: ubuntu-latest
+    outputs:
+      published: ${{ steps.release.outputs.new_release_published }}
+      version: ${{ steps.release.outputs.new_release_version }}
+
     steps:
-      - name: Checkout code
+      - name: ⤵️ Checkout at triggering SHA
         uses: actions/checkout@v5
-
-      - name: Set up Git
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-
-      - name: Determine next version
-        id: determine_version
-        run: |
-          # Determine the next version based on the PR label
-          next_version=$(git describe --tags --abbrev=0 | awk -F. -v OFS=. '{$NF++; print}')
-          echo "next_version=$next_version" >> $GITHUB_ENV
-          echo "Determined next version: $next_version"
-
-      - name: Create tag
-        env:
-          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-        run: |
-          git tag $next_version
-          git push https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git $next_version
-
-      - name: Create Pull Request
-        uses: repo-sync/pull-request@v2
         with:
-          source_branch: main
-          destination_branch: gh-deploy
-          pr_title: 'Deploy to GitHub Pages - ${{ env.next_version }}'
-          pr_body: 'This pull request is automatically generated to deploy the latest changes to GitHub Pages.'
-          pr_label: 'needs approval'
+          fetch-depth: 0
+          ref: ${{ github.event.workflow_run.head_sha }}
 
-      - name: Label PR based on semantic version
-        uses: actions/github-script@v6
+      - name: ✅ Verify all required workflows succeeded for this SHA
+        uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const prBody = context.payload.pull_request.body.toLowerCase();
-            const prNumber = context.payload.pull_request.number;
-            let label = null;
+            const required = [
+              "🪄 Refresh Repository Badges",
+              "🏠 Home Assistant CI",
+              "🧹✨ Linting & Style Checks",
+            ];
+            const { owner, repo } = context.repo;
+            const sha = context.payload.workflow_run.head_sha;
 
-            if (prBody.includes('type of change: patch')) {
-              label = 'patch';
-            } else if (prBody.includes('type of change: minor')) {
-              label = 'minor';
-            } else if (prBody.includes('type of change: major')) {
-              label = 'major';
+            const runs = await github.paginate(
+              github.rest.actions.listWorkflowRunsForRepo,
+              { owner, repo, head_sha: sha, per_page: 100 }
+            );
+
+            const ok = new Set();
+            for (const r of runs) {
+              if (required.includes(r.name) &&
+                  r.head_branch === "main" &&
+                  r.conclusion === "success") {
+                ok.add(r.name);
+              }
+            }
+            const missing = required.filter(n => !ok.has(n));
+            core.info(`Success runs: ${Array.from(ok).join(", ") || "(none)"}`);
+            if (missing.length) {
+              core.setFailed(`Missing success runs for ${sha}: ${missing.join(", ")}`);
             }
 
-            if (label) {
-              await github.issues.addLabels({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: prNumber,
-                labels: [label],
-              });
-            }
+      - name: 🔧 Setup Node (for semantic-release)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 🧪 Install deps if present (optional)
+        run: |
+          if [ -f package-lock.json ] || [ -f package.json ]; then
+            npm ci
+          fi
+
+      - name: 🚀 Run semantic-release (tags, GitHub Release, CHANGELOG)
+        id: release
+        uses: cycjimmy/semantic-release-action@v4
+        with:
+          branch: main
+          extra_plugins: |
+            @semantic-release/commit-analyzer
+            @semantic-release/release-notes-generator
+            @semantic-release/changelog
+            @semantic-release/git
+            @semantic-release/github
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+
+      - name: 📝 Summary
+        run: |
+          echo "published=${{ steps.release.outputs.new_release_published }}" >> $GITHUB_STEP_SUMMARY
+          echo "version=${{ steps.release.outputs.new_release_version }}" >> $GITHUB_STEP_SUMMARY
+
+  mkdocs_deploy:
+    name: 📄 Build and 🚀 Deploy MkDocs (on release)
+    needs: release
+    if: needs.release.outputs.published == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      # 기존 PR용 워크플로우와 동일하게 gh-deploy 브랜치를 소스로 사용
+      - name: ⤵️ Check out mkdocs source (gh-deploy)
+        uses: actions/checkout@v5
+        with:
+          ref: gh-deploy
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+
+      - name: 📦 Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: 🏗️ Build MkDocs site
+        run: mkdocs build --config-file mkdocs.yml --site-dir site
+
+      - name: 📤 Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: 🚀 Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
