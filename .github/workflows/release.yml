@@ -43,7 +43,7 @@ jobs:
           fi
 
       - name: 🚀 Run semantic-release (dry run)
-        run: npx semantic-release --dry-run
+        run: npx semantic-release --dry-run --extra-plugins conventional-changelog-conventionalcommits @semantic-release/commit-analyzer @semantic-release/release-notes-generator @semantic-release/changelog @semantic-release/git @semantic-release/github
 
   release:
     if: >
