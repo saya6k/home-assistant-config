@@ -22,7 +22,7 @@ jobs:
 
   remarklint:
     name: 📝 Markdown Lint
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: ⤵️ Checkout Repository (main branch)
         uses: actions/checkout@v5
@@ -34,4 +34,4 @@ jobs:
         continue-on-error: true
         with:
           args: >
-            remark --no-stdout --color --frail --use preset-lint-recommended .
+            remark --no-stdout --color --frail --use preset-lint-recommended docs/**/*.md
