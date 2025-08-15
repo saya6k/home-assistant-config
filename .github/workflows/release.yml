@@ -44,15 +44,19 @@ jobs:
 
       - name: 🚀 Run semantic-release (dry run)
         id: semantic_dry_run
-        run: |
-          npx semantic-release --dry-run \
-            --extra-plugins \
-              conventional-changelog-conventionalcommits \
-              @semantic-release/commit-analyzer \
-              @semantic-release/release-notes-generator \
-              @semantic-release/changelog \
-              @semantic-release/git \
-              @semantic-release/github
+        uses: cycjimmy/semantic-release-action@v4
+        with:
+          branch: main
+          dry_run: true
+          extra_plugins: |
+            conventional-changelog-conventionalcommits
+            @semantic-release/commit-analyzer
+            @semantic-release/release-notes-generator
+            @semantic-release/changelog
+            @semantic-release/git
+            @semantic-release/github
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 📄 Show Dry Run Result
         run: |
