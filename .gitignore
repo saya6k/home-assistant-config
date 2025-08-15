@@ -123,6 +123,7 @@ esphome/.*/
 esphome/archive/
 addons_autoscripts/
 addons_config/
+packages/
 templates/
 tts/
 custom_components/
