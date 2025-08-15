@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/saya6k/home-assistant-config/compare/v1.2.1...v1.2.2) (2025-08-15)
+
+### Bug Fixes
+
+* add .gitkeep in packages ([58d16c5](https://github.com/saya6k/home-assistant-config/commit/58d16c54edb10b9a52c2936d6134cf9a894d39e6))
+* Typo in packages directory ([b2df045](https://github.com/saya6k/home-assistant-config/commit/b2df04597abca601a887322ae5ef2ed898b56453))
+
 ## [1.2.1](https://github.com/saya6k/home-assistant-config/compare/v1.2.0...v1.2.1) (2025-08-15)
 
 ### Bug Fixes
