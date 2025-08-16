@@ -151,8 +151,8 @@ jobs:
       - name: 📦 Install dependencies
         run: pip install -r requirements.txt
 
-      - name: 📁 Copy images to docs
-        run: cp -r www/images/* docs/images
+      # - name: 📁 Copy images to docs
+      #   run: cp -r www/images/* docs/images
 
       - name: 🏗️ Build MkDocs site
         run: mkdocs build --config-file mkdocs.yml --site-dir site
