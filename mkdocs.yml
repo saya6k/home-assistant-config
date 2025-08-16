@@ -60,6 +60,7 @@ nav:
       - config/automations.md
       - config/services.md
       - config/monitoring.md
+  - Services: services/index.md
   - Retired: retired.md
   - Inspiration: resources.md
 
