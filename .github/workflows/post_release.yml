@@ -1,0 +1,19 @@
+---
+on:
+  release:
+    types: [published]
+
+jobs:
+  restart-addon:
+    if: ${{ github.event.release.prerelease == false }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Restart Git Pull via HA API
+        env:
+          HA_URL: ${{ secrets.HA_URL }}
+          HA_TOKEN: ${{ secrets.HA_TOKEN }}
+        run: |
+          curl -fsS -X POST "$HA_URL/api/services/hassio/addon_restart" \
+            -H "Authorization: Bearer $HA_TOKEN" \
+            -H "Content-Type: application/json" \
+            --data '{"addon":"core_git_pull"}'
