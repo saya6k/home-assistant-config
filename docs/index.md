@@ -4,7 +4,7 @@ title: Welcome to my Home Assistant Config!
 
 === "Home"
 
-    ![Home](https://github.com/saya6k/home-assistant-config/blob/main/www/lovelace.png)
+    ![Home](https://github.com/saya6k/home-assistant-config/blob/main/www/lovelace/overview.png)
 
 === "Thread Network Map"
 
@@ -39,6 +39,7 @@ Read this documentation to see the bigger picture:
 
 [Hardware](./hardware){: .md-button }
 [Configuration](./config){: .md-button }
+[Services](./services){: .md-button }
 [Retired](./retired){: .md-button }
 [Inspiration](./resources){: .md-button }
 
@@ -49,6 +50,7 @@ My home setup for those who are too lazy to read everything:
 - [Home Assistant](https://home-assistant.io) OS running on [Raspberry Pi 5 8GB](https://www.raspberrypi.com/products/raspberry-pi-5/).
 - Various addons, such as [OpenThead Border Router](https://openthread.io/guides/border-router/), [Matter Server](https://csa-iot.org/all-solutions/matter/) and [xknx](https://xknx.io/home_assistant) for devices.
 - Reverse proxy using [Nginx Proxy Manager](https://nginxproxymanager.com/) with [CloudFlare](https://www.cloudflare.com/).
+- HomeLab services running as HA add-on.
 
 ## Motivation
 
