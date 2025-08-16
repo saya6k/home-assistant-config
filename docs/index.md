@@ -2,19 +2,19 @@
 title: Welcome to my Home Assistant Config!
 ---
 
-=== "Home"
+=== "🏠 Home"
 
     ![Home](https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/overview.png)
 
-=== "Thread Network Map"
+=== "🗺️ Thread Network Map"
 
     ![Living Room](https://raw.githubusercontent.com/saya6k/home-assistant-config/main/docs/images/ew11_cable.png){: loading=lazy }
 
-=== "Monitoring"
+=== "📊 Monitoring"
 
     ![Monitoring](https://raw.githubusercontent.com/saya6k/home-assistant-config/main/docs/images/haio-8.png){: loading=lazy }
 
-=== "Energy"
+=== "⚡ Energy"
 
     ![Energy](https://raw.githubusercontent.com/saya6k/home-assistant-config/main/docs/images/raspberry-pi-5.png){: loading=lazy }
 
@@ -28,7 +28,7 @@ title: Welcome to my Home Assistant Config!
 This is my personal Home Assistant configuration, awakening my home with automations. I hope this will help you inspire to start your home automation journey.
 
 <!-- prettier-ignore -->
-!!!attention "Beware of changes"
+!!!attention "⚠️ Beware of changes"
     I constantly improve my home. It evolves as I add new devices and services. It's changing as my daily routines are changing.
 
     Please, keep in mind **this documentation might be outdated** in covering some details. However, I'll try my best to keep this updated.
@@ -43,7 +43,7 @@ Read this documentation to see the bigger picture:
 [Retired](./retired){: .md-button }
 [Inspiration](./resources){: .md-button }
 
-## What's inside?
+## 📦 What's inside?
 
 My home setup for those who are too lazy to read everything:
 
@@ -52,26 +52,26 @@ My home setup for those who are too lazy to read everything:
 - Reverse proxy using [Nginx Proxy Manager](https://nginxproxymanager.com/) with [CloudFlare](https://www.cloudflare.com/).
 - HomeLab services running as HA add-on.
 
-## Motivation
+## 🚀 Motivation
 
 I write this documentation for two main reasons:
 
 1. **To keep track of growing my smart home.** To maintain an understanding of how things are working.
 2. **To help other enthusiasts inspire.** People often ask about my smart home setup. Now I can give them a link to this documentation, instead of explaining everything once again.
 
-## Limitations
+## ⚠️ Limitations
 
 I'm renting my apartment. My landlord handles fixing stuff in my home, covering all the expenses. The only downside is that I can't change anything in my home.
 
 I can't disassemble anything and use custom switches or sockets. It means I can change only easily accessible parts, like bulbs.
 
-## Future Plans
+## 🔮 Future Plans
 
 I have a [public kanban board][kanban-board] with ideas and tasks for my smart home. You can follow and comment my plans there.
 
 [See future plans][kanban-board]{: .md-button }
 
-## License
+## 📜 License
 
 [MIT][license-url] © [saya6k][saya6k]
 
