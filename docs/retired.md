@@ -25,6 +25,9 @@ This is where I store retired Hardware and Software. I have used these more than
 | [HejHome 스마트 플러그 Air](https://hej.life/product/detail.html?product_no=212&cate_no=42&display_group=1)               | [Matter (BETA)](https://www.home-assistant.io/integrations/matter/)                                                                          | 최대 10A. 아주 슬림하고 전력측정을 지원하지만 Matter-over-WiFi인 것이 흠입니다.                                                                                                                                 |
 | [Aqara Door and Windows Sensor P2](https://www.aqara.com/en/product/door-and-window-sensor-p2/)                           | [Matter (BETA)](https://www.home-assistant.io/integrations/matter/)                                                                          | 훌륭하지만 이전 Zigbee 모델보다 약간 비쌉니다. 배터리 규격이 특이합니다.                                                                                                                                        |
 | [Elfin EW11](http://www.hi-flying.com/elfin-ew10-elfin-ew11)                                                              | [HomeAssistant Addon for Hillstate (Hyundai HT Wallpad + RS-485](https://github.com/YOGYUI/homeassistant-addons/tree/main/homenet-hillstate) | 설치된 월패드(HNF-I2101)와 HA를 연결하는 RS485 to WIFI 동글입니다.                                                                                                                                              |
+| [Amazon Fire 10 HD(2019)](https://www.amazon.com/Fire-HD-10/dp/B07KD58DQS) |    1     |   Wi-Fi    | [Fully Kiosk Browser](https://www.home-assistant.io/integrations/fully_kiosk/) | 더이상 월패드 용으로 태블릿을 사용하지 않습니다. |
+| [Brewista Artisan Electric Gooseneck Kettle](https://brewista.co/products/artisan-electric-gooseneck-kettle) | 1 | - | - | 스마트 기기가 아니지만 예쁩니다. 나는 커피를 추출할 때 이것을 사용합니다. |
+| [ITOP 03 Coffee Grinder](https://ko.aliexpress.com/item/1005006170009173.html) | 1 | - | - | Varia VS3 그라인더의 중국 클론입니다. 
 
 ## Retired Softwares
 
