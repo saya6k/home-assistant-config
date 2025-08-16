@@ -1,3 +1,9 @@
+## [1.3.1](https://github.com/saya6k/home-assistant-config/compare/v1.3.0...v1.3.1) (2025-08-16)
+
+### Bug Fixes
+
+* ensure restart-addon job runs regardless of release job success ([8f2bca9](https://github.com/saya6k/home-assistant-config/commit/8f2bca92e2b5cf9e5fa9e0fbff14cad6052faf4c))
+
 ## [1.3.0](https://github.com/saya6k/home-assistant-config/compare/v1.2.6...v1.3.0) (2025-08-16)
 
 ### Features
