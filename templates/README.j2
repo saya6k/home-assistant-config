@@ -1,0 +1,494 @@
+# Home Assistant Config
+
+![Project Maintenance][maintenance-shield]
+[![GitHub Workflow Status][github-img]][github-url]
+[![Last Commit][last-commit-img]][github-url]
+[![Commit Activity][commit-activity-img]][github-url]
+[![License][license-img]][license-url]
+[![GitHub Stars][stars-img]][github-url]
+
+[![HA Version](https://img.shields.io/badge/Running%20Home%20Assistant-{{states('sensor.home_assistant_versions')}}%20-darkblue)](https://github.com/home-assistant/home-assistant/core/releases/tag/{{states('sensor.home_assistant_versions')}})
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/my7nmfcm92k)
+
+This is my Home Assistant configuration, updated on {{states('sensor.date')}}.
+
+I started using Home Assistant in 2018. Now, it has grown significantly, with a total of {{states | count}} entities for now.
+
+> [!CAUTION]
+> I constantly improve my home. It evolves as I add new devices and services. It's changing as my daily routines are changing.
+> Please, keep in mind **this documentation might be outdated** in covering some details. However, I'll try my best to keep this updated.
+
+This repository publish it's documentation. Go to: [Documentation][docs-url]
+
+Or you can directly go to:
+
+[Hardware](./docs/hardware.md) |
+[Configuration](./docs/config/index.md) |
+[Retired](./docs/retired.md) |
+[Inspiration](./docs/resources.md)
+
+## Table of Content
+
+[Insights](#insights) |
+[Integrations](#integrations) |
+[Automations](#automations) |
+[Add-Ons](#add-ons) |
+[Dashboards](#dashboards) |
+[Custom Integrations](#custom-integrations) |
+
+----
+
+## Insights
+
+Domain | Value
+-- | --
+automations | {{states.automation | count}}
+binary_sensors | {{states.binary_sensor | count}}
+device_trackers | {{states.device_tracker | count}}
+lights | {{states.light | count}}
+media_players | {{states.media_player | count}}
+sensors | {{states.sensor | count}}
+switches | {{states.switch | count}}
+switches | {{states.switch | count}}
+others | {{ states | count - (states.automation | count) - (states.binary_sensor | count) - (states.device_tracker | count) - (states.light | count) - (states.media_player | count) - (states.sensor | count) - (states.switch | count) }}
+**Total** | **{{states | count}}**
+
+## Integrations
+
+Integration | Name
+--|--
+{%- set core_integrations = [
+    {
+        "key": "seventeentrack",
+        "name": "17TRACK"
+    },
+    {
+        "key": "alert",
+        "name": "alert"
+    },
+    {
+        "key": "notify",
+        "name": "notify"
+    },
+    {
+        "key": "alarm_control_panel.template",
+        "name": "Template Alarm control panel"
+    },
+    {
+        "key": "anthropic",
+        "name": "Anthropic Conversation"
+    },
+    {
+        "key": "apple_tv",
+        "name": "Apple TV"
+    },
+    {
+        "key": "automation",
+        "name": "Automation"
+    },
+    {
+        "key": "backup",
+        "name": "Backup"
+    },
+    {
+        "key": "bluetooth",
+        "name": "Bluetooth"
+    },
+    {
+        "key": "caldav",
+        "name": "CalDAV"
+    },
+    {
+        "key": "calendar",
+        "name": "Calendar"
+    },
+    {
+        "key": "cert_expiry",
+        "name": "Certificate Expiry"
+    },
+    {
+        "key": "command_line",
+        "name": "Command Line"
+    },
+    {
+        "key": "co2signal",
+        "name": "Electricity Maps"
+    },
+    {
+        "key": "default_config",
+        "name": "Default Config"
+    },
+    {
+        "key": "discord",
+        "name": "Discord"
+    },
+    {
+        "key": "downloader",
+        "name": "Downloader"
+    },
+    {
+        "key": "esphome",
+        "name": "ESPHome"
+    },
+    {
+        "key": "feedreader",
+        "name": "Feedreader"
+    },
+    {
+        "key": "frontend",
+        "name": "Frontend"
+    },
+    {
+        "key": "fully_kiosk",
+        "name": "Fully Kiosk Browser"
+    },
+    {
+        "key": "generic",
+        "name": "Generic Camera"
+    },
+    {
+        "key": "github",
+        "name": "GitHub"
+    },
+    {
+        "key": "google_drive",
+        "name": "Google Drive"
+    },
+    {
+        "key": "google_generative_ai_conversation",
+        "name": "Google Generative AI Conversation"
+    },
+    {
+        "key": "google_translate",
+        "name": "Google Translate text-to-speech"
+    },
+    {
+        "key": "hassio",
+        "name": "Supervisor"
+    },
+    {
+        "key": "history",
+        "name": "History"
+    },
+    {
+        "key": "holiday",
+        "name": "Holiday"
+    },
+    {
+        "key": "homeassistant",
+        "name": "Home Assistant Core Integration"
+    },
+    {
+        "key": "http",
+        "name": "HTTP"
+    },
+    {
+        "key": "icloud",
+        "name": "Apple iCloud"
+    },
+    {
+        "key": "imap",
+        "name": "IMAP"
+    },
+    {
+        "key": "lastfm",
+        "name": "Last.fm"
+    },
+    {
+        "key": "lg_thinq",
+        "name": "LG ThinQ"
+    },
+    {
+        "key": "local_calendar",
+        "name": "Local Calendar"
+    },
+    {
+        "key": "local_ip",
+        "name": "Local IP Address"
+    },
+    {
+        "key": "local_todo",
+        "name": "Local To Do"
+    },
+    {
+        "key": "logger",
+        "name": "Logger",
+    },
+    {
+        "key": "lovelace",
+        "name": "Lovelace"
+    },
+    {
+        "key": "matter",
+        "name": "Matter"
+    },
+    {
+        "key": "mcp_server",
+        "name": "Model Context Protocol Server"
+    },
+    {
+        "key": "media_extractor",
+        "name": "Media extractor"
+    },
+    {
+        "key": "mobile_app",
+        "name": "Mobile App"
+    },
+    {
+        "key": "mqtt",
+        "name": "MQTT"
+    },
+    {
+        "key": "moon",
+        "name": "Moon"
+    },
+    {
+        "key": "music_assistant",
+        "name": "Music Assistant"
+    },
+    {
+        "key": "my",
+        "name": "My Home Assistant"
+    },
+    {
+        "key": "oralb",
+        "name": "Oral-B"
+    },
+    {
+        "key": "otbr",
+        "name": "Open Thread Border Router"
+    },
+    {
+        "key": "openai_conversation",
+        "name": "OpenAI Conversation"
+    },
+    {
+        "key": "ping",
+        "name": "Ping (ICMP)"
+    },
+    {
+        "key": "plex",
+        "name": "Plex Media Server"
+    },
+    {
+        "key": "private_ble_device",
+        "name": "Private BLE Device"
+    },
+    {
+        "key": "prometheus",
+        "name": "Prometheus"
+    },
+    {
+        "key": "proximity",
+        "name": "Proximity"
+    },
+    {
+        "key": "recorder",
+        "name": "Recorder"
+    },
+    {
+        "key": "remote_calendar",
+        "name": "Remote Calendar"
+    },
+    {
+        "key": "rpi_power",
+        "name": "Raspberry Pi Power Supply Checker"
+    },
+    {
+        "key": "scrape",
+        "name": "Scrape"
+    },
+    {
+        "key": "script",
+        "name": "Script"
+    },
+    {
+        "key": "scene",
+        "name": "Scene"
+    },
+    {
+        "key": "season",
+        "name": "Season"
+    },
+    {
+        "key": "shell_command",
+        "name": "Shell Command"
+    },
+    {
+        "key": "smartthings",
+        "name": "SmartThings"
+    },
+    {
+        "key": "sql",
+        "name": "SQL"
+    },
+    {
+        "key": "steam_online",
+        "name": "Steam"
+    },
+    {
+        "key": "systemmonitor",
+        "name": "System Monitor"
+    },
+    {
+        "key": "sun",
+        "name": "Sun"
+    },
+    {
+        "key": "thread",
+        "name": "Thread"
+    },
+    {
+        "key": "time_date",
+        "name": "Time & Date"
+    },
+    {
+        "key": "template",
+        "name": "Template"
+    },
+    {
+        "key": "todoist",
+        "name": "Todoist"
+    },
+    {
+        "key": "uptime",
+        "name": "Uptime"
+    },
+    {
+        "key": "version",
+        "name": "Version"
+    },
+    {
+        "key": "withings",
+        "name": "Withings"
+    },
+    {
+        "key": "workday",
+        "name": "Workday"
+    },
+    {
+        "key": "youtube",
+        "name": "YouTube"
+    },
+    {
+        "key": "zodiac",
+        "name": "Zodiac"
+    }
+] %}
+{% for integration in core_integrations | sort(attribute='name') -%}
+  [<img src="https://brands.home-assistant.io/_/{{integration.key}}/icon.png" height="24"/>](https://brands.home-assistant.io/_/{{integration.key}}/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/{{integration.key}}/icon.png" height="24"/>](https://brands.home-assistant.io/_/{{integration.key}}/icon.png#gh-light-mode-only) | [{{integration.name}}](https://home-assistant.io/integrations/{{integration.key}})
+{% endfor -%}
+
+## Automations
+
+> [!TIP]
+> If you want to see my automation details other than list, go to [Automations](./docs/config/automations.md)
+
+> [!TIP]
+> Or if you want to see `automations.yaml`, click [automations.yaml](./automations.yaml)
+
+Name | Description
+-- | --
+{%- for entities in states.automation | sort(attribute='name') %}
+  {{entities.name}} | mode: {{entities.attributes.mode}}
+{%- endfor %}
+
+## Add-Ons
+
+> [!TIP]
+> If you want to see services I'm running as add-ons, go to [Services](./docs/config/services.md)
+
+> [!TIP]
+>  If you want to see how I built my grafana dashboards, go to [Monitoring](./docs/config/monitoring.md)
+
+Name | Version | Description
+-- | -- | --
+{%- for addon in addons | sort(attribute='name') %}
+[{{addon.name}}](https://my.home-assistant.io/redirect/supervisor_addon/?addon={{addon.slug}}) | {{addon.version}} | {{ addon.documentation if addon.documentation else addon.state }}
+{%- endfor %}
+
+## Dashboards
+
+> [!TIP]
+> If you want to see how I built my dashboards other than list, go to [Dashboards](./docs/config/dashboards)
+
+<table>
+  <tr>
+    <td>
+      <img alt="Lovelace Dashboard" src="www/lovelace/overview.png"><br>
+      Overview on Desktop
+    </td>
+    <td>
+      <img alt="Mobile Dashboard" src="www/lovelace/mobile.png"><br>
+      Overview on Mobile
+    </td>
+    <td>
+      <img alt="Mobile Dashboard" src="www/lovelace/living-room-subview.png"><br>
+      Living Room Subview as Sample
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img alt="Monitoring Dashboard" src="www/lovelace/system.png"><br>
+      System Dashboard
+    </td>
+    <td>
+      <img alt="Climate Dashboard" src="www/lovelace/climate.png"><br>
+      Climate Dashboard
+    </td>
+    <td>
+      <img alt="Energy Dashboard" src="www/lovelace/energy.png"><br>
+      Energy Dashboard
+    </td>
+  </tr>
+</table>
+
+### Lovelace Plugins
+
+Name | Description
+-- | --
+{%- for component in hacs_components | selectattr('category', 'equalto', 'plugin') | sort(attribute='name') %}
+  [{{component.name}}]({{component.documentation}}) | {{component.description}}
+{%- endfor %}
+
+### Themes
+
+Name | Description
+-- | --
+{%- for component in hacs_components | selectattr('category', 'equalto', 'theme') | sort(attribute='name') %}
+  [{{component.name}}]({{component.documentation}}) | {{component.description}}
+{%- endfor %}
+
+## Custom Integration
+
+Name | Description
+-- | --
+{%- for component in hacs_components | selectattr('category', 'equalto', 'integration') | sort(attribute='name') %}
+  [<img src="https://brands.home-assistant.io/_/{{component.domain}}/icon.png" height="24"/>](https://brands.home-assistant.io/_/{{component.domain}}/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/{{component.domain}}/icon.png" height="24"/>](https://brands.home-assistant.io/_/{{component.domain}}/icon.png#gh-light-mode-only) [{{component.name}}]({{component.documentation}}) | {{component.description}}
+{%- endfor %}
+
+***
+
+Generated by the [custom readme integration](https://github.com/custom-components/readme)
+
+<!-- Footnotes -->
+
+[home-assistant]: https://home-assistant.io
+
+[saya6k]: https://lyz.kr
+[docs-url]: https://docs.lyz.kr/index.html
+
+[maintenance-shield]: https://img.shields.io/maintenance/yes/{% set year = states('sensor.date')[:4] %}{{ year }}.svg
+[contributors]: https://github.com/saya6k/home-assistant-config/graphs/contributors
+
+[kanban-board]: https://github.com/users/saya6k/projects/3
+[github-url]: https://github.com/saya6k/home-assistant-config
+[github-img]: https://img.shields.io/github/actions/workflow/status/saya6k/home-assistant-config/release.yml?style=flat-square
+[last-commit-img]: https://img.shields.io/github/last-commit/saya6k/home-assistant-config?style=flat-square
+[commit-activity-img]: https://img.shields.io/github/commit-activity/m/saya6k/home-assistant-config?style=flat-square
+[license-url]: https://github.com/saya6k/home-assistant-config/blob/main/LICENSE
+[license-img]: https://img.shields.io/github/license/saya6k/home-assistant-config?style=flat-square
+[twitter-url]: https://twitter.com/saya6k
+[twitter-img]: https://img.shields.io/twitter/follow/saya6k?label=Follow
+[stars-img]: https://img.shields.io/github/stars/saya6k/home-assistant-config?style=social
