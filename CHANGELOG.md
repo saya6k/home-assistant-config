@@ -1,3 +1,9 @@
+## [1.2.3](https://github.com/saya6k/home-assistant-config/compare/v1.2.2...v1.2.3) (2025-08-16)
+
+### Bug Fixes
+
+* Remove OIDC Auth until it works ([589dc2a](https://github.com/saya6k/home-assistant-config/commit/589dc2aa81be1d45ff78b8d4376616fc49602bc8))
+
 ## [1.2.2](https://github.com/saya6k/home-assistant-config/compare/v1.2.1...v1.2.2) (2025-08-15)
 
 ### Bug Fixes
