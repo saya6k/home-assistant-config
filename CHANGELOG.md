@@ -1,3 +1,13 @@
+## [1.3.0](https://github.com/saya6k/home-assistant-config/compare/v1.2.6...v1.3.0) (2025-08-16)
+
+### Features
+
+* Translate and enhance hardware documentation to English ([e770a91](https://github.com/saya6k/home-assistant-config/commit/e770a915c4d456646549cb6945d6b0f6de164214))
+
+### Bug Fixes
+
+* lint ([faee49e](https://github.com/saya6k/home-assistant-config/commit/faee49e848b29cec89941efbd24616bd13362623))
+
 ## [1.2.6](https://github.com/saya6k/home-assistant-config/compare/v1.2.5...v1.2.6) (2025-08-16)
 
 ### Bug Fixes
