@@ -4,7 +4,7 @@ title: Monitoring
 
 # Monitoring
 
-Grafana Dashboard.
+Grafana Dashboards.
 
 === "Energy Usage"
 

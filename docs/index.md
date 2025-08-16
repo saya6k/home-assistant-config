@@ -16,7 +16,7 @@ title: Welcome to my Home Assistant Config!
 
 === "Energy"
 
-    ![Energy](https://github.com/saya6k/home-assistant-config/blob/main/www/energy.png?raw=true){: loading=lazy }
+    ![Energy](https://github.com/saya6k/home-assistant-config/blob/main/www/lovelace/energy.png?raw=true){: loading=lazy }
 
 [![GitHub Workflow Status][github-img]][github-url]
 [![Last Commit][last-commit-img]][github-url]
