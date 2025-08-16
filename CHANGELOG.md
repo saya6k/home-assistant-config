@@ -1,3 +1,11 @@
+## [1.2.4](https://github.com/saya6k/home-assistant-config/compare/v1.2.3...v1.2.4) (2025-08-16)
+
+### Bug Fixes
+
+* Add non-ha blueprints ([e1cc3e4](https://github.com/saya6k/home-assistant-config/commit/e1cc3e498e4fb5fad5c997de12e2cc3fb3b14d12))
+* Add README.j2 to git ([4b88782](https://github.com/saya6k/home-assistant-config/commit/4b887822708d2772bc6d21a800f22911b79372e2))
+* Update Dashboard ([5850601](https://github.com/saya6k/home-assistant-config/commit/5850601e4f5444e4d1c964b72336c510d361faa8))
+
 ## [1.2.3](https://github.com/saya6k/home-assistant-config/compare/v1.2.2...v1.2.3) (2025-08-16)
 
 ### Bug Fixes
