@@ -1,3 +1,9 @@
+## [1.2.5](https://github.com/saya6k/home-assistant-config/compare/v1.2.4...v1.2.5) (2025-08-16)
+
+### Bug Fixes
+
+* Lint blueprints ([952dd9e](https://github.com/saya6k/home-assistant-config/commit/952dd9ec8aa33c204519b8e79df86d62097d37fe))
+
 ## [1.2.4](https://github.com/saya6k/home-assistant-config/compare/v1.2.3...v1.2.4) (2025-08-16)
 
 ### Bug Fixes
