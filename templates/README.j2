@@ -25,6 +25,7 @@ Or you can directly go to:
 
 [Hardware](./docs/hardware.md) |
 [Configuration](./docs/config/index.md) |
+[Services](./docs/config/services.md) |
 [Retired](./docs/retired.md) |
 [Inspiration](./docs/resources.md)
 
@@ -377,7 +378,7 @@ Integration | Name
     }
 ] %}
 {% for integration in core_integrations | sort(attribute='name') -%}
-  [<img src="https://brands.home-assistant.io/_/{{integration.key}}/icon.png" height="24"/>](https://brands.home-assistant.io/_/{{integration.key}}/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/{{integration.key}}/icon.png" height="24"/>](https://brands.home-assistant.io/_/{{integration.key}}/icon.png#gh-light-mode-only) | [{{integration.name}}](https://home-assistant.io/integrations/{{integration.key}})
+[<img src="https://brands.home-assistant.io/_/{{integration.key}}/icon.png" height="24"/>](https://brands.home-assistant.io/_/{{integration.key}}/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/{{integration.key}}/icon.png" height="24"/>](https://brands.home-assistant.io/_/{{integration.key}}/icon.png#gh-light-mode-only) | [{{integration.name}}](https://home-assistant.io/integrations/{{integration.key}})
 {% endfor -%}
 
 ## Automations
@@ -414,34 +415,34 @@ Name | Version | Description
 > If you want to see how I built my dashboards other than list, go to [Dashboards](./docs/config/dashboards)
 
 <table>
-  <tr>
-    <td>
-      <img alt="Lovelace Dashboard" src="www/lovelace/overview.png"><br>
-      Overview on Desktop
-    </td>
-    <td>
-      <img alt="Mobile Dashboard" src="www/lovelace/mobile.png"><br>
-      Overview on Mobile
-    </td>
-    <td>
-      <img alt="Mobile Dashboard" src="www/lovelace/living-room-subview.png"><br>
-      Living Room Subview as Sample
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <img alt="Monitoring Dashboard" src="www/lovelace/system.png"><br>
-      System Dashboard
-    </td>
-    <td>
-      <img alt="Climate Dashboard" src="www/lovelace/climate.png"><br>
-      Climate Dashboard
-    </td>
-    <td>
-      <img alt="Energy Dashboard" src="www/lovelace/energy.png"><br>
-      Energy Dashboard
-    </td>
-  </tr>
+    <tr>
+        <td>
+            <img alt="Lovelace Dashboard" src="www/lovelace/overview.png"><br>
+            Overview on Desktop
+        </td>
+        <td>
+            <img alt="Mobile Dashboard" src="www/lovelace/mobile.png"><br>
+            Overview on Mobile
+        </td>
+        <td>
+        <img alt="Mobile Dashboard" src="www/lovelace/living-room-subview.png"><br>
+        Living Room Subview as Sample
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <img alt="Monitoring Dashboard" src="www/lovelace/system.png"><br>
+            System Dashboard
+        </td>
+        <td>
+        <img alt="Climate Dashboard" src="www/lovelace/climate.png"><br>
+        Climate Dashboard
+        </td>
+        <td>
+            <img alt="Energy Dashboard" src="www/lovelace/energy.png"><br>
+            Energy Dashboard
+        </td>
+    </tr>
 </table>
 
 ### Lovelace Plugins
@@ -449,7 +450,7 @@ Name | Version | Description
 Name | Description
 -- | --
 {%- for component in hacs_components | selectattr('category', 'equalto', 'plugin') | sort(attribute='name') %}
-  [{{component.name}}]({{component.documentation}}) | {{component.description}}
+[{{component.name}}]({{component.documentation}}) | {{component.description}}
 {%- endfor %}
 
 ### Themes
@@ -457,7 +458,7 @@ Name | Description
 Name | Description
 -- | --
 {%- for component in hacs_components | selectattr('category', 'equalto', 'theme') | sort(attribute='name') %}
-  [{{component.name}}]({{component.documentation}}) | {{component.description}}
+[{{component.name}}]({{component.documentation}}) | {{component.description}}
 {%- endfor %}
 
 ## Custom Integration
@@ -465,7 +466,7 @@ Name | Description
 Name | Description
 -- | --
 {%- for component in hacs_components | selectattr('category', 'equalto', 'integration') | sort(attribute='name') %}
-  [<img src="https://brands.home-assistant.io/_/{{component.domain}}/icon.png" height="24"/>](https://brands.home-assistant.io/_/{{component.domain}}/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/{{component.domain}}/icon.png" height="24"/>](https://brands.home-assistant.io/_/{{component.domain}}/icon.png#gh-light-mode-only) [{{component.name}}]({{component.documentation}}) | {{component.description}}
+[<img src="https://brands.home-assistant.io/_/{{component.domain}}/icon.png" height="24"/>](https://brands.home-assistant.io/_/{{component.domain}}/dark_icon.png#gh-dark-mode-only)[<img src="https://brands.home-assistant.io/_/{{component.domain}}/icon.png" height="24"/>](https://brands.home-assistant.io/_/{{component.domain}}/icon.png#gh-light-mode-only) [{{component.name}}]({{component.documentation}}) | {{component.description}}
 {%- endfor %}
 
 ***
