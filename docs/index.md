@@ -1,5 +1,5 @@
 ---
-title: Welcome to my Home Assistant Config!
+title: 🎉 Welcome to my Home Assistant Config!
 ---
 
 === "🏠 Home"
