@@ -112,6 +112,22 @@ jobs:
           echo "published=${{ steps.release.outputs.new_release_published }}" >> $GITHUB_STEP_SUMMARY
           echo "version=${{ steps.release.outputs.new_release_version }}" >> $GITHUB_STEP_SUMMARY
 
+  restart-addon:
+    name: 🔄 Restart Git Pull Addon
+    needs: release
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Restart Git Pull via HA API
+        env:
+          HA_URL: ${{ secrets.HA_URL }}
+          HA_TOKEN: ${{ secrets.HA_TOKEN }}
+        run: |
+          curl -fsS -X POST "$HA_URL/api/services/hassio/addon_restart" \
+            -H "Authorization: Bearer $HA_TOKEN" \
+            -H "Content-Type: application/json" \
+            --data '{"addon":"core_git_pull"}'
+
   mkdocs_deploy:
     name: 📄 Build and 🚀 Deploy MkDocs (on release)
     needs: release
