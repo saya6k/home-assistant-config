@@ -417,3 +417,16 @@ unknown_2:
     response_variable: traffic_jam
   alias: '교통 카메라: 교통 체증 여부 확인'
   description: 공개 교통 카메라를 통해 경로의 교통 체증 여부를 확인합니다.
+llm_script_for_music_assistant_voice_requests_2:
+  alias: LLM Script for Music Assistant voice requests
+  use_blueprint:
+    path: music-assistant/llm_voice_script.yaml
+    input:
+      default_player: media_player.living_room
+  description: 'This script is used to play music based on a voice request. The tool
+    takes the following arguments: media_type, artist, album, media_id, radio_mode,
+    area. media_id and media_type are always required and must always be supplied
+    as arguments to this tool. An area or Music Assistant media player can optionally
+    be provided in the voice request as well. Use the parameters as described in the
+    description of each parameter. Use this tool whenever the user requests to play
+    music.'
