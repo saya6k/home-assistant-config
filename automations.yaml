@@ -45,22 +45,72 @@
   - data:
       convert_lovelace: true
     action: readme.generate
-  - wait_for_trigger:
-    - trigger: state
-      entity_id:
-      - camera.ha_lovelace_dashboard
-      to: idle
-    timeout:
+  - delay:
       hours: 0
-      minutes: 5
-      seconds: 0
+      minutes: 0
+      seconds: 30
       milliseconds: 0
   - action: camera.snapshot
     metadata: {}
     data:
-      filename: /config/www/lovelace.png
+      filename: /config/www/lovelace/overview.png
     target:
-      entity_id: camera.ha_lovelace_dashboard
+      entity_id: camera.ha_overview_dashboard
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  - action: camera.snapshot
+    metadata: {}
+    data:
+      filename: /config/www/lovelace/climate.png
+    target:
+      entity_id: camera.ha_climate_dashboard
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  - action: camera.snapshot
+    metadata: {}
+    data:
+      filename: /config/www/lovelace/energy.png
+    target:
+      entity_id: camera.lovelace_energy_dashboard
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  - action: camera.snapshot
+    metadata: {}
+    data:
+      filename: /config/www/lovelace/mobile.png
+    target:
+      entity_id: camera.ha_mobile_dashboard
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  - action: camera.snapshot
+    metadata: {}
+    data:
+      filename: /config/www/lovelace/system.png
+    target:
+      entity_id: camera.ha_system_dashboard
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  - action: camera.snapshot
+    metadata: {}
+    data:
+      filename: /config/www/lovelace/living-room-subview.png
+    target:
+      entity_id: camera.lovelace_sample_subview
   - action: shell_command.git_push
     metadata: {}
     data: {}
@@ -149,33 +199,6 @@
         If not specified, play favorite playlist.
     enabled: false
   mode: single
-- id: '1728370793546'
-  alias: Bathroom Occupancy Light Control
-  description: ''
-  use_blueprint:
-    path: Blackshome/sensor-light.yaml
-    input:
-      motion_trigger:
-      - binary_sensor.bathroom_occupancy
-      light_switch:
-        entity_id: light.bathroom_ceiling
-      time_delay: 3
-      include_light_control:
-      - use_transition
-- id: '1732863830358'
-  alias: Kitchen Occupancy Light Control
-  description: ''
-  use_blueprint:
-    path: Blackshome/sensor-light.yaml
-    input:
-      motion_trigger:
-      - binary_sensor.kitchen_occupancy
-      light_switch:
-        entity_id:
-        - light.kitchen_counter
-      time_delay: 1
-      include_light_control:
-      - use_transition
 - id: '1737078076689'
   alias: Notify Steam Wishlist on Sales
   description: ''
