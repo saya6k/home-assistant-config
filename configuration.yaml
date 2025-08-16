@@ -79,14 +79,14 @@ http:
   ip_ban_enabled: !secret ip_ban_enabled
   login_attempts_threshold: !secret login_attempts_threshold
 
-auth_oidc:
-  client_id: !secret oidc_client_id
-  discovery_url: !secret oidc_discovery_url
-  features:
-    automatic_user_linking: true
-  roles:
-    admin: home-admin
-    user: home-user
+# auth_oidc:
+#   client_id: !secret oidc_client_id
+#   discovery_url: !secret oidc_discovery_url
+#   features:
+#     automatic_user_linking: true
+#   roles:
+#     admin: home-admin
+#     user: home-user
 
 ####################################################
 #                                                  #
