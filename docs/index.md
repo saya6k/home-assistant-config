@@ -4,19 +4,19 @@ title: Welcome to my Home Assistant Config!
 
 === "Home"
 
-    ![Home](https://github.com/saya6k/home-assistant-config/blob/main/www/lovelace/overview.png?raw=true)
+    ![Home](https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/overview.png)
 
 === "Thread Network Map"
 
-    ![Living Room](https://github.com/saya6k/home-assistant-config/blob/main/www/thread-map.png?raw=true){: loading=lazy }
+    ![Living Room](https://raw.githubusercontent.com/saya6k/home-assistant-config/main/docs/images/ew11_cable.png){: loading=lazy }
 
 === "Monitoring"
 
-    ![Monitoring](https://github.com/saya6k/home-assistant-config/blob/main/www/monitoring.png?raw=true){: loading=lazy }
+    ![Monitoring](https://raw.githubusercontent.com/saya6k/home-assistant-config/main/docs/images/haio-8.png){: loading=lazy }
 
 === "Energy"
 
-    ![Energy](https://github.com/saya6k/home-assistant-config/blob/main/www/lovelace/energy.png?raw=true){: loading=lazy }
+    ![Energy](https://raw.githubusercontent.com/saya6k/home-assistant-config/main/docs/images/raspberry-pi-5.png){: loading=lazy }
 
 [![GitHub Workflow Status][github-img]][github-url]
 [![Last Commit][last-commit-img]][github-url]
