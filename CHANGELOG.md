@@ -1,3 +1,9 @@
+## [1.2.6](https://github.com/saya6k/home-assistant-config/compare/v1.2.5...v1.2.6) (2025-08-16)
+
+### Bug Fixes
+
+* Add change in UI ([a00bdc2](https://github.com/saya6k/home-assistant-config/commit/a00bdc2c301cb5bbca7aa222f7ed8d3fd2e46089))
+
 ## [1.2.5](https://github.com/saya6k/home-assistant-config/compare/v1.2.4...v1.2.5) (2025-08-16)
 
 ### Bug Fixes
