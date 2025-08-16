@@ -6,7 +6,7 @@ title: Dashboards
 
 === "Overview"
 
-    ![Overview](https://github.com/saya6k/home-assistant-config/blob/main/www/lovelace/overview.pngi=?raw=true)
+    ![Overview](https://github.com/saya6k/home-assistant-config/blob/main/www/lovelace/overview.png=?raw=true)
 
 === "Overview on Mobile"
 
