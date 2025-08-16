@@ -430,3 +430,77 @@ llm_script_for_music_assistant_voice_requests_2:
     be provided in the voice request as well. Use the parameters as described in the
     description of each parameter. Use this tool whenever the user requests to play
     music.'
+lovelace:
+  sequence:
+  - data:
+      convert_lovelace: true
+    action: readme.generate
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  - action: camera.snapshot
+    metadata: {}
+    data:
+      filename: /config/www/lovelace/overview.png
+    target:
+      entity_id: camera.ha_overview_dashboard
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  - action: camera.snapshot
+    metadata: {}
+    data:
+      filename: /config/www/lovelace/climate.png
+    target:
+      entity_id: camera.ha_climate_dashboard
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  - action: camera.snapshot
+    metadata: {}
+    data:
+      filename: /config/www/lovelace/energy.png
+    target:
+      entity_id: camera.lovelace_energy_dashboard
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  - action: camera.snapshot
+    metadata: {}
+    data:
+      filename: /config/www/lovelace/mobile.png
+    target:
+      entity_id: camera.ha_mobile_dashboard
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  - action: camera.snapshot
+    metadata: {}
+    data:
+      filename: /config/www/lovelace/system.png
+    target:
+      entity_id: camera.ha_system_dashboard
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  - action: camera.snapshot
+    metadata: {}
+    data:
+      filename: /config/www/lovelace/living-room-subview.png
+    target:
+      entity_id: camera.lovelace_sample_subview
+  alias: Lovelace 대시보드 이미지 생성
+  description: 여러 대시보드 카메라의 스냅샷을 순차적으로 생성하고 저장합니다. 각 대시보드의 이미지를 30초 간격으로 캡처하여 개요 페이지를
+    업데이트하는 용도입니다.

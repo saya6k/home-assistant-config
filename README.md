@@ -13,7 +13,7 @@
 
 This is my Home Assistant configuration, updated on 2025-08-16.
 
-I started using Home Assistant in 2018. Now, it has grown significantly, with a total of 1533 entities for now.
+I started using Home Assistant in 2018. Now, it has grown significantly, with a total of 1542 entities for now.
 
 > [!CAUTION]
 > I constantly improve my home. It evolves as I add new devices and services. It's changing as my daily routines are changing.
@@ -48,11 +48,11 @@ binary_sensors | 152
 device_trackers | 14
 lights | 18
 media_players | 9
-sensors | 827
+sensors | 836
 switches | 148
 switches | 148
 others | 336
-**Total** | **1533**
+**Total** | **1542**
 
 ## Integrations
 
@@ -191,7 +191,7 @@ Name | Version | Description
 [ESPHome Device Builder](https://my.home-assistant.io/redirect/supervisor_addon/?addon=5c53de3b_esphome) | 2025.7.5 | started
 [File editor](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_configurator) | 5.8.0 | started
 [Firefly iii](https://my.home-assistant.io/redirect/supervisor_addon/?addon=db21ed7f_fireflyiii) | 6.2.21 | started
-[Git pull](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_git_pull) | 8.0.1 | error
+[Git pull](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_git_pull) | 8.0.1 | started
 [Grafana](https://my.home-assistant.io/redirect/supervisor_addon/?addon=a0d7b954_grafana) | 11.0.0 | started
 [Grocy](https://my.home-assistant.io/redirect/supervisor_addon/?addon=a0d7b954_grocy) | 0.24.0 | started
 [HassOS SSH port 22222 Configurator](https://my.home-assistant.io/redirect/supervisor_addon/?addon=2ad4c73a_hassos_ssh_configurator_addon) | 0.9.3 | stopped
