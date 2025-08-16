@@ -59,7 +59,13 @@ nav:
       - config/dashboards.md
       - config/automations.md
       - config/monitoring.md
-  - Services: services/index.md
+  - Services:
+      - services/index.md
+      - services/grocy.md
+      - services/firefly-iii.md
+      - services/pocket-id.md
+      - services/mail-server.md
+      - services/paperless.md
   - Retired: retired.md
   - Inspiration: resources.md
 
