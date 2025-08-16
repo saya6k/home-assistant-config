@@ -6,8 +6,7 @@ on:
 jobs:
   restart-addon:
     if: |
-      github.event.release.prerelease == 'false' &&
-      github.repository == 'saya6k/home-assistant-config'
+      github.event.release.prerelease == 'false'
     runs-on: ubuntu-latest
     steps:
       - name: Restart Git Pull via HA API
