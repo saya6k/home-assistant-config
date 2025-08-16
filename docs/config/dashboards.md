@@ -4,31 +4,29 @@ title: Dashboards
 
 # Dashboards
 
-![Lovelace Dashboard](../images/lovelace.png)
-
 === "Overview"
 
-    ![Overview](https://github.com/saya6k/home-assistant-config/blob/main/www/lovelace/overview.png)
+    ![Overview](https://github.com/saya6k/home-assistant-config/blob/main/www/lovelace/overview.pngi=?raw=true)
 
 === "Overview on Mobile"
 
-    ![Mobile](https://github.com/saya6k/home-assistant-config/blob/main/www/lovelace/mobile.png){: loading=lazy }
+    ![Mobile](https://github.com/saya6k/home-assistant-config/blob/main/www/lovelace/mobile.png?raw=true){: loading=lazy }
 
 === "System"
 
-    ![System](https://github.com/saya6k/home-assistant-config/blob/main/www/lovelace/system.png){: loading=lazy }
+    ![System](https://github.com/saya6k/home-assistant-config/blob/main/www/lovelace/system.png?raw=true){: loading=lazy }
 
 === "Climate"
 
-    ![Climate](https://github.com/saya6k/home-assistant-config/blob/main/www/lovelace/climate.png){: loading=lazy }
+    ![Climate](https://github.com/saya6k/home-assistant-config/blob/main/www/lovelace/climate.png?raw=true){: loading=lazy }
 
 === "Energy"
 
-    ![Climate](https://github.com/saya6k/home-assistant-config/blob/main/www/lovelace/energy.png){: loading=lazy }
+    ![Climate](https://github.com/saya6k/home-assistant-config/blob/main/www/lovelace/energy.png?raw=true){: loading=lazy }
 
 === "Living Room Subview"
 
-    ![Living Room](https://github.com/saya6k/home-assistant-config/blob/main/www/lovelace/living-room-subview.png){: loading=lazy }
+    ![Living Room](https://github.com/saya6k/home-assistant-config/blob/main/www/lovelace/living-room-subview.png?raw=true){: loading=lazy }
 
 The `ui-lovelace.yaml` configuration is automatically generated using a custom Readme component. Since I use the `lovelace: mode: storage`, I might not be able to answer questions about the YAML specifics.
 
