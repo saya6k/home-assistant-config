@@ -2,26 +2,26 @@
 title: Hardware
 ---
 
-# Hardware
+# 🏠 Smart Home Hardware
 
-This document provides a comprehensive list of the hardware present in my smart home setup. Some links in this document are affiliate links. If you purchase something through these links, I may receive a small commission at no extra cost to you.
+Welcome to the comprehensive list of hardware in my smart home setup. Some links are affiliate links, which means I may earn a small commission at no extra cost to you if you purchase through them.
 
-## Table of Contents
+## 📚 Table of Contents
 
-- [Home Assistant](#home-assistant)
-- [Hubs](#hubs)
-- [Climate](#climate)
-- [Windows/Curtains](#windowscurtains)
-- [Lights](#lights)
-- [Wall Switches](#wall-switches)
-- [Power Plugs](#power-plugs)
-- [Voice Control](#voice-control)
-- [Security](#security)
-- [Other Sensors](#other-sensors)
-- [Media](#media)
-- [Other Hardware](#other-hardware)
+- [🏠 Home Assistant](#home-assistant)
+- [🔗 Hubs](#hubs)
+- [🌡️ Climate](#climate)
+- [🪟 Windows/Curtains](#windowscurtains)
+- [💡 Lights](#lights)
+- [🔌 Wall Switches](#wall-switches)
+- [🔋 Power Plugs](#power-plugs)
+- [🎙️ Voice Control](#voice-control)
+- [🔒 Security](#security)
+- [📡 Other Sensors](#other-sensors)
+- [🎵 Media](#media)
+- [🛠️ Other Hardware](#other-hardware)
 
-## Home Assistant
+## 🏠 Home Assistant
 
 |                                      Device                                       | Quantity | Connection |                             Home Assistant                              |              Notes               |
 | :-------------------------------------------------------------------------------: | :------: | :--------: | :---------------------------------------------------------------------: | :------------------------------: |
@@ -29,19 +29,19 @@ This document provides a comprehensive list of the hardware present in my smart 
 |  [OpenKNX RasPi HAT](https://github.com/OpenKNX/OpenKNX/wiki/OpenKNX-RasPi-HAT)   |    -     |     -      |                                    -                                    |             KNX HAT              |
 | [Xinjian AX650n AI Accelerator](https://item.taobao.com/item.htm?id=831650560883) |    -     |     -      |                                    -                                    |          AI Accelerator          |
 
-## Hubs
+## 🔗 Hubs
 
 |                          Device                          | Quantity | Connection |                        Home Assistant                        |                                                            Notes                                                             |
 | :------------------------------------------------------: | :------: | :--------: | :----------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------: |
 | [AppleTV 4K 3rd](https://www.apple.com/lae/apple-tv-4k/) |    1     |    LAN     | [Thread](https://www.home-assistant.io/integrations/thread/) | Used as the main Thread Border Router. The SONOFF ZBDongle-E dongle with OTBR addon serves as a backup Thread Border Router. |
 
-## Climate
+## 🌡️ Climate
 
 |                                                 Device                                                 | Quantity | Connection |                          Home Assistant                          |           Notes            |
 | :----------------------------------------------------------------------------------------------------: | :------: | :--------: | :--------------------------------------------------------------: | :------------------------: |
 | [LG System Air Conditioner](https://www.lge.co.kr/kr/business/product/cooling/single-multi-v-s-living) |    1     |   Wi-Fi    | [LG ThinQ](https://www.home-assistant.io/integrations/lg_thinq/) | LG system air conditioner. |
 
-## Windows/Curtains
+## 🪟 Windows/Curtains
 
 I have transitioned from blinds to curtains but have not yet purchased a curtain motor.
 
@@ -49,7 +49,7 @@ I have transitioned from blinds to curtains but have not yet purchased a curtain
 | :----: | :------: | :--------: | :------------: | :---: |
 |   -    |    -     |     -      |       -        |   -   |
 
-## Lights
+## 💡 Lights
 
 |                                     Device                                     | Quantity | Connection |                           Home Assistant                            |                                                                 Notes                                                                  |
 | :----------------------------------------------------------------------------: | :------: | :--------: | :-----------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------: |
@@ -58,20 +58,20 @@ I have transitioned from blinds to curtains but have not yet purchased a curtain
 | [Auxmer LED CCT Strip](https://www.aliexpress.com/item/1005005645881199.html)  |    1     |     -      |                                  -                                  |       38.4W/m (240 LEDs). Highly desirable but four times more expensive than the one below. I use this strip for main lighting.       |
 |  [COXO LED CCT Strip](https://www.aliexpress.com/item/1005005791196110.html)   |    1     |     -      |                                  -                                  | 14W/m (608 LEDs). While Auxmer is better in performance, the price difference is significant. However, it's good for ambient lighting. |
 
-## Wall Switches
+## 🔌 Wall Switches
 
 |                                                                          Device                                                                           | Quantity | Connection |                           Home Assistant                            |                                                                     Notes                                                                      |
 | :-------------------------------------------------------------------------------------------------------------------------------------------------------: | :------: | :--------: | :-----------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------: |
 | [SPEEL TouchNet T2R All-Off + Gas Cut-Off Switch](http://speel.co.kr/project/%ec%9d%bc%ea%b4%84%ec%86%8c%eb%93%b1%ea%b0%80%ec%8a%a4%ec%b0%a8%eb%8b%a8-2/) |    1     |     -      |   [ESPHome](https://www.home-assistant.io/integrations/esphome/)    |               Features all-off and gas cut-off functions. However, I don't use the all-off function as it cuts off electricity.                |
 |                                            [Aqara H2 US](https://www.aqara.com/en/product/light-switch-h2-us/)                                            |    1     |   Thread   | [Matter (BETA)](https://www.home-assistant.io/integrations/matter/) | The only physical switch in my home. Controls the bathroom, shower booth, and exhaust fan. The last button is used as an all-off scene switch. |
 
-## Power Plugs
+## 🔋 Power Plugs
 
 | Device | Quantity | Connection | Home Assistant | Notes |
 | :----: | :------: | :--------: | :------------: | :---: |
 |   -    |    -     |     -      |       -        |   -   |
 
-## Voice Control
+## 🎙️ Voice Control
 
 Previously, I used the GPT-4o model from [OpenAI Conversation](https://www.home-assistant.io/integrations/openai_conversation/), but now I use the Gemini 2.0 Flash model from [Google Generative AI](https://www.home-assistant.io/integrations/google_generative_ai_conversation/) because it's free.
 
@@ -79,7 +79,7 @@ Previously, I used the GPT-4o model from [OpenAI Conversation](https://www.home-
 | :-----------------------------------------------------------------------------: | :------: | :--------: | :------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------: |
 | [Home Assistant Voice Preview Edition](https://www.home-assistant.io/voice-pe/) |    2     |   Wi-Fi    | [ESPHome](https://www.home-assistant.io/integrations/esphome/) | Official hardware from Home Assistant. Functionally similar to ReSpeaker Lite but more aesthetically pleasing. |
 
-## Security
+## 🔒 Security
 
 I use the Doods addon for object detection. It can handle over 10 FHD streams, detect motion, and recognize objects.
 
@@ -88,13 +88,13 @@ I use the Doods addon for object detection. It can handle over 10 FHD streams, d
 |                       [Eve Motion](https://www.evehome.com/en/eve-motion)                       |    1     |   Thread   | [Matter (BETA)](https://www.home-assistant.io/integrations/matter/) |                                     Works well but is quite expensive.                                     |
 | [Aqara Door and Windows Sensor P2](https://www.aqara.com/en/product/door-and-window-sensor-p2/) |    2     |   Thread   | [Matter (BETA)](https://www.home-assistant.io/integrations/matter/) | Excellent but slightly more expensive than the previous Zigbee model. The battery specification is unique. |
 
-## Other Sensors
+## 📡 Other Sensors
 
 |                                 Device                                  | Quantity | Connection |                         Home Assistant                         |                                 Notes                                 |
 | :---------------------------------------------------------------------: | :------: | :--------: | :------------------------------------------------------------: | :-------------------------------------------------------------------: |
 | [Netatmo Home Coach](https://shop.netatmo.com/en-eu/aircare/home-coach) |    1     |   Wi-Fi    | [Netatmo](https://www.home-assistant.io/integrations/netatmo/) | Cloud-based. Unfortunately, it doesn't measure air quality in detail. |
 
-## Media
+## 🎵 Media
 
 I use Music Assistant and Apple Music for music streaming.
 
@@ -105,7 +105,7 @@ I use Music Assistant and Apple Music for music streaming.
 |     [Edifier MR5](https://www.edifier.com/int/global/p/studio-monitors/mr5)     |    1     |     -      | [ESPHome](https://www.home-assistant.io/integrations/esphome/)  |                  Connected to the above Voice PE.                  |
 |                [JBL Flip 4](https://kr.jbl.com/JBL+Flip+4.html)                 |    1     |     -      | [ESPHome](https://www.home-assistant.io/integrations/esphome/)  | Connected to the Voice PE. Waterproof, used as a bathroom speaker. |
 
-## Other Hardware
+## 🛠️ Other Hardware
 
 ### Network Devices
 
