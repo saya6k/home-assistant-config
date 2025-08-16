@@ -1,3 +1,9 @@
+## [1.3.3](https://github.com/saya6k/home-assistant-config/compare/v1.3.2...v1.3.3) (2025-08-16)
+
+### Bug Fixes
+
+* correct title in docs/index.md to include emoji ([9205848](https://github.com/saya6k/home-assistant-config/commit/920584845c70224135cdb4c9cb1545fb7d16ae1a))
+
 ## [1.3.2](https://github.com/saya6k/home-assistant-config/compare/v1.3.1...v1.3.2) (2025-08-16)
 
 ### Bug Fixes
