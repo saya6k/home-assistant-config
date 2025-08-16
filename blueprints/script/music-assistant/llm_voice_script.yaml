@@ -1,7 +1,10 @@
+---
 blueprint:
   name: LLM Script for Music Assistant voice requests
-  source_url: https://github.com/music-assistant/voice-support/blob/main/llm-script-blueprint/llm_voice_script.yaml
-  description: '![Image](https://github.com/music-assistant/voice-support/blob/main/assets/music-assistant.png?raw=true)
+  source_url: |
+    https://github.com/music-assistant/voice-support/blob/main/llm-script-blueprint/llm_voice_script.yaml
+  description: |-
+   '![Image](https://github.com/music-assistant/voice-support/blob/main/assets/music-assistant.png?raw=true)
 
     # Creates a script which will allow voice requests for Music Assistant
 
@@ -16,7 +19,6 @@ blueprint:
 
     * It is possible to add additional actions to be performed after the Music Assistant
     play media action. There are several variables available which are described below.
-
 
     ## Example for script description
 
@@ -92,9 +94,9 @@ blueprint:
           selector:
             entity:
               filter:
-              - integration: music_assistant
-                domain:
-                - media_player
+                - integration: music_assistant
+                  domain:
+                    - media_player
               multiple: false
               reorder: false
           default:
@@ -116,9 +118,9 @@ blueprint:
           selector:
             select:
               options:
-              - Use player settings
-              - Always
-              - Never
+                - Use player settings
+                - Always
+                - Never
               multiple: false
               custom_value: false
               sort: false
@@ -301,11 +303,11 @@ fields:
     selector:
       select:
         options:
-        - track
-        - album
-        - artist
-        - playlist
-        - radio
+          - track
+          - album
+          - artist
+          - playlist
+          - radio
     name: Media Type
     description: !input media_type_prompt
     required: true
@@ -357,62 +359,62 @@ fields:
     name: Shuffle
     description: !input shuffle_prompt
 sequence:
-- variables:
-    version: 20250526
-    default_player: !input default_player
-    shuffle: '{{ shuffle | default(false, true) | bool(false) }}'
-    player_data: '{% set ma = integration_entities(''music_assistant'') %}
+  - variables:
+      version: 20250526
+      default_player: !input default_player
+      shuffle: '{{ shuffle | default(false, true) | bool(false) }}'
+      player_data: '{% set ma = integration_entities(''music_assistant'') %}
 
-      {% set ma_names = ma | map(''state_attr'', ''friendly_name'') | list %}
+        {% set ma_names = ma | map(''state_attr'', ''friendly_name'') | list %}
 
-      {% set ns = namespace(players=[]) %} {% for player in media_player | default([],
-      true) %}
+        {% set ns = namespace(players=[]) %} {% for player in media_player | default([],
+        true) %}
 
-      {% if player in ma %}
+        {% if player in ma %}
 
-      {% set ns.players = ns.players + [player] %}
+        {% set ns.players = ns.players + [player] %}
 
-      {% elif player in ma_names %}
+        {% elif player in ma_names %}
 
-      {% set entity = ma | select(''is_state_attr'', ''friendly_name'', player) |
-      list %}
+        {% set entity = ma | select(''is_state_attr'', ''friendly_name'', player) |
+        list %}
 
-      {% set ns.players = ns.players + entity %}
+        {% set ns.players = ns.players + entity %}
 
-      {% endif %}
+        {% endif %}
 
-      {% endfor %}
+        {% endfor %}
 
-      {{ ns.players }}'
-    target_data:
-      area_id: '{{ area | default(''NA'', true) }}'
-      entity_id: '{{ ''NA'' if area | default and not player_data else (player_data
-        or default_player) | default(''NA'', true) }}'
-    invalid_target:
-      response: Unable to find valid target
-- if:
-  - condition: template
-    value_template: '{{ not (area | default or player_data or default_player) }}'
-  then:
-  - stop: No valid target for Music Assistant Voice script found
-    response_variable: invalid_target
-- variables:
-    play_continuously: !input play_continuously
-    action_data:
-      media_id: '{{ media_id.split('';'') | map(''trim'') | list if '';'' in media_id
-        else media_id }}'
-      media_type: '{{ media_type }}'
-      artist: '{{ artist | default(''NA'', true) }}'
-      album: '{{ album | default(''NA'', true) }}'
-      radio_mode: '{{ false if play_continuously == ''Never'' else play_continuously
-        == ''Always'' and media_type != ''radio'' or ''NA'' }}'
-- alias: Play music using Music Assistant
-  action: music_assistant.play_media
-  data: '{{ dict(action_data.items() | rejectattr(''1'', ''eq'', ''NA'')) }}'
-  target: '{{ dict(target_data.items() | rejectattr(''1'', ''eq'', ''NA'')) }}'
-- alias: Enable/Disable shuffle on a Music Assistant Media Player
-  action: media_player.shuffle_set
-  data:
-    shuffle: '{{ shuffle }}'
-  target: '{{ dict(target_data.items() | rejectattr(''1'', ''eq'', ''NA'')) }}'
-- sequence: !input actions
+        {{ ns.players }}'
+      target_data:
+        area_id: '{{ area | default(''NA'', true) }}'
+        entity_id: '{{ ''NA'' if area | default and not player_data else (player_data
+          or default_player) | default(''NA'', true) }}'
+      invalid_target:
+        response: Unable to find valid target
+  - if:
+      - condition: template
+        value_template: '{{ not (area | default or player_data or default_player) }}'
+    then:
+      - stop: No valid target for Music Assistant Voice script found
+        response_variable: invalid_target
+  - variables:
+      play_continuously: !input play_continuously
+      action_data:
+        media_id: '{{ media_id.split('';'') | map(''trim'') | list if '';'' in media_id
+          else media_id }}'
+        media_type: '{{ media_type }}'
+        artist: '{{ artist | default(''NA'', true) }}'
+        album: '{{ album | default(''NA'', true) }}'
+        radio_mode: '{{ false if play_continuously == ''Never'' else play_continuously
+          == ''Always'' and media_type != ''radio'' or ''NA'' }}'
+  - alias: Play music using Music Assistant
+    action: music_assistant.play_media
+    data: '{{ dict(action_data.items() | rejectattr(''1'', ''eq'', ''NA'')) }}'
+    target: '{{ dict(target_data.items() | rejectattr(''1'', ''eq'', ''NA'')) }}'
+  - alias: Enable/Disable shuffle on a Music Assistant Media Player
+    action: media_player.shuffle_set
+    data:
+      shuffle: '{{ shuffle }}'
+    target: '{{ dict(target_data.items() | rejectattr(''1'', ''eq'', ''NA'')) }}'
+  - sequence: !input actions
