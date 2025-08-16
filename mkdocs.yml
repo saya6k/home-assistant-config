@@ -58,7 +58,6 @@ nav:
       - config/index.md
       - config/dashboards.md
       - config/automations.md
-      - config/services.md
       - config/monitoring.md
   - Services: services/index.md
   - Retired: retired.md
