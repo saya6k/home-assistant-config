@@ -77,7 +77,7 @@ I have a [public kanban board][kanban-board] with ideas and tasks for my smart h
 
 [kanban-board]: https://github.com/users/saya6k/projects/3
 [github-url]: https://github.com/saya6k/home-assistant-config
-[github-img]: https://img.shields.io/github/actions/workflow/status/saya6k/home-assistant-config/deploy-github-pages.yml?style=flat-square
+[github-img]: https://img.shields.io/github/actions/workflow/status/saya6k/home-assistant-config/release.yml?style=flat-square
 [last-commit-img]: https://img.shields.io/github/last-commit/saya6k/home-assistant-config?style=flat-square
 [commit-activity-img]: https://img.shields.io/github/commit-activity/m/saya6k/home-assistant-config?style=flat-square
 [license-url]: https://github.com/saya6k/home-assistant-config/blob/main/LICENSE.md
