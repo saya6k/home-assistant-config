@@ -120,14 +120,12 @@ ip_bans.yaml
 deps/
 blueprints/*/homeassistant
 esphome/.*/
-esphome/archive/
 addons_autoscripts/
 addons_config/
 packages/*
-templates/
 tts/
-custom_components/
-themes/
+custom_components/*
+themes/*
 www/community/
 
 # Keep empty directories
