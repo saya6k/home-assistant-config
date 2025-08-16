@@ -1,3 +1,9 @@
+## [1.3.2](https://github.com/saya6k/home-assistant-config/compare/v1.3.1...v1.3.2) (2025-08-16)
+
+### Bug Fixes
+
+* Documentation to not refer deleted docs ([15aa1ef](https://github.com/saya6k/home-assistant-config/commit/15aa1ef26ed20abe1c1c15c185d479eb5679e431))
+
 ## [1.3.1](https://github.com/saya6k/home-assistant-config/compare/v1.3.0...v1.3.1) (2025-08-16)
 
 ### Bug Fixes
