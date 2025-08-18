@@ -1,3 +1,13 @@
+## [1.4.0](https://github.com/saya6k/home-assistant-config/compare/v1.3.3...v1.4.0) (2025-08-18)
+
+### Features
+
+* Add Zemismart curtain motor ([fe12c93](https://github.com/saya6k/home-assistant-config/commit/fe12c932d841972421bfc8cfabd39706fffd954e))
+
+### Bug Fixes
+
+* Matter is no longer beta ([9fb5de8](https://github.com/saya6k/home-assistant-config/commit/9fb5de8b67469fe50bfc3c281825c8ce0be966c5))
+
 ## [1.3.3](https://github.com/saya6k/home-assistant-config/compare/v1.3.2...v1.3.3) (2025-08-16)
 
 ### Bug Fixes
