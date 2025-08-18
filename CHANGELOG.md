@@ -1,3 +1,9 @@
+## [1.4.1](https://github.com/saya6k/home-assistant-config/compare/v1.4.0...v1.4.1) (2025-08-18)
+
+### Bug Fixes
+
+* No longer use CNAME ([1670e98](https://github.com/saya6k/home-assistant-config/commit/1670e98858fbe9587676aca280e160a3be391b9b))
+
 ## [1.4.0](https://github.com/saya6k/home-assistant-config/compare/v1.3.3...v1.4.0) (2025-08-18)
 
 ### Features
