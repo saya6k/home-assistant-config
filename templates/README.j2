@@ -424,7 +424,7 @@ Integration | Name
 Name | Description
 -- | --
 {%- for entities in states.automation | sort(attribute='name') %}
-  {{entities.name}} | mode: {{entities.attributes.mode}}
+{{entities.name}} | mode: {{entities.attributes.mode}}
 {%- endfor %}
 
 ## Add-Ons
