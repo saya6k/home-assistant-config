@@ -45,9 +45,9 @@ Welcome to the comprehensive list of hardware in my smart home setup. Some links
 
 I have transitioned from blinds to curtains but have not yet purchased a curtain motor.
 
-|                                         Device                                         | Quantity | Connection |                        Home Assistant                        |                     Notes                      |
-| :------------------------------------------------------------------------------------: | :------: | :--------: | :----------------------------------------------------------: | :--------------------------------------------: |
-| [Zemismart Matter over Thread Curtain Motor](https://www.zemismart.com/products/mt25b) |    2     |   Thread   | [Matter](https://www.home-assistant.io/integrations/matter/) | Using this for Main curtain and sheer curtain. |
+|                                        Device                                         | Quantity | Connection |                        Home Assistant                        |                     Notes                      |
+| :-----------------------------------------------------------------------------------: | :------: | :--------: | :----------------------------------------------------------: | :--------------------------------------------: |
+| [Zemismart Matter over Thread Curtain Motor](https://www.zemismart.com/products/mt82) |    2     |   Thread   | [Matter](https://www.home-assistant.io/integrations/matter/) | Using this for Main curtain and sheer curtain. |
 
 ## 💡 Lights
 
