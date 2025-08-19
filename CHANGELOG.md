@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/saya6k/home-assistant-config/compare/v1.4.1...v1.4.2) (2025-08-19)
+
+### Bug Fixes
+
+* Remove unnecessary gitkeep file ([827c34a](https://github.com/saya6k/home-assistant-config/commit/827c34aff4d868bd025e0334fe2046c21c38cc3c))
+* Typo in kanban board link ([83d68db](https://github.com/saya6k/home-assistant-config/commit/83d68db2b1b236f30d7978bb67e31b78fca6969b))
+
 ## [1.4.1](https://github.com/saya6k/home-assistant-config/compare/v1.4.0...v1.4.1) (2025-08-18)
 
 ### Bug Fixes
