@@ -1,3 +1,14 @@
+## [1.5.0](https://github.com/saya6k/home-assistant-config/compare/v1.4.2...v1.5.0) (2025-08-19)
+
+### Features
+
+* Adjust some automations ([74113db](https://github.com/saya6k/home-assistant-config/commit/74113dbceb853edd911d2d705e005d111686cec8))
+* Remove scene '주간' ([9f8b77c](https://github.com/saya6k/home-assistant-config/commit/9f8b77cfb7d784a1a85ae6be30bb1dc4d2651a5c))
+
+### Bug Fixes
+
+* Add HA_VERSION ([3cb5585](https://github.com/saya6k/home-assistant-config/commit/3cb5585db7390edb9a68853c173f00f0373ddda6))
+
 ## [1.4.2](https://github.com/saya6k/home-assistant-config/compare/v1.4.1...v1.4.2) (2025-08-19)
 
 ### Bug Fixes
