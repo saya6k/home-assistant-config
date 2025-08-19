@@ -1014,17 +1014,6 @@
   conditions: []
   actions:
   - if:
-    - condition: device
-      type: is_on
-      device_id: 0262414ced6d9b87b5dc9258e0ff9f1d
-      entity_id: 0d30ae297e1ddd4bd00f037c0a0b5aae
-      domain: switch
-    then:
-    - type: turn_off
-      device_id: 0262414ced6d9b87b5dc9258e0ff9f1d
-      entity_id: 0d30ae297e1ddd4bd00f037c0a0b5aae
-      domain: switch
-  - if:
     - condition: state
       entity_id: binary_sensor.workday_sensor
       state: 'on'
