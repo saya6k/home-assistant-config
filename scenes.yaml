@@ -1,4 +1,3 @@
----
 - id: '1737074963052'
   name: 취침
   entities:
@@ -15,12 +14,12 @@
       supported_features: 15
       state: closed
     media_player.bathroom:
-      mass_player_type: player
-      active_queue: media_player.home_assistant_voice_094eeb_media_player
       device_class: speaker
       icon: mdi:speaker
       friendly_name: 화장실
       supported_features: 7796671
+      mass_player_type: player
+      active_queue: media_player.home_assistant_voice_094eeb_media_player
       volume_level: 0.2
       media_content_type: music
       app_id: music_assistant
@@ -38,53 +37,19 @@
       supported_features: 47
       state: armed_night
     media_player.living_room:
-      volume_level: 0.2
-      media_content_type: music
-      app_id: music_assistant
-      shuffle: true
-      repeat: 'off'
-      entity_picture_local:
-      mass_player_type: player
-      active_queue: media_player.home_assistant_voice_090541_media_player
       device_class: speaker
       icon: mdi:speaker
       friendly_name: 거실
       supported_features: 7796671
+      mass_player_type: player
+      active_queue: media_player.home_assistant_voice_090541_media_player
+      volume_level: 0.2
+      media_content_type: music
+      app_id: music_assistant
+      shuffle: false
+      repeat: 'off'
+      entity_picture_local:
       state: idle
-    switch.sleep_mode_default:
-      icon: mdi:sleep
-      friendly_name: 'Sleep Mode: 전체'
-      state: 'on'
-    switch.adapt_color_default:
-      icon: mdi:sun-thermometer
-      friendly_name: 'Adapt Color: 전체'
-      state: 'on'
-    switch.adapt_brightness_default:
-      icon: mdi:brightness-4
-      friendly_name: 'Adapt Brightness: 전체'
-      state: 'on'
-    switch.default:
-      icon: mdi:theme-light-dark
-      friendly_name: 전체
-      configuration: {}
-      manual_control: []
-      brightness_pct: 1
-      color_temp_kelvin: 1000
-      color_temp_mired: 1000
-      rgb_color:
-        - 255
-        - 56
-        - 0
-      xy_color:
-        - 0.682
-        - 0.315
-      hs_color:
-        - 13.882
-        - 100
-      sun_position: -0.9459031571676579
-      force_rgb_color: false
-      autoreset_time_remaining: {}
-      state: 'on'
     switch.energy_save_mode_adaptive_climate:
       icon: mdi:leaf
       friendly_name: Energy Save Mode (Adaptive Climate)
@@ -109,34 +74,34 @@
   entities:
     light.living_room_ceiling_light:
       supported_color_modes:
-        - onoff
+      - onoff
       color_mode:
       entity_id:
-        - light.esp_wallpad_room_1_light_1
+      - light.esp_wallpad_room_1_light_1
       icon: phu:ceiling-aurelle
       friendly_name: 거실 천장
       supported_features: 8
       state: 'off'
     light.kitchen_ceiling_light:
       supported_color_modes:
-        - onoff
+      - onoff
       color_mode:
       entity_id:
-        - light.esp_wallpad_room_1_light_2
+      - light.esp_wallpad_room_1_light_2
       icon: phu:ceiling-aurelle
       friendly_name: 주방 천장
       supported_features: 8
       state: 'off'
     light.bathroom_ceiling_light:
       supported_color_modes:
-        - onoff
+      - onoff
       icon: phu:ceiling-aurelle
       friendly_name: 화장실 천장
       supported_features: 0
       state: unavailable
     light.bathroom_shower_box:
       supported_color_modes:
-        - onoff
+      - onoff
       icon: mdi:shower-head
       friendly_name: 화장실 샤워부스
       supported_features: 0
@@ -206,7 +171,7 @@
       min_mireds: 153
       max_mireds: 370
       supported_color_modes:
-        - color_temp
+      - color_temp
       icon: mdi:floor-lamp-torchiere
       friendly_name: 거실 플로어
       supported_features: 32
@@ -221,51 +186,6 @@
       entity_only: true
     light.bathroom_shower_box:
       entity_only: true
-- id: '1737075830684'
-  name: 주간
-  entities:
-    cover.bedroom_main_curtain:
-      current_position: 100
-      device_class: curtain
-      friendly_name: 침실 겉커튼
-      supported_features: 15
-      state: open
-    switch.sleep_mode_default:
-      icon: mdi:sleep
-      friendly_name: 'Sleep Mode: 전체'
-      state: 'off'
-    switch.adapt_color_default:
-      icon: mdi:sun-thermometer
-      friendly_name: 'Adapt Color: 전체'
-      state: 'on'
-    switch.adapt_brightness_default:
-      icon: mdi:brightness-4
-      friendly_name: 'Adapt Brightness: 전체'
-      state: 'on'
-    switch.default:
-      configuration: {}
-      manual_control: []
-      brightness_pct: 6.12661794863114
-      color_temp_kelvin: 2000
-      color_temp_mired: 500
-      rgb_color:
-        - 255
-        - 136.86832541739756
-        - 13.904070298965905
-      xy_color:
-        - 0.598
-        - 0.383
-      hs_color:
-        - 30.504
-        - 93.333
-      sun_position: -0.9482159803168572
-      force_rgb_color: false
-      autoreset_time_remaining: {}
-      icon: mdi:theme-light-dark
-      friendly_name: 전체
-      state: 'on'
-  metadata: {}
-  icon: mdi:home-lightbulb-outline
 - id: '1737075994775'
   name: 환영
   entities:
@@ -392,82 +312,19 @@
       entity_picture_local:
       state: idle
     media_player.living_room:
-      volume_level: 0.5
-      media_content_type: music
-      app_id: music_assistant
-      shuffle: true
-      repeat: 'off'
-      entity_picture_local:
       mass_player_type: player
       active_queue: media_player.home_assistant_voice_090541_media_player
       device_class: speaker
       icon: mdi:speaker
       friendly_name: 거실
       supported_features: 7796671
+      volume_level: 0.5
+      media_content_type: music
+      app_id: music_assistant
+      shuffle: false
+      repeat: 'off'
+      entity_picture_local:
       state: idle
-    media_player.living_room_apple_tv:
-      source_list:
-        - App Store
-        - Arcade
-        - B tv
-        - FaceTime
-        - Jellyfin
-        - Netflix
-        - NordVPN
-        - Plex
-        - Steam Link
-        - TV
-        - Twitch
-        - Winter Fireplace
-        - YouTube
-        - 검색
-        - 사진
-        - 설정
-        - 음악
-        - 컴퓨터
-        - 쿠팡플레이
-        - 팟캐스트
-      friendly_name: 거실 Apple TV
-      supported_features: 450487
-      state: idle
-    remote.living_room_apple_tv:
-      friendly_name: 거실 Apple TV
-      supported_features: 0
-      state: 'on'
-    switch.sleep_mode_default:
-      icon: mdi:sleep
-      friendly_name: 'Sleep Mode: 전체'
-      state: 'off'
-    switch.adapt_color_default:
-      icon: mdi:sun-thermometer
-      friendly_name: 'Adapt Color: 전체'
-      state: 'on'
-    switch.adapt_brightness_default:
-      icon: mdi:brightness-4
-      friendly_name: 'Adapt Brightness: 전체'
-      state: 'on'
-    switch.default:
-      configuration: {}
-      manual_control: []
-      brightness_pct: 5.902656005418775
-      color_temp_kelvin: 2000
-      color_temp_mired: 500
-      rgb_color:
-        - 255
-        - 136.86832541739756
-        - 13.904070298965905
-      xy_color:
-        - 0.598
-        - 0.383
-      hs_color:
-        - 30.504
-        - 93.333
-      sun_position: -0.9504782221674871
-      force_rgb_color: false
-      autoreset_time_remaining: {}
-      icon: mdi:theme-light-dark
-      friendly_name: 전체
-      state: 'on'
   icon: mdi:weather-sunset-up
   metadata:
     alarm_control_panel.home_alarm:
@@ -477,10 +334,10 @@
   entities:
     light.kitchen_ceiling_light:
       supported_color_modes:
-        - onoff
+      - onoff
       color_mode: onoff
       entity_id:
-        - light.esp_wallpad_room_1_light_2
+      - light.esp_wallpad_room_1_light_2
       icon: phu:ceiling-aurelle
       friendly_name: 주방 천장
       supported_features: 8
@@ -533,7 +390,7 @@
       min_mireds: 153
       max_mireds: 370
       supported_color_modes:
-        - color_temp
+      - color_temp
       color_mode:
       brightness:
       color_temp_kelvin:
@@ -563,33 +420,33 @@
       state: 'off'
     select.comfort_category_adaptive_climate:
       options:
-        - I
-        - II
+      - I
+      - II
       icon: mdi:account-group
       friendly_name: Comfort Category (Adaptive Climate)
       state: I
     climate.air_conditioner:
       hvac_modes:
-        - 'off'
-        - fan_only
-        - auto
-        - dry
-        - cool
+      - 'off'
+      - fan_only
+      - auto
+      - dry
+      - cool
       min_temp: 16
       max_temp: 30
       target_temp_step: 0.5
       fan_modes:
-        - high
-        - mid
-        - auto
-        - low
-        - power
+      - high
+      - mid
+      - auto
+      - low
+      - power
       swing_modes:
-        - 'on'
-        - 'off'
+      - 'on'
+      - 'off'
       swing_horizontal_modes:
-        - 'on'
-        - 'off'
+      - 'on'
+      - 'off'
       current_temperature: 26.5
       temperature:
       target_temp_high:
@@ -618,20 +475,20 @@
   entities:
     light.living_room_ceiling_light:
       supported_color_modes:
-        - onoff
+      - onoff
       color_mode:
       entity_id:
-        - light.esp_wallpad_room_1_light_1
+      - light.esp_wallpad_room_1_light_1
       icon: phu:ceiling-aurelle
       friendly_name: 거실 천장
       supported_features: 8
       state: 'off'
     light.kitchen_ceiling_light:
       supported_color_modes:
-        - onoff
+      - onoff
       color_mode:
       entity_id:
-        - light.esp_wallpad_room_1_light_2
+      - light.esp_wallpad_room_1_light_2
       icon: phu:ceiling-aurelle
       friendly_name: 주방 천장
       supported_features: 8
@@ -677,7 +534,7 @@
       min_mireds: 153
       max_mireds: 370
       supported_color_modes:
-        - color_temp
+      - color_temp
       color_mode:
       brightness:
       color_temp_kelvin:
