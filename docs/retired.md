@@ -31,10 +31,11 @@ This section documents the hardware and software that I have retired from my sma
 
 ## 💾 Retired Software
 
-|   Software    |                                Home Assistant Integration                                |                                    Notes                                     |
-| :-----------: | :--------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------: |
-| browser_mod 2 |             [browser_mod 2](https://github.com/thomasloven/hass-browser_mod)             |                  I now use Bubble Card for pop-up features.                  |
-|   InfluxDB    |             [InfluxDB](https://www.home-assistant.io/integrations/influxdb/)             |            I switched to TimescaleDB and LTSS custom components.             |
-| Battery Notes | [Battery Notes for Home Assistant](https://github.com/andrew-codechimp/HA-Battery-Notes) | It's annoying having so many entities about when I replaced my battery, etc. |
-|  JWT Cookie   |                 [JWT Cookie](https://github.com/BigBoot/hass-jwt_cookie)                 |                                      -                                       |
-|    Places     |                  [Places](https://github.com/custom-components/places)                   |              Use geocode attribute rather than custom component              |
+|     Software      |                                Home Assistant Integration                                |                                    Notes                                     |
+| :---------------: | :--------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------: |
+|   browser_mod 2   |             [browser_mod 2](https://github.com/thomasloven/hass-browser_mod)             |                  I now use Bubble Card for pop-up features.                  |
+|     InfluxDB      |             [InfluxDB](https://www.home-assistant.io/integrations/influxdb/)             |            I switched to TimescaleDB and LTSS custom components.             |
+|   Battery Notes   | [Battery Notes for Home Assistant](https://github.com/andrew-codechimp/HA-Battery-Notes) | It's annoying having so many entities about when I replaced my battery, etc. |
+|    JWT Cookie     |                 [JWT Cookie](https://github.com/BigBoot/hass-jwt_cookie)                 |                                      -                                       |
+|      Places       |                  [Places](https://github.com/custom-components/places)                   |              Use geocode attribute rather than custom component              |
+| Adaptive Lighting |           [Adaptive Lighting](https://github.com/basnijholt/adaptive-lighting)           |      Use official flux integration, since I don't use custom features.       |
