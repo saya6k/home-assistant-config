@@ -240,6 +240,7 @@ recorder:
 logger:
   default: warning
   logs:
+    homeassistant.components.hassio: debug
     homeassistant.components.websocket_api: fatal
     homeassistant.setup: error
     # homeassistant.components.conversation: debug
