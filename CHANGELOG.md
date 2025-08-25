@@ -1,3 +1,10 @@
+## [1.5.2](https://github.com/saya6k/home-assistant-config/compare/v1.5.1...v1.5.2) (2025-08-25)
+
+### Bug Fixes
+
+* Update Automations and Scenes ([772cda1](https://github.com/saya6k/home-assistant-config/commit/772cda1219352ae33bd6b3c2f1db079c9cee9866))
+* Update HA Version ([55e047a](https://github.com/saya6k/home-assistant-config/commit/55e047a014177c7187b7a13f7181dba0377388e8))
+
 ## [1.5.1](https://github.com/saya6k/home-assistant-config/compare/v1.5.0...v1.5.1) (2025-08-25)
 
 ### Bug Fixes
