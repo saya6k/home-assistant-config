@@ -1,3 +1,9 @@
+## [1.5.1](https://github.com/saya6k/home-assistant-config/compare/v1.5.0...v1.5.1) (2025-08-25)
+
+### Bug Fixes
+
+* Add Hassio logger ([2b0ae1f](https://github.com/saya6k/home-assistant-config/commit/2b0ae1febd27b110d1200fd24702b5a03542f494))
+
 ## [1.5.0](https://github.com/saya6k/home-assistant-config/compare/v1.4.2...v1.5.0) (2025-08-19)
 
 ### Features
