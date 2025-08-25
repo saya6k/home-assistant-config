@@ -46,12 +46,12 @@
     - condition: template
       value_template: '{{ todo_response[''returncode''] == 0 }}'
     then:
-    - action: notify.mobile_app_ys_iphone
+    - action: notify.mobile_app_ys_iphone13
       data:
         title: ToDo
         message: '{{ todo_response[''stdout''] }}'
     else:
-    - action: notify.mobile_app_ys_iphone
+    - action: notify.mobile_app_ys_iphone13
       data:
         title: ToDo file error
         message: '{{ todo_response[''stderr''] }}'
@@ -103,7 +103,7 @@
       entity_id: 8af0bb15183b35cf59315910911c0bf2
       domain: switch
     else:
-    - action: notify.mobile_app_ys_iphone
+    - action: notify.mobile_app_ys_iphone13
       metadata: {}
       data:
         message: 창문이 열려있어 적응형 기후가 활성화되지 않았습니다.
@@ -740,7 +740,7 @@
           url: '{{ trigger.to_state.attributes.link }}'
           push:
             interruption-level: critical
-      action: notify.mobile_app_ys_iphone
+      action: notify.mobile_app_ys_iphone13
       enabled: true
   mode: parallel
   max: 100
@@ -1002,7 +1002,7 @@
           push:
             interruption-level: time-sensitive
         title: '[긴급] Email 도착 알림'
-      action: notify.mobile_app_ys_iphone
+      action: notify.mobile_app_ys_iphone13
       enabled: true
   mode: queued
 - id: '1753959217336'
@@ -1021,6 +1021,11 @@
       entity_id: zone.home
       above: 0
     then:
+    - action: switch.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: switch.flux
     - action: scene.turn_on
       metadata: {}
       data: {}
@@ -1205,7 +1210,7 @@
       metadata: {}
       enabled: false
     else:
-    - action: notify.mobile_app_ys_iphone
+    - action: notify.mobile_app_ys_iphone13
       metadata: {}
       data:
         message: '{{ agent.data }}'
@@ -1288,7 +1293,7 @@
     - condition: template
       value_template: '{{ result.data.true_or_false }}'
     then:
-    - action: notify.mobile_app_ys_iphone
+    - action: notify.mobile_app_ys_iphone13
       metadata: {}
       data:
         message: '{% for entity in states.sensor   | selectattr(''entity_id'', ''match'',

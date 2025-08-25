@@ -14,18 +14,18 @@
       supported_features: 15
       state: closed
     media_player.bathroom:
-      device_class: speaker
-      icon: mdi:speaker
-      friendly_name: 화장실
-      supported_features: 7796671
-      mass_player_type: player
-      active_queue: media_player.home_assistant_voice_094eeb_media_player
       volume_level: 0.2
       media_content_type: music
       app_id: music_assistant
       shuffle: false
       repeat: 'off'
       entity_picture_local:
+      mass_player_type: player
+      active_queue: media_player.home_assistant_voice_094eeb_media_player
+      device_class: speaker
+      icon: mdi:speaker
+      friendly_name: 화장실
+      supported_features: 7796671
       state: idle
     alarm_control_panel.home_alarm:
       code_format: number
@@ -37,18 +37,18 @@
       supported_features: 47
       state: armed_night
     media_player.living_room:
-      device_class: speaker
-      icon: mdi:speaker
-      friendly_name: 거실
-      supported_features: 7796671
-      mass_player_type: player
-      active_queue: media_player.home_assistant_voice_090541_media_player
       volume_level: 0.2
       media_content_type: music
       app_id: music_assistant
       shuffle: false
       repeat: 'off'
       entity_picture_local:
+      mass_player_type: player
+      active_queue: media_player.home_assistant_voice_090541_media_player
+      device_class: speaker
+      icon: mdi:speaker
+      friendly_name: 거실
+      supported_features: 7796671
       state: idle
     switch.energy_save_mode_adaptive_climate:
       icon: mdi:leaf
@@ -65,8 +65,63 @@
       icon: mdi:account-group
       friendly_name: Comfort Category (Adaptive Climate)
       state: I
+    light.living_room_desk_lamp:
+      min_color_temp_kelvin: 2702
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 370
+      supported_color_modes:
+      - color_temp
+      color_mode: color_temp
+      brightness: 3
+      color_temp_kelvin: 2702
+      color_temp: 370
+      hs_color:
+      - 28.391
+      - 65.659
+      rgb_color:
+      - 255
+      - 167
+      - 88
+      xy_color:
+      - 0.524
+      - 0.388
+      icon: mdi:desk-lamp
+      friendly_name: 거실 데스크
+      supported_features: 32
+      state: 'on'
+    light.bedroom_floor_lamp:
+      min_color_temp_kelvin: 2702
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 370
+      supported_color_modes:
+      - color_temp
+      color_mode: color_temp
+      brightness: 3
+      color_temp_kelvin: 2702
+      color_temp: 370
+      hs_color:
+      - 28.391
+      - 65.659
+      rgb_color:
+      - 255
+      - 167
+      - 88
+      xy_color:
+      - 0.524
+      - 0.388
+      icon: mdi:floor-lamp
+      friendly_name: 침실 플로어
+      supported_features: 32
+      state: 'on'
+    switch.flux:
+      friendly_name: Flux
+      state: 'off'
   metadata:
     alarm_control_panel.home_alarm:
+      entity_only: true
+    switch.flux:
       entity_only: true
   icon: mdi:weather-night
 - id: '1737075533130'
