@@ -94,27 +94,34 @@
     entity_id: 35adda634110517fdaa8aa8c4c74c1db
     domain: light
   - if:
-    - condition: state
-      entity_id: binary_sensor.all_windows
-      state: 'off'
-    then:
-    - type: turn_on
+    - condition: device
+      type: is_off
       device_id: 1b9ab80865cc28826a0a019f9b2fb8ea
       entity_id: 8af0bb15183b35cf59315910911c0bf2
       domain: switch
-    else:
-    - action: notify.mobile_app_ys_iphone13
-      metadata: {}
-      data:
-        message: 창문이 열려있어 적응형 기후가 활성화되지 않았습니다.
-        title: 창문이 열려 있음 !!
+    then:
+    - if:
+      - condition: state
+        entity_id: binary_sensor.all_windows
+        state: 'off'
+      then:
+      - type: turn_on
+        device_id: 1b9ab80865cc28826a0a019f9b2fb8ea
+        entity_id: 8af0bb15183b35cf59315910911c0bf2
+        domain: switch
+      else:
+      - action: notify.mobile_app_ys_iphone13
+        metadata: {}
         data:
-          push:
-            interruption-level: critical
-          actions:
-          - action: URI
-            title: 설정 열기
-            uri: /config/devices/device/1b9ab80865cc28826a0a019f9b2fb8ea
+          message: 창문이 열려있어 적응형 기후가 활성화되지 않았습니다.
+          title: 창문이 열려 있음 !!
+          data:
+            push:
+              interruption-level: critical
+            actions:
+            - action: URI
+              title: 설정 열기
+              uri: /config/devices/device/1b9ab80865cc28826a0a019f9b2fb8ea
   - action: assist_satellite.start_conversation
     metadata: {}
     target:
