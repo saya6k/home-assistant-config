@@ -1,3 +1,9 @@
+## [1.5.4](https://github.com/saya6k/home-assistant-config/compare/v1.5.3...v1.5.4) (2025-08-26)
+
+### Bug Fixes
+
+* Welcome scene automation ([ace8555](https://github.com/saya6k/home-assistant-config/commit/ace8555de777be531867d2254a73293f7836c567))
+
 ## [1.5.3](https://github.com/saya6k/home-assistant-config/compare/v1.5.2...v1.5.3) (2025-08-25)
 
 ### Bug Fixes
