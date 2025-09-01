@@ -44,7 +44,7 @@ jobs:
 
       - name: 🚀 Run semantic-release (dry run)
         id: semantic_dry_run
-        uses: cycjimmy/semantic-release-action@v4
+        uses: cycjimmy/semantic-release-action@v5
         with:
           branch: main
           dry_run: true
@@ -94,7 +94,7 @@ jobs:
 
       - name: 🚀 Run semantic-release (tags, GitHub Release, CHANGELOG)
         id: release
-        uses: cycjimmy/semantic-release-action@v4
+        uses: cycjimmy/semantic-release-action@v5
         with:
           branch: main
           extra_plugins: |
