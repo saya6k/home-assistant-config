@@ -57,81 +57,6 @@
         message: '{{ todo_response[''stderr''] }}'
     enabled: false
   mode: single
-- id: '1722165897301'
-  alias: Apply Welcome Scene when Person Enter Zone
-  description: ''
-  triggers:
-  - trigger: numeric_state
-    entity_id:
-    - zone.home
-    above: 0
-  conditions: []
-  actions:
-  - action: scene.turn_on
-    metadata: {}
-    data: {}
-    target:
-      entity_id: scene.welcome
-  - wait_for_trigger:
-    - trigger: state
-      entity_id:
-      - binary_sensor.front_door_motion
-      from: 'off'
-      to: 'on'
-    continue_on_timeout: false
-    timeout:
-      hours: 0
-      minutes: 5
-      seconds: 0
-      milliseconds: 0
-    enabled: false
-  - type: turn_on
-    device_id: e6ad84e6b976c909a66924d46061813c
-    entity_id: 02367dc9c3ad321187d0481bcc8a3eda
-    domain: light
-  - type: turn_on
-    device_id: 6c7b25ca5d029cedb5e90d07a53fd7e7
-    entity_id: 35adda634110517fdaa8aa8c4c74c1db
-    domain: light
-  - if:
-    - condition: device
-      type: is_off
-      device_id: 1b9ab80865cc28826a0a019f9b2fb8ea
-      entity_id: 8af0bb15183b35cf59315910911c0bf2
-      domain: switch
-    then:
-    - if:
-      - condition: state
-        entity_id: binary_sensor.all_windows
-        state: 'off'
-      then:
-      - type: turn_on
-        device_id: 1b9ab80865cc28826a0a019f9b2fb8ea
-        entity_id: 8af0bb15183b35cf59315910911c0bf2
-        domain: switch
-      else:
-      - action: notify.mobile_app_ys_iphone13
-        metadata: {}
-        data:
-          message: 창문이 열려있어 적응형 기후가 활성화되지 않았습니다.
-          title: 창문이 열려 있음 !!
-          data:
-            push:
-              interruption-level: critical
-            actions:
-            - action: URI
-              title: 설정 열기
-              uri: /config/devices/device/1b9ab80865cc28826a0a019f9b2fb8ea
-  - action: assist_satellite.start_conversation
-    metadata: {}
-    target:
-      entity_id: assist_satellite.home_assistant_voice_090541_assist_satellite
-    data:
-      start_message: 돌아오셔서 기뻐요! 음악을 틀어드릴까요?
-      extra_system_prompt: The user just came home. If user wants, play music on media_player.living_room.
-        If not specified, play favorite playlist.
-    enabled: false
-  mode: single
 - id: '1737078076689'
   alias: Notify Steam Wishlist on Sales
   description: ''
@@ -160,30 +85,6 @@
     trigger: numeric_state
   actions:
   - action: shell_command.purge_log
-- id: '1738794001846'
-  alias: Track Floor Cleaning by Robot Vacuum
-  description: ''
-  triggers:
-  - trigger: state
-    entity_id:
-    - event.robot_vacuum_notification
-    not_from:
-    - unknown
-    - unavailable
-    not_to:
-    - unknown
-    - unavailable
-  conditions:
-  - condition: state
-    entity_id: event.robot_vacuum_notification
-    attribute: event_type
-    state: cleaning_is_completed
-  actions:
-  - action: grocy.execute_chore
-    metadata: {}
-    data:
-      chore_id: '18'
-  mode: single
 - id: '1739462792155'
   alias: Notify Seoul Teukbo
   description: ''
@@ -242,106 +143,6 @@
           '', '''') }} {{ trigger.to_state.state }}'
         push:
           interruption-level: critical
-  mode: single
-- id: '1739748588995'
-  alias: iOS Action - Run Vacuum Yes
-  description: ''
-  triggers:
-  - event_type: mobile_app_notification_action
-    event_data:
-      action: RUN_VACUUM_YES
-    trigger: event
-  actions:
-  - action: vacuum.start
-    metadata: {}
-    data: {}
-    target:
-      entity_id: vacuum.robot_vacuum
-- id: '1739844963798'
-  alias: Apply Away Scene when no person is home
-  description: ''
-  triggers:
-  - trigger: numeric_state
-    entity_id:
-    - zone.home
-    for:
-      hours: 0
-      minutes: 1
-      seconds: 0
-    below: 1
-  conditions: []
-  actions:
-  - action: scene.turn_on
-    metadata: {}
-    data: {}
-    target:
-      entity_id:
-      - scene.away
-  - action: notify.all_devices
-    data:
-      message: 외출 장면이 활성화되었습니다. 집에서 로봇청소기를 돌릴까요?
-      data:
-        actions:
-        - action: RUN_VACUUM_YES
-          title: 예
-          destructive: true
-        - identifier: RUN_VACUUM_NO
-          title: 아니오
-        push:
-          interruption-level: active
-      title: 로봇청소기 작동 묻기
-  mode: single
-- id: '1739846179022'
-  alias: Play Playlist on Shower Scene
-  description: Play Spotify playlist
-  triggers:
-  - trigger: event
-    event_type: call_service
-    event_data:
-      domain: scene
-      service: turn_on
-      service_data:
-        entity_id: scene.shower
-  conditions: []
-  actions:
-  - action: scene.turn_on
-    metadata: {}
-    data: {}
-    target:
-      entity_id: scene.shower
-  - action: music_assistant.play_media
-    metadata: {}
-    data:
-      media_type: playlist
-      media_id: spotify:playlist:37i9dQZF1DWZd79rJ6a7lp
-    target:
-      entity_id: media_player.bathroom
-  mode: single
-- id: '1739846462573'
-  alias: Play Playlist on Cooking Scene
-  description: Play Spotify playlist
-  triggers:
-  - trigger: event
-    event_type: call_service
-    event_data:
-      domain: scene
-      service: turn_on
-      service_data:
-        entity_id: scene.cooking
-  conditions: []
-  actions:
-  - action: scene.turn_on
-    metadata: {}
-    data: {}
-    target:
-      entity_id: scene.cooking
-  - action: music_assistant.play_media
-    metadata: {}
-    data:
-      media_type: playlist
-      media_id: spotify:playlist:37i9dQZF1DWZd79rJ6a7lp
-    target:
-      device_id: 03b47ade8600df7168f3676b477dee1a
   mode: single
 - id: '1739846798671'
   alias: Notify LG ThinQ Notifications
@@ -415,27 +216,6 @@
       datetime: '{{ now().strftime(''%Y-%m-%d %H:%M:%S'') }}'
     target:
       entity_id: input_datetime.dashboard_select_datetime
-  mode: single
-- id: '1741577306708'
-  alias: TTS on door opening with persons at home
-  description: ''
-  triggers:
-  - entity_id: binary_sensor.all_doors
-    to: 'on'
-    trigger: state
-  conditions: []
-  actions:
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 10
-      milliseconds: 0
-  - action: assist_satellite.start_conversation
-    metadata: {}
-    data:
-      start_message: 안녕하세요.
-      preannounce: true
-      extra_system_prompt: You are welcoming user from work.
   mode: single
 - id: '1750997515323'
   alias: Notify to brush Teeth
@@ -761,8 +541,8 @@
     to: 'on'
     for:
       hours: 0
-      minutes: 0
-      seconds: 30
+      minutes: 3
+      seconds: 0
   conditions:
   - condition: numeric_state
     entity_id: zone.home
@@ -793,16 +573,19 @@
       entity_id: assist_satellite.home_assistant_voice_090541_assist_satellite
       answers:
       - sentences:
-        - 응
-        - 그래
-        - 좋아
+        - 응.
+        - 그래.
+        - 좋아.
+        - 꺼줘.
         id: 'yes'
       - id: 'no'
         sentences:
-        - 아니
-        - 괜찮아
-        - 됐어
-        - 싫어
+        - 아니.
+        - 아냐.
+        - 됐어.
+        - 싫어.
+        - 괜찮아.
+        - 나중에.
     response_variable: answer
   - choose:
     - conditions:
@@ -1018,36 +801,26 @@
   triggers:
   - trigger: time
     at: input_datetime.wake_up
-  conditions: []
+  conditions:
+  - condition: numeric_state
+    entity_id: zone.home
+    above: 0
   actions:
+  - action: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.flux
   - if:
     - condition: state
       entity_id: binary_sensor.workday_sensor
       state: 'on'
-    - condition: numeric_state
-      entity_id: zone.home
-      above: 0
     then:
-    - action: switch.turn_on
-      metadata: {}
-      data: {}
-      target:
-        entity_id: switch.flux
     - action: scene.turn_on
       metadata: {}
       data: {}
       target:
         entity_id: scene.wake_up
-    - if:
-      - condition: state
-        entity_id: alarm_control_panel.home_alarm
-        state: armed_night
-      then:
-      - action: alarm_control_panel.alarm_arm_home
-        metadata: {}
-        data: {}
-        target:
-          entity_id: alarm_control_panel.home_alarm
     - action: music_assistant.play_media
       metadata: {}
       data:
@@ -1212,9 +985,10 @@
       target:
         entity_id: media_player.living_room_apple_tv
       data:
-        media_content_id: plex://44d3daca51c0f7bb8db91b24243fdf1bf70fd189/library/metadata=158500
-        media_content_type: episode
-      metadata: {}
+        media:
+          media_content_id: plex://44d3daca51c0f7bb8db91b24243fdf1bf70fd189/library/metadata=158500
+          media_content_type: episode
+          metadata: {}
       enabled: false
     else:
     - action: notify.mobile_app_ys_iphone13
@@ -1396,4 +1170,194 @@
   - action: hassio.addon_start
     data:
       addon: core_letsencrypt
+  mode: single
+- id: '1758065749886'
+  alias: ASHRAE 55 Adaptive Climate Control
+  description: ''
+  use_blueprint:
+    path: msinhore/ashrae55_adaptive_comfort_v2.yaml
+    input:
+      climate_entity: climate.air_conditioner
+      indoor_temp_sensor: sensor.indoor_average_temperature
+      outdoor_temp_sensor: sensor.seoul_temperature
+      indoor_humidity_sensor: sensor.indoor_average_humidity
+      outdoor_humidity_sensor: sensor.seoul_humidity
+- id: '1758255410861'
+  alias: 샤워 시 플레이리스트 재생
+  description: 욕실 스피커에서 샤워 장면을 켜고 Spotify 플레이리스트를 재생합니다.
+  triggers:
+  - type: not_opened
+    device_id: 3482404e5b88e1524f12fe2f7a9f95e6
+    entity_id: 7ff162f846100a4b0ef58e88b6f74438
+    domain: binary_sensor
+    trigger: device
+  conditions: []
+  actions:
+  - action: scene.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: scene.shower
+  - action: music_assistant.play_media
+    metadata: {}
+    data:
+      media_type: playlist
+      media_id: spotify:playlist:37i9dQZF1DWZd79rJ6a7lp
+    target:
+      entity_id: media_player.bathroom
+  mode: single
+- id: '1758263382188'
+  alias: 로봇 청소 완료 시 청소 완료 알림
+  description: 로봇 청소 완료 시 Grocy에서 청소 완료 chore를 실행합니다.
+  triggers:
+  - trigger: state
+    entity_id:
+    - event.robot_vacuum_notification
+  conditions:
+  - condition: state
+    entity_id: event.robot_vacuum_notification
+    attribute: event_type
+    state: cleaning_is_completed
+  actions:
+  - action: grocy.execute_chore
+    metadata: {}
+    data:
+      chore_id: '18'
+  mode: single
+- id: '1758263416334'
+  alias: 외출 시 로봇 청소기 작동 알림
+  description: 집에 사람이 없을 때 '집' 존에서 벗어나면 '자리 비움' 장면을 활성화하고, 사용자에게 로봇 청소기 작동을 묻는 알림을
+    보냅니다.
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - zone.home
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    below: 1
+  conditions: []
+  actions:
+  - action: scene.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - scene.away
+  - action: notify.mobile_app_ys_iphone13
+    metadata: {}
+    data:
+      data:
+        push:
+          interruption-level: critical
+        actions:
+        - action: URI
+          title: 로봇청소기 돌리기
+          uri: homeassistant://call_service/vacuum.start?entity_id=vacuum.robot_vacuum
+      message: 외출 상태가 감지되었습니다. 집에 로봇청소기를 돌릴까요?
+  mode: single
+- id: '1758263460650'
+  alias: 귀가 시 환영 및 보조 기능 활성화
+  description: 집에 사람이 도착하면 ASHRAE 55 적응형 기후 제어 자동화를 켜고, 창문이 열려 있으면 알림을 보냅니다. 또한 조명과
+    환영 장면을 켜고, 홈 어시스턴트 음성으로 환영 메시지를 재생합니다.
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - zone.home
+    above: 0
+  conditions: []
+  actions:
+  - if:
+    - condition: state
+      entity_id: binary_sensor.all_windows
+      state: 'off'
+    then:
+    - action: automation.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: automation.ashrae_55_adaptive_climate_control
+    else:
+    - action: notify.mobile_app_ys_iphone13
+      metadata: {}
+      data:
+        message: 창문이 열려있어 적응형 기후가 활성화되지 않았습니다. 그래도 켤까요?
+        title: 창문이 열려 있음 !!
+        data:
+          push:
+            interruption-level: critical
+          actions:
+          - action: URI
+            title: 그래도 켜기
+            uri: homeassistant://call_service/automation.turn_on?entity_id=automation.ashrae_55_adaptive_climate_control
+  - wait_for_trigger:
+    - type: opened
+      device_id: e981af609918b955f3d59fb117356c7f
+      entity_id: e7c6e1701601f23810c1c74828991c1c
+      domain: binary_sensor
+      trigger: device
+    continue_on_timeout: true
+    timeout:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+    enabled: true
+  - type: turn_on
+    device_id: 0f778e7c509b6496432dd3280563746f
+    entity_id: da339652c8841185029151de22553547
+    domain: light
+  - type: turn_on
+    device_id: 6c7b25ca5d029cedb5e90d07a53fd7e7
+    entity_id: 35adda634110517fdaa8aa8c4c74c1db
+    domain: light
+  - action: scene.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: scene.welcome
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  - action: assist_satellite.start_conversation
+    metadata: {}
+    target:
+      entity_id: assist_satellite.home_assistant_voice_090541_assist_satellite
+    data:
+      start_message: '{% set people = states.person | selectattr("state", "equalto",
+        "home") | list %}{% set count = people | count %}{% if count == 1 %}{{ people[0].attributes.friendly_name
+        }}님, 돌아오셔서 반갑습니다! 제가 도와드릴 일이 있을까요?{% elif count > 1 %}{{ people | map(attribute=''attributes.friendly_name'')
+        | join(''님, '') }}님, 모두 돌아오셔서 반갑습니다! 제가 도와드릴 일이 있을까요?{% endif %}
+
+        '
+      extra_system_prompt: '{% set people = states.person | selectattr("state", "equalto",
+        "home") | list %}{% set count = people | count %}{{ people | map(attribute=''attributes.friendly_name'')
+        | join('', '') }}{% if count == 1 %} is {% else %} are {% endif %}back and
+        you asked is there anything to help.
+
+        '
+    enabled: true
+  mode: single
+- id: '1758388583900'
+  alias: 식사 준비 완료 시 식사 장면 활성화
+  description: 식탁 센서가 켜지면 식사 장면을 활성화합니다. 현재 사용자가 집에 있는지 확인합니다.
+  triggers:
+  - type: opened
+    device_id: 9849adeb0772dfb6ede98fa617ab5d67
+    entity_id: ac18a95e02fb064d4d68d5a055db2cc0
+    domain: binary_sensor
+    trigger: device
+  conditions:
+  - condition: numeric_state
+    entity_id: zone.home
+    above: 0
+  actions:
+  - action: scene.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: scene.meal
   mode: single
