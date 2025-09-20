@@ -14,18 +14,18 @@
       supported_features: 15
       state: closed
     media_player.bathroom:
-      volume_level: 0.2
-      media_content_type: music
-      app_id: music_assistant
-      shuffle: false
-      repeat: 'off'
-      entity_picture_local:
       mass_player_type: player
       active_queue: media_player.home_assistant_voice_094eeb_media_player
       device_class: speaker
       icon: mdi:speaker
       friendly_name: 화장실
       supported_features: 7796671
+      volume_level: 0.2
+      media_content_type: music
+      app_id: music_assistant
+      shuffle: false
+      repeat: 'off'
+      entity_picture_local:
       state: idle
     alarm_control_panel.home_alarm:
       code_format: number
@@ -37,34 +37,24 @@
       supported_features: 47
       state: armed_night
     media_player.living_room:
-      volume_level: 0.2
-      media_content_type: music
-      app_id: music_assistant
-      shuffle: false
-      repeat: 'off'
-      entity_picture_local:
       mass_player_type: player
       active_queue: media_player.home_assistant_voice_090541_media_player
       device_class: speaker
       icon: mdi:speaker
       friendly_name: 거실
       supported_features: 7796671
+      volume_level: 0.2
+      media_content_id: library://radio/1
+      media_content_type: music
+      media_position: 18
+      media_position_updated_at: '2025-09-16T23:00:19.923136+00:00'
+      media_title: KBS Classic FM
+      app_id: music_assistant
+      shuffle: true
+      repeat: 'off'
+      entity_picture_local: /api/media_player_proxy/media_player.living_room?token=0e85fa9b309999e506c035b918148cc0de65062fa5f13d4b31cb4e28596f1967&cache=e34ffc5b1649fd81
+      entity_picture: https://res.static.kbs.co.kr/favicon.png
       state: idle
-    switch.energy_save_mode_adaptive_climate:
-      icon: mdi:leaf
-      friendly_name: Energy Save Mode (Adaptive Climate)
-      state: 'on'
-    switch.adaptive_climate_auto_mode_adaptive_climate:
-      icon: mdi:robot
-      friendly_name: Adaptive Climate Auto Mode (Adaptive Climate)
-      state: 'on'
-    select.comfort_category_adaptive_climate:
-      options:
-      - I
-      - II
-      icon: mdi:account-group
-      friendly_name: Comfort Category (Adaptive Climate)
-      state: I
     light.living_room_desk_lamp:
       min_color_temp_kelvin: 2702
       max_color_temp_kelvin: 6535
@@ -118,10 +108,19 @@
     switch.flux:
       friendly_name: Flux
       state: 'off'
+    automation.ashrae_55_adaptive_climate_control:
+      id: '1758065749886'
+      last_triggered:
+      mode: single
+      current: 0
+      friendly_name: ASHRAE 55 Adaptive Climate Control
+      state: 'on'
   metadata:
     alarm_control_panel.home_alarm:
       entity_only: true
     switch.flux:
+      entity_only: true
+    automation.ashrae_55_adaptive_climate_control:
       entity_only: true
   icon: mdi:weather-night
 - id: '1737075533130'
@@ -256,7 +255,7 @@
       device_class: speaker
       icon: mdi:speaker
       friendly_name: 화장실
-      supported_features: 7796287
+      supported_features: 7796671
       state: idle
     alarm_control_panel.home_alarm:
       code_format: number
@@ -279,18 +278,22 @@
       app_id: music_assistant
       shuffle: true
       repeat: 'off'
-      entity_picture_local: /api/media_player_proxy/media_player.living_room?token=7e326fb0df03e53f190144ecf2a245d2561956e9bf53f5d6750d396cfc084a00&cache=9a0c9e15dfda643e
+      entity_picture_local:
       mass_player_type: player
       active_queue: media_player.home_assistant_voice_090541_media_player
       device_class: speaker
-      entity_picture: https://github.com/home-assistant/brands/raw/master/custom_integrations/mass/icon%402x.png
       icon: mdi:speaker
       friendly_name: 거실
-      supported_features: 7796287
+      supported_features: 7796671
       state: idle
+    switch.flux:
+      friendly_name: Flux
+      state: 'on'
   icon: mdi:home-import-outline
   metadata:
     alarm_control_panel.home_alarm:
+      entity_only: true
+    switch.flux:
       entity_only: true
 - id: '1737809150097'
   name: 샤워
@@ -435,7 +438,7 @@
       hs_color:
       rgb_color:
       xy_color:
-      icon: mdi:desk-lamp
+      icon: mdi:floor-lamp
       friendly_name: 침실 플로어
       supported_features: 32
       state: 'off'
@@ -465,48 +468,33 @@
       friendly_name: 거실
       supported_features: 7796671
       state: 'off'
-    switch.energy_save_mode_adaptive_climate:
-      icon: mdi:leaf
-      friendly_name: Energy Save Mode (Adaptive Climate)
-      state: 'on'
-    switch.adaptive_climate_auto_mode_adaptive_climate:
-      icon: mdi:robot
-      friendly_name: Adaptive Climate Auto Mode (Adaptive Climate)
-      state: 'off'
-    select.comfort_category_adaptive_climate:
-      options:
-      - I
-      - II
-      icon: mdi:account-group
-      friendly_name: Comfort Category (Adaptive Climate)
-      state: I
     climate.air_conditioner:
       hvac_modes:
       - 'off'
       - fan_only
-      - auto
-      - dry
       - cool
+      - dry
+      - auto
       min_temp: 16
       max_temp: 30
       target_temp_step: 0.5
       fan_modes:
       - high
-      - mid
       - auto
-      - low
+      - medium
       - power
+      - low
       swing_modes:
       - 'on'
       - 'off'
       swing_horizontal_modes:
       - 'on'
       - 'off'
-      current_temperature: 26.5
+      current_temperature: 28
       temperature:
       target_temp_high:
       target_temp_low:
-      current_humidity: 71
+      current_humidity: 66
       fan_mode: low
       swing_mode: 'off'
       swing_horizontal_mode: 'on'
@@ -521,9 +509,23 @@
       unit_of_measurement: h
       friendly_name: 에어컨 Sleep timer
       state: unknown
+    automation.ashrae_55_adaptive_climate_control:
+      id: '1758065749886'
+      last_triggered:
+      mode: single
+      current: 0
+      friendly_name: ASHRAE 55 Adaptive Climate Control
+      state: 'off'
+    switch.flux:
+      friendly_name: Flux
+      state: 'off'
   icon: mdi:lock
   metadata:
     alarm_control_panel.home_alarm:
+      entity_only: true
+    automation.ashrae_55_adaptive_climate_control:
+      entity_only: true
+    switch.flux:
       entity_only: true
 - id: '1743558511998'
   name: 휴가
@@ -642,3 +644,33 @@
       entity_only: true
     alarm_control_panel.home_alarm:
       entity_only: true
+- id: '1758388411404'
+  name: 식사
+  entities:
+    light.living_room_desk_lamp:
+      min_color_temp_kelvin: 2702
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 370
+      supported_color_modes:
+      - color_temp
+      color_mode: color_temp
+      brightness: 255
+      color_temp_kelvin: 3984
+      color_temp: 251
+      hs_color:
+      - 26.819
+      - 35.161
+      rgb_color:
+      - 255
+      - 205
+      - 165
+      xy_color:
+      - 0.421
+      - 0.365
+      icon: mdi:desk-lamp
+      friendly_name: 거실 데스크
+      supported_features: 32
+      state: 'on'
+  icon: mdi:food
+  metadata: {}
