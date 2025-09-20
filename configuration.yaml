@@ -104,6 +104,15 @@ recorder:
     entity_globs:
       # Include Github stars
       - sensor.saya6k_*_stars
+
+      # Include Average Climate Sensors
+      - sensor.*_average_temperature
+      - sensor.*_average_humidity
+
+      # Include Doors and Windows Sensor
+      - binary_sensor.*_door
+      - binary_sensor.*_window
+
   exclude:
     domains:
       - automation
