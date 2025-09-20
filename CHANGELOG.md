@@ -1,3 +1,14 @@
+## [1.6.0](https://github.com/saya6k/home-assistant-config/compare/v1.5.4...v1.6.0) (2025-09-20)
+
+### Features
+
+* Add meal scene ([4da8fa3](https://github.com/saya6k/home-assistant-config/commit/4da8fa398fb285bbce717825466f951292964762))
+
+### Bug Fixes
+
+* Include average climate sensors and security sensors to recorder ([7463d24](https://github.com/saya6k/home-assistant-config/commit/7463d240880b060425e20cfa74f6b5d79b623997))
+* Some new scenes automation ([612304e](https://github.com/saya6k/home-assistant-config/commit/612304e2837af39ef1818cf76c2ca83e0ff7ee38))
+
 ## [1.5.4](https://github.com/saya6k/home-assistant-config/compare/v1.5.3...v1.5.4) (2025-08-26)
 
 ### Bug Fixes
