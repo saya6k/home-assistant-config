@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/saya6k/home-assistant-config/compare/v1.6.0...v1.6.1) (2025-09-21)
+
+### Bug Fixes
+
+* Minor change in automations ([de14e63](https://github.com/saya6k/home-assistant-config/commit/de14e63b8d17741c25c54640c78f794d9e4cc6ec))
+* Minor change in scenes ([33305e7](https://github.com/saya6k/home-assistant-config/commit/33305e7effa041068f3cd24ea70cc560ecc37dda))
+
 ## [1.6.0](https://github.com/saya6k/home-assistant-config/compare/v1.5.4...v1.6.0) (2025-09-20)
 
 ### Features
