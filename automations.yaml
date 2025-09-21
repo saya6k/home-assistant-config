@@ -1360,4 +1360,97 @@
     data: {}
     target:
       entity_id: scene.meal
+  - action: assist_satellite.start_conversation
+    metadata: {}
+    target:
+      entity_id: assist_satellite.home_assistant_voice_090541_assist_satellite
+    data:
+      start_message: '{% set people = states.person | selectattr("state", "equalto",
+        "home") | list %}{% set count = people | count %}{% if count == 1 %}{{ people[0].attributes.friendly_name
+        }}님, 식사를 하시는 동안 좋아하는 음악을 재생할까요??{% elif count > 1 %}{{ people | map(attribute=''attributes.friendly_name'')
+        | join(''님, '') }}님, 식사를 하시는 동안 음악을 재생할까요?{% endif %}
+
+        '
+      extra_system_prompt: '{% set people = states.person | selectattr("state", "equalto",
+        "home") | list %}{% set count = people | count %}{{ people | map(attribute=''attributes.friendly_name'')
+        | join('', '') }}{% if count == 1 %} is {% else %} are {% endif %}having meal
+        and you have asked to turn on favorite music.
+
+        '
+    enabled: true
+  mode: single
+- id: '1758397570741'
+  alias: 식탁 닫히면 조명 끄기
+  description: 식탁이 닫히고 Home alarm이 armed_home 또는 armed_night 상태일 때 조명을 끕니다.
+  triggers:
+  - type: not_opened
+    device_id: 9849adeb0772dfb6ede98fa617ab5d67
+    entity_id: ac18a95e02fb064d4d68d5a055db2cc0
+    domain: binary_sensor
+    trigger: device
+  conditions:
+  - condition: numeric_state
+    entity_id: zone.home
+    above: 0
+  actions:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: alarm_control_panel.home_alarm
+        state: armed_home
+      sequence:
+      - type: turn_off
+        device_id: 0f778e7c509b6496432dd3280563746f
+        entity_id: da339652c8841185029151de22553547
+        domain: light
+      - type: turn_on
+        device_id: 0f778e7c509b6496432dd3280563746f
+        entity_id: da339652c8841185029151de22553547
+        domain: light
+    - conditions:
+      - condition: state
+        entity_id: alarm_control_panel.home_alarm
+        state: armed_night
+      sequence:
+      - type: turn_off
+        device_id: 0f778e7c509b6496432dd3280563746f
+        entity_id: da339652c8841185029151de22553547
+        domain: light
+  mode: single
+- id: '1758415864070'
+  alias: 수면 장면 활성화
+  description: 집에 있고, 조명이 켜져 있으며, 알람이 'armed_home' 상태일 때 수면 장면을 활성화합니다. Withings 수면
+    센서 중 하나가 상태를 변경하면 트리거됩니다.
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.withings_light_sleep
+  - trigger: state
+    entity_id:
+    - sensor.withings_deep_sleep
+  - trigger: state
+    entity_id:
+    - sensor.withings_rem_sleep
+  conditions:
+  - condition: numeric_state
+    entity_id: zone.home
+    above: 0
+    below: 2
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed_home
+  - condition: numeric_state
+    entity_id: sensor.count_lights_on
+    above: 0
+  - type: is_occupied
+    condition: device
+    device_id: 419d5d6b862b27f2bb578347034b714e
+    entity_id: cb88873a76e543713c95bdc11ba9a391
+    domain: binary_sensor
+  actions:
+  - action: scene.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: scene.sleep
   mode: single
