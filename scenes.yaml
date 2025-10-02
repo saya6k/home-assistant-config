@@ -14,19 +14,13 @@
       supported_features: 15
       state: closed
     media_player.bathroom:
-      volume_level: 0.2
-      media_content_type: music
-      app_id: music_assistant
-      shuffle: false
-      repeat: 'off'
-      entity_picture_local:
       mass_player_type: player
       active_queue: media_player.home_assistant_voice_094eeb_media_player
       device_class: speaker
       icon: mdi:speaker
       friendly_name: 화장실
       supported_features: 7796671
-      state: idle
+      state: 'off'
     alarm_control_panel.home_alarm:
       code_format: number
       changed_by:
@@ -37,24 +31,13 @@
       supported_features: 47
       state: armed_night
     media_player.living_room:
-      volume_level: 0.2
-      media_content_type: music
-      app_id: music_assistant
-      shuffle: true
-      repeat: 'off'
-      entity_picture_local: /api/media_player_proxy/media_player.living_room?token=b267cf14695c5aafd15509857b93fb80c1a1c42c002503ba183dde9448ab6583&cache=e34ffc5b1649fd81
       mass_player_type: player
       active_queue: media_player.home_assistant_voice_090541_media_player
       device_class: speaker
       icon: mdi:speaker
       friendly_name: 거실
       supported_features: 7796671
-      entity_picture: https://res.static.kbs.co.kr/favicon.png
-      media_content_id: library://radio/1
-      media_position: 2
-      media_position_updated_at: '2025-09-20T19:48:49.865420+00:00'
-      media_title: KBS Classic FM
-      state: playing
+      state: 'off'
     light.living_room_desk_lamp:
       min_color_temp_kelvin: 2702
       max_color_temp_kelvin: 6535
@@ -80,33 +63,26 @@
       max_mireds: 370
       supported_color_modes:
       - color_temp
-      color_mode: color_temp
-      brightness: 3
-      color_temp_kelvin: 2702
-      color_temp: 370
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
       hs_color:
-      - 28.391
-      - 65.659
       rgb_color:
-      - 255
-      - 167
-      - 88
       xy_color:
-      - 0.524
-      - 0.388
       icon: mdi:floor-lamp
       friendly_name: 침실 플로어
       supported_features: 32
-      state: 'on'
+      state: 'off'
     switch.flux:
       friendly_name: Flux
       state: 'off'
     automation.ashrae_55_adaptive_climate_control:
       id: '1758065749886'
-      last_triggered: '2025-09-20T19:46:51.445921+00:00'
+      friendly_name: ASHRAE 55 Adaptive Climate Control
+      last_triggered: '2025-09-26T14:51:10.325703+00:00'
       mode: single
       current: 0
-      friendly_name: ASHRAE 55 Adaptive Climate Control
       state: 'on'
   metadata:
     alarm_control_panel.home_alarm:
@@ -292,26 +268,23 @@
   name: 샤워
   entities:
     media_player.bathroom:
-      volume_level: 0.5
+      device_class: speaker
+      icon: mdi:speaker
+      supported_features: 7796671
+      volume_level: 0.65
       media_content_type: music
       app_id: music_assistant
       shuffle: false
       repeat: 'off'
-      entity_picture_local: /api/media_player_proxy/media_player.bathroom?token=660feabc1d6d3800d58c97f73c949c9ae694a6b8e18d4c56efe8b37ff98b17fd&cache=b6830716f2f31074
+      entity_picture_local: /api/media_player_proxy/media_player.bathroom?token=1ddc71d2ef45e7c18a2cb6ad186e6d1017919804708d6894e1e45e5d93a3ca59&cache=e34ffc5b1649fd81
       mass_player_type: player
       active_queue: media_player.home_assistant_voice_094eeb_media_player
-      device_class: speaker
-      entity_picture: https://i.scdn.co/image/ab67616d0000b2739664db154ce835c8fbee7037
-      icon: mdi:speaker
-      friendly_name: 화장실 스피커
-      supported_features: 7796287
-      media_content_id: spotify://track/7o5vJPnyA74cuM60JQ8NQS
-      media_duration: 168
+      friendly_name: 화장실
+      entity_picture: https://res.static.kbs.co.kr/favicon.png
+      media_content_id: library://radio/1
       media_position: 2
-      media_position_updated_at: '2025-06-22T21:24:28.846137+00:00'
-      media_title: Remembrance
-      media_artist: Kaiser Hulenstadt
-      media_album_name: Remembrance
+      media_position_updated_at: '2025-09-24T15:36:04.525140+00:00'
+      media_title: KBS Classic FM
       state: playing
     light.bathroom_shower_box:
       supported_color_modes:

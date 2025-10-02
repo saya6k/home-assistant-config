@@ -299,15 +299,12 @@
         'defined') | list %} {% set no_due_items = today_todos['todo.home']['items']
         | rejectattr('due', 'defined') | list %}\n{% if due_items | length > 0 %}\n
         \ 오늘의 할일: {{ due_items | length }}개\n{% endif %}\n{% if no_due_items | length
-        > 0 %}\n  그 외 할일: {{ due_items | length }}개\n{% endif %}\n\n{% set new_video
-        = today_youtube['todo.youtube_feed']['items'] | selectattr('due', 'defined')
-        | list %}\n{% if new_video | length > 0 %}\n  새로 올라온 Youtube 영상: {{ new_video
-        | length }}개\n{% else %}\n  새로 올라온 Youtube 영상 없음\n{% endif %}\n{% set ns =
-        namespace(due_today=0, overdue=0, due_today_list=[], overdue_list=[]) %}\n{%
-        set today = now().strftime('%Y-%m-%d') %} {% set yesterday = (now().timestamp()
-        - 86400) | timestamp_custom('%Y-%m-%d', false) %} {% set chores = state_attr('sensor.grocy_chores',
-        'chores') %}\n{% if chores %}\n  {% for chore in chores %}\n    {% if chore.period_type
-        != 'manually' %}\n      {% if chore.next_estimated_execution_time %}\n        {%
+        > 0 %}\n  그 외 할일: {{ due_items | length }}개\n{% endif %}\n\n{% set ns = namespace(due_today=0,
+        overdue=0, due_today_list=[], overdue_list=[]) %}\n{% set today = now().strftime('%Y-%m-%d')
+        %} {% set yesterday = (now().timestamp() - 86400) | timestamp_custom('%Y-%m-%d',
+        false) %} {% set chores = state_attr('sensor.grocy_chores', 'chores') %}\n{%
+        if chores %}\n  {% for chore in chores %}\n    {% if chore.period_type !=
+        'manually' %}\n      {% if chore.next_estimated_execution_time %}\n        {%
         set chore_date = as_timestamp(chore.next_estimated_execution_time) | timestamp_custom('%Y-%m-%d',
         true) %}\n        {% if chore_date == today %}\n          {% set ns.due_today
         = ns.due_today + 1 %}\n          {% set ns.due_today_list = ns.due_today_list
@@ -1182,6 +1179,7 @@
       outdoor_temp_sensor: sensor.seoul_temperature
       indoor_humidity_sensor: sensor.indoor_average_humidity
       outdoor_humidity_sensor: sensor.seoul_humidity
+      comfort_precision_mode: true
 - id: '1758255410861'
   alias: 샤워 시 플레이리스트 재생
   description: 욕실 스피커에서 샤워 장면을 켜고 Spotify 플레이리스트를 재생합니다.
@@ -1453,4 +1451,71 @@
     data: {}
     target:
       entity_id: scene.sleep
+  mode: single
+- id: '1758721905698'
+  alias: 창문 열림 시 강우 예보 알림
+  description: 현재 열려 있는 창문이 있을 때 비가 올 예정이면 알려줍니다.
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.forecast_precipitation
+  conditions:
+  - type: is_open
+    condition: device
+    device_id: 940271c084ed40a9b3a077bec76104a5
+    entity_id: fc117f225d6f0b8b536a0984e348efbf
+    domain: binary_sensor
+  actions:
+  - action: assist_satellite.announce
+    metadata: {}
+    data:
+      preannounce: true
+      message: '{{ states(''sensor.forecast_precipitation'') }} 창문이 현재 열려 있어요.'
+    target:
+      entity_id: assist_satellite.home_assistant_voice_090541_assist_satellite
+  mode: single
+- id: '1758899224296'
+  alias: 야간 화장실 이용간 조명 제어
+  description: 밤에 침대를 비우면 조명을 자동으로 켭니다. 다시 침대에 사람이 있으면 조명이 꺼집니다.
+  triggers:
+  - type: not_occupied
+    device_id: 419d5d6b862b27f2bb578347034b714e
+    entity_id: cb88873a76e543713c95bdc11ba9a391
+    domain: binary_sensor
+    trigger: device
+  conditions:
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed_night
+  - condition: numeric_state
+    entity_id: zone.home
+    above: 0
+    below: 2
+  - condition: state
+    entity_id: person.saya6k
+    state: home
+  actions:
+  - device_id: 0f778e7c509b6496432dd3280563746f
+    domain: light
+    entity_id: da339652c8841185029151de22553547
+    type: brightness_increase
+  - wait_for_trigger:
+    - type: occupied
+      device_id: 419d5d6b862b27f2bb578347034b714e
+      entity_id: cb88873a76e543713c95bdc11ba9a391
+      domain: binary_sensor
+      trigger: device
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 30
+    timeout:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - type: turn_off
+    device_id: 0f778e7c509b6496432dd3280563746f
+    entity_id: da339652c8841185029151de22553547
+    domain: light
   mode: single
