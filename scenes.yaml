@@ -21,13 +21,13 @@
       friendly_name: 화장실
       supported_features: 7796671
       state: 'off'
-    alarm_control_panel.home_alarm:
+    alarm_control_panel.security_system:
       code_format: number
       changed_by:
       code_arm_required: false
       previous_state:
       next_state:
-      friendly_name: Home Alarm
+      friendly_name: 보안 시스템
       supported_features: 47
       state: armed_night
     media_player.living_room:
@@ -85,7 +85,7 @@
       current: 0
       state: 'on'
   metadata:
-    alarm_control_panel.home_alarm:
+    alarm_control_panel.security_system:
       entity_only: true
     switch.flux:
       entity_only: true
@@ -226,13 +226,13 @@
       friendly_name: 화장실
       supported_features: 7796671
       state: idle
-    alarm_control_panel.home_alarm:
+    alarm_control_panel.security_system:
       code_format: number
       changed_by:
       code_arm_required: false
       previous_state:
       next_state:
-      friendly_name: Home Alarm
+      friendly_name: 보안 시스템
       supported_features: 47
       state: armed_home
     vacuum.robot_vacuum:
@@ -260,7 +260,7 @@
       state: 'on'
   icon: mdi:home-import-outline
   metadata:
-    alarm_control_panel.home_alarm:
+    alarm_control_panel.security_system:
       entity_only: true
     switch.flux:
       entity_only: true
@@ -312,13 +312,13 @@
       friendly_name: 침실 속커튼
       supported_features: 15
       state: open
-    alarm_control_panel.home_alarm:
+    alarm_control_panel.security_system:
       code_format: number
       changed_by:
       code_arm_required: false
       previous_state:
       next_state:
-      friendly_name: Home Alarm
+      friendly_name: 보안 시스템
       supported_features: 47
       state: armed_home
     media_player.bathroom:
@@ -351,7 +351,7 @@
       state: idle
   icon: mdi:weather-sunset-up
   metadata:
-    alarm_control_panel.home_alarm:
+    alarm_control_panel.security_system:
       entity_only: true
 - id: '1738530168446'
   name: 요리
@@ -381,13 +381,13 @@
       friendly_name: 화장실
       supported_features: 7796671
       state: 'off'
-    alarm_control_panel.home_alarm:
+    alarm_control_panel.security_system:
       code_format: number
       changed_by:
       code_arm_required: false
       previous_state:
       next_state:
-      friendly_name: Home Alarm
+      friendly_name: 보안 시스템
       supported_features: 47
       state: armed_away
     light.bedroom_floor_lamp:
@@ -487,7 +487,7 @@
       state: 'off'
   icon: mdi:lock
   metadata:
-    alarm_control_panel.home_alarm:
+    alarm_control_panel.security_system:
       entity_only: true
     automation.ashrae_55_adaptive_climate_control:
       entity_only: true
@@ -542,13 +542,13 @@
       friendly_name: 화장실
       supported_features: 7796287
       state: idle
-    alarm_control_panel.home_alarm:
+    alarm_control_panel.security_system:
       code_format: number
       changed_by:
       code_arm_required: false
       previous_state:
       next_state:
-      friendly_name: Home Alarm
+      friendly_name: 보안 시스템
       supported_features: 47
       state: armed_vacation
     light.bedroom_floor_lamp:
@@ -608,7 +608,7 @@
       entity_only: true
     light.kitchen_ceiling_light:
       entity_only: true
-    alarm_control_panel.home_alarm:
+    alarm_control_panel.security_system:
       entity_only: true
 - id: '1758388411404'
   name: 식사
@@ -640,3 +640,68 @@
       state: 'on'
   icon: mdi:food
   metadata: {}
+- id: '1759582271226'
+  name: 환기
+  entities:
+    cover.bedroom_main_curtain:
+      current_position: 100
+      device_class: curtain
+      friendly_name: 침실 겉커튼
+      supported_features: 15
+      state: open
+    cover.bedroom_sheer_curtain:
+      current_position: 100
+      device_class: curtain
+      friendly_name: 침실 속커튼
+      supported_features: 15
+      state: open
+    automation.ashrae_55_adaptive_climate_control:
+      id: '1758065749886'
+      last_triggered: '2025-10-04T12:50:00.112170+00:00'
+      mode: single
+      current: 0
+      friendly_name: ASHRAE 55 Adaptive Climate Control
+      state: 'off'
+    climate.air_conditioner:
+      hvac_modes:
+      - 'off'
+      - cool
+      - auto
+      - fan_only
+      - dry
+      min_temp: 16
+      max_temp: 30
+      target_temp_step: 0.5
+      fan_modes:
+      - auto
+      - high
+      - low
+      - power
+      - medium
+      swing_modes:
+      - 'on'
+      - 'off'
+      swing_horizontal_modes:
+      - 'on'
+      - 'off'
+      current_temperature: 27
+      temperature:
+      current_humidity: 69
+      fan_mode: auto
+      swing_mode: 'off'
+      swing_horizontal_mode: 'on'
+      friendly_name: 에어컨
+      supported_features: 937
+      state: fan_only
+    number.air_conditioner_sleep_timer:
+      min: 0
+      max: 100
+      step: 1
+      mode: box
+      unit_of_measurement: h
+      friendly_name: 에어컨 취침 타이머
+      state: unknown
+  icon: mdi:air-filter
+  metadata:
+    automation.ashrae_55_adaptive_climate_control:
+      entity_only: true

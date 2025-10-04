@@ -39,8 +39,8 @@ script: !include ./scripts.yaml
 
 alarm_control_panel:
   - platform: manual
-    name: Home Alarm
-    unique_id: alarm_control_panel.home_alarm
+    name: 보안 시스템 
+    unique_id: alarm_control_panel.security_system
     code: !secret alarm_control_panel_code
     code_arm_required: false
     arming_states:
