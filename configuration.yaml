@@ -113,6 +113,9 @@ recorder:
       - binary_sensor.*_door
       - binary_sensor.*_window
 
+      # Include Bed occupancy Sensor
+      - binary_sensor.withings_in_bed
+
   exclude:
     domains:
       - automation
