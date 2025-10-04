@@ -549,7 +549,7 @@
     entity_id: person.saya6k
     state: home
   - condition: state
-    entity_id: alarm_control_panel.home_alarm
+    entity_id: alarm_control_panel.security_system
     state: armed_home
   - condition: numeric_state
     entity_id: sensor.count_lights_on
@@ -802,6 +802,15 @@
   - condition: numeric_state
     entity_id: zone.home
     above: 0
+  - type: is_occupied
+    condition: device
+    device_id: 419d5d6b862b27f2bb578347034b714e
+    entity_id: cb88873a76e543713c95bdc11ba9a391
+    domain: binary_sensor
+    for:
+      hours: 1
+      minutes: 0
+      seconds: 0
   actions:
   - action: switch.turn_on
     metadata: {}
@@ -1394,7 +1403,7 @@
   - choose:
     - conditions:
       - condition: state
-        entity_id: alarm_control_panel.home_alarm
+        entity_id: alarm_control_panel.security_system
         state: armed_home
       sequence:
       - type: turn_off
@@ -1407,7 +1416,7 @@
         domain: light
     - conditions:
       - condition: state
-        entity_id: alarm_control_panel.home_alarm
+        entity_id: alarm_control_panel.security_system
         state: armed_night
       sequence:
       - type: turn_off
@@ -1435,7 +1444,7 @@
     above: 0
     below: 2
   - condition: state
-    entity_id: alarm_control_panel.home_alarm
+    entity_id: alarm_control_panel.security_system
     state: armed_home
   - condition: numeric_state
     entity_id: sensor.count_lights_on
@@ -1485,7 +1494,7 @@
     trigger: device
   conditions:
   - condition: state
-    entity_id: alarm_control_panel.home_alarm
+    entity_id: alarm_control_panel.security_system
     state: armed_night
   - condition: numeric_state
     entity_id: zone.home
@@ -1518,4 +1527,117 @@
     device_id: 0f778e7c509b6496432dd3280563746f
     entity_id: da339652c8841185029151de22553547
     domain: light
+  mode: single
+- id: '1759582385962'
+  alias: 창문 열림 시 공조 자동 제어
+  description: 창문이 열리면 환기 장면을 활성화하고 자동 온도 조절 기능을 일시 중지합니다. 창문이 닫히면 자동 온도 조절 기능을 다시
+    활성화합니다.
+  triggers:
+  - type: opened
+    device_id: 940271c084ed40a9b3a077bec76104a5
+    entity_id: fc117f225d6f0b8b536a0984e348efbf
+    domain: binary_sensor
+    trigger: device
+  conditions:
+  - condition: numeric_state
+    entity_id: zone.home
+    above: 0
+  actions:
+  - action: scene.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: scene.ventilation
+  - action: assist_satellite.announce
+    metadata: {}
+    data:
+      message: 창문을 여셔서 자동 온도 조절 모드를 비활성화합니다. 방 안이 충분히 환기되면 알려드릴께요.
+      preannounce: true
+    target:
+      entity_id: assist_satellite.home_assistant_voice_090541_assist_satellite
+  - repeat:
+      until:
+      - type: is_carbon_dioxide
+        condition: device
+        device_id: 22c7752de4a4dda01d67e8042743a6a0
+        entity_id: b2f5d303ee5e32d95ab6295d776d5b23
+        domain: sensor
+        below: 500
+      sequence:
+      - action: assist_satellite.announce
+        metadata: {}
+        data:
+          preannounce: true
+          message: 현재 집 안 이산화탄소 농도는 {{states('sensor.living_room_netatmo_carbon_dioxide')}}
+            ppm 입니다.
+        target:
+          entity_id: assist_satellite.home_assistant_voice_090541_assist_satellite
+      - delay:
+          hours: 0
+          minutes: 5
+          seconds: 0
+          milliseconds: 0
+  - action: assist_satellite.announce
+    metadata: {}
+    data:
+      preannounce: true
+      message: 현재 집 안 이산화탄소 농도는 {{states('sensor.living_room_netatmo_carbon_dioxide')}}
+        ppm 입니다. 충분히 환기가 되었어요. 창문을 닫으시면 자동 온도 조절 모드를 다시 켤께요.
+    target:
+      entity_id: assist_satellite.home_assistant_voice_090541_assist_satellite
+  - wait_for_trigger:
+    - type: not_opened
+      device_id: 940271c084ed40a9b3a077bec76104a5
+      entity_id: fc117f225d6f0b8b536a0984e348efbf
+      domain: binary_sensor
+      trigger: device
+  - action: assist_satellite.announce
+    metadata: {}
+    data:
+      message: 다 자동 온도 조절 모드를 활성화했습니다.
+      preannounce: true
+    target:
+      entity_id: assist_satellite.home_assistant_voice_090541_assist_satellite
+  - action: automation.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: automation.ashrae_55_adaptive_climate_control
+  mode: single
+- id: '1759583414854'
+  alias: 고농도 이산화탄소 환기 알림
+  description: 집 안 이산화탄소 농도가 높을 때 환기를 안내하고 창문이 열릴 때까지 반복적으로 알림.
+  triggers:
+  - type: carbon_dioxide
+    device_id: 22c7752de4a4dda01d67e8042743a6a0
+    entity_id: b2f5d303ee5e32d95ab6295d776d5b23
+    domain: sensor
+    trigger: device
+    above: 2000
+  conditions:
+  - condition: numeric_state
+    entity_id: zone.home
+    above: 0
+  actions:
+  - repeat:
+      until:
+      - type: is_open
+        condition: device
+        device_id: 940271c084ed40a9b3a077bec76104a5
+        entity_id: fc117f225d6f0b8b536a0984e348efbf
+        domain: binary_sensor
+      sequence:
+      - action: assist_satellite.announce
+        metadata: {}
+        data:
+          preannounce: true
+          message: 현재 집 안 이산화탄소 농도는 {{states('sensor.living_room_netatmo_carbon_dioxide')}}
+            ppm 입니다. 환기를 추천드려요.
+        target:
+          entity_id: assist_satellite.home_assistant_voice_090541_assist_satellite
+      - delay:
+          hours: 0
+          minutes: 10
+          seconds: 0
+          milliseconds: 0
   mode: single
