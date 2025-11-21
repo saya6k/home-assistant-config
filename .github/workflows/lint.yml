@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: ⤵️ Checkout Repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: 🚀 Run yamllint
         uses: frenck/action-yamllint@v1.5.0
@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: ⤵️ Checkout Repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: 🧐 Run Remark Lint
         uses: docker://pipelinecomponents/remark-lint:latest
