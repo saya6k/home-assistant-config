@@ -158,7 +158,7 @@ jobs:
         run: mkdocs build --config-file mkdocs.yml --site-dir site
 
       - name: 📤 Upload site artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: site
 
