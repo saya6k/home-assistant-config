@@ -1,0 +1,32 @@
+esphome:
+  name: nano-c6
+  friendly_name: nano-c6
+
+esp32:
+  board: esp32-c6-devkitc-1
+  framework:
+    type: esp-idf
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "GgzH6sTP58pT39DNboV7Jm5X+rqkAK6WtsQ4yaCfRt4="
+
+ota:
+  - platform: esphome
+    password: "a923b5539704571ef12e3b467fd05253"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Nano-C6 Fallback Hotspot"
+    password: "OF16UB6EsnLm"
+
+captive_portal:
+    
