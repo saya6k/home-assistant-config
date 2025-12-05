@@ -90,7 +90,7 @@ I use the Doods addon for object detection. It can handle over 10 FHD streams, d
 
 |                                 Device                                  | Quantity | Connection |                         Home Assistant                         |                                 Notes                                 |
 | :---------------------------------------------------------------------: | :------: | :--------: | :------------------------------------------------------------: | :-------------------------------------------------------------------: |
-| [Netatmo Home Coach](https://shop.netatmo.com/en-eu/aircare/home-coach) |    1     |   Wi-Fi    | [Netatmo](https://www.home-assistant.io/integrations/netatmo/) | Cloud-based. Unfortunately, it doesn't measure air quality in detail. |
+| [Awair Omni](https://www.getawair.com/products/omni) |    1     |   Wi-Fi    | [Awair](https://www.home-assistant.io/integrations/awair/) | Local Wi-Fi. It measures air quality in detail. |
 
 ## 🎵 Media
 
@@ -125,6 +125,7 @@ I use Ubiquiti equipment. They are not exactly enterprise-grade devices, but the
 | [Samsung BESPOKE Microwave 23L (Grill Fry)](https://www.samsung.com/sec/micro-wave-ovens/microwave-oven-grill-MG23T5018CC-d2c/MG23T5018CP/) |    1     |   Wi-Fi    | [Smartthings](https://www.home-assistant.io/integrations/smartthings/) | Can check the remaining time. |
 |                                           [xBloom Studio](https://xbloom.com/pages/xbloom-studio)                                           |    1     | Bluetooth  |                                   -                                    |     Extremely convenient.     |
 |                             [LG CordZero Object Collection R5](https://www.lge.co.kr/vacuum-cleaners/r585wka1)                              |    1     |   Wi-Fi    |    [LG ThinQ](https://www.home-assistant.io/integrations/lg_thinq/)    |   LG robot vacuum cleaner.    |
+|                             [LG Object Collection Dehumidifier](https://www.lge.co.kr/dehumidifiers/dq134mwec-akor)                              |    1     |   Wi-Fi    |    [LG ThinQ](https://www.home-assistant.io/integrations/lg_thinq/)    |   LG Dehumidifier model DQ134MWEC.    |
 
 ### Other Devices
 

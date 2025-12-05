@@ -4,13 +4,9 @@ title: Monitoring
 
 # Monitoring
 
-Grafana Dashboards.
+Grafana Dashboards to monitor historic data stored in VictoriaMetrics.
 
 === "Energy Usage"
-
-    ![Beelink Mini S12 Pro](https://github.com/denysdovhan/home-assistant-config/assets/3459374/c687d08c-10c1-453c-b5b6-74c4e8cf8600)
-
-=== "Server Status"
 
     ![Beelink Mini S12 Pro](https://github.com/denysdovhan/home-assistant-config/assets/3459374/c687d08c-10c1-453c-b5b6-74c4e8cf8600)
 
