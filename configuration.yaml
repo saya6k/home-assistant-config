@@ -101,20 +101,59 @@ recorder:
   commit_interval: 30
   # max_event_size: 32168
   include:
-    entity_globs:
-      # Include Github stars
-      - sensor.saya6k_*_stars
+    entities:
+      # Include DB and Log size
+      - sensor.home_assistant_rdb_size
+      - sensor.home_assistant_tsdb_size
 
+      # Include Transmission Upload / Download
+      - sensor.transmission_upload_speed
+      - sensor.transmission_download_speed
+
+      # Include Speedtest
+      - sensor.speedtest_upload
+      - sensor.speedtest_download
+      - sensor.speedtest_ping
+
+      # Include System Monitoring Sensors
+      - sensor.system_monitor_processor_use
+      - sensor.system_monitor_processor_temperature
+      - sensor.system_monitor_memory_usage
+      - sensor.system_monitor_swap_usage
+      - sensor.system_monitor_disk_usage
+      - sensor.system_monitor_network_throughput_in_end0
+      - sensor.system_monitor_network_throughput_out_end0
+
+      # Include Unifi Gateway lite Sensors
+      - sensor.gateway_lite_cpu_utilization
+      - sensor.gateway_lite_memory_utilization
+
+      #             Total
+      - sensor.electricity_bill_used
+      - sensor.utility_total_electricity
+      - sensor.utility_total_gas
+      - sensor.utility_total_water
+
+      #         Energy per Domain
+      - sensor.all_hvac_energy_use
+      - sensor.all_light_energy_use
+      - sensor.all_media_player_energy_use
+      - sensor.all_cooker_energy_use
+
+    entity_globs:
       # Include Average Climate Sensors
       - sensor.*_average_temperature
       - sensor.*_average_humidity
 
-      # Include Doors and Windows Sensor
+      # Include Security Sensors
       - binary_sensor.*_door
       - binary_sensor.*_window
+      - binary_sensor.*_motion
+      - binary_sensor.*_occupancy
 
-      # Include Bed occupancy Sensor
-      - binary_sensor.withings_in_bed
+      # Include Health Sensors
+      - sensor.withings_*
+      - binary_sensor.withings_*
 
   exclude:
     domains:
@@ -161,14 +200,8 @@ recorder:
       - sensor.*_nearest_direction_of_travel
       - sensor.*_nearest_distance
 
-      # Exclude Adaptive Lighting Control Switches
-      - switch.adaptive_lighting*
-
       # Exclude Discord Game Sensors
       - sensor.discord_user*
-
-      # Exclude Firefly iii sensors
-      - sensor.fireflyiii*
 
       # Exclude github sensors (except stars)
       - sensor.saya6k_home_assistant_config*
@@ -197,9 +230,6 @@ recorder:
 
       - binary_sensor.truenas_snapshot_tasks*
       - sensor.truenas_snapshot_tasks*
-
-      # Exclude Places sensors
-      - sensor.*_place
 
       # Exclude all entities from occupancy and motion glob
       - binary_sensor.*_occupancy
@@ -241,7 +271,7 @@ recorder:
 
     # Exclude an event_type
     event_types:
-      - call_service
+      # - call_service
       - system_log_event
 
 ####################################################
@@ -257,6 +287,7 @@ logger:
     homeassistant.setup: error
     # homeassistant.components.conversation: debug
     # homeassistant.components.intent: debug
+    # custom_components.hass_dyson: debug
 
 ####################################################
 #                                                  #
@@ -278,82 +309,16 @@ prometheus:
       - sensor.utility_total_gas
       - sensor.utility_total_water
 
-      #         Monthly Energy
-      - sensor.utility_this_month_electricity
-      - sensor.utility_this_month_gas
-      - sensor.utility_this_month_water
-
-      #          Daily Energy
-      - sensor.utility_this_day_electricity
-      - sensor.utility_this_day_gas
-      - sensor.utility_this_day_water
-
-      #          Energy per Area
-      - sensor.all_bedroom_energy_use
-      - sensor.all_kitchen_energy_use
-      - sensor.all_living_room_energy_use
-      - sensor.all_unaccounted_energy_use
-
       #         Energy per Domain
       - sensor.all_hvac_energy_use
       - sensor.all_light_energy_use
       - sensor.all_media_player_energy_use
-
-      #          Power Total
-      - sensor.template_total_power
-
-      #         Power per Area
-      - sensor.all_bedroom_power_use
-      - sensor.all_kitchen_power_use
-      - sensor.all_living_room_power_use
-      - sensor.all_unaccounted_power_use
-
-      #         Power per Domain
-      - sensor.all_hvac_power_use
-      - sensor.all_light_power_use
-      - sensor.all_media_player_power_use
-
-      #################################
-      #                               #
-      #       Indoor Environment      #
-      #                               #
-      #################################
-
-      #          Total
-      - sensor.indoor_average_temperature
-      - sensor.indoor_average_humidity
-
-      #          Living Room
-      - sensor.living_room_average_temperature
-      - sensor.living_room_average_humidity
-
-      #          Bedroom
-      - sensor.bedroom_average_temperature
-      - sensor.bedroom_average_humidity
-
-      #          Kitchen
-      - sensor.kitchen_average_temperature
-      - sensor.kitchen_average_humidity
-
-      #          Powder Room
-      - sensor.powder_room_average_humidity
-      - sensor.powder_room_average_humidity
 
       #################################
       #                               #
       #        Home Assistant         #
       #                               #
       #################################
-
-      # Home Assistant System Monitor
-      - sensor.processor_use
-      - sensor.disk_use_percent
-      - sensor.memory_use_percent
-
-      # Home Assistant Network
-      - sensor.speedtest_download
-      - sensor.speedtest_upload
-      - sensor.speedtest_ping
 
       # Home Assistant Statistics
       - sensor.integrations
@@ -364,12 +329,7 @@ prometheus:
       - sensor.devices
       - sensor.entities
 
-      # Home Assistant DB Size
-      - sensor.homeassistant_db_size
-      - sensor.victoriametrics_db_size
-      - sensor.home_assistant_log_size
-
-      # Entity Domains Counter
+      # Entities per Domains Statistics
       - sensor.air_quality
       - sensor.alarm_control_panels
       - sensor.automations
@@ -414,25 +374,25 @@ prometheus:
       - sensor.weather
       - sensor.zones
 
+    exclude_entity_globs:
       #################################
       #                               #
-      #            Github             #
+      #       Indoor Environment      #
       #                               #
       #################################
 
-      - sensor.saya6k_home_assistant_config_stars
+      #     Environmental Sensor globs
+      - sensor.*_average_temperature
+      - sensor.*_average_humidity
+
+      # Home Assistant Database Statistics
+      - sensor.home_assistant_rdb_*
+      - sensor.home_assistant_tsdb_size
 
 command_line:
-  - sensor:
-      name: Home Assistant Log Size
-      icon: mdi:file-document
-      command: 'du -m home-assistant.log | cut -f1'
-      device_class: data_size
-      unit_of_measurement: MB
-      scan_interval: 600
 
   - sensor:
-      name: 'VictoriaMetrics DB Size'
+      name: 'Home Assistant TSDB Size'
       icon: mdi:database
       command: '/usr/bin/du -s /share/victoria-metrics-data | cut -f1'
       value_template: "{{ (value.split('\t')[0]|int/1000)|round(1) }}"
@@ -440,11 +400,3 @@ command_line:
       unit_of_measurement: 'MB'
       unique_id: 'victoriametrics_db_size'
       scan_interval: 600
-
-  - sensor:
-      name: System Monitor Fan Speed
-      unique_id: system_monitor_fan_speed
-      scan_interval: 15
-      command: 'cat /sys/devices/platform/cooling_fan/hwmon/*/fan1_input'
-      unit_of_measurement: 'RPM'
-      # value_template: {{value}}
