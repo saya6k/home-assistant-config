@@ -14,30 +14,54 @@
       supported_features: 15
       state: closed
     media_player.bathroom:
+      volume_level: 1
+      is_volume_muted: false
+      media_content_type: music
+      app_id: music_assistant
+      source: Music Assistant Queue
+      shuffle: true
+      repeat: 'off'
+      entity_picture_local:
       mass_player_type: player
       active_queue: media_player.home_assistant_voice_094eeb_media_player
       device_class: speaker
       icon: mdi:speaker
       friendly_name: 화장실
-      supported_features: 7796671
-      state: 'off'
+      supported_features: 7796287
+      state: idle
     alarm_control_panel.security_system:
       code_format: number
       changed_by:
       code_arm_required: false
       previous_state:
       next_state:
-      friendly_name: 보안 시스템
+      friendly_name: Security System
       supported_features: 47
       state: armed_night
     media_player.living_room:
+      volume_level: 0.2
+      is_volume_muted: false
+      media_content_id: spotify://track/2fsTGL7TjUej25XsOpTgpr
+      media_content_type: music
+      media_duration: 224
+      media_position: 469
+      media_position_updated_at: '2025-11-25T14:10:22.603816+00:00'
+      media_title: I'm Missing You
+      media_artist: 범키
+      media_album_name: I'm Missing You
+      app_id: music_assistant
+      source: Music Assistant Queue
+      shuffle: true
+      repeat: 'off'
+      entity_picture_local: /api/media_player_proxy/media_player.living_room?token=3aa768b08b56478a56dcb4ecd655571182ed5ed961cbca0716f834c730d6629a&cache=3b78312cfed61a47
       mass_player_type: player
       active_queue: media_player.home_assistant_voice_090541_media_player
       device_class: speaker
+      entity_picture: https://i.scdn.co/image/ab67616d0000b273467a7147fd964830acabef35
       icon: mdi:speaker
       friendly_name: 거실
-      supported_features: 7796671
-      state: 'off'
+      supported_features: 7796287
+      state: paused
     light.living_room_desk_lamp:
       min_color_temp_kelvin: 2702
       max_color_temp_kelvin: 6535
@@ -79,10 +103,28 @@
       state: 'off'
     automation.ashrae_55_adaptive_climate_control:
       id: '1758065749886'
-      friendly_name: ASHRAE 55 Adaptive Climate Control
-      last_triggered: '2025-09-26T14:51:10.325703+00:00'
+      last_triggered: '2025-11-25T14:11:36.568682+00:00'
       mode: single
       current: 0
+      friendly_name: ASHRAE 55 Adaptive Climate Control
+      state: 'on'
+    fan.living_room_air_purifier:
+      preset_modes:
+      - Auto
+      - Normal
+      direction: forward
+      oscillating: false
+      percentage:
+      percentage_step: 10
+      preset_mode: Auto
+      angle_low: 135
+      angle_high: 225
+      friendly_name: 공기청정기
+      supported_features: 63
+      state: 'on'
+    switch.air_purifier_night_mode:
+      icon: mdi:power-sleep
+      friendly_name: 공기청정기 Night Mode
       state: 'on'
   metadata:
     alarm_control_panel.security_system:
@@ -90,6 +132,8 @@
     switch.flux:
       entity_only: true
     automation.ashrae_55_adaptive_climate_control:
+      entity_only: true
+    switch.air_purifier_night_mode:
       entity_only: true
   icon: mdi:weather-night
 - id: '1737075533130'
@@ -213,18 +257,18 @@
   name: 환영
   entities:
     media_player.bathroom:
-      volume_level: 0.5
-      media_content_type: music
-      app_id: music_assistant
-      shuffle: false
-      repeat: 'off'
-      entity_picture_local:
       mass_player_type: player
       active_queue: media_player.home_assistant_voice_094eeb_media_player
       device_class: speaker
       icon: mdi:speaker
       friendly_name: 화장실
       supported_features: 7796671
+      volume_level: 0.5
+      media_content_type: music
+      app_id: music_assistant
+      shuffle: true
+      repeat: 'off'
+      entity_picture_local:
       state: idle
     alarm_control_panel.security_system:
       code_format: number
@@ -232,70 +276,72 @@
       code_arm_required: false
       previous_state:
       next_state:
-      friendly_name: 보안 시스템
+      friendly_name: Security System
       supported_features: 47
       state: armed_home
-    vacuum.robot_vacuum:
-      battery_level: 100
-      battery_icon: mdi:battery-charging-100
-      friendly_name: 로봇청소기
-      supported_features: 12628
-      state: docked
     media_player.living_room:
-      volume_level: 0.2
-      media_content_type: music
-      app_id: music_assistant
-      shuffle: true
-      repeat: 'off'
-      entity_picture_local:
       mass_player_type: player
       active_queue: media_player.home_assistant_voice_090541_media_player
       device_class: speaker
       icon: mdi:speaker
       friendly_name: 거실
       supported_features: 7796671
+      volume_level: 0.2
+      media_content_type: music
+      app_id: music_assistant
+      shuffle: true
+      repeat: 'off'
+      entity_picture_local:
       state: idle
     switch.flux:
       friendly_name: Flux
       state: 'on'
+    fan.living_room_air_purifier:
+      preset_modes:
+      - Auto
+      - Normal
+      direction: forward
+      oscillating: false
+      percentage:
+      percentage_step: 10
+      preset_mode: Auto
+      angle_low: 135
+      angle_high: 225
+      friendly_name: 공기청정기
+      supported_features: 63
+      state: 'on'
+    switch.air_purifier_night_mode:
+      icon: mdi:power-sleep
+      friendly_name: 공기청정기 Night Mode
+      state: 'off'
   icon: mdi:home-import-outline
   metadata:
     alarm_control_panel.security_system:
       entity_only: true
     switch.flux:
       entity_only: true
+    switch.air_purifier_night_mode:
+      entity_only: true
 - id: '1737809150097'
   name: 샤워
   entities:
     media_player.bathroom:
-      device_class: speaker
-      icon: mdi:speaker
-      supported_features: 7796671
       volume_level: 0.65
+      is_volume_muted: false
       media_content_type: music
       app_id: music_assistant
+      source: Music Assistant Queue
       shuffle: false
       repeat: 'off'
-      entity_picture_local: /api/media_player_proxy/media_player.bathroom?token=1ddc71d2ef45e7c18a2cb6ad186e6d1017919804708d6894e1e45e5d93a3ca59&cache=e34ffc5b1649fd81
+      entity_picture_local:
       mass_player_type: player
       active_queue: media_player.home_assistant_voice_094eeb_media_player
+      device_class: speaker
+      icon: mdi:speaker
       friendly_name: 화장실
-      entity_picture: https://res.static.kbs.co.kr/favicon.png
-      media_content_id: library://radio/1
-      media_position: 2
-      media_position_updated_at: '2025-09-24T15:36:04.525140+00:00'
-      media_title: KBS Classic FM
-      state: playing
-    light.bathroom_shower_box:
-      supported_color_modes:
-      - onoff
-      icon: mdi:shower-head
-      friendly_name: 화장실 샤워부스
-      supported_features: 0
-      state: unavailable
-  metadata:
-    light.bathroom_shower_box:
-      entity_only: true
+      supported_features: 7796287
+      state: idle
+  metadata: {}
   icon: mdi:shower-head
 - id: '1737904789878'
   name: 기상
@@ -307,51 +353,88 @@
       supported_features: 15
       state: open
     cover.bedroom_sheer_curtain:
-      current_position: 100
+      current_position: 0
       device_class: curtain
       friendly_name: 침실 속커튼
       supported_features: 15
-      state: open
+      state: closed
     alarm_control_panel.security_system:
       code_format: number
       changed_by:
       code_arm_required: false
       previous_state:
       next_state:
-      friendly_name: 보안 시스템
+      friendly_name: Security System
       supported_features: 47
       state: armed_home
     media_player.bathroom:
+      volume_level: 0.5
+      is_volume_muted: false
+      media_content_type: music
+      app_id: music_assistant
+      source: Music Assistant Queue
+      shuffle: true
+      repeat: 'off'
+      entity_picture_local:
       mass_player_type: player
       active_queue: media_player.home_assistant_voice_094eeb_media_player
       device_class: speaker
       icon: mdi:speaker
       friendly_name: 화장실
-      supported_features: 7796671
-      volume_level: 0.5
-      media_content_type: music
-      app_id: music_assistant
-      shuffle: false
-      repeat: 'off'
-      entity_picture_local:
+      supported_features: 7796287
       state: idle
     media_player.living_room:
+      volume_level: 0.5
+      is_volume_muted: false
+      media_content_id: spotify://track/6h6apayGCXwfvrSkQ7Z0Ck
+      media_content_type: music
+      media_duration: 240
+      media_position: 34
+      media_position_updated_at: '2025-11-20T15:42:00.925742+00:00'
+      media_title: RANDOM BOX
+      media_artist: 87dance
+      media_album_name: Youth Heritage
+      app_id: music_assistant
+      source: Music Assistant Queue
+      shuffle: true
+      repeat: 'off'
+      entity_picture_local: /api/media_player_proxy/media_player.living_room?token=b5d83abe5bc6a46c71c86e8fe4ce0cd46a4818b1124827ec7635ad3c1207b1c4&cache=572c6911e34ce42f
       mass_player_type: player
       active_queue: media_player.home_assistant_voice_090541_media_player
       device_class: speaker
+      entity_picture: https://i.scdn.co/image/ab67616d0000b27317d97dae9245b2d38f915365
       icon: mdi:speaker
       friendly_name: 거실
-      supported_features: 7796671
-      volume_level: 0.5
-      media_content_type: music
-      app_id: music_assistant
-      shuffle: false
-      repeat: 'off'
-      entity_picture_local:
+      supported_features: 7796287
       state: idle
+    fan.living_room_air_purifier:
+      preset_modes:
+      - Auto
+      - Normal
+      direction: forward
+      oscillating: false
+      percentage:
+      percentage_step: 10
+      preset_mode: Auto
+      angle_low: 135
+      angle_high: 225
+      friendly_name: 공기청정기
+      supported_features: 63
+      state: 'on'
+    switch.air_purifier_night_mode:
+      icon: mdi:power-sleep
+      friendly_name: 공기청정기 Night Mode
+      state: 'off'
+    switch.flux:
+      friendly_name: Flux
+      state: 'on'
   icon: mdi:weather-sunset-up
   metadata:
     alarm_control_panel.security_system:
+      entity_only: true
+    switch.air_purifier_night_mode:
+      entity_only: true
+    switch.flux:
       entity_only: true
 - id: '1738530168446'
   name: 요리
@@ -387,7 +470,7 @@
       code_arm_required: false
       previous_state:
       next_state:
-      friendly_name: 보안 시스템
+      friendly_name: Security System
       supported_features: 47
       state: armed_away
     light.bedroom_floor_lamp:
@@ -397,17 +480,10 @@
       max_mireds: 370
       supported_color_modes:
       - color_temp
-      color_mode:
-      brightness:
-      color_temp_kelvin:
-      color_temp:
-      hs_color:
-      rgb_color:
-      xy_color:
       icon: mdi:floor-lamp
       friendly_name: 침실 플로어
       supported_features: 32
-      state: 'off'
+      state: unavailable
     light.living_room_desk_lamp:
       min_color_temp_kelvin: 2702
       max_color_temp_kelvin: 6535
@@ -437,35 +513,32 @@
     climate.air_conditioner:
       hvac_modes:
       - 'off'
-      - fan_only
-      - cool
       - dry
+      - cool
+      - fan_only
       - auto
-      min_temp: 16
-      max_temp: 30
-      target_temp_step: 0.5
+      min_temp: 7
+      max_temp: 35
       fan_modes:
-      - high
-      - auto
       - medium
-      - power
       - low
+      - high
+      - power
+      - auto
       swing_modes:
       - 'on'
       - 'off'
       swing_horizontal_modes:
       - 'on'
       - 'off'
-      current_temperature: 28
+      current_temperature: 29.5
       temperature:
-      target_temp_high:
-      target_temp_low:
-      current_humidity: 66
-      fan_mode: low
+      current_humidity: 41
+      fan_mode: auto
       swing_mode: 'off'
       swing_horizontal_mode: 'on'
       friendly_name: 에어컨
-      supported_features: 939
+      supported_features: 937
       state: 'off'
     number.air_conditioner_sleep_timer:
       min: 0
@@ -477,7 +550,7 @@
       state: unknown
     automation.ashrae_55_adaptive_climate_control:
       id: '1758065749886'
-      last_triggered:
+      last_triggered: '2025-11-10T01:10:00.435388+00:00'
       mode: single
       current: 0
       friendly_name: ASHRAE 55 Adaptive Climate Control
@@ -485,6 +558,32 @@
     switch.flux:
       friendly_name: Flux
       state: 'off'
+    fan.living_room_air_purifier:
+      preset_modes:
+      - Auto
+      - Normal
+      direction: forward
+      oscillating: false
+      percentage:
+      percentage_step: 10
+      preset_mode: Auto
+      angle_low: 135
+      angle_high: 225
+      friendly_name: 공기청정기
+      supported_features: 63
+      state: 'off'
+    cover.bedroom_sheer_curtain:
+      current_position: 0
+      device_class: curtain
+      friendly_name: 침실 속커튼
+      supported_features: 15
+      state: closed
+    cover.bedroom_main_curtain:
+      current_position: 100
+      device_class: curtain
+      friendly_name: 침실 겉커튼
+      supported_features: 15
+      state: open
   icon: mdi:lock
   metadata:
     alarm_control_panel.security_system:
@@ -657,50 +756,25 @@
       state: open
     automation.ashrae_55_adaptive_climate_control:
       id: '1758065749886'
-      last_triggered: '2025-10-04T12:50:00.112170+00:00'
+      last_triggered: '2025-11-10T01:10:00.435388+00:00'
       mode: single
       current: 0
       friendly_name: ASHRAE 55 Adaptive Climate Control
       state: 'off'
-    climate.air_conditioner:
-      hvac_modes:
-      - 'off'
-      - cool
-      - auto
-      - fan_only
-      - dry
-      min_temp: 16
-      max_temp: 30
-      target_temp_step: 0.5
-      fan_modes:
-      - auto
-      - high
-      - low
-      - power
-      - medium
-      swing_modes:
-      - 'on'
-      - 'off'
-      swing_horizontal_modes:
-      - 'on'
-      - 'off'
-      current_temperature: 27
-      temperature:
-      current_humidity: 69
-      fan_mode: auto
-      swing_mode: 'off'
-      swing_horizontal_mode: 'on'
-      friendly_name: 에어컨
-      supported_features: 937
-      state: fan_only
-    number.air_conditioner_sleep_timer:
-      min: 0
-      max: 100
-      step: 1
-      mode: box
-      unit_of_measurement: h
-      friendly_name: 에어컨 취침 타이머
-      state: unknown
+    fan.living_room_air_purifier:
+      preset_modes:
+      - Auto
+      - Normal
+      direction: forward
+      oscillating: true
+      percentage: 100
+      percentage_step: 10
+      preset_mode: Normal
+      angle_low: 135
+      angle_high: 225
+      friendly_name: 공기청정기
+      supported_features: 63
+      state: 'on'
   icon: mdi:air-filter
   metadata:
     automation.ashrae_55_adaptive_climate_control:

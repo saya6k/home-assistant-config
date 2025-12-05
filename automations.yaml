@@ -7,14 +7,27 @@
     the update process for each device.
 
     Mode: Like the script, it’s set to ''single'' to handle updates one by one.'
-  trigger:
-  - trigger: template
-    value_template: '{{ integration_entities(''esphome'') | select(''match'', ''^update.'')
-      | select(''is_state'', ''on'') | list | count > 0 }}'
-  condition: []
-  action:
-  - action: script.1714009131244
-    data: {}
+  triggers:
+  - trigger: state
+    entity_id:
+    - update.esphome_update
+    from:
+    - 'on'
+    to:
+    - 'off'
+  conditions: []
+  actions:
+  - repeat:
+      for_each: '{{ states.update | selectattr(''state'', ''eq'', ''on'') | map(attribute=''entity_id'')
+        | select(''in'', integration_entities(''esphome'')) | list }} '
+      sequence:
+      - action: update.install
+        metadata: {}
+        target:
+          entity_id: '{{ repeat.item }}'
+        data: {}
+      - wait_template: '{{ is_state(repeat.item, ''off'') }}'
+        continue_on_timeout: true
   mode: single
 - id: '1717333060399'
   alias: Washer State On
@@ -56,35 +69,34 @@
         title: ToDo file error
         message: '{{ todo_response[''stderr''] }}'
     enabled: false
+  - if:
+    - condition: numeric_state
+      entity_id: zone.home
+      above: 0
+    then:
+    - if:
+      - condition: state
+        entity_id: alarm_control_panel.security_system
+        state:
+        - armed_away
+      then:
+      - action: scene.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: scene.welcome
+    else:
+    - action: scene.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+        - scene.away
+  - action: readme.generate
+    metadata: {}
+    data:
+      convert_lovelace: true
   mode: single
-- id: '1737078076689'
-  alias: Notify Steam Wishlist on Sales
-  description: ''
-  triggers:
-  - trigger: state
-    entity_id:
-    - sensor.steam_wishlist_76561198124495822
-    attribute: on_sale
-  conditions: []
-  actions:
-  - data:
-      title: Steam Wishlist
-      message: "{% for on_sale in trigger.to_state.attributes.on_sale %}\n  ## [{{
-        on_sale.title }}](on_sale.deep_link)\n\n  {{ on_sale.normal_price }} &rarr;
-        {{ on_sale.sale_price }} ({{\n  on_sale.percent_off }}% 할인)\n\n  [![Poster]({{
-        on_sale.poster }})]({{ on_sale.deep_link }})\n{% endfor %}"
-      tag: steam-wishlist-on-sales
-    action: persistent_notification.create
-  mode: parallel
-- id: '1737747451172'
-  alias: Purge Log Filesize
-  description: Purge Log when file size exceed 50mb
-  triggers:
-  - entity_id: sensor.home_assistant_log_size
-    above: 50
-    trigger: numeric_state
-  actions:
-  - action: shell_command.purge_log
 - id: '1739462792155'
   alias: Notify Seoul Teukbo
   description: ''
@@ -150,11 +162,10 @@
   triggers:
   - trigger: state
     entity_id:
-    - event.robot_vacuum_notification
     - event.styler_notification
     - event.air_conditioner_notification
-    - event.robot_vacuum_error
     - event.styler_error
+    - event.bathroom_dehumidifier_notification
   conditions: []
   actions:
   - metadata: {}
@@ -201,21 +212,6 @@
           interruption-level: "{% if trigger.entity_id is defined and 'error' in trigger.entity_id
             %}\n  time-sensitive\n{% else %}\n  passive\n{% endif %}"
     action: notify.all_devices
-  mode: single
-- id: '1740397060235'
-  alias: Update Datetime every 10 minutes
-  description: ''
-  triggers:
-  - trigger: time_pattern
-    minutes: /10
-  conditions: []
-  actions:
-  - action: input_datetime.set_datetime
-    metadata: {}
-    data:
-      datetime: '{{ now().strftime(''%Y-%m-%d %H:%M:%S'') }}'
-    target:
-      entity_id: input_datetime.dashboard_select_datetime
   mode: single
 - id: '1750997515323'
   alias: Notify to brush Teeth
@@ -264,7 +260,7 @@
     target:
       entity_id: calendar.study
     response_variable: today_events
-  - action: notify.all_devices
+  - action: notify.mobile_app_ys_iphone13
     data:
       message: "오늘 일정은 {{ today_events['calendar.study'].events | length }}개예요.\n{%
         for event in today_events[\"calendar.study\"][\"events\"] %}\n  - {{ event.start[11:16]
@@ -293,7 +289,7 @@
       entity_id:
       - todo.home
     response_variable: today_todos
-  - action: notify.all_devices
+  - action: notify.mobile_app_ys_iphone13
     data:
       message: "{% set due_items = today_todos['todo.home']['items'] | selectattr('due',
         'defined') | list %} {% set no_due_items = today_todos['todo.home']['items']
@@ -325,42 +321,40 @@
         push:
           interruption-level: active
       title: "Welcome Back to Home \U0001F3E1"
-  - action: notify.persistent_notification
+  - action: persistent_notification.create
+    metadata: {}
     data:
+      title: "\U0001F3E1 집에서 할 일이에요"
       message: "{% set due_items = today_todos['todo.home']['items'] | selectattr('due',
-        'defined') | list %} {% set no_due_items = today_todos['todo.home']['items']
-        | rejectattr('due', 'defined') | list %}\n{% if due_items | length > 0 %}\n
-        \ ### 오늘의 할일은 다음과 같아요:\n  {% for item in due_items %}\n    - **{{ item.summary
-        }}**: {{ item.description }}\n  {% endfor %}\n{% else %}\n  ### 오늘 남은 할 일은
-        없네요.\n{% endif %}\n{% if no_due_items | length > 0 %}\n  ### 그 외 할일이에요:\n
-        \ {% for item in no_due_items %}\n    - **{{ item.summary }}**: {{ item.description
-        }}\n  {% endfor %}\n{% endif %}\n\n{% set ns = namespace(due_today=0, overdue=0,
-        due_today_list=[], overdue_list=[]) %}\n{% set today = now().strftime('%Y-%m-%d')
-        %} {% set yesterday = (now().timestamp() - 86400) | timestamp_custom('%Y-%m-%d',
-        false) %} {% set chores = state_attr('sensor.grocy_chores', 'chores') %}\n{%
-        if chores %}\n  ### 아직 남아있는 집안일:\n  {% for chore in chores %}\n    {% if chore.period_type
-        != 'manually' %}\n      {% if chore.next_estimated_execution_time %}\n        {%
-        set chore_date = as_timestamp(chore.next_estimated_execution_time) | timestamp_custom('%Y-%m-%d',
-        true) %}\n        {% if chore_date == today %}\n          {% set ns.due_today
-        = ns.due_today + 1 %}\n          {% set ns.due_today_list = ns.due_today_list
-        + [chore.name] %}\n        {% elif chore_date < today %}\n          {% set
-        ns.overdue = ns.overdue + 1 %}\n          {% set ns.overdue_list = ns.overdue_list
-        + [chore.name] %}\n        {% endif %}\n      {% else %}\n        {% set last_tracked_date
+        'defined') | list %} {%\n  set no_due_items = today_todos['todo.home']['items']
+        | rejectattr('due', 'defined') | list %}\n  {% if due_items | length > 0 %}\n
+        \ ### 오늘의 할일은 다음과 같아요:\n  \n  {% for item in due_items %}\n    - **{{ item.summary
+        }}**: {{ item.description }}\n    \n  {% endfor %}\n  {% else %}  \n    ###
+        오늘 남은 할 일은 없네요.\n  {% endif %}\n  {% if no_due_items | length > 0 %}   ###
+        그 외 할일이에요:\n  \n  {% for item in no_due_items %}   \n    - **{{ item.summary
+        }}**: {{ item.description }}\n  {% endfor %}\n  {% endif %}\n  \n  {% set
+        ns = namespace(due_today=0, overdue=0, due_today_list=[], overdue_list=[])
+        %} {% set today = now().strftime('%Y-%m-%d') %} {%\n  set yesterday = (now().timestamp()
+        - 86400) | timestamp_custom('%Y-%m-%d', false) %} {%\n  set chores = state_attr('sensor.grocy_chores',
+        'chores') %}\n  {% if chores %}\n  ### 아직 남아있는 집안일: \n  {% for chore in chores
+        %} \n  {% if chore.period_type != 'manually' %}  \n    {% if chore.next_estimated_execution_time
+        %}\n    {% set chore_date = as_timestamp(chore.next_estimated_execution_time)
+        | timestamp_custom('%Y-%m-%d', true) %} \n    {% if chore_date == today %}
+        \          {% set ns.due_today = ns.due_today + 1 %}\n    {% set ns.due_today_list
+        = ns.due_today_list + [chore.name] %}\n    {% elif chore_date < today %} \n
+        \   {% set ns.overdue = ns.overdue + 1 %}\n    {% set ns.overdue_list = ns.overdue_list
+        + [chore.name] %} \n    {% endif %}  \n    {% else %}   \n    {% set last_tracked_date
         = as_timestamp(chore.last_tracked_time) | timestamp_custom('%Y-%m-%d', true)
-        %}\n        {% if last_tracked_date == today %}\n          {% set ns.due_today
-        = ns.due_today + 1 %}\n          {% set ns.due_today_list = ns.due_today_list
-        + [chore.name] %}\n        {% elif last_tracked_date < yesterday %}\n          {%
-        set ns.overdue = ns.overdue + 1 %}\n          {% set ns.overdue_list = ns.overdue_list
-        + [chore.name] %}\n        {% endif %}\n      {% endif %}\n    {% endif %}\n
-        \ {% endfor %}\n{% endif %}\n### 밀린 집안일:\n{% for chore in ns.overdue_list
-        %}\n  - {{ chore }}\n{% endfor %}\n### 오늘까지 해야하는 집안일:\n{% for chore in ns.due_today_list
-        %}\n  - {{ chore }}\n{% endfor %}"
-      data:
-        subtitle: e {{ states('todo.home') }}개의 할 일이 남아 있어요.
-        url: /todo?entity_id=todo.home
-        push:
-          interruption-level: active
-      title: "Welcome back to Home \U0001F3E1"
+        %}   \n    {% if last_tracked_date == today %}     \n    {% set ns.due_today
+        = ns.due_today + 1 %} {%\n    set ns.due_today_list = ns.due_today_list +
+        [chore.name] %}\n    {% elif last_tracked_date < yesterday %} \n    {% set
+        ns.overdue = ns.overdue + 1 %} {%\n    set ns.overdue_list = ns.overdue_list
+        + [chore.name] %}\n    {% endif %} \n    {% endif %} \n    {% endif %} \n
+        \   {% endfor %} \n    {% endif %} \n    ### 밀린 집안일:\n    {% for chore in
+        ns.overdue_list %}   \n    - {{ chore }} \n    \n    {% endfor %} \n    ###
+        오늘까지 해야하는 집안일:\n    {% for chore in ns.due_today_list %} \n    - {{ chore
+        }}\n    \n    {% endfor %}"
+      notification_id: agenda_home
   mode: single
 - id: '1751025981451'
   alias: Notify Study Interruption
@@ -530,115 +524,60 @@
   max: 100
 - id: '1753930331307'
   alias: 침대에서 침대에 누워 있다고 알림
-  description: 침대에 누워 있고, 집이 일정 조건을 충족할 때 조명과 음악으로 편안한 환경 조성.
+  description: 침대에 누워 있고, 집이 일정 조건을 충족할 때 조명과 음악으로 편안한 환경 조성
   triggers:
-  - trigger: state
-    entity_id:
-    - binary_sensor.withings_in_bed
-    to: 'on'
+  - device_id: 419d5d6b862b27f2bb578347034b714e
+    entity_id: cb88873a76e543713c95bdc11ba9a391
+    domain: binary_sensor
+    type: occupied
     for:
-      hours: 0
       minutes: 3
-      seconds: 0
+    trigger: device
   conditions:
   - condition: numeric_state
     entity_id: zone.home
     above: 0
-    below: 2
-  - condition: state
-    entity_id: person.saya6k
-    state: home
   - condition: state
     entity_id: alarm_control_panel.security_system
     state: armed_home
-  - condition: numeric_state
-    entity_id: sensor.count_lights_on
-    above: 0
   actions:
-  - action: media_player.volume_set
-    metadata: {}
-    data:
-      volume_level: 0.2
-    target:
-      device_id: 03b47ade8600df7168f3676b477dee1a
-  - action: assist_satellite.ask_question
-    metadata: {}
-    target:
+  - target:
       entity_id: assist_satellite.home_assistant_voice_090541_assist_satellite
     data:
-      question: 지금 침대에 누워 계신 것 같아요. 불을 꺼드릴까요?
-      entity_id: assist_satellite.home_assistant_voice_090541_assist_satellite
-      answers:
-      - sentences:
-        - 응.
-        - 그래.
-        - 좋아.
-        - 꺼줘.
-        id: 'yes'
-      - id: 'no'
-        sentences:
-        - 아니.
-        - 아냐.
-        - 됐어.
-        - 싫어.
-        - 괜찮아.
-        - 나중에.
-    response_variable: answer
-  - choose:
-    - conditions:
-      - condition: template
-        value_template: '{{ answer.id == ''yes'' }}'
-      sequence:
-      - action: scene.turn_on
-        metadata: {}
-        data: {}
-        target:
-          entity_id: scene.sleep
-      - action: music_assistant.play_media
-        target:
-          device_id: 03b47ade8600df7168f3676b477dee1a
-        data:
-          media_id: library://podcast/1
-          media_type: podcast
-      - repeat:
-          count: 20
-          sequence:
-          - action: media_player.volume_down
-            metadata: {}
-            data: {}
-            target:
-              entity_id: media_player.bedroom
-          - delay:
-              hours: 0
-              minutes: 1
-              seconds: 0
-              milliseconds: 0
-      - action: media_player.media_stop
-        metadata: {}
-        data: {}
-        target:
-          device_id: 03b47ade8600df7168f3676b477dee1a
-      - action: media_player.clear_playlist
-        metadata: {}
-        data: {}
-        target:
-          device_id: 03b47ade8600df7168f3676b477dee1a
-    - conditions:
-      - condition: template
-        value_template: '{{ answer.id == ''no'' }}'
-      sequence:
-      - action: ai_task.generate_data
-        metadata: {}
-        data:
-          task_name: 'No'
-          instructions: User don't want to activate sleep scene. Kindly say that you
-            understood in Korean
-        response_variable: no_reply
-      - action: assist_satellite.announce
-        metadata: {}
-        data:
-          message: '{{ no_reply.data }}'
-          preannounce: false
+      start_message: "{% set people = states.person | selectattr(\"state\", \"equalto\",
+        \"home\") | list %} {% set count = people | count %} {% if count == 1 %}\n
+        \ {{ people[0].attributes.friendly_name }}님, 지금 침대에 누워 계신 것 같아요. {%if is_state('binary_sensor.night','on')%}취침{%else%}낮잠{%endif%}
+        장면을 활성화할까요?\n{% elif count > 1 %}\n  {{ people | map(attribute='attributes.friendly_name')
+        | join('님, ') }} 님, 침대에 누워 계신 것 같아요. {%if is_state('binary_sensor.night','on')%}취침{%else%}낮잠{%endif%}
+        장면을 활성화할까요?\n{% endif %}"
+      preannounce: true
+      extra_system_prompt: It's {{ now().strftime('%Y-%m-%d %H:%M') }} and user have
+        asked to turn on sleep or nap scene. If user says yes, turn on 'scene.sleep'
+    action: assist_satellite.start_conversation
+  - wait_for_trigger:
+    - entity_id: sensor.alarm_control_panels
+      trigger: state
+    timeout: 00:01:00
+    continue_on_timeout: false
+  - delay: 00:00:05
+  - if:
+    - condition: state
+      entity_id: binary_sensor.night
+      state: 'on'
+    then: []
+    else:
+    - target:
+        entity_id: assist_satellite.home_assistant_voice_090541_assist_satellite
+      data:
+        start_message: "{% set people = states.person | selectattr(\"state\", \"equalto\",
+          \"home\") | list %} {% set count = people | count %} {% if count == 1 %}\n
+          \ 그럼 {{ people[0].attributes.friendly_name }}님, 몇 분 뒤에 깨워드릴까요?\n{% elif
+          count > 1 %}\n  그럼 {{ people | map(attribute='attributes.friendly_name')
+          | join('님, ') }} 몇 분 뒤에 깨워드릴까요?\n{% endif %}"
+        preannounce: true
+        extra_system_prompt: It's {{ now().strftime('%Y-%m-%d %H:%M') }} and user
+          have asked how long to take a nap. Start a "timer.nap" by user desires.
+      action: assist_satellite.start_conversation
   mode: single
 - id: '1753948404845'
   alias: 유튜브 최신 영상 저장 및 알림
@@ -720,24 +659,26 @@
         trigger.to_state.attributes.friendly_name | replace('' Latest upload'', '''')
         }}'')
 
-        {{ states(''sensor.date'') }}'
+        {{ states(''sensor.date'') }}
+
+
+
+        [Home Assistant Deeplink](homeassistant://navigate/media-browser/browser/app,media-source://jellyfin/,media-source://app,media-source://jellyfin/,media-source://jellyfin/34f331a89ce405e2b877d68d5ee4d4a2)'
       notification_id: '{{ trigger.to_state.attributes.entity_id }}'
     enabled: false
   - action: persistent_notification.create
     metadata: {}
     data:
-      title: '{{ trigger.to_state.attributes.friendly_name | replace('' Latest upload'',
-        '''') | replace('' 최신 업로드'', '''')}}'
-      message: '## [{{ trigger.to_state.state }}](https://www.youtube.com/watch?v={{
-        trigger.to_state.attributes.video_id }})
+      title: "\U0001F4FA {{ trigger.to_state.attributes.friendly_name | replace('
+        Latest upload', '') | replace(' 최신 업로드', '')}}"
+      message: '**[{{ trigger.to_state.state }}](https://www.youtube.com/watch?v={{
+        trigger.to_state.attributes.video_id }})**
 
 
-        [YouTube Deeplink](youtube://www.youtube.com/watch?v={{ trigger.to_state.attributes.video_id
-        }})
-
-
-        [Home Assistant Deeplink](homeassistant://navigate/media-browser/browser/app,media-source://jellyfin/,media-source://app,media-source://jellyfin/,media-source://jellyfin/34f331a89ce405e2b877d68d5ee4d4a2)'
-      notification_id: '{{ trigger.to_state.attributes.video_id }}'
+        [![thumbnail](https://img.youtube.com/vi/{{ trigger.to_state.attributes.video_id
+        }}/0.jpg)](youtube://www.youtube.com/watch?v={{ trigger.to_state.attributes.video_id
+        }})'
+      notification_id: '{{ ''youtube_'' + trigger.to_state.attributes.video_id }}'
   mode: parallel
   max: 50
 - id: '1753958558668'
@@ -791,6 +732,16 @@
         title: '[긴급] Email 도착 알림'
       action: notify.mobile_app_ys_iphone13
       enabled: true
+    - action: persistent_notification.create
+      metadata: {}
+      data:
+        title: "\U0001F4E7 {{ trigger.event.data['subject']}} by {{ trigger.event.data['sender']
+          }}"
+        message: '보낸 사람: [{{ trigger.event.data[''sender''] }}](mailto:{{trigger.event.data[''sender'']}})
+
+
+          {{ trigger.event.data[''text'']}}'
+        notification_id: email_{{trigger.event.data['subject'] | md5 }}
   mode: queued
 - id: '1753959217336'
   alias: 아침 알림 및 시작 준비
@@ -798,19 +749,23 @@
   triggers:
   - trigger: time
     at: input_datetime.wake_up
+  - trigger: state
+    entity_id:
+    - timer.nap
+    to: idle
+    from: active
+  - trigger: state
+    entity_id:
+    - input_boolean.do_not_disturb
+    from: 'on'
+    to: 'off'
   conditions:
   - condition: numeric_state
     entity_id: zone.home
     above: 0
-  - type: is_occupied
-    condition: device
-    device_id: 419d5d6b862b27f2bb578347034b714e
-    entity_id: cb88873a76e543713c95bdc11ba9a391
-    domain: binary_sensor
-    for:
-      hours: 1
-      minutes: 0
-      seconds: 0
+  - condition: state
+    entity_id: input_boolean.do_not_disturb
+    state: 'off'
   actions:
   - action: switch.turn_on
     metadata: {}
@@ -830,15 +785,15 @@
     - action: music_assistant.play_media
       metadata: {}
       data:
-        media_type: radio
-        media_id: library://radio/1
+        media_type: playlist
+        media_id: spotify:playlist:37i9dQZF1DWTKHCqejn1Vg
       enabled: true
       target:
         device_id: 03b47ade8600df7168f3676b477dee1a
     - action: media_player.volume_set
       metadata: {}
       data:
-        volume_level: 0.5
+        volume_level: 0.4
       target:
         device_id: 03b47ade8600df7168f3676b477dee1a
   - variables:
@@ -1012,7 +967,6 @@
   triggers:
   - entity_id:
     - sensor.kitchen_tuo_battery
-    - sensor.bathroom_a_battery
     - sensor.bathroom_tuo_battery
     below: 30
     trigger: numeric_state
@@ -1022,7 +976,7 @@
       title: 배터리 부족!
       message: '{{ trigger.to_state.name }} 의 현재 배터리 잔량: {{ trigger.to_state.state
         }}%'
-      notification_id: '{{ trigger.to_state.attributes.entity_id }}'
+      notification_id: battery_{{ trigger.to_state.attributes.entity_id }}
     action: persistent_notification.create
 - id: '1754101632706'
   alias: TTS 캐시 지우기
@@ -1161,22 +1115,6 @@
             notification_id: '{{ trigger.to_state.attributes.link }}'
   mode: parallel
   max: 100
-- id: '1755190192909'
-  alias: Let’s Encrypt 자동 시작 – 인증서 만료 시
-  description: '인증서 유효성 검사 실패(is_valid: false) 시 Let’s Encrypt Addon(core_letsencrypt)를
-    시작합니다.'
-  triggers:
-  - trigger: state
-    entity_id:
-    - sensor.lyz_kr_cert_expiry
-    attribute: is_valid
-    to: 'false'
-  conditions: []
-  actions:
-  - action: hassio.addon_start
-    data:
-      addon: core_letsencrypt
-  mode: single
 - id: '1758065749886'
   alias: ASHRAE 55 Adaptive Climate Control
   description: ''
@@ -1189,6 +1127,11 @@
       indoor_humidity_sensor: sensor.indoor_average_humidity
       outdoor_humidity_sensor: sensor.seoul_humidity
       comfort_precision_mode: true
+      comfort_category: I
+      natural_ventilation_enable: false
+      energy_save_mode: false
+      max_comfort_temp: 26
+      min_comfort_temp: 20
 - id: '1758255410861'
   alias: 샤워 시 플레이리스트 재생
   description: 욕실 스피커에서 샤워 장면을 켜고 Spotify 플레이리스트를 재생합니다.
@@ -1205,64 +1148,109 @@
     data: {}
     target:
       entity_id: scene.shower
-  - action: music_assistant.play_media
+  - action: media_player.shuffle_set
     metadata: {}
     data:
-      media_type: playlist
-      media_id: spotify:playlist:37i9dQZF1DWZd79rJ6a7lp
+      shuffle: true
     target:
-      entity_id: media_player.bathroom
-  mode: single
-- id: '1758263382188'
-  alias: 로봇 청소 완료 시 청소 완료 알림
-  description: 로봇 청소 완료 시 Grocy에서 청소 완료 chore를 실행합니다.
-  triggers:
-  - trigger: state
-    entity_id:
-    - event.robot_vacuum_notification
-  conditions:
-  - condition: state
-    entity_id: event.robot_vacuum_notification
-    attribute: event_type
-    state: cleaning_is_completed
-  actions:
-  - action: grocy.execute_chore
-    metadata: {}
-    data:
-      chore_id: '18'
-  mode: single
-- id: '1758263416334'
-  alias: 외출 시 로봇 청소기 작동 알림
-  description: 집에 사람이 없을 때 '집' 존에서 벗어나면 '자리 비움' 장면을 활성화하고, 사용자에게 로봇 청소기 작동을 묻는 알림을
-    보냅니다.
-  triggers:
-  - trigger: numeric_state
-    entity_id:
-    - zone.home
-    for:
-      hours: 0
-      minutes: 1
-      seconds: 0
-    below: 1
-  conditions: []
-  actions:
-  - action: scene.turn_on
-    metadata: {}
-    data: {}
-    target:
-      entity_id:
-      - scene.away
-  - action: notify.mobile_app_ys_iphone13
-    metadata: {}
-    data:
+      device_id: 3fdc2682bbca84527c8faab4a2dc8793
+  - if:
+    - condition: device
+      device_id: 03b47ade8600df7168f3676b477dee1a
+      domain: media_player
+      entity_id: 42320341984a2c361800a2e9a940a5d0
+      type: is_playing
+    then:
+    - action: media_player.join
+      metadata: {}
+      target:
+        entity_id: media_player.living_room
       data:
-        push:
-          interruption-level: critical
-        actions:
-        - action: URI
-          title: 로봇청소기 돌리기
-          uri: homeassistant://call_service/vacuum.start?entity_id=vacuum.robot_vacuum
-      message: 외출 상태가 감지되었습니다. 집에 로봇청소기를 돌릴까요?
+        group_members:
+        - media_player.bathroom
+      enabled: false
+    - action: music_assistant.transfer_queue
+      metadata: {}
+      data:
+        source_player: media_player.living_room
+        auto_play: true
+      target:
+        device_id: 3fdc2682bbca84527c8faab4a2dc8793
+    - action: media_player.volume_set
+      metadata: {}
+      data:
+        volume_level: 1
+      target:
+        device_id: 3fdc2682bbca84527c8faab4a2dc8793
+    else:
+    - action: music_assistant.play_media
+      metadata: {}
+      data:
+        media_type: playlist
+        media_id: spotify:playlist:37i9dQZEVXcF14wWEMS3xo
+      target:
+        entity_id: media_player.bathroom
+    - action: media_player.volume_set
+      metadata: {}
+      data:
+        volume_level: 1
+      target:
+        device_id: 3fdc2682bbca84527c8faab4a2dc8793
+  - wait_for_trigger:
+    - type: opened
+      device_id: 3482404e5b88e1524f12fe2f7a9f95e6
+      entity_id: 7ff162f846100a4b0ef58e88b6f74438
+      domain: binary_sensor
+      trigger: device
+  - if:
+    - condition: device
+      type: is_off
+      device_id: cc28c4d8c86fe11e52a1544f0958b1a3
+      entity_id: 68fa5fea9c074c6be1750849fd8bc930
+      domain: switch
+    then:
+    - type: turn_on
+      device_id: cc28c4d8c86fe11e52a1544f0958b1a3
+      entity_id: 68fa5fea9c074c6be1750849fd8bc930
+      domain: switch
+  - wait_for_trigger:
+    - type: opened
+      device_id: 299969dbc4cd5a5e61cbc6f2359cc698
+      entity_id: a4f5ca4121fc4206e19fe35e83ac3547
+      domain: binary_sensor
+      trigger: device
+    - type: not_opened
+      device_id: 299969dbc4cd5a5e61cbc6f2359cc698
+      entity_id: a4f5ca4121fc4206e19fe35e83ac3547
+      domain: binary_sensor
+      trigger: device
+    continue_on_timeout: false
+  - if:
+    - condition: device
+      device_id: 03b47ade8600df7168f3676b477dee1a
+      domain: media_player
+      entity_id: 42320341984a2c361800a2e9a940a5d0
+      type: is_playing
+    then:
+    - action: media_player.media_stop
+      metadata: {}
+      data: {}
+      target:
+        device_id: 3fdc2682bbca84527c8faab4a2dc8793
+    - action: media_player.unjoin
+      metadata: {}
+      data: {}
+      target:
+        entity_id: media_player.bathroom
+      enabled: false
+    else:
+    - action: music_assistant.transfer_queue
+      metadata: {}
+      data:
+        source_player: media_player.bathroom
+        auto_play: true
+      target:
+        device_id: 03b47ade8600df7168f3676b477dee1a
   mode: single
 - id: '1758263460650'
   alias: 귀가 시 환영 및 보조 기능 활성화
@@ -1275,39 +1263,35 @@
     above: 0
   conditions: []
   actions:
-  - if:
-    - condition: state
-      entity_id: binary_sensor.all_windows
-      state: 'off'
-    then:
-    - action: automation.turn_on
-      metadata: {}
-      data: {}
-      target:
-        entity_id: automation.ashrae_55_adaptive_climate_control
-    else:
-    - action: notify.mobile_app_ys_iphone13
-      metadata: {}
-      data:
-        message: 창문이 열려있어 적응형 기후가 활성화되지 않았습니다. 그래도 켤까요?
-        title: 창문이 열려 있음 !!
-        data:
-          push:
-            interruption-level: critical
-          actions:
-          - action: URI
-            title: 그래도 켜기
-            uri: homeassistant://call_service/automation.turn_on?entity_id=automation.ashrae_55_adaptive_climate_control
   - wait_for_trigger:
     - type: opened
       device_id: e981af609918b955f3d59fb117356c7f
       entity_id: e7c6e1701601f23810c1c74828991c1c
       domain: binary_sensor
       trigger: device
+      enabled: true
+    - type: distance
+      device_id: ee627bd32da81d7a90420cc782d2152a
+      entity_id: 0b4efe3e29713dfd78cf65afd8ec4c5a
+      domain: sensor
+      trigger: device
+      below: 2
+    - type: distance
+      device_id: 4a51d4bb719bd4be3a1ade94e2779bbe
+      entity_id: f7e3ef4c368861717ce588ec2f938211
+      domain: sensor
+      trigger: device
+      below: 2
+    - type: distance
+      device_id: 1965b2b2b30da6d0946393cd7853b170
+      entity_id: d8f9f5a122bfaa564c1ac4833249f318
+      domain: sensor
+      trigger: device
+      below: 2
     continue_on_timeout: true
     timeout:
       hours: 0
-      minutes: 10
+      minutes: 0
       seconds: 0
       milliseconds: 0
     enabled: true
@@ -1324,29 +1308,72 @@
     data: {}
     target:
       entity_id: scene.welcome
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 5
-      milliseconds: 0
-  - action: assist_satellite.start_conversation
-    metadata: {}
-    target:
-      entity_id: assist_satellite.home_assistant_voice_090541_assist_satellite
-    data:
-      start_message: '{% set people = states.person | selectattr("state", "equalto",
-        "home") | list %}{% set count = people | count %}{% if count == 1 %}{{ people[0].attributes.friendly_name
-        }}님, 돌아오셔서 반갑습니다! 제가 도와드릴 일이 있을까요?{% elif count > 1 %}{{ people | map(attribute=''attributes.friendly_name'')
-        | join(''님, '') }}님, 모두 돌아오셔서 반갑습니다! 제가 도와드릴 일이 있을까요?{% endif %}
+  - if:
+    - condition: state
+      entity_id: person.saya6k
+      state:
+      - home
+    then:
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 5
+        milliseconds: 0
+    - action: assist_satellite.start_conversation
+      metadata: {}
+      target:
+        entity_id: assist_satellite.home_assistant_voice_090541_assist_satellite
+      data:
+        start_message: '{% set people = states.person | selectattr("state", "equalto",
+          "home") | list %}{% set count = people | count %}{% if count == 1 %}{{ people[0].attributes.friendly_name
+          }}님, 돌아오셔서 반갑습니다! 제가 도와드릴 일이 있을까요?{% elif count > 1 %}{{ people | map(attribute=''attributes.friendly_name'')
+          | join(''님, '') }}님, 모두 돌아오셔서 반갑습니다! 제가 도와드릴 일이 있을까요?{% endif %}
 
-        '
-      extra_system_prompt: '{% set people = states.person | selectattr("state", "equalto",
-        "home") | list %}{% set count = people | count %}{{ people | map(attribute=''attributes.friendly_name'')
-        | join('', '') }}{% if count == 1 %} is {% else %} are {% endif %}back and
-        you asked is there anything to help.
+          '
+        extra_system_prompt: '{% set people = states.person | selectattr("state",
+          "equalto", "home") | list %}{% set count = people | count %}{{ people |
+          map(attribute=''attributes.friendly_name'') | join('', '') }}{% if count
+          == 1 %} is {% else %} are {% endif %}back and you asked is there anything
+          to help.
 
-        '
-    enabled: true
+          '
+      enabled: true
+    - if:
+      - condition: device
+        device_id: caa9e82d1aa86ad313833f8f9f0651ee
+        domain: media_player
+        entity_id: c7031233ceb073e0e0051cbc2f53163e
+        type: is_playing
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: binary_sensor.night
+          state:
+          - 'on'
+        - condition: state
+          entity_id: binary_sensor.evening
+          state:
+          - 'on'
+      then:
+      - variables:
+          now_playing: '{{ state_attr(''media_player.spotify_ys_lee'', ''media_content_id'')
+            }}
+
+            '
+      - action: media_player.volume_set
+        metadata: {}
+        target:
+          entity_id: media_player.living_room
+        data:
+          volume_level: 0.1
+      - action: music_assistant.play_media
+        metadata: {}
+        target:
+          device_id: 03b47ade8600df7168f3676b477dee1a
+        data:
+          media_id: '{{ now_playing }}'
+          radio_mode: true
+          enqueue: replace
   mode: single
 - id: '1758388583900'
   alias: 식사 준비 완료 시 식사 장면 활성화
@@ -1367,24 +1394,59 @@
     data: {}
     target:
       entity_id: scene.meal
-  - action: assist_satellite.start_conversation
-    metadata: {}
-    target:
-      entity_id: assist_satellite.home_assistant_voice_090541_assist_satellite
-    data:
-      start_message: '{% set people = states.person | selectattr("state", "equalto",
-        "home") | list %}{% set count = people | count %}{% if count == 1 %}{{ people[0].attributes.friendly_name
-        }}님, 식사를 하시는 동안 좋아하는 음악을 재생할까요??{% elif count > 1 %}{{ people | map(attribute=''attributes.friendly_name'')
-        | join(''님, '') }}님, 식사를 하시는 동안 음악을 재생할까요?{% endif %}
+  - if:
+    - condition: not
+      conditions:
+      - condition: device
+        device_id: 03b47ade8600df7168f3676b477dee1a
+        domain: media_player
+        entity_id: 42320341984a2c361800a2e9a940a5d0
+        type: is_playing
+      - condition: device
+        device_id: 001f977c1c9130e03fb9f59a0fa8c658
+        domain: media_player
+        entity_id: c9e639c2047e9843e821f4bb614cce25
+        type: is_playing
+    then:
+    - action: assist_satellite.start_conversation
+      metadata: {}
+      target:
+        entity_id: assist_satellite.home_assistant_voice_090541_assist_satellite
+      data:
+        start_message: '{% set people = states.person | selectattr("state", "equalto",
+          "home") | list %}{% set count = people | count %}{% if count == 1 %}{{ people[0].attributes.friendly_name
+          }}님, 식사를 하시는 동안 좋아하는 음악을 재생할까요??{% elif count > 1 %}{{ people | map(attribute=''attributes.friendly_name'')
+          | join(''님, '') }}님, 식사를 하시는 동안 음악을 재생할까요?{% endif %}
 
-        '
-      extra_system_prompt: '{% set people = states.person | selectattr("state", "equalto",
-        "home") | list %}{% set count = people | count %}{{ people | map(attribute=''attributes.friendly_name'')
-        | join('', '') }}{% if count == 1 %} is {% else %} are {% endif %}having meal
-        and you have asked to turn on favorite music.
+          '
+        extra_system_prompt: '{% set people = states.person | selectattr("state",
+          "equalto", "home") | list %}{% set count = people | count %}{{ people |
+          map(attribute=''attributes.friendly_name'') | join('', '') }}{% if count
+          == 1 %} is {% else %} are {% endif %}having meal and you have asked to turn
+          on favorite music.
 
-        '
-    enabled: true
+          '
+      enabled: true
+    else:
+    - action: assist_satellite.start_conversation
+      metadata: {}
+      target:
+        entity_id: assist_satellite.home_assistant_voice_090541_assist_satellite
+      data:
+        start_message: '{% set people = states.person | selectattr("state", "equalto",
+          "home") | list %}{% set count = people | count %}{% if count == 1 %}{{ people[0].attributes.friendly_name
+          }}님, 식사 맛있게 드세요.{% elif count > 1 %}{{ people | map(attribute=''attributes.friendly_name'')
+          | join(''님, '') }}님, 식사 맛있게 드세요.{% endif %}
+
+          '
+        extra_system_prompt: '{% set people = states.person | selectattr("state",
+          "equalto", "home") | list %}{% set count = people | count %}{{ people |
+          map(attribute=''attributes.friendly_name'') | join('', '') }}{% if count
+          == 1 %} is {% else %} are {% endif %}having meal and you have asked to turn
+          on favorite music.
+
+          '
+      enabled: true
   mode: single
 - id: '1758397570741'
   alias: 식탁 닫히면 조명 끄기
@@ -1467,7 +1529,20 @@
   triggers:
   - trigger: state
     entity_id:
-    - sensor.forecast_precipitation
+    - weather.home
+    to: rainy
+  - trigger: state
+    entity_id:
+    - weather.home
+    to: lightning-rainy
+  - trigger: state
+    entity_id:
+    - weather.home
+    to: pouring
+  - trigger: state
+    entity_id:
+    - weather.home
+    to: snowy-rainy
   conditions:
   - type: is_open
     condition: device
@@ -1479,7 +1554,8 @@
     metadata: {}
     data:
       preannounce: true
-      message: '{{ states(''sensor.forecast_precipitation'') }} 창문이 현재 열려 있어요.'
+      message: '{{ states(''sensor.forecast_precipitation'') }} 창문이 현재 열려 있어요. 곧 비
+        예보가 있습니다.'
     target:
       entity_id: assist_satellite.home_assistant_voice_090541_assist_satellite
   mode: single
@@ -1523,6 +1599,7 @@
       minutes: 5
       seconds: 0
       milliseconds: 0
+    continue_on_timeout: false
   - type: turn_off
     device_id: 0f778e7c509b6496432dd3280563746f
     entity_id: da339652c8841185029151de22553547
@@ -1548,41 +1625,34 @@
     data: {}
     target:
       entity_id: scene.ventilation
+  - action: fan.set_percentage
+    metadata: {}
+    data:
+      percentage: 100
+    target:
+      device_id: ebcc5c2b12135a92137f17f413cb6311
+  - action: fan.oscillate
+    metadata: {}
+    data:
+      oscillating: true
+    target:
+      device_id: ebcc5c2b12135a92137f17f413cb6311
+  - if:
+    - condition: device
+      type: is_on
+      device_id: 1100002c844ef7e5ac24ad4f66ceb1de
+      entity_id: ea2cec3d346f3839c15bff5f9947ae0d
+      domain: switch
+    then:
+    - type: turn_off
+      device_id: 1100002c844ef7e5ac24ad4f66ceb1de
+      entity_id: ea2cec3d346f3839c15bff5f9947ae0d
+      domain: switch
   - action: assist_satellite.announce
     metadata: {}
     data:
       message: 창문을 여셔서 자동 온도 조절 모드를 비활성화합니다. 방 안이 충분히 환기되면 알려드릴께요.
       preannounce: true
-    target:
-      entity_id: assist_satellite.home_assistant_voice_090541_assist_satellite
-  - repeat:
-      until:
-      - type: is_carbon_dioxide
-        condition: device
-        device_id: 22c7752de4a4dda01d67e8042743a6a0
-        entity_id: b2f5d303ee5e32d95ab6295d776d5b23
-        domain: sensor
-        below: 500
-      sequence:
-      - action: assist_satellite.announce
-        metadata: {}
-        data:
-          preannounce: true
-          message: 현재 집 안 이산화탄소 농도는 {{states('sensor.living_room_netatmo_carbon_dioxide')}}
-            ppm 입니다.
-        target:
-          entity_id: assist_satellite.home_assistant_voice_090541_assist_satellite
-      - delay:
-          hours: 0
-          minutes: 5
-          seconds: 0
-          milliseconds: 0
-  - action: assist_satellite.announce
-    metadata: {}
-    data:
-      preannounce: true
-      message: 현재 집 안 이산화탄소 농도는 {{states('sensor.living_room_netatmo_carbon_dioxide')}}
-        ppm 입니다. 충분히 환기가 되었어요. 창문을 닫으시면 자동 온도 조절 모드를 다시 켤께요.
     target:
       entity_id: assist_satellite.home_assistant_voice_090541_assist_satellite
   - wait_for_trigger:
@@ -1591,26 +1661,39 @@
       entity_id: fc117f225d6f0b8b536a0984e348efbf
       domain: binary_sensor
       trigger: device
-  - action: assist_satellite.announce
-    metadata: {}
-    data:
-      message: 다 자동 온도 조절 모드를 활성화했습니다.
-      preannounce: true
-    target:
-      entity_id: assist_satellite.home_assistant_voice_090541_assist_satellite
+  - if:
+    - condition: state
+      entity_id: fan.living_room_air_purifier
+      state:
+      - Normal
+      attribute: preset_mode
+    then:
+    - action: fan.set_preset_mode
+      metadata: {}
+      data:
+        preset_mode: Auto
+      target:
+        device_id: ebcc5c2b12135a92137f17f413cb6311
   - action: automation.turn_on
     metadata: {}
     data: {}
     target:
       entity_id: automation.ashrae_55_adaptive_climate_control
+  - action: assist_satellite.announce
+    metadata: {}
+    data:
+      message: 다시 자동 온도 조절 모드를 활성화했습니다.
+      preannounce: true
+    target:
+      entity_id: assist_satellite.home_assistant_voice_090541_assist_satellite
   mode: single
 - id: '1759583414854'
   alias: 고농도 이산화탄소 환기 알림
   description: 집 안 이산화탄소 농도가 높을 때 환기를 안내하고 창문이 열릴 때까지 반복적으로 알림.
   triggers:
   - type: carbon_dioxide
-    device_id: 22c7752de4a4dda01d67e8042743a6a0
-    entity_id: b2f5d303ee5e32d95ab6295d776d5b23
+    device_id: c45143b8a281293086265397e06d7460
+    entity_id: 695c0b93db3dfc15f746f5d715395f4b
     domain: sensor
     trigger: device
     above: 2000
@@ -1618,6 +1701,15 @@
   - condition: numeric_state
     entity_id: zone.home
     above: 0
+  - condition: state
+    entity_id: alarm_control_panel.security_system
+    state:
+    - armed_home
+  - type: is_not_open
+    condition: device
+    device_id: 940271c084ed40a9b3a077bec76104a5
+    entity_id: fc117f225d6f0b8b536a0984e348efbf
+    domain: binary_sensor
   actions:
   - repeat:
       until:
@@ -1631,13 +1723,661 @@
         metadata: {}
         data:
           preannounce: true
-          message: 현재 집 안 이산화탄소 농도는 {{states('sensor.living_room_netatmo_carbon_dioxide')}}
+          message: 현재 집 안 이산화탄소 농도는 {{states('sensor.bedroom_awair_carbon_dioxide')}}
             ppm 입니다. 환기를 추천드려요.
         target:
           entity_id: assist_satellite.home_assistant_voice_090541_assist_satellite
       - delay:
           hours: 0
+          minutes: 30
+          seconds: 0
+          milliseconds: 0
+  mode: single
+- id: '1761834172992'
+  alias: 거실 장면 스위치 버튼 제어
+  description: 거실의 6개 버튼 이벤트에 따라 멀티 프레스, 롱 프레스 등의 입력에 따라 조명/커버/미디어 재생을 제어하는 다중 조건
+    자동화입니다.
+  triggers:
+  - trigger: state
+    entity_id:
+    - event.living_room_scene_switch_button_1
+    - event.living_room_scene_switch_button_2
+    - event.living_room_scene_switch_button_3
+    - event.living_room_scene_switch_button_4
+    - event.living_room_scene_switch_button_5
+    - event.living_room_scene_switch_button_6
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.entity_id == ''event.living_room_scene_switch_button_1''}}'
+      sequence:
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.to_state.attributes.event_type == ''multi_press_1''}}'
+          sequence:
+          - action: light.toggle
+            metadata: {}
+            data: {}
+            target:
+              area_id: living_room
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.to_state.attributes.event_type == ''multi_press_2''}}'
+          sequence: []
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.to_state.attributes.event_type == ''long_press''}}'
+          sequence: []
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.to_state.attributes.event_type == ''long_release''}}'
+          sequence: []
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.entity_id == ''event.living_room_scene_switch_button_2''}}'
+      sequence:
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.to_state.attributes.event_type == ''multi_press_1''}}'
+          sequence:
+          - action: cover.toggle
+            metadata: {}
+            data: {}
+            target:
+              area_id: bedroom
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.to_state.attributes.event_type == ''multi_press_2''}}'
+          sequence: []
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.to_state.attributes.event_type == ''long_press''}}'
+          sequence: []
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.to_state.attributes.event_type == ''long_release''}}'
+          sequence: []
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.entity_id == ''event.living_room_scene_switch_button_3''}}'
+      sequence:
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.to_state.attributes.event_type == ''multi_press_1''}}'
+          sequence:
+          - action: media_player.media_play_pause
+            metadata: {}
+            data: {}
+            target:
+              area_id: living_room
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.to_state.attributes.event_type == ''multi_press_2''}}'
+          sequence:
+          - action: media_player.media_next_track
+            metadata: {}
+            data: {}
+            target:
+              area_id: living_room
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.to_state.attributes.event_type == ''long_press''}}'
+          sequence: []
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.to_state.attributes.event_type == ''long_release''}}'
+          sequence: []
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.entity_id == ''event.living_room_scene_switch_button_4''}}'
+      sequence:
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.to_state.attributes.event_type == ''multi_press_1''}}'
+          sequence:
+          - action: scene.turn_on
+            metadata: {}
+            data: {}
+            target:
+              entity_id: scene.wake_up
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.to_state.attributes.event_type == ''multi_press_2''}}'
+          sequence: []
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.to_state.attributes.event_type == ''long_press''}}'
+          sequence: []
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.to_state.attributes.event_type == ''long_release''}}'
+          sequence: []
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.entity_id == ''event.living_room_scene_switch_button_5''}}'
+      sequence:
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.to_state.attributes.event_type == ''multi_press_1''}}'
+          sequence:
+          - action: scene.turn_on
+            metadata: {}
+            data: {}
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.to_state.attributes.event_type == ''multi_press_2''}}'
+          sequence: []
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.to_state.attributes.event_type == ''long_press''}}'
+          sequence: []
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.to_state.attributes.event_type == ''long_release''}}'
+          sequence: []
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.entity_id == ''event.living_room_scene_switch_button_6''}}'
+      sequence:
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.to_state.attributes.event_type == ''multi_press_1''}}'
+          sequence:
+          - action: scene.turn_on
+            metadata: {}
+            data: {}
+            target:
+              entity_id: scene.sleep
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.to_state.attributes.event_type == ''multi_press_2''}}'
+          sequence: []
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.to_state.attributes.event_type == ''long_press''}}'
+          sequence: []
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.to_state.attributes.event_type == ''long_release''}}'
+          sequence: []
+  mode: single
+- id: '1762515480841'
+  alias: 안전 안내 알림
+  description: 수신된 안전 안내를 알림으로 전달합니다. 현재 수신된 안내가 없으면 안내 메시지를 표시합니다.
+  triggers:
+  - entity_id:
+    - binary_sensor.anjeonalrim_seoulteugbyeolsi_seoco_anjeon_alrim
+    trigger: state
+    attribute: latest
+    not_from:
+    - unavailable
+    - unknown
+    not_to:
+    - unavailable
+    - unknown
+  conditions: []
+  actions:
+  - repeat:
+      for_each: "{%- set alerts = state_attr('binary_sensor.anjeonalrim_seoulteugbyeolsi_seoco_anjeon_alrim',
+        'alerts') or [] -%} [ {%- for i in alerts -%}\n  {\n    \"emergency_step\":
+        \"{{ i.emergency_step }}\",\n    \"disaster_type\": \"{{ i.disaster_type }}\",\n
+        \   \"message\": \"{{ i.message }}\",\n    \"reception_area\": \"{{ i.reception_area
+        }}\",\n    \"registration_date\": \"{{ i.registration_date.isoformat() if
+        i.registration_date is defined else '' }}\"\n  }{%- if not loop.last %},{%
+        endif %}\n{%- endfor -%} ]"
+      sequence:
+      - if:
+        - type: is_not_unsafe
+          condition: device
+          device_id: 8b6137eecc89b578d28f970cbfde59ed
+          entity_id: 4a1115b43fbd38f1460964d1452b6428
+          domain: binary_sensor
+        then:
+        - action: persistent_notification.create
+          data:
+            title: "\U0001F6A8 {{ repeat.item.emergency_step }} ({{ repeat.item.disaster_type
+              }})"
+            message: '**지역:** {{ repeat.item.reception_area }}
+
+
+              **시간:** {{ as_datetime(repeat.item.registration_date).strftime("%Y.
+              %m. %d. %H:%M")
+
+              }}
+
+
+              **메시지:** {{ repeat.item.message }}
+
+              '
+            notification_id: safety_{{ repeat.item.message | md5 }}
+        else:
+        - action: persistent_notification.dismiss
+          metadata: {}
+          data:
+            notification_id: safety_{{ repeat.item.message | md5 }}
+  mode: single
+- id: '1762605042798'
+  alias: 17TRACK 택배 알림
+  description: 센서 값이 유의미하게 업데이트되면 17TRACK에서 택배 정보를 조회하고 각 택배별로 개별 알림을 생성합니다.
+  triggers:
+  - trigger: homeassistant
+    event: start
+  - trigger: state
+    entity_id:
+    - sensor.17track_in_transit
+    - sensor.17track_alert
+    - sensor.17track_delivered
+    - sensor.17track_expired
+    - sensor.17track_undelivered
+    - sensor.17track_not_found
+    - sensor.17track_ready_to_be_picked_up
+    not_from: unavailable
+    not_to: unavailable
+  - trigger: time_pattern
+    minutes: /10
+  conditions:
+  - condition: or
+    conditions:
+    - type: is_value
+      condition: device
+      device_id: b6edda2396f0825aa7b403b560742255
+      entity_id: 343ade5d95ff3b69e838cc802097c437
+      domain: sensor
+      above: 0
+    - type: is_value
+      condition: device
+      device_id: b6edda2396f0825aa7b403b560742255
+      entity_id: 3e741c7667f0bd97b4efa4c378eee583
+      domain: sensor
+      above: 0
+    - type: is_value
+      condition: device
+      device_id: b6edda2396f0825aa7b403b560742255
+      entity_id: 755925a292d05c3c9d0432af0aa0d1a4
+      domain: sensor
+      above: 0
+    - type: is_value
+      condition: device
+      device_id: b6edda2396f0825aa7b403b560742255
+      entity_id: 1f2d6ddc0f608ab4218f4ecde0a4f69e
+      domain: sensor
+      above: 0
+    - type: is_value
+      condition: device
+      device_id: b6edda2396f0825aa7b403b560742255
+      entity_id: 9433d546363e9b9bd928b3164df83401
+      domain: sensor
+      above: 0
+    - type: is_value
+      condition: device
+      device_id: b6edda2396f0825aa7b403b560742255
+      entity_id: cc0e7b38f8dc112c082cca7f7df82e9d
+      domain: sensor
+      above: 0
+    - type: is_value
+      condition: device
+      device_id: b6edda2396f0825aa7b403b560742255
+      entity_id: 7cd0135b1d901ccb1e897cbf4fe36c0c
+      domain: sensor
+      above: 0
+  actions:
+  - action: seventeentrack.get_packages
+    data:
+      config_entry_id: 01JYMYFVHJ5ZHF1Y8DVE1CCDQB
+    response_variable: packages
+  - repeat:
+      for_each: '{{ packages.packages }}'
+      sequence:
+      - if:
+        - condition: template
+          value_template: '{{ repeat.item.status != ''Delivered'' }}'
+        then:
+        - action: persistent_notification.create
+          data:
+            message: '송장번호: `{{ repeat.item.tracking_number }}`
+
+
+              현재 상태: **{{ repeat.item.status }}**
+
+
+              위치: **{{ repeat.item.location }}**
+
+
+              마지막 업데이트: {% if repeat.item.timestamp %}{{ as_timestamp(repeat.item.timestamp)
+              | timestamp_custom("%Y. %m. %-d. %H:%M") }}{% else %}정보 없음{% endif %}
+
+
+              출발국가: {{ repeat.item.origin_country }}
+
+
+              도착국가: {{ repeat.item.destination_country }}
+
+
+              최신 정보: {{ repeat.item.info_text }}'
+            title: "\U0001F4E6 {{ repeat.item.friendly_name | default('No Name') }}"
+            notification_id: 17track_{{ repeat.item.tracking_number }}
+      - if:
+        - condition: template
+          value_template: '{{ repeat.item.status == ''Delivered'' }}'
+        then:
+        - action: seventeentrack.archive_package
+          data:
+            config_entry_id: 01JYMYFVHJ5ZHF1Y8DVE1CCDQB
+            package_tracking_number: '{{ repeat.item.tracking_number }}'
+        - action: persistent_notification.create
+          data:
+            message: '송장번호: `{{ repeat.item.tracking_number }}`
+
+
+              현재 상태: **{{ repeat.item.status }}**
+
+
+              위치: **{{ repeat.item.location }}**
+
+
+              마지막 업데이트: {% if repeat.item.timestamp %}{{ as_timestamp(repeat.item.timestamp)
+              | timestamp_custom("%Y. %m. %-d. %H:%M") }}{% else %}정보 없음{% endif %}
+
+
+              최신 정보: {{ repeat.item.info_text }}'
+            title: "\U0001F4E6\U0001F389도착: {{ repeat.item.friendly_name }}"
+            notification_id: 17track_{{ repeat.item.tracking_number }}
+  mode: single
+- id: '1762935300497'
+  alias: 이메일 수신 시 운송장 번호 추출 및 트래킹 추가
+  description: 새 이메일 도착 시 제목에서 운송장 번호를 추출하고 17TRACK에 해당 패키지 정보를 추가합니다.
+  triggers:
+  - trigger: event
+    event_type: imap_content
+    event_data:
+      folder: _RECEIPT
+  conditions:
+  - condition: numeric_state
+    entity_id: sensor.imap_receipt
+    above: 0
+  - condition: template
+    value_template: '{# Check for delivered phrases in the subject #} {% set subject
+      = trigger.event.data.subject %} {# Use double quotes around "we''ve delivered"
+      to avoid syntax error #} {{ ''배송'' in subject or ''발송'' in subject or ''결제''
+      in subject or ''주문'' in subject}}'
+  - condition: template
+    value_template: '{% set folder = trigger.event.data.folder | lower %} {{ ''_receipt''
+      == folder}}'
+  actions:
+  - action: ai_task.generate_data
+    metadata: {}
+    data:
+      instructions: 'New email arrived: ''{{ trigger.event.data[''subject''] }} by
+        ''{{ trigger.event.data[''sender''] }}''.
+
+        {{ trigger.event.data[''text''] }}
+
+        Is this mail about tracking number? If true, Find package content tracking
+        number from email and answer.'
+      task_name: Tracking Number
+      structure:
+        true_or_false:
+          selector:
+            boolean:
+        package_name:
+          selector:
+            text:
+        tracking_number:
+          selector:
+            text:
+    response_variable: result
+  - if:
+    - condition: template
+      value_template: '{{ result.data.true_or_false }}'
+    then:
+    - action: seventeentrack.add_package
+      data:
+        config_entry_id: 01JYMYFVHJ5ZHF1Y8DVE1CCDQB
+        package_tracking_number: '{{ result.data.tracking_number }}
+
+          '
+        package_friendly_name: '{{ result.data.package_name }}
+
+          '
+    - metadata: {}
+      data:
+        message: '## {{ result.data.package_name }}
+
+
+          새로 발송된 위 택배를 17TRACK에 추가하였습니다.
+
+
+          보낸 사람 - {{ trigger.event.data[''sender''] }}
+
+
+          송장번호: {{ result.data.tracking_number }}'
+        title: 택배 발송 알림 - {{ result.data.package_name }}
+      action: notify.mobile_app_ys_iphone13
+      enabled: true
+  mode: queued
+- id: '1763047303132'
+  alias: 침실 이산화탄소 농도 알림
+  description: 창문이 열려 있는 동안 침실의 이산화탄소 농도를 10분 간격으로 안내합니다.
+  triggers:
+  - type: opened
+    device_id: 940271c084ed40a9b3a077bec76104a5
+    entity_id: fc117f225d6f0b8b536a0984e348efbf
+    domain: binary_sensor
+    trigger: device
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+  conditions: []
+  actions:
+  - repeat:
+      until:
+      - type: is_not_open
+        condition: device
+        device_id: 940271c084ed40a9b3a077bec76104a5
+        entity_id: fc117f225d6f0b8b536a0984e348efbf
+        domain: binary_sensor
+      sequence:
+      - delay:
+          hours: 0
           minutes: 10
           seconds: 0
           milliseconds: 0
+      - action: assist_satellite.announce
+        metadata: {}
+        data:
+          message: 현재 이산화탄소 농도는 {{ states('sensor.bedroom_awair_carbon_dioxide')}}
+            ppm입니다.
+          preannounce: true
+        target:
+          entity_id: assist_satellite.home_assistant_voice_090541_assist_satellite
+  mode: single
+- id: '1763992783235'
+  alias: 집에 사람이 없을 때 자리 비움 장면 활성화
+  description: 집 존에서 사람이 1분 이상 벗어나면 자리 비움 장면을 자동으로 실행합니다.
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - zone.home
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    below: 1
+  conditions: []
+  actions:
+  - action: scene.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - scene.away
+  mode: single
+- id: '1763997326674'
+  alias: '긴급 상황 알림: 재난별 지침 전송'
+  description: 재난 유형, 수신 영역, 등록 시각, 메시지를 포함한 긴급 상황 정보를 수신 시 사용자에게 알림으로 전달합니다.
+  triggers:
+  - type: value
+    device_id: e538059ca0cf2806d1d08ae008a98339
+    entity_id: ebabb4bb86b833deb688e633b039729f
+    domain: sensor
+    trigger: device
+    above: 0
+  conditions: []
+  actions:
+  - repeat:
+      for_each: "{{ states | selectattr('domain', 'equalto', 'geo_location')\n          |
+        map(attribute='entity_id')\n          | list }}\n"
+      sequence:
+      - if:
+        - condition: template
+          value_template: '{{ is_state(repeat.item, ''unavailable'') or is_state(repeat.item,
+            ''unknown'') }}'
+        then:
+        - action: persistent_notification.dismiss
+          metadata: {}
+          data:
+            notification_id: gdacs_{{ repeat.item | md5 }}
+        else:
+        - action: persistent_notification.create
+          data:
+            title: "{%if is_state_attr(repeat.item, 'alert_level', 'Green')%}\U0001F7E2{%elif
+              is_state_attr(repeat.item, 'alert_level', 'Yellow')%}\U0001F7E1{%elif
+              is_state_attr(repeat.item, 'alert_level', 'Red')%}\U0001F534{%else%}⚠️{%
+              endif %} {{ state_attr(repeat.item, 'event_type') }} ({{ state_attr(repeat.item,
+              'country') }})"
+            message: '**지역:** {{ state_attr(repeat.item, ''country'') }}
+
+
+              **시간:** {{ as_datetime(state_attr(repeat.item, ''from_date'')).strftime("%Y.
+              %m. %d. %H:%M")
+
+              }}
+
+
+              **내용:** {{ state_attr(repeat.item, ''description'') }}
+
+              '
+            notification_id: gdacs_{{ repeat.item | md5 }}
+        - action: notify.all_devices
+          metadata: {}
+          data:
+            title: "{%if is_state_attr(repeat.item, 'alert_level', 'Green')%}\U0001F7E2{%elif
+              is_state_attr(repeat.item, 'alert_level', 'Yellow')%}\U0001F7E1{%elif
+              is_state_attr(repeat.item, 'alert_level', 'Red')%}\U0001F534{%else%}⚠️{%
+              endif %} {{ state_attr(repeat.item, 'event_type') }} ({{ state_attr(repeat.item,
+              'country') }})"
+            message: "**지역:** {{ state_attr(repeat.item, 'country') }} \n\n**시간:**
+              {{ as_datetime(state_attr(repeat.item, 'from_date')).strftime(\"%Y.
+              %m. %d. %H:%M\") }}\n\n**내용:** {{ state_attr(repeat.item, 'description')
+              }}"
+  mode: single
+- id: '1764020126224'
+  alias: 오늘 강수 예보 알림
+  description: 강수 조건(rainy, snowy, pouring 등)이 감지되면 거실 알림 또는 퍼시스턴트 알림으로 공유합니다.
+  triggers:
+  - entity_id: weather.forecast_home
+    attribute: condition
+    to:
+    - rainy
+    - snowy
+    - pouring
+    - snowy-rainy
+    trigger: state
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: alarm_control_panel.security_system
+        state: armed_night
+      sequence:
+      - data:
+          title: 날씨 알림
+          message: '{{ trigger.to_state.attributes.condition | replace(''_'', '' '')
+            | title }} 가 감지되었습니다. 현재 기온: {{ trigger.to_state.attributes.temperature
+            }}°{{ state_attr(''weather.forecast_home'', ''temperature_unit'') }}
+
+            '
+          notification_id: weather_precipitation
+        action: persistent_notification.create
+    default:
+    - data:
+        message: '날씨 알림: {{ trigger.to_state.attributes.condition | replace(''_'',
+          '' '') | title }} 가 시작되었습니다. 현재 기온은 섭씨 {{ trigger.to_state.attributes.temperature
+          }}도 입니다.
+
+          '
+      action: notify.broadcast_living_room
+  mode: single
+- id: '1764024028848'
+  alias: 스팀 위시리스트 세일 알림
+  description: 스팀 위시리스트에 등록된 항목이 세일에 들어가면 알림을 보냅니다(영구 알림).
+  triggers:
+  - type: value
+    device_id: 1cb7637e2a6814b9c986ed4c0e235a49
+    entity_id: 85638522cb0244eb4795b17b75544149
+    domain: sensor
+    trigger: device
+    above: 0
+  - trigger: state
+    entity_id:
+    - sensor.steam_wishlist_76561198124495822
+    attribute: on_sale
+  conditions:
+  - condition: template
+    value_template: '{{ trigger.from_state.state != trigger.to_state.state }}
+
+      '
+  actions:
+  - repeat:
+      for_each: "{{ states | selectattr('domain', 'equalto', 'binary_sensor') \n  |
+        selectattr('entity_id', 'search', 'binary_sensor.steam_wishlist_')\n  | map(attribute='entity_id')
+        | list }}\n"
+      sequence:
+      - if:
+        - condition: template
+          value_template: '{{ is_state(repeat.item, ''True'') }}'
+        then:
+        - data:
+            title: "\U0001F3AE {{ state_attr(repeat.item, 'title') }} {{ state_attr(repeat.item,
+              'normal_price') }} → {{ state_attr(repeat.item, 'sale_price') }} ({{
+              state_attr(repeat.item, 'percent_off') }}% 할인)"
+            message: '{{ state_attr(repeat.item, ''price'') }}
+
+
+              [![Poster]({{ state_attr(repeat.item, ''poster'') }})]({{ state_attr(repeat.item,
+              ''deep_link'') }})'
+            notification_id: steam_{{ repeat.item | md5 }}
+          action: persistent_notification.create
+        else:
+        - action: persistent_notification.dismiss
+          metadata: {}
+          data:
+            notification_id: steam_{{ repeat.item | md5 }}
+  mode: parallel
+- id: '1764511795618'
+  alias: 화장실 습도 40% 미만일 때 제습기 끄기
+  description: 화장실 습도가 40% 미만으로 내려가면 제습기를 끕니다.
+  triggers:
+  - type: humidity
+    device_id: cc28c4d8c86fe11e52a1544f0958b1a3
+    entity_id: b01de58784e3398473fa8cbcd39f2031
+    domain: sensor
+    trigger: device
+    below: 40
+  conditions: []
+  actions:
+  - type: turn_off
+    device_id: cc28c4d8c86fe11e52a1544f0958b1a3
+    entity_id: 68fa5fea9c074c6be1750849fd8bc930
+    domain: switch
   mode: single
