@@ -12,21 +12,21 @@ title: Dashboards
 
     ![Mobile](https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/mobile.png){: loading=lazy }
 
-=== "System"
+=== "Server"
 
-    ![System](https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/system.png){: loading=lazy }
+    ![Server](https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/server.png){: loading=lazy }
 
-=== "Climate"
+=== "Music"
 
-    ![Climate](https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/climate.png){: loading=lazy }
+    ![Music](https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/music.png){: loading=lazy }
 
 === "Energy"
 
     ![Energy](https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/energy.png){: loading=lazy }
 
-=== "Living Room Subview"
+=== "Grocy Subview"
 
-    ![Living Room](https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/living-room-subview.png){: loading=lazy }
+    ![Grocy](https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/grocy-subview.png){: loading=lazy }
 
 The `ui-lovelace.yaml` configuration is automatically generated using a custom Readme component. Since I use the `lovelace: mode: storage`, I might not be able to answer questions about the YAML specifics.
 
