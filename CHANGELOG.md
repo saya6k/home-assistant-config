@@ -1,3 +1,9 @@
+## [1.10.0](https://github.com/saya6k/home-assistant-config/compare/v1.9.0...v1.10.0) (2026-10-24)
+
+### Features
+
+* Run the dehumidifier in laundry drying mode while the drying rack is open ([#15](https://github.com/saya6k/home-assistant-config/issues/15)) ([aaeab51](https://github.com/saya6k/home-assistant-config/commit/aaeab51d40a3e09b1870913717dff53913e3d5d8))
+
 ## [1.9.0](https://github.com/saya6k/home-assistant-config/compare/v1.8.0...v1.9.0) (2026-10-24)
 
 ### Features
