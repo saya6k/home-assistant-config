@@ -3,6 +3,9 @@
 #
 # This will help ensure everything I commit is kinda clean and neat.
 
+default_install_hook_types: [pre-commit, pre-push]
+default_stages: [pre-commit]
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.1.0
@@ -43,3 +46,18 @@ repos:
           ^blueprints/.*/homeassistant/.*
           ^esphome/.esphome/
           ^ip_bans\.yaml$
+
+  # Scan every commit being pushed, including ones made on the HA server
+  # where these hooks don't run. A new branch scans its full history.
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.28.0
+    hooks:
+      - id: gitleaks
+        name: gitleaks (commits being pushed)
+        entry: >-
+          sh -c 'case "$PRE_COMMIT_FROM_REF" in
+          *[!0]*) range="$PRE_COMMIT_FROM_REF..$PRE_COMMIT_TO_REF" ;;
+          *) range="$PRE_COMMIT_TO_REF" ;; esac;
+          exec gitleaks git --redact --verbose --log-opts="$range"'
+        stages: [pre-push]
+        pass_filenames: false

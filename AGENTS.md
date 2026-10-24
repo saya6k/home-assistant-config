@@ -179,8 +179,9 @@ pre-commit run --all-files
 
 - Secrets stored in `secrets.yaml` (not in repo)
 - Use `!secret key_name` syntax in YAML files
-- Fake examples in `secrets.fake.yaml`
+- No example/fake secrets file in the repo: CI generates mock secrets from `.github/workflows/mock-secrets-config.json` and `mock-esphome-secrets-config.json`. Don't add `*.example.yaml` under `esphome/` — the ESPHome dashboard picks up every top-level YAML there as a device
 - ESPHome has separate `esphome/secrets.yaml`
+- A pre-push gitleaks hook scans every commit being pushed (including commits made on the HA server, where hooks don't run); install with `pre-commit install`
 
 ### Entity Naming
 

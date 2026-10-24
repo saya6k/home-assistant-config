@@ -82,10 +82,9 @@ custom_components/*
 ._*
 .DS_Store
 
-# Secrets
-secrets.yaml
-secrets.local.yaml
-esphome/secrets.yaml
+# Secrets (any secrets*.yaml at any depth, incl. esphome/; CI generates mocks)
+secrets*.yaml
+secrets*.yml
 
 # Runtime state written by HA / supervisor
 .HA_VERSION
