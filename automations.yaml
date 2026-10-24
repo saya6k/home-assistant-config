@@ -1297,7 +1297,13 @@
         value:
           active_choice: number
           number: 50
-  conditions: []
+  conditions:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: humidifier.bathroom_dehumidifier
+      attribute: mode
+      state: intensive_dry
   actions:
   - action: humidifier.turn_off
     metadata: {}
@@ -2517,3 +2523,63 @@
       - condition: template
         value_template: '{{ wait.completed }}'
   mode: parallel
+- id: '1792900000000'
+  alias: 건조대 열림 시 제습기 빨래건조 모드
+  description: 건조대가 열려 있고 창문이 모두 닫혀 있으며 화장실 문이 열려 있으면 제습기를 빨래건조 모드로 돌리고, 조건이 깨지면
+    원래 모드로 되돌린 뒤 끕니다.
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.jubang_geonjodae
+    to:
+    - 'on'
+    - 'off'
+  - trigger: state
+    entity_id:
+    - binary_sensor.hwajangsil_mun_door
+    - binary_sensor.cimsil_baggat_cangmun
+    - binary_sensor.cimsil_cimsil_cangmun
+    to:
+    - 'on'
+    - 'off'
+    for:
+      minutes: 1
+  conditions: []
+  actions:
+  - if:
+    - condition: state
+      entity_id: binary_sensor.jubang_geonjodae
+      state: 'on'
+    - condition: state
+      entity_id: binary_sensor.hwajangsil_mun_door
+      state: 'on'
+    - condition: state
+      entity_id:
+      - binary_sensor.cimsil_baggat_cangmun
+      - binary_sensor.cimsil_cimsil_cangmun
+      state: 'off'
+    then:
+    - action: humidifier.turn_on
+      target:
+        entity_id: humidifier.bathroom_dehumidifier
+    - action: humidifier.set_mode
+      target:
+        entity_id: humidifier.bathroom_dehumidifier
+      data:
+        mode: intensive_dry
+    else:
+    - if:
+      - condition: state
+        entity_id: humidifier.bathroom_dehumidifier
+        attribute: mode
+        state: intensive_dry
+      then:
+      - action: humidifier.set_mode
+        target:
+          entity_id: humidifier.bathroom_dehumidifier
+        data:
+          mode: smart_humidity
+      - action: humidifier.turn_off
+        target:
+          entity_id: humidifier.bathroom_dehumidifier
+  mode: restart
