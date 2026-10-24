@@ -1,42 +1,47 @@
 ---
 name: 🏠 Home Assistant CI
 
-# yamllint disable-line rule:truthy
 on:
-  workflow_run:
-    workflows:
-      - '🧹✨ Linting & Style Checks'
-    types: [completed]
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions: {}
 
 jobs:
   home-assistant:
     name: 🧪 Home Assistant Core Config Check (${{ matrix.version }})
-    # needs: [yamllint]
-    if: |
-      github.repository == 'saya6k/home-assistant-config' &&
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.name == '🧹✨ Linting & Style Checks' &&
-      github.event.workflow_run.head_branch == 'main' &&
-      github.event.workflow_run.event == 'push'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     strategy:
       matrix:
         version: ['stable', 'beta', 'dev']
     steps:
       - name: ⤵️ Check out repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
         with:
-          ref: ${{ github.event.workflow_run.head_sha }}
-          fetch-depth: 0
+          persist-credentials: false
 
       - name: 📥 Clone custom component - OpenID Connect for Home Assistant
+        # Pinned to v1.1.0 — bump deliberately, do not move to a floating ref.
+        env:
+          OIDC_REF: '0164cd2829909d9980fb2a7deb553c24cc9d637a'
         run: |
-          git clone https://github.com/christiaangoossens/hass-oidc-auth.git
+          set -euo pipefail
+          git clone --depth=1 https://github.com/christiaangoossens/hass-oidc-auth.git
+          git -C hass-oidc-auth fetch --depth=1 origin "${OIDC_REF}"
+          git -C hass-oidc-auth checkout "${OIDC_REF}"
           mv -v hass-oidc-auth/custom_components/* custom_components
 
+      - name: 🗝️ Generate mock secrets
+        uses: golles/mock-yaml-secrets-action@d6c5dcb9889077e44827c50e5f6bdac3636c89e5 # v1.1.2
+        with:
+          configFile: '.github/workflows/mock-secrets-config.json'
+
       - name: 🚀 Validate Home Assistant Configuration
-        uses: frenck/action-home-assistant@v1.4.1
+        uses: frenck/action-home-assistant@941d5d917f4c1c7a7e7d4087526daf90d53f4437 # v1.4.1
         with:
           path: '.'
-          secrets: ./secrets.fake.yaml
           version: ${{ matrix.version }}

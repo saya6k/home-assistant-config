@@ -1,0 +1,23 @@
+switch:
+  - platform: flux
+    lights:
+      - light.bedroom_floor_lamp
+      # - light.living_room_vanity
+      - light.kajplats_e14_ws_globe_806lm
+      - light.kajplats_e14_ws_globe_806lm_2
+      - light.kajplats_e14_ws_globe_806lm_3
+      - light.kajplats_e14_ws_globe_806lm_4
+      - light.kajplats_e14_ws_globe_806lm_5
+      - light.kajplats_e26_ws_globe_1521lm
+    name: Flux
+    unique_id: switch.flux
+    # start_time: sunrise
+    # stop_time: dusk
+    start_colortemp: 9000
+    sunset_colortemp: 3000
+    stop_colortemp: 2000
+    # brightness: 200
+    disable_brightness_adjust: true
+    mode: xy
+    transition: 30
+    interval: 60

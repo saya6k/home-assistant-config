@@ -1,0 +1,171 @@
+blueprint:
+  name: IKEA BILRESA E2489 Dual Button (Matter)
+  author: censay
+  description: 'Full-featured automation for the IKEA BILRESA E2489 Matter dual-button
+    remote. Supports single press, double press, and long press (on press and on release)
+    for both buttons. Uses event entities exposed by Home Assistant for Matter devices.
+    Single-press actions are prioritized for reliability.
+
+    '
+  domain: automation
+  source_url: https://raw.githubusercontent.com/censay/haos-blueprints/refs/heads/master/ikea-bilresa-e2489-matter-smart-button/ikea-bilresa-e2489-matter-smart-button.yaml
+  homeassistant:
+    min_version: 2025.12.1
+  input:
+    target_device:
+      name: BILRESA Button Device
+      description: 'Select the IKEA BILRESA E2489 matter device.
+
+        '
+      selector:
+        device:
+          filter:
+          - manufacturer: IKEA of Sweden
+          multiple: false
+    button1_event:
+      name: Button 1 – Event Entity
+      description: 'Select the event entity for Button 1 (for example: event.bilresa_dual_button_button_1_2).
+
+        '
+      selector:
+        entity:
+          domain:
+          - event
+          multiple: false
+          reorder: false
+    button2_event:
+      name: Button 2 – Event Entity
+      description: 'Select the event entity for Button 2 (for example: event.bilresa_dual_button_button_2_2).
+
+        '
+      selector:
+        entity:
+          domain:
+          - event
+          multiple: false
+          reorder: false
+    button1_single:
+      name: Button 1 – Single Press
+      description: Action for Button 1 single press (multi_press_1).
+      default: []
+      selector:
+        action: {}
+    button1_double:
+      name: Button 1 – Double Press
+      description: Action for Button 1 double press (multi_press_2).
+      default: []
+      selector:
+        action: {}
+    button1_long_press:
+      name: Button 1 – Long Press (on press)
+      description: Action for Button 1 long press start (long_press).
+      default: []
+      selector:
+        action: {}
+    button1_long:
+      name: Button 1 – Long Press (on release)
+      description: Action for Button 1 long press completion (long_release).
+      default: []
+      selector:
+        action: {}
+    button2_single:
+      name: Button 2 – Single Press
+      description: Action for Button 2 single press (multi_press_1).
+      default: []
+      selector:
+        action: {}
+    button2_double:
+      name: Button 2 – Double Press
+      description: Action for Button 2 double press (multi_press_2).
+      default: []
+      selector:
+        action: {}
+    button2_long_press:
+      name: Button 2 – Long Press (on press)
+      description: Action for Button 2 long press start (long_press).
+      default: []
+      selector:
+        action: {}
+    button2_long:
+      name: Button 2 – Long Press (on release)
+      description: Action for Button 2 long press completion (long_release).
+      default: []
+      selector:
+        action: {}
+variables:
+  button1_entity: !input button1_event
+  button2_entity: !input button2_event
+trigger:
+- platform: state
+  id: button1
+  entity_id: !input button1_event
+  not_from: unavailable
+  not_to: unavailable
+- platform: state
+  id: button2
+  entity_id: !input button2_event
+  not_from: unavailable
+  not_to: unavailable
+condition: []
+action:
+- variables:
+    press_type: '{{ trigger.to_state.attributes.event_type }}'
+    trigger_id: '{{ trigger.id }}'
+- choose:
+  - conditions:
+    - condition: template
+      value_template: '{{ trigger_id == ''button1'' and press_type == ''multi_press_1''
+        }}
+
+        '
+    sequence: !input button1_single
+  - conditions:
+    - condition: template
+      value_template: '{{ trigger_id == ''button1'' and press_type == ''multi_press_2''
+        }}
+
+        '
+    sequence: !input button1_double
+  - conditions:
+    - condition: template
+      value_template: '{{ trigger_id == ''button1'' and press_type == ''long_press''
+        }}
+
+        '
+    sequence: !input button1_long_press
+  - conditions:
+    - condition: template
+      value_template: '{{ trigger_id == ''button1'' and press_type == ''long_release''
+        }}
+
+        '
+    sequence: !input button1_long
+  - conditions:
+    - condition: template
+      value_template: '{{ trigger_id == ''button2'' and press_type == ''multi_press_1''
+        }}
+
+        '
+    sequence: !input button2_single
+  - conditions:
+    - condition: template
+      value_template: '{{ trigger_id == ''button2'' and press_type == ''multi_press_2''
+        }}
+
+        '
+    sequence: !input button2_double
+  - conditions:
+    - condition: template
+      value_template: '{{ trigger_id == ''button2'' and press_type == ''long_press''
+        }}
+
+        '
+    sequence: !input button2_long_press
+  - conditions:
+    - condition: template
+      value_template: '{{ trigger_id == ''button2'' and press_type == ''long_release''
+        }}
+
+        '
+    sequence: !input button2_long
+mode: restart

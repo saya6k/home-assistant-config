@@ -1,0 +1,31 @@
+esphome:
+  name: xvf3800
+  friendly_name: xvf3800
+
+esp32:
+  board: esp32-s3-devkitc-1
+  framework:
+    type: esp-idf
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: 'lZmyryd0Hg1LVUKaWxdnmFBSQf/pUjkw3idUWBeiPuY='
+
+ota:
+  - platform: esphome
+    password: 'ade3311965262e1bf3fb8e527476ad78'
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: 'Xvf3800 Fallback Hotspot'
+    password: 'YMPqayU0pXHp'
+
+captive_portal:

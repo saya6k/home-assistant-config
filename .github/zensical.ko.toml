@@ -1,0 +1,94 @@
+[project]
+site_name        = "Home Assistant Documentation by saya6k"
+site_author      = "saya6k"
+site_url         = "https://saya6k.github.io/home-assistant-config/ko/"
+site_description = "🏡 My home automation setup built with Home Assistant"
+
+# .github/ 기준 → repo_root/docs/ko, repo_root/_site/ko.
+docs_dir = "../docs/ko"
+site_dir = "../_site/ko"
+
+use_directory_urls = false
+
+repo_url  = "https://github.com/saya6k/home-assistant-config"
+repo_name = "home-assistant-config"
+edit_uri  = "edit/main/docs/"
+
+copyright = "Copyright &copy; 2025 saya6k"
+
+extra_css = ["assets/stylesheet.css"]
+
+nav = [
+    { "홈"       = "index.md" },
+    { "하드웨어" = "hardware.md" },
+    { "플랫폼" = [
+        "platform/index.md",
+        "platform/network.md",
+        "platform/storage.md",
+        "platform/backups.md",
+        "platform/add-ons.md",
+    ] },
+    { "통합" = [
+        "integrations/index.md",
+        "integrations/custom-components.md",
+        "integrations/esphome.md",
+    ] },
+    { "자동화"     = "automations.md" },
+    { "대시보드"   = "dashboards.md" },
+    { "음성과 AI" = "voice-and-ai.md" },
+    { "옵저버빌리티" = "observability.md" },
+    { "에너지"     = "energy.md" },
+    { "서비스" = [
+        "services/index.md",
+        "services/paperless.md",
+        "services/pocket-id.md",
+    ] },
+    { "보관소"     = "retired.md" },
+    { "참고 자료" = "resources.md" },
+]
+
+[project.theme]
+language = "ko"
+logo     = "assets/home_assistant.png"
+features = [
+    "content.action.edit",
+    "content.action.view",
+    "navigation.footer",
+    "navigation.instant",
+    "navigation.instant.progress",
+    "navigation.tabs",
+    "navigation.tabs.sticky",
+    "navigation.top",
+    "toc.integrate",
+]
+
+[[project.theme.palette]]
+media       = "(prefers-color-scheme)"
+toggle.icon = "lucide/sun-moon"
+toggle.name = "시스템 설정 따라가기"
+
+[[project.theme.palette]]
+media       = "(prefers-color-scheme: light)"
+scheme      = "default"
+primary     = "light-blue"
+accent      = "light-blue"
+toggle.icon = "lucide/moon"
+toggle.name = "다크 모드로 전환"
+
+[[project.theme.palette]]
+media       = "(prefers-color-scheme: dark)"
+scheme      = "slate"
+primary     = "light-blue"
+accent      = "light-blue"
+toggle.icon = "lucide/sun"
+toggle.name = "라이트 모드로 전환"
+
+[project.extra]
+alternate = [
+    { name = "한국어",  link = "/home-assistant-config/ko/", lang = "ko" },
+    { name = "English", link = "/home-assistant-config/en/", lang = "en" },
+]
+
+[project.markdown_extensions.meta]
+[project.markdown_extensions.pymdownx.tabbed]
+alternate_style = true

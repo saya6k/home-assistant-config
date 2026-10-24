@@ -1,0 +1,77 @@
+{#- docs/en/dashboards.md — English mirror -#}
+{%- set plugins = hacs_components | selectattr('category', 'equalto', 'plugin') | sort(attribute='name') | list -%}
+{%- set plugin_descriptions = {
+    'Auto Entities': '🔹 Dynamically populate entities lists',
+    'Button Card': '❇️ Powerful custom button card',
+    'Bubble Card': '💧 Rounded modern card set',
+    'Card Mod': '🔹 Inject CSS into almost any Lovelace card',
+    'Decluttering Card': '🧹 Template repeated card definitions',
+    'Homeii Flow': 'Premium card for Music Assistant',
+    'Hui Element': '🔹 Use built-in elements anywhere',
+    'Mushroom': '🍄 Soft-toned integrated card set',
+    'Template Entity Row': '🔹 Freely shape rows in entities cards',
+} -%}
+---
+title: Dashboards
+---
+
+# Dashboards
+
+Lovelace runs in **storage mode** (`lovelace: mode: storage` in `configuration.yaml`). Dashboards are stored in `.storage/lovelace*`; those four files are explicitly allowed by `.gitignore` so the UI travels with the config repo.
+
+## Design principles
+
+- **Automations + templates first**: minimize manual touch. Template sensors, groups, labels, Jinja2 templates do the dynamic work.
+- **Responsive**: started at section width 3, dropped to 2 to fit wall pads and small screens.
+- **Single unified surface**: left sidebar hidden, everything lives in one Lovelace view.
+- **HomeKit-inspired**: design follows Apple HomeKit conventions, fitting the iPhone-heavy household.
+
+## Key features
+
+- **Dynamic sections**: Home / Climate / Energy / System and so on — purpose-driven splits.
+- **Interactive cards**: media, lights, HVAC are directly actionable.
+- **Custom visuals**: combination of custom cards + themes.
+- **Live updates**: weather forecast, traffic, system status all refresh in real time.
+
+## Screenshots
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/overview.png" alt="Overview" width="32%">
+  <img src="https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/mobile.png" alt="Mobile" width="32%">
+  <img src="https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/living-room-subview.png" alt="Living Room" width="32%">
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/system.png" alt="System" width="32%">
+  <img src="https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/climate.png" alt="Climate" width="32%">
+  <img src="https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/energy.png" alt="Energy" width="32%">
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/music.png" alt="Music" width="32%">
+</p>
+
+## Lovelace plugins
+
+`card-mod` is loaded via `frontend.extra_module_url` in `configuration.yaml`; the rest come through HACS and register in `.storage/lovelace_resources`. **{{ plugins | count }}** HACS plugins are currently installed.
+
+| Name | Description |
+| --- | --- |
+{%- for p in plugins %}
+| [{{ p.name }}]({{ p.documentation }}) | {{ plugin_descriptions.get(p.name, p.description or '') }} |
+{%- endfor %}
+
+## Themes
+
+Stored under `themes/`, loaded via `frontend.themes` in `configuration.yaml`.
+
+| Name | Notes |
+| --- | --- |
+| Frosted Glass Auto | follows system light/dark |
+| Frosted Glass Dark | dark only |
+| Frosted Glass Light | light only |
+
+## Supporting integrations
+
+- **Music Assistant** — wires media player cards
+- **alert** — surfaces system alerts directly on the dashboard

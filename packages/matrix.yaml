@@ -1,0 +1,71 @@
+# # The Matrix integration
+# matrix:
+#   homeserver: https://matrix.lyz.kr
+#   username: "@my_matrix_user:matrix.org"
+#   password: supersecurepassword
+#   rooms:
+#     - "#hasstest:matrix.org"
+#     - "#someothertest:matrix.org"
+#   commands:
+#     - word: testword
+#       name: testword
+#       rooms:
+#         - "#someothertest:matrix.org"
+#     - expression: "My name is (?P<name>.*)"
+#       name: introduction
+#     - reaction: 👍
+#       name: thumbsup
+
+# notify:
+#   - name: matrix_notify
+#     platform: matrix
+#     default_room: "#hasstest:matrix.lyz.kr"
+
+# automation:
+#   - alias: "Respond to !testword"
+#     triggers:
+#       - trigger: event
+#         event_type: matrix_command
+#         event_data:
+#           command: testword
+#     actions:
+#       - action: notify.matrix_notify
+#         data:
+#           message: "It looks like you wrote !testword"
+
+#   - alias: "Respond to an introduction"
+#     triggers:
+#       - trigger: event
+#         event_type: matrix_command
+#         event_data:
+#           command: introduction
+#     actions:
+#       - action: notify.matrix_notify
+#         data:
+#           message: "Hello {{trigger.event.data.args['name']}}"
+
+#   - alias: "Respond to a reaction in a thread"
+#     triggers:
+#       - trigger: event
+#         event_type: matrix_command
+#         event_data:
+#           command: thumbsup
+#     actions:
+#       - action: notify.matrix_notify
+#         data:
+#           message: "I saw that {{trigger.event.data.args['reaction']}} -- glad you appreciated this!"
+#           data:
+#             thread_id: "{{trigger.event.data.thread_parent}}"
+
+#   - alias: "React to a command"
+#     triggers:
+#       - trigger: event
+#         event_type: matrix_command
+#         event_data:
+#           command: testword
+#     actions:
+#       - action: matrix.react
+#         data:
+#           reaction: "✅"
+#           room: "{{trigger.event.data.room}}"
+#           message_id: "{{trigger.event.data.event_id}}"

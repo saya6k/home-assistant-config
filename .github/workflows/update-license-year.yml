@@ -1,0 +1,45 @@
+---
+name: 📅 Update License Year
+
+on:
+  schedule:
+    - cron: '0 0 1 1 *' # 00:00 UTC, January 1st
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  update-year:
+    name: 🗓️ Bump copyright year
+    runs-on: ubuntu-latest
+    if: github.repository == 'saya6k/home-assistant-config'
+    permissions:
+      contents: write
+    steps:
+      - name: ⤵️ Check out repository
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+        with:
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+
+      - name: 📝 Update copyright year in LICENSE
+        id: update
+        run: |
+          set -euo pipefail
+          YEAR=$(date +%Y)
+          sed -i "s/Copyright (c) 2024 - [0-9]\{4\} saya6k/Copyright (c) 2024 - ${YEAR} saya6k/" LICENSE
+          if git diff --quiet LICENSE; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "year=${YEAR}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: 📤 Commit and push
+        if: steps.update.outputs.changed == 'true'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add LICENSE
+          git commit -m "chore: update license year to ${{ steps.update.outputs.year }}"
+          git push

@@ -1,102 +1,3 @@
-turn_off_all_lights:
-  alias: Turn Off All Lights
-  sequence:
-  - action: light.turn_off
-    metadata: {}
-    data: {}
-    target:
-      entity_id:
-      - light.all_lights
-  description: ''
-ring_morning_song:
-  alias: Ring Morning Song
-  sequence:
-  - metadata: {}
-    data:
-      volume_level: 0.7
-    target:
-      device_id: 03b47ade8600df7168f3676b477dee1a
-    action: media_player.volume_set
-  - data:
-      media_content_id: spotify://playlist/37i9dQZEVXcF14wWEMS3xo
-      media_content_type: playlist
-      enqueue: replace
-    action: media_player.play_media
-    target:
-      device_id: 03b47ade8600df7168f3676b477dee1a
-  description: ''
-llm_script_for_music_assistant_voice_requests:
-  alias: LLM Script for Music Assistant voice requests
-  use_blueprint:
-    path: music-assistant/llm_voice_script.yaml
-    input:
-      default_player: media_player.living_room
-  description: ''
-assist_search_google:
-  sequence:
-  - action: conversation.process
-    metadata: {}
-    data:
-      agent_id: conversation.gemini_2_5_flash
-      text: '{{ query }}'
-    response_variable: result
-  - variables:
-      result:
-        response: '{{ result.response.speech.plain.speech }}'
-  - stop: ''
-    response_variable: result
-  alias: 'Assist: Search Google'
-  description: Makes a Google search to answer questions that are completely unrelated
-    with the smart home and are exclusively about current events or information in
-    real-time like the current president, results of last night's game, release dates,
-    etc.
-  fields:
-    query:
-      selector:
-        text:
-      name: Query
-      description: The query to search Google for
-      required: true
-unknown:
-  alias: 날씨 및 쾌적성 보고서
-  sequence:
-  - action: ai_task.generate_data
-    data:
-      task_name: weather comfort report
-      instructions: 'Based on the current conditions:
-
-        - Outdoor temperature: {{ states(''sensor.seoul_temperature'') }}°C
-
-        - Weather condition: {{ states(''weather.home'') }}
-
-        - Indoor temperature: {{ states(''sensor.indoor_average_temperature'') }}°C
-
-        - Indoor humidity: {{ states(''sensor.indoor_average_humidity'') }}%
-
-
-        Generate a funny weather description and assess indoor comfort level in Korean.
-
-        '
-      structure:
-        weather_description:
-          description: A humorous description of the current weather outside
-          required: true
-          selector:
-            text:
-        indoor_comfort:
-          description: Assessment of how comfortable it is inside compared to outside
-          required: true
-          selector:
-            text:
-    response_variable: comfort_report
-  - action: persistent_notification.create
-    metadata: {}
-    data:
-      message: "\U0001F324️ **바깥 날씨:** {{ comfort_report.data.weather_description
-        }}\n\n\U0001F6CB️ **실내 쾌적성:** {{ comfort_report.data.indoor_comfort }}"
-      title: "\U0001F3E0 우리 집 환경 보고"
-      notification_id: weather_home
-  description: 현재 날씨와 쾌적한 실내 환경을 유머러스하게 보고합니다.
 entity_history:
   alias: Entity History
   icon: mdi:chart-timeline-variant
@@ -237,12 +138,21 @@ unknown_2:
     data:
       attachments:
         media_content_id: media-source://camera/camera.baengbaeng_junction
-        media_content_type: image/jpeg
+        media_content_type: application/vnd.apple.mpegurl
+        metadata:
+          title: 뱅뱅사거리
+          thumbnail: /api/camera_proxy/camera.baengbaeng_junction
+          media_class: video
+          children_media_class:
+          navigateIds:
+          - {}
+          - media_content_type: app
+            media_content_id: media-source://camera
       task_name: Traffic cameras
-      instructions: 'These are public traffic camera in my route to office.
+      instructions: '이건 사무실로 가는 길의 CCTV 영상이야.
 
 
-        Is there traffic jam exists?'
+        현재 차로 길이 막혀서 교통에 지장이 있는 중이면 true로 답해.'
       structure:
         true_or_false:
           selector:
@@ -250,93 +160,1101 @@ unknown_2:
     response_variable: traffic_jam
   alias: '교통 카메라: 교통 체증 여부 확인'
   description: 공개 교통 카메라를 통해 경로의 교통 체증 여부를 확인합니다.
-llm_script_for_music_assistant_voice_requests_2:
+imap:
+  alias: IMAP 이메일 본문 디코딩
+  sequence:
+  - variables:
+      email_sender: '{{ trigger.event.data.sender }}'
+      email_subject: '{{ trigger.event.data.subject }}'
+      email_date: '{{ trigger.event.data.date }}'
+      email_uid: '{{ trigger.event.data.uid }}'
+      raw_content: '{{ trigger.event.data.parts[''0''].content | default(''No content'')
+        }}'
+      content_type: '{{ trigger.event.data.parts[''0''].content_type }}'
+      encoding: '{{ trigger.event.data.parts[''0''].content_transfer_encoding }}'
+      decoded_content: '{% set content = trigger.event.data.parts[''0''].content |
+        default('''') %} {# Replace common quoted-printable sequences #} {% set content
+        = content | replace(''=\n'', '''') %} {% set content = content | replace(''=\r\n'',
+        '''') %} {% set content = content | replace(''=20'', '' '') %} {% set content
+        = content | replace(''=3D'', ''='') %} {% set content = content | replace(''=2E'',
+        ''.'') %} {% set content = content | replace(''=2C'', '','') %} {% set content
+        = content | replace(''=3A'', '':'') %} {% set content = content | replace(''=3B'',
+        '';'') %} {% set content = content | replace(''=3F'', ''?'') %} {% set content
+        = content | replace(''=21'', ''!'') %} {% set content = content | replace(''=22'',
+        ''"'') %} {% set content = content | replace(''=27'', "''") %} {% set content
+        = content | replace(''=28'', ''('') %} {% set content = content | replace(''=29'',
+        '')'') %} {% set content = content | replace(''=2D'', ''-'') %} {% set content
+        = content | replace(''=2F'', ''/'') %} {% set content = content | replace(''=3C'',
+        ''<'') %} {% set content = content | replace(''=3E'', ''>'') %} {% set content
+        = content | replace(''=40'', ''@'') %} {% set content = content | replace(''=5B'',
+        ''['') %} {% set content = content | replace(''=5D'', '']'') %} {% set content
+        = content | replace(''=0D=0A'', ''\n'') %} {% set content = content | replace(''=0A'',
+        ''\n'') %} {% set content = content | replace(''=09'', ''\t'') %} {{ content
+        }}
+
+        '
+      plain_text: '{% set text = decoded_content %} {% set text = text | regex_replace(''<[^>]+>'',
+        '''') %} {% set text = text | regex_replace(''&nbsp;'', '' '') %} {% set text
+        = text | regex_replace(''&amp;'', ''&'') %} {% set text = text | regex_replace(''&lt;'',
+        ''<'') %} {% set text = text | regex_replace(''&gt;'', ''>'') %} {% set text
+        = text | regex_replace(''&quot;'', ''"'') %} {% set text = text | trim %}
+        {{ text }}
+
+        '
+  mode: queued
+  max: 10
+  description: IMAP 이메일 트리거 데이터를 받아 인코딩을 해제하고 HTML 태그를 제거하여 일반 텍스트로 변환합니다.
+unknown_3:
+  sequence:
+  - action: ai_task.generate_data
+    data:
+      task_name: weather comfort report
+      instructions: "{%- set indoor_areas = ['living_room', 'bedroom', 'kitchen',
+        'bathroom', 'mudroom'] -%}\n{%- set ns = namespace(temps=[], humidities=[])
+        -%}\n{%- for sensor in states.sensor -%}\n  {%- if area_id(sensor.entity_id)
+        in indoor_areas and sensor.state not in ['unknown', 'unavailable'] -%}\n    {%-
+        if sensor.attributes.get('device_class') == 'temperature' -%}\n      {%- set
+        ns.temps = ns.temps + [sensor.state | float] -%}\n    {%- elif sensor.attributes.get('device_class')
+        == 'humidity' -%}\n      {%- set ns.humidities = ns.humidities + [sensor.state
+        | float] -%}\n    {%- endif -%}\n  {%- endif -%}\n{%- endfor -%}\n{%- set
+        weather = states.weather | selectattr('attributes.temperature', 'defined')
+        | first %}\n현재의 상태:\n- 바깥 기온: {{ weather.attributes.temperature if weather
+        is defined else '알 수 없음' }}°C\n- 현재 날씨: {{ state_translated(weather.entity_id)
+        if weather is defined else '알 수 없음' }}\n- 실내 온도: {{ (ns.temps | average) |
+        round(1) if ns.temps else '알 수 없음' }}°C\n- 실내 습도: {{ (ns.humidities | average)
+        | round(1) if ns.humidities else '알 수 없음' }}%\n\n위 내용을 기반으로 간단하고 재치있게 바깥 날씨와
+        실내 쾌적성에 대한 보고를 본문만 각 한 문장으로 작성해.\n"
+      structure:
+        weather_description:
+          description: A description of the current weather outside
+          required: true
+          selector:
+            text:
+        indoor_comfort:
+          description: Assessment of how comfortable it is inside compared to outside
+          required: true
+          selector:
+            text:
+    response_variable: comfort_report
+  - action: persistent_notification.create
+    metadata: {}
+    data:
+      message: "![서울](/local/seoul_weather_visualization.png)\n\n\U0001F324️ **바깥
+        날씨:** {{ comfort_report.data.weather_description }}\n\n\U0001F6CB️ **실내 쾌적성:**
+        {{ comfort_report.data.indoor_comfort }}"
+      title: "\U0001F3E0 우리 집 환경 보고"
+      notification_id: weather_home
+  alias: 날씨 및 쾌적성 유머 보고서
+  description: 현재 실외 날씨와 실내 쾌적도를 유머러스하게 분석하여 알림으로 생성합니다.
+entity_attributes:
+  alias: Entity Attributes
+  icon: mdi:format-list-bulleted
+  description: 'Returns the attributes of a given entity.
+
+    You MUST know the entity_id before calling this tool.
+
+    entity_id is MANDATORY and must always be provided.
+
+    '
+  mode: single
+  fields:
+    entity_id:
+      name: Entity ID
+      description: A single entity_id to look up attributes for (e.g. "climate.living_room").
+        MANDATORY!
+      required: true
+      selector:
+        text: {}
+  sequence:
+  - variables:
+      eid: '{{ entity_id | string | trim | lower }}'
+  - variables:
+      entity_exists: '{{ states[eid] is defined }}'
+  - if:
+    - condition: template
+      value_template: '{{ not entity_exists }}'
+    then:
+    - variables:
+        result: "{{ {\n  'error': 'Entity not found. Use only names returned from
+          \"Entity Index\" or that you looked up in the data provided to you.',\n
+          \ 'code': 'entity_not_found',\n  'entity_id': eid\n} }}"
+    - stop: ''
+      response_variable: result
+  - variables:
+      result: "{%- set excluded = ['friendly_name', 'state_class', 'icon', 'unit_of_measurement',
+        'entity_id'] -%}\n{%- set ns = namespace(filtered={}) -%}\n{%- for key, value
+        in states[eid].attributes.items() -%}\n  {%- if key not in excluded -%}\n
+        \   {%- set ns.filtered = ns.filtered | combine({key: value}) -%}\n  {%- endif
+        -%}\n{%- endfor -%}\n{{ {\n  'entity_id': eid,\n  'state': states(eid),\n
+        \ 'attributes': ns.filtered\n} }}"
+  - stop: ''
+    response_variable: result
+llm_script_for_music_assistant_voice_requests:
   alias: LLM Script for Music Assistant voice requests
   use_blueprint:
     path: music-assistant/llm_voice_script.yaml
     input:
-      default_player: media_player.living_room
-  description: 'This script is used to play music based on a voice request. The tool
-    takes the following arguments: media_type, artist, album, media_id, radio_mode,
-    area. media_id and media_type are always required and must always be supplied
-    as arguments to this tool. An area or Music Assistant media player can optionally
-    be provided in the voice request as well. Use the parameters as described in the
-    description of each parameter. Use this tool whenever the user requests to play
-    music.'
-lovelace:
+      default_player: media_player.geosil
+      media_type_prompt: '이 인자는 필수이며, 어떤 경우에도 반드시 제공해야 합니다!
+
+        "media_type"은 다음 5가지 값 중 하나만 사용할 수 있습니다:
+
+        - "track" - 특정 곡 또는 곡 목록을 검색하는 경우.
+
+        - "album" - 앨범 또는 앨범 목록을 검색하는 경우.
+
+        - "artist" - 아티스트를 검색하는 경우.
+
+        - "playlist" - 특별히 플레이리스트를 요청하는 경우.
+
+        - "radio" - 라디오 채널을 검색하는 경우.
+
+
+        media_type은 필수이며, 반드시 제공해야 합니다. 요청이 위 유형 중 어디에도 해당하지 않는 경우, 예를 들어 특정 장르의 음악을
+        요청하는 경우에는 "track"을 사용하고 "media_id" 파라미터에 일치하는 곡 목록을 제공하세요.'
+      artist_prompt: '"artist"는 사용자가 재생을 요청한 아티스트이거나, 사용자가 특정 곡의 재생을 요청하면서 아티스트를 언급한
+        경우 해당 곡의 아티스트입니다. 아티스트를 알 수 없거나 여러 아티스트가 요청된 경우에는 빈 문자열을 사용하세요.'
+      album_prompt: '"album"은 사용자가 재생을 요청한 앨범이거나, 사용자가 특정 곡의 재생을 요청하면서 언급한 경우 해당 곡이
+        수록된 앨범입니다. 앨범을 알 수 없거나 여러 앨범이 요청된 경우에는 빈 문자열을 사용하세요.'
+      media_id_prompt: '이 인자는 필수이며, 어떤 경우에도 반드시 제공해야 합니다!
+
+        media_id는 track, album, artist 중 가장 구체적인 값입니다.
+
+        "track"과 "artist"는 단일 값 또는 여러 값을 가질 수 있습니다.
+
+        - 곡을 검색하는 경우: media_id는 곡 이름 또는 곡 이름 목록입니다 (세미콜론을 구분자로 사용). 결과에 여러 아티스트가 포함된
+        경우, 아티스트 이름과 곡 이름을 대시로 구분하여 곡 이름으로 사용하세요 (예: "아티스트 이름 - 곡 이름"). 모든 곡이 동일한
+        아티스트의 곡인 경우, "artist" 파라미터에 아티스트를 지정하고, 곡 이름만 media_id로 사용하세요.
+
+        - 앨범을 검색하는 경우: media_id는 앨범 이름 또는 앨범 이름 목록입니다 (세미콜론을 구분자로 사용).
+
+        - 아티스트를 검색하는 경우: media_id는 아티스트 이름입니다.
+
+        - 특정 플레이리스트를 검색하는 경우: media_id는 요청된 플레이리스트에서 앞뒤의 "플레이리스트"라는 단어를 제거한 이름입니다
+        (예: "좋아하는 노래 플레이리스트" 대신 "좋아하는 노래"를 반환).
+
+        - 라디오 채널을 검색하는 경우: media_id는 요청된 채널입니다.
+
+        이 인자는 필수이며, 반드시 제공해야 합니다.'
+      media_description_prompt: '"media_description" 키는 재생할 미디어를 설명하는 데 사용됩니다. 이 값은
+        음성 명령 쿼리에서 가져올 수 있지만, 미디어와 관련된 부분만 포함해야 합니다. 예를 들어 음성 요청이 "거실 스피커에서 Queen
+        베스트 곡 틀어 줘"인 경우, "media_description"의 값은 "Queen 베스트 곡"이어야 합니다.'
+      area_prompt: '음악 재생이 요청된 영역(area) 또는 영역들입니다. 요청에 대상(영역 또는 플레이어)이 언급되지 않은 경우,
+        요청이 발생한 영역을 사용하세요.
+
+        요청 내용이나 요청이 발생한 기기로부터 영역을 판단할 수 없는 경우, 이 파라미터를 사용하지 마세요.
+
+        "area" 파라미터와 "media_player" 파라미터를 함께 사용하는 것은 요청에서 두 가지가 모두 명시적으로 언급된 경우에만
+        해당합니다.'
+      media_player_prompt: '"media_player"는 요청에서 음악을 재생할 미디어 플레이어 또는 여러 미디어 플레이어가
+        명시적으로 언급된 경우에만 사용하세요. 이 값은 Music Assistant 통합에서 제공하는 미디어 플레이어의 entity_id여야
+        합니다.
+
+        "area" 파라미터와 "media_player" 파라미터를 함께 사용하는 것은 요청에서 두 가지가 모두 명시적으로 언급된 경우에만
+        해당합니다.'
+      shuffle_prompt: '이 인자는 필수이며, 어떤 경우에도 반드시 제공해야 합니다!
+
+        요청에서 음악 셔플이 언급된 경우 "shuffle"을 true로 설정합니다. 그렇지 않으면 "shuffle"을 false로 설정합니다.
+
+        예를 들어, 요청이 "Muse 음악 셔플해 줘"인 경우, "shuffle"은 true로 설정해야 합니다.
+
+        요청이 "Billy Talent 음악 틀어 줘"인 경우, 셔플을 언급하거나 요청하지 않았으므로 "shuffle"은 false입니다.
+
+        요청이 "좋아하는 노래 플레이리스트 셔플해 줘"인 경우, "shuffle"은 true로 설정해야 합니다.
+
+        요청이 "Guns and Roses 아티스트 틀어 줘"인 경우, 셔플을 언급하거나 요청하지 않았으므로 "shuffle"은 false로
+        설정해야 합니다.'
+  description: ''
+sleep_as_android_start_sleep_tracking:
+  alias: 'Sleep as Android: Start Sleep Tracking'
+  use_blueprint:
+    path: homeassistant/sleep_as_android_trigger_app_actions.yaml
+    input:
+      notify_device: fc2182e437cd03e52bdf4392c3693ccc
+      sleep_action: com.urbandroid.sleep.alarmclock.START_SLEEP_TRACK
+  description: ''
+sleep_as_android_snooze_alarm_for_15_minutes:
+  alias: 'Sleep as Android: Snooze Alarm for 15 minutes'
+  use_blueprint:
+    path: homeassistant/sleep_as_android_trigger_app_actions.yaml
+    input:
+      notify_device: fc2182e437cd03e52bdf4392c3693ccc
+      sleep_action: com.urbandroid.sleep.alarmclock.ALARM_SNOOZE
+      extra_snooze_time: 15
+  description: ''
+sleep_as_android_stop_lullaby:
+  alias: 'Sleep as Android: Stop Lullaby'
+  use_blueprint:
+    path: homeassistant/sleep_as_android_trigger_app_actions.yaml
+    input:
+      notify_device: fc2182e437cd03e52bdf4392c3693ccc
+      sleep_action: com.urbandroid.sleep.ACTION_LULLABY_STOP_PLAYBACK
+      alarm_state: false
+  description: ''
+sleep_as_android_stop_sleep_tracking:
+  alias: 'Sleep as Android: Stop Sleep Tracking'
+  use_blueprint:
+    path: homeassistant/sleep_as_android_trigger_app_actions.yaml
+    input:
+      notify_device: fc2182e437cd03e52bdf4392c3693ccc
+      sleep_action: com.urbandroid.sleep.alarmclock.STOP_SLEEP_TRACK
+      alarm_label: 알람
+      alarm_state: false
+  description: ''
+unknown_4:
   sequence:
+  - variables:
+      weather_entity: weather.gisangceong_nalssiyebo_seoulteugbyeolsi_seocogu
+      calendar_duration:
+        hours: 17
+      prompt: "알림으로 안내될 한국어 음성 메시지를 생성해 주세요. 이 메시지는 사용자가 잠에서 깰 때 들려주며, 유용한 정보를 포함해야
+        합니다.\n당신은 사용자를 위해 텍스트를 생성하는 친절한 개인 비서입니다:\n1. 응답은 도움이 되고, 친근하며, 따뜻하고, 통찰력
+        있어야 합니다. 2. 응답은 기술적이지 않아야 하며, Home Assistant 내부 요소(예: 엔티티 등)는 포함하지 않습니다. 3.
+        메시지는 사용자가 하루를 준비하는 데 도움이 되어야 합니다. 예를 들어:\n  - 해당 시기와 지역에 비해 특이한 날씨가 있다면 알려주기
+        (예: 단순히 “강수 확률 0%” 같은 평범한 정보는 제외)\n  - 첫 일정까지 남은 시간 안내\n  - 생일 등 특별하거나 기념할
+        만한 일이 있다면 언급\n4. 음성 메시지의 끝에서는 사용자에게 도와줄 일이 있는지 물어보세요."
+  - variables:
+      calendar_entities: "{{ states.calendar\n   | rejectattr('state', 'in', ['unavailable',
+        'unknown'])\n   | map(attribute='entity_id')\n   | list }}"
+  - alias: Fetch All Calendar Agendas
+    repeat:
+      for_each: '{{ calendar_entities }}'
+      sequence:
+      - alias: Fetch Calendar Agenda
+        data:
+          duration:
+            hours: 18
+        target:
+          entity_id: '{{ repeat.item }}'
+        response_variable: agenda_result
+        action: calendar.get_events
+      - variables:
+          agendas: "{{ (agendas | default([])) + [{\n  'entity_id': repeat.item,\n
+            \ 'name': state_attr(repeat.item, 'friendly_name'),\n  'events': (agenda_result
+            | items | first)[1].events\n}] }}"
+  - alias: Fetch Weather Forecast
+    if:
+    - condition: template
+      value_template: '{{ has_value(weather_entity) }}'
+    then:
+    - data:
+        type: hourly
+      target:
+        entity_id:
+        - '{{ weather_entity }}'
+      response_variable: daily_forecast
+      action: weather.get_forecasts
+    - variables:
+        forecast_entity: '{{ daily_forecast[weather_entity] }}'
+        forecast: '{{ forecast_entity.forecast[0] }}'
+  - action: ai_task.generate_data
+    metadata: {}
+    data:
+      instructions: "현재 시간: {{ now().strftime(\"%A %B %d %H:%M %p\") }}\n\n\n{%- if
+        forecast is defined %}\n{%- set temperature_unit = state_attr(weather_entity,
+        'temperature_unit') -%}\n기상예보: {{ forecast.condition }} ({{ forecast.temperature
+        }}{{ temperature_unit }} {%- if forecast.precipitation_probability is defined
+        -%} , 강수확률 {{ forecast.precipitation_probability }}% {%- endif -%})\n{%- endif
+        %}\n\n{%- for cal in agendas %}\n캘린더 \"{{ cal.name }}\" 일정이 다음 {{ calendar_duration.hours
+        }} 시간 내에 있음:\n  {%- if cal.events %}\n    {%- for event in cal.events %}\n
+        \   - 요약: {{ event.summary }}\n      시간: {% if event.start is defined %}{{
+        event.start }} 부터 {{ event.end }} 까지{% else %}하루 종일{% endif %}\n      {%-
+        if event.description is defined %}\n      설명: {{ event.description }}\n      {%
+        endif -%}\n      {%- if event.location is defined %}\n        장소: {{ event.location
+        }}\n      {% endif -%}\n    {%- endfor %}\n  {%- else %}\n    - 일정 없음.\n  {%-
+        endif %}\n{%- endfor %}\n\n{{ prompt }}"
+      task_name: Morning Agenda
+    response_variable: response
+  - alias: Return Generated Message
+    variables:
+      briefing:
+        message: '{{ response.data }}'
+        title: '{{ states(''sensor.date'') }} 아침 브리핑'
+  - stop: 아침 브리핑 메시지 생성 완료
+    response_variable: briefing
+  alias: 아젠다 브리핑
+  description: 날씨와 모든 캘린더 정보를 기반으로 AI 아침 브리핑 메시지를 생성하여 response variable로 반환합니다.
+unknown_5:
+  sequence:
+  - action: media_player.volume_set
+    metadata: {}
+    data:
+      volume_level: 0.2
+    target:
+      device_id: 1784dcdcc4b0bc47a1df1fbe2c596fd5
+  - action: media_player.shuffle_set
+    metadata: {}
+    data:
+      shuffle: true
+    target:
+      device_id: 1784dcdcc4b0bc47a1df1fbe2c596fd5
+  - action: media_player.play_media
+    metadata: {}
+    data:
+      media:
+        media_content_id: library://playlist/25
+        media_content_type: playlist
+        metadata:
+          title: 새 위클리 추천곡
+          thumbnail:
+          media_class: playlist
+          children_media_class: track
+          navigateIds:
+          - {}
+          - media_content_type: music_assistant
+            media_content_id: playlists
+          - media_content_type: music
+            media_content_id: library://playlist/25
+          browse_entity_id: media_player.living_room
+      enqueue: replace
+    target:
+      device_id: 1784dcdcc4b0bc47a1df1fbe2c596fd5
+  - action: media_player.media_next_track
+    metadata: {}
+    data: {}
+    target:
+      device_id: 1784dcdcc4b0bc47a1df1fbe2c596fd5
+  - action: media_player.play_media
+    data:
+      media:
+        media_content_id: plex://44d3daca51c0f7bb8db91b24243fdf1bf70fd189/library/metadata=158500
+        media_content_type: video
+        metadata:
+          navigateIds:
+          - {}
+          - media_content_type: ''
+            media_content_id: __MANUAL_ENTRY__
+          browse_entity_id: media_player.living_room_apple_tv
+    enabled: false
+    target:
+      entity_id: media_player.living_room_apple_tv
+  - action: media_player.join
+    metadata: {}
+    target:
+      entity_id: media_player.geosil
+    data:
+      group_members:
+      - media_player.magic_mirror
+    enabled: false
+  alias: 새 위클리 추천곡 재생
+  description: 거실에서 이번주의 새 위클리 추천곡을 재생합니다.
+unknown:
+  sequence:
+  - action: media_player.volume_set
+    metadata: {}
+    data:
+      volume_level: 0.1
+    target:
+      area_id: living_room
+  - action: media_player.shuffle_set
+    metadata: {}
+    target:
+      area_id: living_room
+    data:
+      shuffle: true
+  - action: media_player.play_media
+    metadata: {}
+    data:
+      media:
+        media_content_id: library://playlist/23
+        media_content_type: playlist
+        metadata:
+          title: 포근 편안 폭신 (Cozy K-Pop)
+          thumbnail:
+          media_class: playlist
+          children_media_class: track
+          navigateIds:
+          - {}
+          - media_content_type: music_assistant
+            media_content_id: playlists
+          - media_content_type: music
+            media_content_id: library://playlist/23
+          browse_entity_id: media_player.geosil
+      enqueue: replace
+    target:
+      area_id: living_room
+  - action: media_player.media_next_track
+    metadata: {}
+    data: {}
+    target:
+      area_id: living_room
+  - action: media_player.join
+    metadata: {}
+    target:
+      area_id: living_room
+    data:
+      group_members:
+      - media_player.magic_mirror
+  alias: 포근 편안 폭신 플레이리스트 재생
+  description: 거실에서 포근 편안 폭신 플레이리스트를 재생합니다.
+unknown_6:
+  alias: 데이리스트 노래 재생
+  description: 선택된 미디어 플레이어에서 오늘의 데이리스트를 재생합니다.
+  fields:
+    media_players:
+      name: 미디어 플레이어
+      description: 재생할 미디어 플레이어 엔티티, 기기 또는 영역을 선택하세요.
+      required: true
+      selector:
+        target:
+          entity:
+            domain: media_player
+            integration: music_assistant
+  sequence:
+  - action: media_player.volume_set
+    target: '{{ media_players }}'
+    data:
+      volume_level: 0.2
+  - action: media_player.shuffle_set
+    target: '{{ media_players }}'
+    data:
+      shuffle: true
+  - action: media_player.play_media
+    target: '{{ media_players }}'
+    data:
+      media:
+        media_content_id: library://playlist/24
+        media_content_type: playlist
+        metadata:
+          title: 데이리스트
+          thumbnail:
+          media_class: playlist
+          children_media_class: track
+          navigateIds:
+          - {}
+          - media_content_type: music_assistant
+            media_content_id: playlists
+          - media_content_type: music
+            media_content_id: library://playlist/24
+        browse_entity_id: media_player.geosil
+      enqueue: replace
+  - action: media_player.media_next_track
+    target: '{{ media_players }}'
+    data: {}
+unknown_8:
+  sequence:
+  - action: media_player.volume_set
+    metadata: {}
+    data:
+      volume_level: 1
+    target:
+      area_id: bathroom
+  - action: media_player.shuffle_set
+    metadata: {}
+    target:
+      area_id: bathroom
+    data:
+      shuffle: true
+  - action: media_player.play_media
+    metadata: {}
+    data:
+      media:
+        media_content_id: library://playlist/24
+        media_content_type: playlist
+        metadata:
+          title: 데이리스트
+          thumbnail:
+          media_class: playlist
+          children_media_class: track
+          navigateIds:
+          - {}
+          - media_content_type: music_assistant
+            media_content_id: playlists
+          - media_content_type: music
+            media_content_id: library://playlist/24
+          browse_entity_id: media_player.geosil
+      enqueue: replace
+    target:
+      area_id: bathroom
+  - action: media_player.media_next_track
+    metadata: {}
+    data: {}
+    target:
+      area_id: bathroom
+  alias: 샤워 음악 재생
+  description: 화장실에서 오늘의 데이리스트를 재생합니다.
+unknown_7:
+  sequence:
+  - variables:
+      camera_snake_case: '{{ camera | lower | replace('' '', ''_'') }}'
+      primary_objects:
+      - person
+      - car
+      secondary_objects:
+      - bear
+      - dog
+      - cat
+      - raccoon
+      - squirrel
+      - bicycle
+      - rabbit
+      sensor_info_text: "# AI NVR 정보\n\n# 주요 객체\n\n{% for obj in primary_objects %}\n
+        \ {% set sensor_id = 'sensor.' ~ camera_snake_case ~ '_' ~ obj ~ '_count'
+        %}\n  {% set sensor_state = states(sensor_id) %}\n  {% if sensor_state is
+        not none and sensor_state != 'unknown' and sensor_state != 'unavailable' %}\n
+        \ {% set active_sensor_id = 'sensor.' ~ camera_snake_case ~ '_' ~ obj ~ '_active_count'
+        %}\n  {% set active_state = states(active_sensor_id) | default(0) %}\n  -
+        {{ obj }} 수: {{ sensor_state }} (이 중 활성 객체: {{ active_state }})\n  {% endif
+        %}\n{% endfor %}\n\n{% set last_face = states('sensor.' ~ camera_snake_case
+        ~ '_last_recognized_face') | default('') %}\n{% if last_face and last_face
+        != 'unknown' and last_face != 'None' and last_face != '' %}\n- 인식된 사람 이름:
+        {{ last_face }}\n{% endif %}\n\n# 보조 객체\n\n{% for obj in secondary_objects
+        %}\n  {% set sensor_id = 'sensor.' ~ camera_snake_case ~ '_' ~ obj ~ '_count'
+        %}\n  {% set sensor_state = states(sensor_id) %}\n  {% if sensor_state is
+        not none and sensor_state != 'unknown' and sensor_state != 'unavailable' %}\n
+        \ {% set active_sensor_id = 'sensor.' ~ camera_snake_case ~ '_' ~ obj ~ '_active_count'
+        %}\n  {% set active_state = states(active_sensor_id) | default(0) %}\n  -
+        {{ obj }} 수: {{ sensor_state }} (이 중 활성 객체: {{ active_state }})\n  {% endif
+        %}\n{% endfor %}\n"
+      instructions_text: '{{ sensor_info_text }}
+
+        # 분석 제공 방법
+
+        ## 일반 지침
+
+        위의 AI NVR 센서 데이터는 실제 카메라 화면에 존재하는 객체를 나타내는 신뢰 가능한 정보입니다. 객체 존재 여부 판단은 반드시
+        이 센서 값을 기준으로 하세요.
+
+        ## 보고해야 할 내용
+
+        활성 개수(active count)가 0보다 큰 객체 유형만 보고하세요. 총 개수(total count)가 0보다 크더라도 활성 개수가
+        0이면 절대 설명하지 마세요.
+
+        즉, 실제로 움직이거나 현재 존재하는 객체만 설명하세요.
+
+        ## 응답 형식
+
+        활성 객체가 있는 각 유형에 대해 간결하게 다음을 포함하세요: - 어떤 객체인지 - 화면 내 위치 (예: 전경, 배경, 왼쪽, 중앙
+        등) - 수행 중인 동작 또는 움직임 - 중요한 경우에만 식별 가능한 추가 정보
+
+        각 객체 설명은 1~3문장 이내로 유지하세요. 간결하고 사실적으로 작성하세요.
+
+        ## 제외해야 할 내용
+
+        - 활성 개수가 0인 객체 - 움직이지 않는 정지 객체 또는 주차된 차량 - 화면의 모든 객체를 나열하는 상세 설명 - 배경이나 환경
+        요소 설명 - 헤더, 마크다운, 리스트 형식 사용 금지
+
+        ## 활성 객체가 없는 경우
+
+        모든 객체의 활성 개수가 0이면, "현재 화면에 활성 객체가 없습니다"라고만 간단히 답하세요.
+
+        '
+  - action: ai_task.generate_data
+    metadata: {}
+    data:
+      task_name: 카메라 프레임 분석
+      instructions: '{{ instructions_text | trim }}'
+      attachments:
+        media_content_id: media-source://camera/{{ camera_snake_case }}
+        media_content_type: image/jpeg
+        metadata:
+          title: '{{ state_attr(camera_snake_case, ''friendly_name'') }}'
+          thumbnail: /api/camera_proxy/{{ camera_snake_case }}
+          media_class: video
+          navigateIds:
+          - {}
+          - media_content_type: app
+            media_content_id: media-source://camera
+    response_variable: analysis
+  - variables:
+      response:
+        instructions: '# 카메라 응답 생성 가이드
+
+          비전 모델의 분석 결과를 바탕으로 사용자의 질문에 자연스럽고 간결하게 답하세요.
+
+          ## 응답 방식
+
+          - 사람이 말하듯 자연스럽게 요약 - 사용자의 질문에 직접적으로 답변 - 1~3문장 이내로 간결하게 - 활성 객체만 언급 - 활성
+          객체가 없으면 명확히 없음이라고 말할 것 - 센서 수치나 기술적 내용은 필요할 때만 언급 - 분석 문장을 그대로 반복하지 말 것
+
+          ## 예시
+
+          분석 결과: "전경에 한 사람이 보이며 현관 앞에서 기다리고 있음"
+
+          좋은 답변: "현관 앞에 한 사람이 기다리고 있어요."
+
+          나쁜 답변: "카메라 분석에 따르면 전경에 한 사람이 보이며 현관 앞에서 기다리고 있습니다."
+
+          '
+        output: '{{ analysis.data }}'
+  - stop: 카메라 활동 응답 반환
+    response_variable: response
+  fields:
+    camera:
+      selector:
+        entity:
+          multiple: false
+          filter:
+          - domain: camera
+      required: true
+      description: camera의 entity_id를 필요로 합니다.
+      name: Camera
+  alias: 카메라 분석
+  description: 카메라 영상을 분석하여 사람, 동물, 차량 등의 활성 객체와 움직임을 식별합니다. 사용자가 "누가 문 앞에 있어?", "밖에
+    뭐 있어?", "마당에 뭐가 있지?"와 같은 질문을 할 때 사용됩니다.
+  icon: mdi:camera-metering-matrix
+unknown_9:
+  sequence:
+  - action: ai_task.generate_data
+    data:
+      instructions: "현재의 집 상태:\n- 바깥 기온: {{ state_attr('weather.kma_forecast_seoulteugbyeolsi_seocogu',
+        'temperature') }}°C\n- 현재 날씨: {{ states('weather.kma_forecast_seoulteugbyeolsi_seocogu')
+        }}\n{% set areas = ['living_room', 'bedroom', 'kitchen'] %}\n{% set ns = namespace(t=[],
+        h=[]) %}\n{% for area in areas %}\n  {% set sensors = area_entities(area)
+        | select('match', 'sensor\\.') | list %}\n  {% set t = sensors\n       | select('is_state_attr',
+        'device_class', 'temperature')\n       | map('states') | select('is_number')
+        | map('float') | list %}\n  {% set h = sensors\n       | select('is_state_attr',
+        'device_class', 'humidity')\n       | map('states') | select('is_number')
+        | map('float') | list %}\n  {% if t %}{% set ns.t = ns.t + [t | average] %}{%
+        endif %}\n  {% if h %}{% set ns.h = ns.h + [h | average] %}{% endif %}\n{%
+        endfor %}\n- 실내 온도: {{ (ns.t | average) | round(1) if ns.t else '-' }}°C\n-
+        실내 습도: {{ (ns.h | average) | round(1) if ns.h else '-' }} %\n{% set open_doors_windows
+        = states.binary_sensor\n  | selectattr('attributes.device_class', 'in', ['door',
+        'window'])\n  | selectattr('state', 'eq', 'on')\n  | map(attribute='name')\n
+        \ | list %}\n\n- 열린 문/창문:\n  {% if open_doors_windows | length > 0 %}\n    {{
+        open_doors_windows | join(', ') }}\n  {% else %}\n    없음\n  {% endif %}\n\n{%
+        set lights_on = states.light\n  | selectattr('state', 'eq', 'on')\n  | map(attribute='name')\n
+        \ | list %}\n\n- 켜진 조명:\n  {% if lights_on | length > 0 %}\n    {{ lights_on
+        | join(', ') }}\n  {% else %}\n    없음\n  {% endif %}\n\n{% set climates_on
+        = states.climate\n  | rejectattr('state', 'in', ['off', 'unavailable', 'unknown'])\n
+        \ | map(attribute='name')\n  | list %}\n\n- 작동 중인 에어컨/난방:\n  {% if climates_on
+        | length > 0 %}\n    {{ climates_on | join(', ') }}\n  {% else %}\n    없음\n
+        \ {% endif %}\n\n{% set fans_on = states.fan\n  | selectattr('state', 'eq',
+        'on')\n  | map(attribute='name')\n  | list %}\n\n- 작동 중인 팬:\n  {% if fans_on
+        | length > 0 %}\n    {{ fans_on | join(', ') }}\n  {% else %}\n    없음\n  {%
+        endif %}\n\n{% set people_away = states.person\n  | rejectattr('state', 'eq',
+        'home')\n  | rejectattr('state', 'in', ['unknown', 'unavailable'])\n  | list
+        %}\n\n- 외출 중:\n  {% if people_away | length > 0 %}\n    {% for p in people_away
+        %}\n      {% set gps = namespace(entity_id=None, ts=0) %}\n\n      {% if p.attributes.source
+        is defined %}\n        {% for src in p.attributes.source %}\n          {%
+        if src is string and '.' in src and not src.startswith('get.') %}\n            \n
+        \           {% set state_obj = states[src] if src in states else None %}\n
+        \           \n            {% if state_obj \n                  and state_obj.attributes
+        is defined \n                  and state_obj.attributes.source_type == 'gps'
+        %}\n              \n              {% set ts = as_timestamp(state_obj.last_updated)
+        %}\n              \n              {% if ts > gps.ts %}\n                {%
+        set gps.entity_id = src %}\n                {% set gps.ts = ts %}\n              {%
+        endif %}\n            {% endif %}\n\n          {% endif %}\n        {% endfor
+        %}\n      {% endif %}\n\n      {% if gps.entity_id %}\n        {% set tracker
+        = states[gps.entity_id] %}\n        {{ p.name }}\n        (위치: {{ tracker.attributes.address
+        if tracker.attributes.address is defined else '주소 없음' }},\n         갱신: {{
+        relative_time(tracker.last_updated) }} 전)\n      {% else %}\n        {{ p.name
+        }}\n        (위치: {{ p.state }},\n         이동: {{ relative_time(p.last_changed)
+        }} 전)\n      {% endif %}\n\n    {% endfor %}\n  {% else %}\n    없음\n  {% endif
+        %}\n  \n위 내용을 기반으로 현재 외출중인 user에게 집 상태에 대한 요약을 작성해."
+      structure:
+        home_description:
+          description: A description of home status
+          required: true
+          selector:
+            text:
+      task_name: 집 상태 리포트
+    response_variable: message
+  alias: 집 상태 보고서
+  description: 외출한 사람이 확인하기 힘든 현재 집 상태에 대한 보고를 생성합니다.
+unknown_10:
+  mode: queued
+  fields:
+    update_entity:
+      description: Update entity
+      example: update.home_assistant_core_update
+  sequence:
+  - variables:
+      title: "{{ state_attr(update_entity, 'title')\n   or state_attr(update_entity,
+        'friendly_name')\n   or update_entity }}\n"
+      installed_version: '{{ state_attr(update_entity, ''installed_version'') or ''unknown''
+        }}
+
+        '
+      latest_version: '{{ state_attr(update_entity, ''latest_version'') or ''unknown''
+        }}
+
+        '
+      release_notes: "{{\n  state_attr(update_entity, 'release_summary')\n  or state_attr(update_entity,
+        'release_notes')\n  or 'No changelog available.'\n}}\n"
+      notification_id: "{{\n  'update_summary_'\n  ~ update_entity\n  | replace('.',
+        '_')\n  ~ '_'\n  ~ latest_version\n  | replace('.', '_')\n}}"
+  - action: ai_task.generate_data
+    response_variable: ai_result
+    data:
+      task_name: Update Changelog Summary
+      instructions: '이 changelog를 분석하고 한국어로 요약해 줘.
+
+        Product: {{ title }}
+
+
+        Current version: {{ installed_version }}
+
+
+        Latest version: {{ latest_version }}
+
+
+        Changelog: {{ release_notes }}
+
+
+        Return concise and practical summaries for Home Assistant users.'
+      structure:
+        summary:
+          description: 'Overall Korean summary of this update in 2-4 sentences.
+
+            '
+          required: true
+          selector:
+            text:
+        new_features:
+          description: 'Important new features in Korean as bullet-style text.
+
+            '
+          required: true
+          selector:
+            text:
+        bug_fixes:
+          description: 'Important bug fixes in Korean as bullet-style text.
+
+            '
+          required: true
+          selector:
+            text:
+        breaking_changes:
+          description: 'Important breaking changes, cautions, or migration notes in
+            Korean. If none, say "없음".
+
+            '
+          required: true
+          selector:
+            text:
   - data:
-      convert_lovelace: true
-    action: readme.generate
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 30
-      milliseconds: 0
-  - action: camera.snapshot
-    metadata: {}
-    data:
-      filename: /config/www/lovelace/overview.png
-    target:
-      entity_id: camera.ha_overview_dashboard
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 30
-      milliseconds: 0
-  - action: camera.snapshot
-    metadata: {}
-    data:
-      filename: /config/www/lovelace/music.png
-    target:
-      entity_id:
-      - camera.ha_music_dashboard
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 30
-      milliseconds: 0
-  - action: camera.snapshot
-    metadata: {}
-    data:
-      filename: /config/www/lovelace/energy.png
-    target:
-      entity_id: camera.lovelace_energy_dashboard
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 30
-      milliseconds: 0
-  - action: camera.snapshot
-    metadata: {}
-    data:
-      filename: /config/www/lovelace/mobile.png
-    target:
-      entity_id: camera.ha_mobile_dashboard
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 30
-      milliseconds: 0
-  - action: camera.snapshot
-    metadata: {}
-    data:
-      filename: /config/www/lovelace/server.png
-    target:
-      entity_id:
-      - camera.ha_server_dashboard
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 30
-      milliseconds: 0
-  - action: camera.snapshot
-    metadata: {}
-    data:
-      filename: /config/www/lovelace/grocy-subview.png
-    target:
-      entity_id:
-      - camera.ha_grocy_subview
-  alias: Lovelace 대시보드 이미지 생성
-  description: 여러 대시보드 카메라의 스냅샷을 순차적으로 생성하고 저장합니다. 각 대시보드의 이미지를 30초 간격으로 캡처하여 개요 페이지를
-    업데이트하는 용도입니다.
+      notification_id: '{{ notification_id }}'
+      title: '{{ title }} {{ latest_version }} 업데이트 요약'
+      message: "\U0001F4CB 전체 요약\n{{ ai_result.data.summary }}\n\n✨ 주요 기능\n{{ ai_result.data.new_features
+        }}\n\n\U0001F6E0 버그 수정\n{{ ai_result.data.bug_fixes }}\n\n⚠️ 주의사항\n{{ ai_result.data.breaking_changes
+        }}"
+    action: persistent_notification.create
+  alias: 업데이트 변경 기록 요약 알림
+  description: 선택된 엔티티의 업데이트 정보를 AI로 분석하여 전체 요약, 주요 기능, 버그 수정, 주의사항을 포함하는 영구 알림을 생성합니다.
+message_broadcast:
+  alias: 메시지 방송 (Message Broadcast)
+  description: '점유된 Area의 Satellite에 방송하고, 점유된 Area가 없으면 지정한 Target에 방송합니다. Target이
+    지정되지 않으면 모든 Satellite에 방송합니다.
+
+    '
+  fields:
+    message:
+      name: 메시지
+      description: 방송할 메시지
+      required: true
+      selector:
+        text:
+          multiline: true
+    default_target:
+      name: Default Target
+      description: '점유된 Area가 없을 때 사용할 대상 (Area, Device, Entity 모두 가능)
+
+        '
+      required: false
+      selector:
+        target:
+          entity:
+            domain: assist_satellite
+  sequence:
+  - variables:
+      occupied_satellites: "{% set ns = namespace(items=[]) %}\n{% for area in areas()
+        %}\n\n  {% set found = namespace(satellites=[], occupied=false) %}\n\n  {%
+        for entity in area_entities(area) %}\n\n    {% if entity.startswith('assist_satellite.')\n
+        \         and states(entity) not in ['unavailable', 'unknown'] %}\n      {%
+        set found.satellites = found.satellites + [entity] %}\n    {% endif %}\n\n
+        \   {% if state_attr(entity, 'device_class') == 'occupancy'\n          and
+        is_state(entity, 'on') %}\n      {% set found.occupied = true %}\n    {% endif
+        %}\n\n  {% endfor %}\n\n  {% if found.satellites | count > 0 and found.occupied
+        %}\n    {% set ns.items = ns.items + found.satellites %}\n  {% endif %}\n\n{%
+        endfor %}\n{{ ns.items }}\n"
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ occupied_satellites | count > 0 }}'
+      sequence:
+      - action: assist_satellite.announce
+        target:
+          entity_id: '{{ occupied_satellites }}'
+        data:
+          message: '{{ message }}'
+    default:
+    - if:
+      - condition: template
+        value_template: "{{ default_target is defined\n   and default_target not in
+          (none, '', {}) }}\n"
+      then:
+      - action: assist_satellite.announce
+        target: '{{ default_target }}'
+        data:
+          message: '{{ message }}'
+      else:
+      - action: assist_satellite.announce
+        target:
+          entity_id: "{{ states.assist_satellite\n   | rejectattr('state', 'in', ['unavailable',
+            'unknown'])\n   | map(attribute='entity_id')\n   | list }}\n"
+        data:
+          message: '{{ message }}'
+  mode: queued
+  max: 5
+unknown_11:
+  mode: queued
+  max: 10
+  fields:
+    entity:
+      name: 기기
+      description: '제어할 climate 엔티티입니다. 반드시 실제 존재하는 climate.* 엔티티를 지정하세요.
+
+        '
+      required: true
+      selector:
+        entity:
+          filter:
+            domain: climate
+    hvac_mode:
+      name: 운전 모드
+      description: 'HVAC 운전 모드입니다. 예: off, heat, cool, dry, fan_only, auto, heat_cool.
+        반드시 대상 엔티티의 hvac_modes에 있는 값만 사용하세요.
+
+        '
+      required: false
+      selector:
+        text:
+    temperature:
+      name: 목표 온도
+      description: '목표 온도입니다. 대상 climate 엔티티의 min_temp와 max_temp 범위 안이어야 합니다.
+
+        '
+      required: false
+      selector:
+        number:
+          min: 5
+          max: 40
+          step: 0.5
+          unit_of_measurement: °C
+    fan_mode:
+      name: 팬 세기
+      description: '에어컨 팬 세기입니다. 반드시 대상 엔티티의 fan_modes에 있는 실제 값을 사용하세요. LG 에어컨에서는
+        모델에 따라 Very Low, Low, Medium, High, Power 등의 값이 있을 수 있습니다. 사용자가 "매우 낮게", "아주
+        약하게", "최저"라고 하면 fan_modes에 대응하는 Very Low 계열 값을 선택하세요. 사용자가 "파워", "강력", "터보",
+        "최대로"라고 하면 fan_modes에 대응하는 Power 계열 값을 선택하세요.
+
+        '
+      required: false
+      selector:
+        text:
+    swing_mode:
+      name: 수직 회전
+      description: '상하/수직 바람 방향 또는 회전 모드입니다. 반드시 대상 엔티티의 swing_modes에 존재하는 실제 값을 사용하세요.
+
+        '
+      required: false
+      selector:
+        text:
+    swing_horizontal_mode:
+      name: 수평 회전
+      description: '좌우/수평 바람 방향 또는 회전 모드입니다. 반드시 대상 엔티티의 swing_horizontal_modes에 존재하는
+        실제 값을 사용하세요.
+
+        '
+      required: false
+      selector:
+        text:
+  sequence:
+  - variables:
+      target_entity: '{{ entity | default('''') }}'
+      requested_hvac: '{{ hvac_mode | default('''') | string }}
+
+        '
+      requested_fan: '{{ fan_mode | default('''') | string }}
+
+        '
+      requested_swing: '{{ swing_mode | default('''') | string }}
+
+        '
+      requested_horizontal_swing: '{{ swing_horizontal_mode | default('''') | string
+        }}
+
+        '
+      has_temperature: '{{ temperature is defined and temperature is not none }}
+
+        '
+  - if:
+    - condition: template
+      value_template: "{{ target_entity == ''\n   or not target_entity.startswith('climate.')
+        }}\n"
+    then:
+    - stop: '잘못된 climate 엔티티입니다: {{ target_entity }}
+
+        '
+      error: true
+  - if:
+    - condition: template
+      value_template: "{{ states(target_entity) in ['unknown', 'unavailable']\n   and
+        state_attr(target_entity, 'friendly_name') is none }}\n"
+    then:
+    - stop: '존재하지 않거나 사용할 수 없는 climate 엔티티입니다: {{ target_entity }}
+
+        '
+      error: true
+  - variables:
+      available_hvac_modes: '{{ state_attr(target_entity, ''hvac_modes'') | default([],
+        true) }}
+
+        '
+      available_fan_modes: '{{ state_attr(target_entity, ''fan_modes'') | default([],
+        true) }}
+
+        '
+      available_swing_modes: '{{ state_attr(target_entity, ''swing_modes'') | default([],
+        true) }}
+
+        '
+      available_horizontal_swing_modes: "{{ state_attr(\n     target_entity,\n     'swing_horizontal_modes'\n
+        \  ) | default([], true) }}\n"
+      device_min_temp: '{{ state_attr(target_entity, ''min_temp'') }}
+
+        '
+      device_max_temp: '{{ state_attr(target_entity, ''max_temp'') }}
+
+        '
+  - if:
+    - condition: template
+      value_template: '{{ states(target_entity) == ''unavailable'' }}
+
+        '
+    then:
+    - stop: '{{ target_entity }} 기기가 현재 unavailable 상태입니다.
+
+        '
+      error: true
+  - if:
+    - condition: template
+      value_template: "{{\n  requested_hvac != ''\n  and requested_hvac not in available_hvac_modes\n}}\n"
+    then:
+    - stop: '지원하지 않는 HVAC 모드입니다. 요청: {{ requested_hvac }} 지원 모드: {{ available_hvac_modes
+        | join('', '') }}
+
+        '
+      error: true
+  - if:
+    - condition: template
+      value_template: "{{\n  requested_fan != ''\n  and requested_fan not in available_fan_modes\n}}\n"
+    then:
+    - stop: '지원하지 않는 팬 모드입니다. 요청: {{ requested_fan }} 지원 팬 모드: {{ available_fan_modes
+        | join('', '') }}
+
+        '
+      error: true
+  - if:
+    - condition: template
+      value_template: "{{\n  requested_swing != ''\n  and requested_swing not in available_swing_modes\n}}\n"
+    then:
+    - stop: '지원하지 않는 수직 회전 모드입니다. 요청: {{ requested_swing }} 지원 모드: {{ available_swing_modes
+        | join('', '') }}
+
+        '
+      error: true
+  - if:
+    - condition: template
+      value_template: "{{\n  requested_horizontal_swing != ''\n  and requested_horizontal_swing\n
+        \       not in available_horizontal_swing_modes\n}}\n"
+    then:
+    - stop: '지원하지 않는 수평 회전 모드입니다. 요청: {{ requested_horizontal_swing }} 지원 모드: {{ available_horizontal_swing_modes
+        | join('', '') }}
+
+        '
+      error: true
+  - if:
+    - condition: template
+      value_template: "{{\n  has_temperature\n  and not is_number(temperature)\n}}\n"
+    then:
+    - stop: '목표 온도가 숫자가 아닙니다: {{ temperature }}
+
+        '
+      error: true
+  - if:
+    - condition: template
+      value_template: "{{\n  has_temperature\n  and device_min_temp is not none\n
+        \ and (temperature | float)\n        < (device_min_temp | float)\n}}\n"
+    then:
+    - stop: '목표 온도 {{ temperature }}°C는 {{ target_entity }}의 최소 설정 온도 {{ device_min_temp
+        }}°C보다 낮습니다.
+
+        '
+      error: true
+  - if:
+    - condition: template
+      value_template: "{{\n  has_temperature\n  and device_max_temp is not none\n
+        \ and (temperature | float)\n        > (device_max_temp | float)\n}}\n"
+    then:
+    - stop: '목표 온도 {{ temperature }}°C는 {{ target_entity }}의 최대 설정 온도 {{ device_max_temp
+        }}°C보다 높습니다.
+
+        '
+      error: true
+  - if:
+    - condition: template
+      value_template: '{{ requested_hvac != '''' }}
+
+        '
+    then:
+    - action: climate.set_hvac_mode
+      target:
+        entity_id: '{{ target_entity }}'
+      data:
+        hvac_mode: '{{ requested_hvac }}'
+  - if:
+    - condition: template
+      value_template: '{{ has_temperature }}
+
+        '
+    then:
+    - action: climate.set_temperature
+      target:
+        entity_id: '{{ target_entity }}'
+      data:
+        temperature: '{{ temperature | float }}'
+  - if:
+    - condition: template
+      value_template: '{{ requested_fan != '''' }}
+
+        '
+    then:
+    - action: climate.set_fan_mode
+      target:
+        entity_id: '{{ target_entity }}'
+      data:
+        fan_mode: '{{ requested_fan }}'
+  - if:
+    - condition: template
+      value_template: '{{ requested_swing != '''' }}
+
+        '
+    then:
+    - action: climate.set_swing_mode
+      target:
+        entity_id: '{{ target_entity }}'
+      data:
+        swing_mode: '{{ requested_swing }}'
+  - if:
+    - condition: template
+      value_template: '{{ requested_horizontal_swing != '''' }}
+
+        '
+    then:
+    - action: climate.set_swing_horizontal_mode
+      target:
+        entity_id: '{{ target_entity }}'
+      data:
+        swing_horizontal_mode: '{{ requested_horizontal_swing }}
+
+          '
+  alias: 냉난방 통합제어
+  description: '에어컨, 보일러 등 climate 엔티티를 통합 제어합니다.
+
+    목표 온도, HVAC 운전 모드, 팬 세기, 수직 회전, 수평 회전을 설정할 수 있습니다.
+
+    전달된 값은 해당 climate 엔티티가 실제로 지원하는지 먼저 검사합니다.
+
+    지원하지 않는 값을 임의로 추측해서 사용하지 마세요.'

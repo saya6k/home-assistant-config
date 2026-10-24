@@ -1,17 +1,15 @@
 ---
-name: 🔖 Release (SemVer) → 📄 MkDocs → 🚀 Pages
+name: 🔖 Release (SemVer)
 
+# yamllint disable-line rule:truthy
 on:
   workflow_run:
     workflows:
       - '⚙️ ESPHome CI'
     types: [completed]
 
-permissions:
-  contents: write
-  pages: write
-  id-token: write
-  pull-requests: write
+# Default to no privileges; each job re-grants only what it actually needs.
+permissions: {}
 
 concurrency:
   group: release-pages
@@ -20,31 +18,40 @@ concurrency:
 jobs:
   preview_any_branch:
     name: 🔍 Preview Release Steps
+    # Only run on the upstream repo's own main-branch run.
+    # Fork PRs must not enter a job that checks out PR-controlled code.
     if: >
+      github.repository == 'saya6k/home-assistant-config' &&
       github.event.workflow_run.conclusion == 'success' &&
-      github.repository == 'saya6k/home-assistant-config'
+      github.event.workflow_run.head_branch == 'main' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_repository.full_name == 'saya6k/home-assistant-config'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: ⤵️ Checkout at triggering SHA
-        uses: actions/checkout@v5
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 0
+          persist-credentials: false
 
       - name: 🔧 Setup Node (for semantic-release)
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 20
 
       - name: 🧪 Install deps if present (optional)
         run: |
+          set -euo pipefail
           if [ -f package-lock.json ] || [ -f package.json ]; then
             npm ci
           fi
 
       - name: 🚀 Run semantic-release (dry run)
         id: semantic_dry_run
-        uses: cycjimmy/semantic-release-action@v4
+        uses: cycjimmy/semantic-release-action@16ca923e6ccbb50770c415a0ccd43709a8c5f7a4 # v4
         with:
           branch: main
           dry_run: true
@@ -59,42 +66,60 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 📄 Show Dry Run Result
+        env:
+          PUBLISHED: ${{ steps.semantic_dry_run.outputs.new_release_published }}
+          VERSION: ${{ steps.semantic_dry_run.outputs.new_release_version }}
         run: |
-          echo "Semantic Release Dry Run Result" && \
-          echo ${{ steps.semantic_dry_run.outputs }}
+          set -euo pipefail
+          {
+            echo "Semantic Release Dry Run Result"
+            echo "published=${PUBLISHED}"
+            echo "version=${VERSION}"
+          } >> "${GITHUB_STEP_SUMMARY}"
 
   release:
     name: 🔖 Release (SemVer)
     if: >
+      github.repository == 'saya6k/home-assistant-config' &&
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.head_branch == 'main' &&
-      github.repository == 'saya6k/home-assistant-config'
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_repository.full_name == 'saya6k/home-assistant-config'
     runs-on: ubuntu-latest
+    # semantic-release/git + semantic-release/github need to push commits/tags
+    # and create the GitHub Release. PAT is still required if branch protection
+    # forbids GITHUB_TOKEN pushes — otherwise consider switching to GITHUB_TOKEN.
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
     outputs:
       published: ${{ steps.release.outputs.new_release_published }}
       version: ${{ steps.release.outputs.new_release_version }}
 
     steps:
       - name: ⤵️ Checkout at triggering SHA
-        uses: actions/checkout@v5
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
         with:
-          fetch-depth: 0
           ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
+          persist-credentials: false
 
       - name: 🔧 Setup Node (for semantic-release)
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 20
 
       - name: 🧪 Install deps if present (optional)
         run: |
+          set -euo pipefail
           if [ -f package-lock.json ] || [ -f package.json ]; then
             npm ci
           fi
 
       - name: 🚀 Run semantic-release (tags, GitHub Release, CHANGELOG)
         id: release
-        uses: cycjimmy/semantic-release-action@v4
+        uses: cycjimmy/semantic-release-action@16ca923e6ccbb50770c415a0ccd43709a8c5f7a4 # v4
         with:
           branch: main
           extra_plugins: |
@@ -108,60 +133,53 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
       - name: 📝 Summary
+        env:
+          PUBLISHED: ${{ steps.release.outputs.new_release_published }}
+          VERSION: ${{ steps.release.outputs.new_release_version }}
         run: |
-          echo "published=${{ steps.release.outputs.new_release_published }}" >> $GITHUB_STEP_SUMMARY
-          echo "version=${{ steps.release.outputs.new_release_version }}" >> $GITHUB_STEP_SUMMARY
+          set -euo pipefail
+          {
+            echo "published=${PUBLISHED}"
+            echo "version=${VERSION}"
+          } >> "${GITHUB_STEP_SUMMARY}"
 
   restart-addon:
     name: 🔄 Restart Git Pull Addon
     needs: release
-    if: github.ref == 'refs/heads/main'
+    if: >
+      github.repository == 'saya6k/home-assistant-config' &&
+      needs.release.outputs.published == 'true'
     runs-on: ubuntu-latest
+    permissions: {}
     steps:
       - name: Restart Git Pull via HA API
         env:
           HA_URL: ${{ secrets.HA_URL }}
           HA_TOKEN: ${{ secrets.HA_TOKEN }}
         run: |
-          curl -fsS -X POST "$HA_URL/api/services/hassio/addon_restart" \
-            -H "Authorization: Bearer $HA_TOKEN" \
+          set -euo pipefail
+          # Defensive: re-mask the token in case the runner did not pick it up
+          # via the secrets context (e.g. when called through workflow_run).
+          echo "::add-mask::${HA_TOKEN}"
+
+          # Validate URL scheme — refuse to send the bearer token over plaintext
+          # or to an unexpected origin.
+          case "${HA_URL}" in
+            https://*) ;;
+            *)
+              echo "HA_URL must use https://" >&2
+              exit 1
+              ;;
+          esac
+
+          curl --fail-with-body --silent --show-error --no-progress-meter \
+            -X POST "${HA_URL%/}/api/services/hassio/addon_restart" \
+            -H "Authorization: Bearer ${HA_TOKEN}" \
             -H "Content-Type: application/json" \
-            --data '{"addon":"core_git_pull"}'
+            --data '{"addon":"core_git_pull"}' \
+            -o /dev/null
 
-  mkdocs_deploy:
-    name: 📄 Build and 🚀 Deploy MkDocs (on release)
-    needs: release
-    if: needs.release.outputs.published == 'true' || github.event_name == 'push' || github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    steps:
-      - name: ⤵️ Check out mkdocs source
-        uses: actions/checkout@v5
-        with:
-          ref: ${{ github.event.workflow_run.head_sha }}
-
-      - name: 🐍 Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.9'
-
-      - name: 📦 Install dependencies
-        run: pip install -r requirements.txt
-
-      # - name: 📁 Copy images to docs
-      #   run: cp -r www/images/* docs/images
-
-      - name: 🏗️ Build MkDocs site
-        run: mkdocs build --config-file mkdocs.yml --site-dir site
-
-      - name: 📤 Upload site artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
-
-      - name: 🚀 Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+# Note: GitHub Pages deployment is owned by the dedicated `Deploy docs`
+# workflow (.github/workflows/pages.yml), which builds the docs with
+# zensical. We intentionally do not deploy Pages from this workflow to
+# avoid two jobs racing for the github-pages environment.

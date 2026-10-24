@@ -1,0 +1,5 @@
+sensor:
+  - platform: citybikes
+    name: 뱅뱅사거리 랜드마크타워 앞
+    stations:
+      - 32290c914297fbe329862cb678d0db22

@@ -23,11 +23,13 @@ Welcome to the comprehensive list of hardware in my smart home setup. Some links
 
 ## 🏠 Home Assistant
 
-|                                      Device                                       | Quantity | Connection |                             Home Assistant                              |              Notes               |
-| :-------------------------------------------------------------------------------: | :------: | :--------: | :---------------------------------------------------------------------: | :------------------------------: |
-|      [Raspberry Pi 5](https://www.raspberrypi.com/products/raspberry-pi-5/)       |    -     |     -      | [Raspberry Pi](https://www.home-assistant.io/installation/raspberrypi/) | Used with HAOS and supports PoE. |
-|  [OpenKNX RasPi HAT](https://github.com/OpenKNX/OpenKNX/wiki/OpenKNX-RasPi-HAT)   |    -     |     -      |                                    -                                    |             KNX HAT              |
-| [Xinjian AX650n AI Accelerator](https://item.taobao.com/item.htm?id=831650560883) |    -     |     -      |                                    -                                    |          AI Accelerator          |
+|                                     Device                                     | Quantity | Connection |                               Home Assistant                               |                             Notes                             |
+| :----------------------------------------------------------------------------: | :------: | :--------: | :------------------------------------------------------------------------: | :-----------------------------------------------------------: |
+|     [Raspberry Pi 5](https://www.raspberrypi.com/products/raspberry-pi-5/)     |    -     |     -      |  [Raspberry Pi](https://www.home-assistant.io/installation/raspberrypi/)   |               Used with HAOS and supports PoE.                |
+| [OpenKNX RasPi HAT](https://github.com/OpenKNX/OpenKNX/wiki/OpenKNX-RasPi-HAT) |    -     |     -      |                                     -                                      |                            KNX HAT                            |
+|                               [Piesia AD742A]()                                |    -     |     -      | Generic x86-64(https://www.home-assistant.io/installation/generic-x86-64/) | Intel N150 pico-itx Motherboard with 16GB RAM and PoE support |
+
+|
 
 ## 🔗 Hubs
 
@@ -88,8 +90,8 @@ I use the Doods addon for object detection. It can handle over 10 FHD streams, d
 
 ## 📡 Other Sensors
 
-|                                 Device                                  | Quantity | Connection |                         Home Assistant                         |                                 Notes                                 |
-| :---------------------------------------------------------------------: | :------: | :--------: | :------------------------------------------------------------: | :-------------------------------------------------------------------: |
+|                        Device                        | Quantity | Connection |                       Home Assistant                       |                      Notes                      |
+| :--------------------------------------------------: | :------: | :--------: | :--------------------------------------------------------: | :---------------------------------------------: |
 | [Awair Omni](https://www.getawair.com/products/omni) |    1     |   Wi-Fi    | [Awair](https://www.home-assistant.io/integrations/awair/) | Local Wi-Fi. It measures air quality in detail. |
 
 ## 🎵 Media
@@ -109,23 +111,23 @@ I use Music Assistant and Apple Music for music streaming.
 
 I use Ubiquiti equipment. They are not exactly enterprise-grade devices, but they do the job in my home lab. Plus, they look nice.
 
-|                                      Device                                       | Quantity | Connection |                           Home Assistant                           |                                                                   Notes                                                                    |
-| :-------------------------------------------------------------------------------: | :------: | :--------: | :----------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------: |
-| [Unifi Gateway Lite](https://techspecs.ui.com/unifi/cloud-keys-gateways/uxg-lite) |    1     |    LAN     | [Unifi Network](https://www.home-assistant.io/integrations/unifi/) |                                     Small and does its job. More than enough for a single-person room.                                     |
-|        [UniFi Switch 8 60W](https://techspecs.ui.com/unifi/wifi/uap-iw-hd)        |    1     |    LAN     | [Unifi Network](https://www.home-assistant.io/integrations/unifi/) |                                                      An older generation PoE switch.                                                       |
-|         [UniFi AC lite](https://techspecs.ui.com/unifi/wifi/uap-ac-lite)          |    1     |    LAN     | [Unifi Network](https://www.home-assistant.io/integrations/unifi/) |                                                 Also sufficient for a single-person room.                                                  |
-|  [Unifi Gateway Pro](https://techspecs.ui.com/unifi/cloud-keys-gateways/uxg-pro)  |    1     |    LAN     | [Unifi Network](https://www.home-assistant.io/integrations/unifi/) | Purchased for $200 on eBay. This is the router for a NAS located more than 10 km away. Connected via Site-to-Site VPN to the home network. |
-|    [Cloudkey+](https://techspecs.ui.com/unifi/cloud-keys-gateways/uck-g2-plus)    |    1     |    LAN     | [Unifi Network](https://www.home-assistant.io/integrations/unifi/) |               I use Cloudkey because I wanted to keep everything local and have the ability to access other sites remotely.                |
+|         Site          |                                         Device                                          | Quantity | Connection |                           Home Assistant                           | Notes                                                                                |
+| :-------------------: | :-------------------------------------------------------------------------------------: | :------: | :--------: | :----------------------------------------------------------------: | :----------------------------------------------------------------------------------- |
+|         Local         |                      [UniFi Gateway Fiber](https://store.ui.com/)                       |    1     |    LAN     | [Unifi Network](https://www.home-assistant.io/integrations/unifi/) | Main router, fiber line termination.                                                 |
+|         Local         |             [UniFi US-8-60W](https://techspecs.ui.com/unifi/wired/us-8-60w)             |    1     |    LAN     | [Unifi Network](https://www.home-assistant.io/integrations/unifi/) | 8-port PoE switch (60W budget).                                                      |
+|         Local         |          [UniFi UAP-AC-Lite](https://techspecs.ui.com/unifi/wifi/uap-ac-lite)           |    1     |    LAN     | [Unifi Network](https://www.home-assistant.io/integrations/unifi/) | Wi-Fi AP.                                                                            |
+| Remote (TrueNAS site) |                   [UniFi NextGen Gateway Pro](https://store.ui.com/)                    |    1     |    LAN     | [Unifi Network](https://www.home-assistant.io/integrations/unifi/) | Router at the remote TrueNAS site (>10 km away), site-to-site VPN to the local site. |
+| Remote (TrueNAS site) | [UniFi CloudKey 2 Plus](https://techspecs.ui.com/unifi/cloud-keys-gateways/uck-g2-plus) |    1     |    LAN     | [Unifi Network](https://www.home-assistant.io/integrations/unifi/) | Single controller managing both sites locally.                                       |
 
 ### Appliances
 
-|                                                                   Device                                                                    | Quantity | Connection |                             Home Assistant                             |             Notes             |
-| :-----------------------------------------------------------------------------------------------------------------------------------------: | :------: | :--------: | :--------------------------------------------------------------------: | :---------------------------: |
-|          [HNF-I2101](https://www.hyundaiht.co.kr/product/smart_home/view.php?returnURL=%2Fproduct%2Fsmart_home%2Flist.php&idx=22)           |    1     |   Wi-Fi    |     [ESPHome](https://www.home-assistant.io/integrations/esphome/)     |   Hyundai Telecom wall pad.   |
-| [Samsung BESPOKE Microwave 23L (Grill Fry)](https://www.samsung.com/sec/micro-wave-ovens/microwave-oven-grill-MG23T5018CC-d2c/MG23T5018CP/) |    1     |   Wi-Fi    | [Smartthings](https://www.home-assistant.io/integrations/smartthings/) | Can check the remaining time. |
-|                                           [xBloom Studio](https://xbloom.com/pages/xbloom-studio)                                           |    1     | Bluetooth  |                                   -                                    |     Extremely convenient.     |
-|                             [LG CordZero Object Collection R5](https://www.lge.co.kr/vacuum-cleaners/r585wka1)                              |    1     |   Wi-Fi    |    [LG ThinQ](https://www.home-assistant.io/integrations/lg_thinq/)    |   LG robot vacuum cleaner.    |
-|                             [LG Object Collection Dehumidifier](https://www.lge.co.kr/dehumidifiers/dq134mwec-akor)                              |    1     |   Wi-Fi    |    [LG ThinQ](https://www.home-assistant.io/integrations/lg_thinq/)    |   LG Dehumidifier model DQ134MWEC.    |
+|                                                                   Device                                                                    | Quantity | Connection |                             Home Assistant                             |              Notes               |
+| :-----------------------------------------------------------------------------------------------------------------------------------------: | :------: | :--------: | :--------------------------------------------------------------------: | :------------------------------: |
+|          [HNF-I2101](https://www.hyundaiht.co.kr/product/smart_home/view.php?returnURL=%2Fproduct%2Fsmart_home%2Flist.php&idx=22)           |    1     |   Wi-Fi    |     [ESPHome](https://www.home-assistant.io/integrations/esphome/)     |    Hyundai Telecom wall pad.     |
+| [Samsung BESPOKE Microwave 23L (Grill Fry)](https://www.samsung.com/sec/micro-wave-ovens/microwave-oven-grill-MG23T5018CC-d2c/MG23T5018CP/) |    1     |   Wi-Fi    | [Smartthings](https://www.home-assistant.io/integrations/smartthings/) |  Can check the remaining time.   |
+|                                           [xBloom Studio](https://xbloom.com/pages/xbloom-studio)                                           |    1     | Bluetooth  |                                   -                                    |      Extremely convenient.       |
+|                             [LG CordZero Object Collection R5](https://www.lge.co.kr/vacuum-cleaners/r585wka1)                              |    1     |   Wi-Fi    |    [LG ThinQ](https://www.home-assistant.io/integrations/lg_thinq/)    |     LG robot vacuum cleaner.     |
+|                           [LG Object Collection Dehumidifier](https://www.lge.co.kr/dehumidifiers/dq134mwec-akor)                           |    1     |   Wi-Fi    |    [LG ThinQ](https://www.home-assistant.io/integrations/lg_thinq/)    | LG Dehumidifier model DQ134MWEC. |
 
 ### Other Devices
 

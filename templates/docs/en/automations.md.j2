@@ -1,0 +1,23 @@
+{#- docs/en/automations.md — English mirror. Detail descriptions are dropped
+    here because aliases are mostly Korean; the dynamic summary table is the
+    same data, just with English column headers. -#}
+{%- set autos = states.automation | sort(attribute='name') | list -%}
+---
+title: Automations
+---
+
+# Automations
+
+**{{ autos | count }}** automations defined in `automations.yaml`. Most aliases are in Korean. The `mode` attribute (`single` / `restart` / `queued` / `parallel`) controls concurrency.
+
+The raw source lives at [`automations.yaml`](https://github.com/saya6k/home-assistant-config/blob/main/automations.yaml).
+
+## Summary (name / mode / state)
+
+| Name | Mode | State |
+| --- | --- | --- |
+{%- for a in autos %}
+| {{ a.attributes.get('friendly_name', a.name) }} | `{{ a.attributes.get('mode', 'single') }}` | {{ a.state }} |
+{%- endfor %}
+
+See the [Korean version](../automations.md) for per-automation descriptions.

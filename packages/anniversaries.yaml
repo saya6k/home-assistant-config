@@ -1,0 +1,25 @@
+template:
+  - use_blueprint:
+      path: edwin_d/anniversary.yaml
+      input:
+        sensor_name: Bar Exam
+        special_date: '2027-01-05'
+        year_unknown: false
+        calendar_entity: calendar.anniversaries
+    unique_id: bar_exam
+  - use_blueprint:
+      path: edwin_d/anniversary.yaml
+      input:
+        sensor_name: Birthday
+        special_date: '1992-06-06'
+        year_unknown: false
+        calendar_entity: calendar.anniversaries
+    unique_id: birthday
+  - use_blueprint:
+      path: edwin_d/anniversary.yaml
+      input:
+        sensor_name: Hormone Day
+        special_date: '2019-03-25'
+        year_unknown: false
+        calendar_entity: calendar.anniversaries
+    unique_id: hormone_day

@@ -1,0 +1,42 @@
+{#- docs/en/platform/index.md — English mirror -#}
+{%- set ha_version = states('sensor.home_assistant_versions') or 'unknown' -%}
+---
+title: Platform
+---
+
+# Platform
+
+Operational infrastructure around Home Assistant Core — networking, data storage, backups, and supporting add-ons.
+
+## Host
+
+- **OS**: Home Assistant OS (channel: `stable`)
+- **Hardware**: board `Generic x86-64` (Piesia AD742A · Intel N150 pico-itx · 16 GB RAM)
+- **Version**: `{{ ha_version }}`
+- **Operating principle**: local is **stateless**. Anything stateful (metrics/logs/traces backends, Recorder DB) lives on the remote TrueNAS.
+
+## Operational layout
+
+Local and remote components are joined by a site-to-site VPN into a single logical system.
+
+| Area | Choice | Location | Notes |
+| --- | --- | --- | --- |
+| Recorder DB | MariaDB | Remote TrueNAS | Over VPN, external URL in `secrets.yaml`. `commit_interval: 120s` |
+| Metrics-collection agent | OpenTelemetry Collector (`otelcol`) | Local HA sidecar | Scrapes HA's `/api/prometheus` + exports logs → remote gateway |
+| Observability gateway | OpenTelemetry Collector (gateway mode) | Remote TrueNAS | Routing hub for metrics / logs / traces |
+| Metrics backend | Prometheus | Remote TrueNAS | |
+| Log backend | Grafana Loki | Remote TrueNAS | |
+| Trace backend | Grafana Tempo | Remote TrueNAS | OTLP traces |
+| Visualization | Grafana | Remote TrueNAS | Prometheus + Loki + Tempo data sources |
+| TLS termination | NGINX Home Assistant SSL Proxy | Local (HA add-on) | Let's Encrypt certs, auto-renewal automation |
+| Auth | HA built-in + OIDC (`hass-oidc-auth` validated in CI) | Local client → remote Pocket ID | [Pocket ID](../services/pocket-id.md) runs on TrueNAS |
+| Document management | Paperless-ngx (HA integration) | Local client → remote Paperless | [Paperless-ngx](../services/paperless.md) runs on TrueNAS |
+| DNS / ad blocking | AdGuard Home add-on | Local | |
+| Code sync | Git Pull add-on | Local | Restarted via HA API at the end of the release workflow |
+
+## Pages
+
+- [Network](./network.md)
+- [Storage](./storage.md)
+- [Backups](./backups.md)
+- [Add-ons](./add-ons.md)
