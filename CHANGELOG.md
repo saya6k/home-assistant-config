@@ -1,3 +1,9 @@
+## [1.8.0](https://github.com/saya6k/home-assistant-config/compare/v1.7.1...v1.8.0) (2026-10-24)
+
+### Features
+
+* Announce when a living room wardrobe door stays open for 5 minutes ([#12](https://github.com/saya6k/home-assistant-config/issues/12)) ([f0dc6e8](https://github.com/saya6k/home-assistant-config/commit/f0dc6e8b28892cc36dae3a35032ae1f874c39d32))
+
 ## [1.7.1](https://github.com/saya6k/home-assistant-config/compare/v1.7.0...v1.7.1) (2026-10-24)
 
 ### Bug Fixes
