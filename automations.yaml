@@ -494,8 +494,8 @@
   mode: single
 - id: '1758263460650'
   alias: 귀가 시 환영 및 보조 기능 활성화
-  description: 집에 사람이 도착하면 ASHRAE 55 적응형 기후 제어 자동화를 켜고, 창문이 열려 있으면 알림을 보냅니다. 또한 조명과
-    환영 장면을 켜고, 홈 어시스턴트 음성으로 환영 메시지를 재생합니다.
+  description: 집에 사람이 도착하면 조명을 켜고, 원규가 현관 맥세이프에 스마트폰을 붙이면 환영 장면과 환영 메시지를 재생합니다.
+    Spotify로 음악을 듣고 있었다면 폰에서 정지하고 거실에서 이어서 재생하고, 아니면 새 위클리 추천곡을 재생합니다.
   triggers:
   - trigger: zone.entered
     target:
@@ -541,32 +541,51 @@
         target:
           area_id: living_room
         data: {}
-  - wait_for_trigger:
-    - type: distance
-      device_id: 4a51d4bb719bd4be3a1ade94e2779bbe
-      entity_id: f7e3ef4c368861717ce588ec2f938211
-      domain: sensor
-      trigger: device
-      below: 2
-    - type: distance
-      device_id: a2f131e8f17482ddd4c1691e1142c228
-      entity_id: 542ca786088039230541ab5870327b6d
-      domain: sensor
-      trigger: device
-      below: 2
-    - trigger: door.opened
-      target:
-        device_id:
-        - 70314fee6eb1187bca44101331ab73c5
-      options:
-        behavior: each
-    continue_on_timeout: true
-    timeout:
-      hours: 0
-      minutes: 0
-      seconds: 0
-      milliseconds: 0
-    enabled: true
+  - if:
+    - condition: zone
+      entity_id: person.weongyu
+      zone: zone.home
+    then:
+    - wait_for_trigger:
+      - trigger: state
+        entity_id: sensor.ys_iphoneair_battery_state
+        from: Not Charging
+        to:
+        - Charging
+        - Full
+      continue_on_timeout: false
+      timeout:
+        hours: 0
+        minutes: 10
+        seconds: 0
+        milliseconds: 0
+    else:
+    - wait_for_trigger:
+      - type: distance
+        device_id: 4a51d4bb719bd4be3a1ade94e2779bbe
+        entity_id: f7e3ef4c368861717ce588ec2f938211
+        domain: sensor
+        trigger: device
+        below: 2
+      - type: distance
+        device_id: a2f131e8f17482ddd4c1691e1142c228
+        entity_id: 542ca786088039230541ab5870327b6d
+        domain: sensor
+        trigger: device
+        below: 2
+      - trigger: door.opened
+        target:
+          device_id:
+          - 70314fee6eb1187bca44101331ab73c5
+        options:
+          behavior: each
+      continue_on_timeout: true
+      timeout:
+        hours: 0
+        minutes: 0
+        seconds: 0
+        milliseconds: 0
+      enabled: true
   - action: scene.turn_on
     metadata: {}
     target:
@@ -577,11 +596,6 @@
       entity_id: person.weongyu
       zone: zone.home
     then:
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 15
-        milliseconds: 0
     - action: script.message_broadcast
       metadata: {}
       data:
@@ -589,11 +603,38 @@
           | list %}{% set count = people | count %}{% if count == 1 %}{{ people[0].attributes.friendly_name
           }}님, 돌아오셔서 반갑습니다! 필요하시면 저를 찾아주세요.{% elif count > 1 %}{{ people | map(attribute=''attributes.friendly_name'')
           | join(''님, '') }}님, 돌아오셔서 반갑습니다! 필요하시면 저를 찾아주세요.{% endif %}'
-    - action: script.turn_on
+    - action: homeassistant.update_entity
       metadata: {}
       target:
-        entity_id: script.unknown_5
+        entity_id: media_player.spotify_ys_lee
       data: {}
+    - if:
+      - condition: state
+        entity_id: media_player.spotify_ys_lee
+        state: playing
+      then:
+      - variables:
+          spotify_track: '{{ state_attr(''media_player.spotify_ys_lee'', ''media_content_id'')
+            }}'
+      - action: media_player.media_pause
+        metadata: {}
+        target:
+          entity_id: media_player.spotify_ys_lee
+        data: {}
+      - action: music_assistant.play_media
+        metadata: {}
+        target:
+          entity_id: media_player.echo_show_8
+        data:
+          media_id: '{{ spotify_track }}'
+          enqueue: replace
+          radio_mode: true
+      else:
+      - action: script.turn_on
+        metadata: {}
+        target:
+          entity_id: script.unknown_5
+        data: {}
   mode: single
 - id: '1758415864070'
   alias: 수면 장면 활성화
