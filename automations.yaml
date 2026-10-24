@@ -2472,3 +2472,36 @@
           - media_content_type: app
             media_content_id: media-source://image
   mode: single
+- id: '1792800000000'
+  alias: 거실 옷장 문 열림 5분 알림
+  description: 거실 옷장 문이 5분 이상 열려 있으면 닫으라고 안내
+  triggers:
+  - trigger: door.opened
+    target:
+      device_id: 56743093202134d4d7e1c705d6292bb8
+    options:
+      behavior: each
+      for:
+        hours: 0
+        minutes: 5
+        seconds: 0
+    id: 주 옷장
+  - trigger: door.opened
+    target:
+      device_id: c9ba2c9771a3ced352dbe56e6ca644d7
+    options:
+      behavior: each
+      for:
+        hours: 0
+        minutes: 5
+        seconds: 0
+    id: 보조 옷장
+  conditions: []
+  actions:
+  - action: script.message_broadcast
+    metadata: {}
+    data:
+      default_target:
+        area_id: living_room
+      message: 거실 {{ trigger.id }} 문이 열려 있습니다. 문을 닫아 주세요.
+  mode: parallel
