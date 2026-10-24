@@ -1,90 +1,77 @@
 ---
-title: 🎉 Welcome to my Home Assistant Config!
+title: 홈
 ---
 
-=== "🏠 Home"
+# Home Assistant Config
 
-    ![Home](https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/overview.png)
+<p>
+  <a href="https://github.com/saya6k/home-assistant-config"><img src="https://img.shields.io/maintenance/yes/2026?style=flat-square" alt="Maintained"></a>
+  <a href="https://github.com/home-assistant/core/releases/tag/2026.5.4"><img src="https://img.shields.io/badge/Home%20Assistant-2026.5.4-41BDF5?style=flat-square&logo=homeassistant&logoColor=white" alt="HA Version"></a>
+  <a href="https://github.com/saya6k/home-assistant-config"><img src="https://img.shields.io/github/last-commit/saya6k/home-assistant-config?style=flat-square" alt="Last Commit"></a>
+  <a href="https://github.com/saya6k/home-assistant-config"><img src="https://img.shields.io/github/commit-activity/m/saya6k/home-assistant-config?style=flat-square" alt="Commit Activity"></a>
+  <a href="https://github.com/saya6k/home-assistant-config/actions"><img src="https://img.shields.io/github/actions/workflow/status/saya6k/home-assistant-config/release.yml?style=flat-square&label=CI" alt="CI"></a>
+  <a href="https://github.com/saya6k/home-assistant-config/blob/main/LICENSE"><img src="https://img.shields.io/github/license/saya6k/home-assistant-config?style=flat-square" alt="License"></a>
+  <a href="https://github.com/saya6k/home-assistant-config/stargazers"><img src="https://img.shields.io/github/stars/saya6k/home-assistant-config?style=flat-square" alt="Stars"></a>
+</p>
 
-=== "🗺️ Thread Network Map"
+<p>
+  <a href="https://www.buymeacoffee.com/my7nmfcm92k"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?logo=buymeacoffee&logoColor=000" alt="Buy Me a Coffee"></a>
+</p>
 
-    ![Living Room](https://raw.githubusercontent.com/saya6k/home-assistant-config/main/docs/images/ew11_cable.png){: loading=lazy }
+2018년부터 운영 중인 개인 Home Assistant 설정입니다. 현재 **2008개 엔티티**, **17개 HACS 통합**, **23개 애드온**으로 구성되어 있습니다.
 
-=== "📊 Monitoring"
+> [!CAUTION]
+> 가정 환경은 계속 진화합니다. **이 문서가 최신이 아닐 수 있다는 점을 감안해 주세요** — 가능한 한 자주 갱신하려 노력하고 있습니다. (`jinja2docs.render` 로 자동 갱신)
 
-    ![Monitoring](https://raw.githubusercontent.com/saya6k/home-assistant-config/main/docs/images/haio-8.png){: loading=lazy }
+## 시스템 한눈에 보기
 
-=== "⚡ Energy"
+```
+┌─ 하드웨어   │ Piesia AD742A + Raspberry Pi 5, UniFi (로컬+원격), Matter/Thread/Wi-Fi
+├─ 플랫폼     │ HAOS (로컬, stateless) · 원격 TrueNAS (Recorder MariaDB, 옵저버빌리티 백엔드)
+├─ 통합       │ 100+ 기본 통합 + 17 커스텀 컴포넌트 + ESPHome 디바이스 3종
+├─ 자동화     │ 49 자동화 (한국어 중심) · 시나리오/장면 다수
+├─ 대시보드   │ Lovelace storage 모드 + Mushroom/Bubble Card/Card Mod
+├─ 음성·AI    │ Whisper · Supertonic-MNN · Ollama · Voice Satellite · LLM 대화 에이전트 다중
+├─ 옵저버빌리티│ otelcol agent (로컬) ─VPN─▶ otelcol gateway (원격) ─▶ Prometheus / Loki / Tempo ─▶ Grafana
+├─ 백업       │ 로컬 3개 + 원격 TrueNAS 1개 + Nabu Casa Cloud 1개
+└─ 서비스     │ Paperless-ngx · Pocket ID  (모두 원격 TrueNAS)
+```
 
-    ![Energy](https://raw.githubusercontent.com/saya6k/home-assistant-config/main/docs/images/raspberry-pi-5.png){: loading=lazy }
+## Insights
 
-[![GitHub Workflow Status][github-img]][github-url]
-[![Last Commit][last-commit-img]][github-url]
-[![Commit Activity][commit-activity-img]][github-url]
-[![License][license-img]][license-url]
-[![GitHub Stars][stars-img]][github-url]
-[![Twitter Followers][twitter-img]][twitter-url]
+| Domain          |    Value |
+| --------------- | -------: |
+| automations     |       49 |
+| binary_sensors  |      221 |
+| device_trackers |       17 |
+| lights          |       14 |
+| media_players   |       16 |
+| sensors         |      988 |
+| switches        |      168 |
+| others          |      535 |
+| **Total**       | **2008** |
 
-This is my personal Home Assistant configuration, awakening my home with automations. I hope this will help you inspire to start your home automation journey.
+## 문서 내비게이션
 
-<!-- prettier-ignore -->
-!!!attention "⚠️ Beware of changes"
-    I constantly improve my home. It evolves as I add new devices and services. It's changing as my daily routines are changing.
+- [하드웨어](./hardware.md) — 디바이스, 허브, 가전, 네트워크 장비
+- 플랫폼
+  - [개요](./platform/index.md)
+  - [네트워크](./platform/network.md) — AdGuard · NGINX · UniFi · 인증
+  - [스토리지](./platform/storage.md) — MariaDB · `.storage`
+  - [백업](./platform/backups.md)
+  - [애드온](./platform/add-ons.md) — 23 등록
+- 통합
+  - [개요](./integrations/index.md) — 100+ 통합 목록
+  - [커스텀 컴포넌트](./integrations/custom-components.md) — 17 HACS 통합
+  - [ESPHome](./integrations/esphome.md) — 월패드, 인터폰, 음성 위성
+- [자동화](./automations.md) — 49개
+- [대시보드](./dashboards.md)
+- [음성과 AI](./voice-and-ai.md)
+- [옵저버빌리티](./observability.md)
+- [에너지](./energy.md)
+- [서비스](./services/index.md) — Paperless-ngx, Pocket ID
+- [보관소](./retired.md) · [참고 자료](./resources.md)
 
-    Please, keep in mind **this documentation might be outdated** in covering some details. However, I'll try my best to keep this updated.
+## 라이선스
 
-The best way to discover new ideas and inspire is by [reading the code][github-url], copying-pasting parts of my configuration and adjusting it to your needs.
-
-Read this documentation to see the bigger picture:
-
-[Hardware](./hardware){: .md-button }
-[Configuration](./config){: .md-button }
-[Services](./services){: .md-button }
-[Retired](./retired){: .md-button }
-[Inspiration](./resources){: .md-button }
-
-## 📦 What's inside?
-
-My home setup for those who are too lazy to read everything:
-
-- [Home Assistant](https://home-assistant.io) OS running on [Raspberry Pi 5 8GB](https://www.raspberrypi.com/products/raspberry-pi-5/).
-- Various addons, such as [OpenThead Border Router](https://openthread.io/guides/border-router/), [Matter Server](https://csa-iot.org/all-solutions/matter/) and [xknx](https://xknx.io/home_assistant) for devices.
-- Reverse proxy using [Nginx Proxy Manager](https://nginxproxymanager.com/) with [CloudFlare](https://www.cloudflare.com/).
-- HomeLab services running as HA add-on.
-
-## 🚀 Motivation
-
-I write this documentation for two main reasons:
-
-1. **To keep track of growing my smart home.** To maintain an understanding of how things are working.
-2. **To help other enthusiasts inspire.** People often ask about my smart home setup. Now I can give them a link to this documentation, instead of explaining everything once again.
-
-## ⚠️ Limitations
-
-I'm renting my apartment. My landlord handles fixing stuff in my home, covering all the expenses. The only downside is that I can't change anything in my home.
-
-I can't disassemble anything and use custom switches or sockets. It means I can change only easily accessible parts, like bulbs.
-
-## 🔮 Future Plans
-
-I have a [public kanban board][kanban-board] with ideas and tasks for my smart home. You can follow and comment my plans there.
-
-[See future plans][kanban-board]{: .md-button }
-
-## 📜 License
-
-[MIT][license-url] © [saya6k][saya6k]
-
-<!-- References -->
-
-[kanban-board]: https://github.com/users/saya6k/projects/2
-[github-url]: https://github.com/saya6k/home-assistant-config
-[github-img]: https://img.shields.io/github/actions/workflow/status/saya6k/home-assistant-config/release.yml?style=flat-square
-[last-commit-img]: https://img.shields.io/github/last-commit/saya6k/home-assistant-config?style=flat-square
-[commit-activity-img]: https://img.shields.io/github/commit-activity/m/saya6k/home-assistant-config?style=flat-square
-[license-url]: https://github.com/saya6k/home-assistant-config/blob/main/LICENSE.md
-[license-img]: https://img.shields.io/github/license/saya6k/home-assistant-config?style=flat-square
-[twitter-url]: https://twitter.com/saya6k
-[twitter-img]: https://img.shields.io/twitter/follow/saya6k?label=Follow
-[stars-img]: https://img.shields.io/github/stars/saya6k/home-assistant-config?style=social
-[saya6k]: https://lyz.kr
+이 저장소는 [MIT 라이선스](https://github.com/saya6k/home-assistant-config/blob/main/LICENSE)로 배포됩니다. `secrets.yaml`은 포함되지 않습니다.

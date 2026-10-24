@@ -1,0 +1,77 @@
+{#-
+docs/platform/add-ons.md — categorized lists from `addons` context.
+
+Categorization is editorial — defined here as slug → group mapping.
+Unknown slugs fall into "기타". Add new addons here as you install them.
+-#}
+{%- set categories = {
+    '개발 / 운영': [
+        'a0d7b954_ssh', 'a0d7b954_vscode', 'core_samba', 'core_git_pull',
+        '5c53de3b_filebrowser', '5c53de3b_filebrowser_lite',
+    ],
+    '네트워크 / 보안': [
+        'core_nginx_proxy', 'core_letsencrypt', 'a0d7b954_adguard',
+    ],
+    '디바이스 / 프로토콜': [
+        '5c53de3b_esphome', 'core_matter_server', 'core_mosquitto',
+        'core_openthread_border_router', '26aa648f_shelly-manager',
+    ],
+    '미디어 / 음성': [
+        'd5369777_music_assistant', 'local_supertonic', 'local_voice_match',
+        '932a64e5_isponsorblocktv', 'c363c99b_voice',
+    ],
+    'AI / 자동화': [
+        'local_llm_conversation_agent', 'local_openai_to_ollama_bridge',
+        '3d1b46f3_hass_mcpproxy', 'local_playwright', 'local_rethink',
+    ],
+    '서비스 / 생산성': [
+        'ba53f40c_homedetector', 'local_wardrowbe', 'local_zensical',
+        'local_paperless_ngx', 'local_pocket_id',
+    ],
+    '모니터링 / 데이터': [
+        'b69c5888_otelcol',
+    ],
+} -%}
+{%- set categorized_slugs = [] -%}
+{%- for slugs in categories.values() %}{% set _ = categorized_slugs.extend(slugs) %}{% endfor -%}
+{%- set addon_by_slug = {} -%}
+{%- for a in addons %}{% set _ = addon_by_slug.update({a.slug: a}) %}{% endfor -%}
+---
+title: 애드온
+---
+
+# 애드온
+
+현재 **{{ addons | count }}** 개의 애드온이 등록되어 있으며, 다음 카테고리로 분류할 수 있습니다.
+{% for cat, slugs in categories.items() %}
+{%- set present = [] -%}
+{%- for s in slugs %}
+  {%- if s in addon_by_slug %}{% set _ = present.append(addon_by_slug[s]) %}{% endif -%}
+{%- endfor -%}
+{%- if present | count > 0 %}
+
+## {{ cat }}
+
+| 이름 | 버전 | 상태 |
+| --- | --- | --- |
+{%- for a in present | sort(attribute='name') %}
+| [{{ a.name }}](https://my.home-assistant.io/redirect/supervisor_addon/?addon={{ a.slug }}) | `{{ a.version }}` | {{ a.state }} |
+{%- endfor %}
+{%- endif %}
+{%- endfor %}
+
+{%- set uncategorized = addons | rejectattr('slug', 'in', categorized_slugs) | list %}
+{%- if uncategorized | count > 0 %}
+
+## 기타 (분류 미지정)
+
+> 새 애드온이 설치되면 여기에 표시됩니다. `templates/docs/platform/add-ons.md.j2` 의 `categories` 맵에 추가하면 적절한 섹션으로 이동합니다.
+
+| 이름 | 슬러그 | 버전 | 상태 |
+| --- | --- | --- | --- |
+{%- for a in uncategorized | sort(attribute='name') %}
+| {{ a.name }} | `{{ a.slug }}` | `{{ a.version }}` | {{ a.state }} |
+{%- endfor %}
+{%- endif %}
+
+자세한 음성/AI 파이프라인은 [음성과 AI](../voice-and-ai.md), 옵저버빌리티 스택은 [옵저버빌리티](../observability.md) 참조.

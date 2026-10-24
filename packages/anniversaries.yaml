@@ -1,0 +1,25 @@
+template:
+  - use_blueprint:
+      path: edwin_d/anniversary.yaml
+      input:
+        sensor_name: Bar Exam
+        special_date: '2000-01-01'
+        year_unknown: false
+        calendar_entity: calendar.anniversaries
+    unique_id: bar_exam
+  - use_blueprint:
+      path: edwin_d/anniversary.yaml
+      input:
+        sensor_name: Birthday
+        special_date: '2000-01-01'
+        year_unknown: false
+        calendar_entity: calendar.anniversaries
+    unique_id: birthday
+  - use_blueprint:
+      path: edwin_d/anniversary.yaml
+      input:
+        sensor_name: Anniversary 3
+        special_date: '2000-01-01'
+        year_unknown: false
+        calendar_entity: calendar.anniversaries
+    unique_id: anniversary_3

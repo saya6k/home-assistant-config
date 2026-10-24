@@ -1,0 +1,31 @@
+esphome:
+  name: living-room-assistant
+  friendly_name: Living Room Assistant
+
+esp32:
+  board: esp32-s3-devkitc-1
+  framework:
+    type: esp-idf
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: 'REDACTED-esphome-key'
+
+ota:
+  - platform: esphome
+    password: 'REDACTED-esphome-password'
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: 'Living-Room-Assistant'
+    password: 'dwwkvx35XHl4'
+
+captive_portal:

@@ -1,0 +1,42 @@
+{#- docs/platform/index.md — HA version dynamic. -#}
+{%- set ha_version = states('sensor.home_assistant_versions') or '알 수 없음' -%}
+---
+title: 플랫폼
+---
+
+# 플랫폼
+
+Home Assistant Core를 둘러싼 운영 인프라 — 네트워크, 데이터 저장소, 백업, 그리고 보조 애드온의 구성 방침을 다룹니다.
+
+## 호스트
+
+- **OS**: Home Assistant OS (channel: `stable`)
+- **하드웨어**: 보드 `Generic x86-64` (Piesia AD742A · Intel N150 pico-itx · 16GB RAM)
+- **버전**: `{{ ha_version }}`
+- **운영 원칙**: 로컬은 **stateless**. 상태가 있는 컴포넌트(메트릭/로그/추적 백엔드, Recorder DB)는 원격 TrueNAS 로 분리.
+
+## 운영 구성
+
+로컬 컴포넌트와 원격 컴포넌트가 사이트-투-사이트 VPN 으로 묶여 단일 논리적 시스템을 이룹니다.
+
+| 영역 | 채택 | 위치 | 비고 |
+| --- | --- | --- | --- |
+| Recorder DB | MariaDB | 원격 TrueNAS | VPN 너머, `secrets.yaml`의 외부 URL 사용. commit_interval 120s |
+| 메트릭 수집 에이전트 | OpenTelemetry Collector (`otelcol`) | 로컬 HA 사이드카 | HA의 `/api/prometheus` 스크래핑 + 로그 export → 원격 gateway |
+| 옵저버빌리티 gateway | OpenTelemetry Collector (gateway 모드) | 원격 TrueNAS | 메트릭/로그/추적 라우팅 허브 |
+| 메트릭 백엔드 | Prometheus | 원격 TrueNAS | |
+| 로그 백엔드 | Grafana Loki | 원격 TrueNAS | |
+| 추적 백엔드 | Grafana Tempo | 원격 TrueNAS | OTLP traces |
+| 시각화 | Grafana | 원격 TrueNAS | Prometheus + Loki + Tempo 소스 |
+| SSL 종단 | NGINX Home Assistant SSL Proxy | 로컬 (HA 애드온) | Let's Encrypt 인증서, 만료 시 자동 재발급 자동화 보유 |
+| 인증 | HA 기본 + OIDC (`hass-oidc-auth` CI 검증) | 로컬 클라이언트 → 원격 Pocket ID | [Pocket ID](../services/pocket-id.md) 는 TrueNAS 측에서 운영 |
+| 문서 관리 | Paperless-ngx (HA 통합) | 로컬 클라이언트 → 원격 Paperless | [Paperless-ngx](../services/paperless.md) 는 TrueNAS 측에서 운영 |
+| DNS/광고 차단 | AdGuard Home 애드온 | 로컬 | |
+| 코드 동기화 | Git Pull 애드온 | 로컬 | release 워크플로우가 끝나면 API로 재시작 |
+
+## 페이지
+
+- [네트워크](./network.md)
+- [스토리지](./storage.md)
+- [백업](./backups.md)
+- [애드온](./add-ons.md)

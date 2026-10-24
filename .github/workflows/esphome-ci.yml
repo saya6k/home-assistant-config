@@ -1,27 +1,33 @@
 ---
 name: ⚙️ ESPHome CI
 
-# yamllint disable-line rule:truthy
 on:
-  workflow_run:
-    workflows:
-      - '🧹✨ Linting & Style Checks'
-    types: [completed]
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions: {}
 
 jobs:
   esphome:
     name: 🔌 ESPHome Configuration Check
     runs-on: ubuntu-latest
-    # needs: [yamllint]
+    permissions:
+      contents: read
     steps:
       - name: ⤵️ Check out repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
         with:
-          ref: ${{ github.event.workflow_run.head_sha }}
-          fetch-depth: 0
+          persist-credentials: false
+
+      - name: 🗝️ Generate mock secrets for ESPHome
+        uses: golles/mock-yaml-secrets-action@d6c5dcb9889077e44827c50e5f6bdac3636c89e5 # v1.1.2
+        with:
+          configFile: '.github/workflows/mock-esphome-secrets-config.json'
 
       - name: 🐍 Set up Python 3.10
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: '3.10'
 
@@ -32,12 +38,7 @@ jobs:
           pip list
           esphome version
 
-      - name: 🗝️ Copy secrets stub into ESPHome folder
-        run: cp ./secrets.fake.yaml ./esphome/secrets.yaml
-
       - name: 🔍 Validate ESPHome configuration files
         # yamllint disable rule:line-length
         run: |
-          for file in $(find ./config/esphome -type f -name "*.yaml" -maxdepth 1 -not -name "secrets.yaml"); do
-            esphome "${file}" config
-          done
+          find ./esphome -maxdepth 1 -type f -name "*.yaml" -not -name "secrets.yaml" -exec esphome {} config \;

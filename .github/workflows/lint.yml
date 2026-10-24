@@ -7,23 +7,33 @@ on:
       - main
   pull_request:
 
+permissions: {}
+
 jobs:
   yamllint:
     name: 🧹 YAML Lint
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: ⤵️ Checkout Repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+        with:
+          persist-credentials: false
 
       - name: 🚀 Run yamllint
-        uses: frenck/action-yamllint@v1.5.0
+        uses: frenck/action-yamllint@34b4bbcaeabedcfefad6adea8c5bbc42af0e2d47 # v1.5.0
 
   remarklint:
     name: 📝 Markdown Lint
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: ⤵️ Checkout Repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+        with:
+          persist-credentials: false
 
       - name: 🧐 Run Remark Lint
         uses: docker://pipelinecomponents/remark-lint:latest

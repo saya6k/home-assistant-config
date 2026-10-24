@@ -5,14 +5,18 @@ on:
   push:
     branches:
       - main
-  pull_request:
+  workflow_dispatch:
+
+permissions: {}
 
 jobs:
   refresh:
     name: 🔄 Update Badges
+    # Skip on forks; this only refreshes shields.io cache for the upstream repo
+    if: github.repository == 'saya6k/home-assistant-config'
     runs-on: ubuntu-latest
     steps:
       - name: 🏷️ Refresh badges for Home Assistant config
-        uses: b3b00/refreshBadgesAction@v1.0.7
+        uses: b3b00/refreshBadgesAction@70ac08f55356ad0b20edcef1f6f09fb017e11a33 # v1.0.7
         with:
           repository: 'saya6k/home-assistant-config'

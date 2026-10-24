@@ -1,0 +1,192 @@
+homeassistant:
+  customize:
+    alert.ping_lost:
+      friendly_name: '핑 오류'
+      icon: mdi:network-off
+    alert.unifi_site_seocho_offline:
+      friendly_name: '서초 UniFi Network 오프라인'
+      icon: mdi:network-off
+    alert.unifi_site_gocheok_offline:
+      friendly_name: '고척 Unifi Network 오프라인'
+      icon: mdi:network-off
+
+alert:
+  ####################################################
+  #                                                  #
+  #                     Fatal                        #
+  #                                                  #
+  ####################################################
+
+  ####################################################
+  #                                                  #
+  #                      Error                       #
+  #                                                  #
+  ####################################################
+
+  ping_lost:
+    name: Ping lost
+    entity_id: binary_sensor.ping_google
+    state: 'off'
+    can_acknowledge: true
+    skip_first: true
+    title: Ping lost
+    message: '현재 Google을 핑할 수 없습니다. 인터넷에 오류가 있는지 확인하세요.'
+    done_message: clear_notification # 인터넷에 오류가 생겼다가 다시 복귀했습니다.
+    repeat:
+      - 5
+      - 60
+    notifiers:
+      - mobile_app_ys_iphoneair
+      # - persistent_notification
+    data:
+      notification_id: ping_lost
+      tag: ping-lost
+      push:
+        interruption-level: time-sensitive
+
+  unifi_site_gocheok_offline:
+    name: UniFi site Gocheok Offline
+    entity_id: sensor.gateway_pro_state
+    state: 'disconnected'
+    can_acknowledge: true
+    skip_first: true
+    title: 고척 UniFi Network 알림
+    message: 고척 UniFi Network의 확인이 필요합니다.
+    done_message: clear_notification # 고척 UniFi Network가 online으로 복귀했습니다.
+    repeat:
+      - 5
+      - 60
+    notifiers:
+      - mobile_app_ys_iphoneair
+      # - persistent_notification
+    data:
+      notification_id: unifi_site_gocheok_offline
+      tag: unifi-site-gocheok-offline
+      push:
+        interruption-level: time-sensitive
+
+  unifi_site_seocho_offline:
+    name: UniFi site Seocho Offline
+    entity_id: sensor.uxg_fiber_state
+    state: 'disconnected'
+    can_acknowledge: true
+    skip_first: true
+    title: 서초 UniFi Network 알림
+    message: 서초 UniFi Network의 확인이 필요합니다.
+    done_message: clear_notification # 서초 UniFi Network가 online으로 복귀했습니다.
+    repeat:
+      - 5
+      - 60
+    notifiers:
+      - mobile_app_ys_iphoneair
+      # - persistent_notification
+    data:
+      notification_id: unifi_site_seocho_offline
+      tag: unifi-site-seocho-offline
+      push:
+        interruption-level: time-sensitive
+
+  # front_door_open:
+  #   name: Front Door open
+  #   entity_id: binary_sensor.front_door_aqara_p2_door
+  #   state: "on"
+  #   repeat: 5
+  #   can_acknowledge: true
+  #   skip_first: true
+  #   message: 현관문이 열려 있습니다.
+  #   done_message: 현관문이 닫혔습니다.
+  #   notifiers:
+  #     - broadcast_all
+  #     - all_devices
+
+  # fridge_door_open:
+  #   name: Refrigerator Door is open
+  #   entity_id: binary_sensor.kitchen_fridge_aqara_p2_door
+  #   state: "on"
+  #   repeat: 3
+  #   can_acknowledge: true
+  #   skip_first: true
+  #   message: 냉장고 문이 열려 있습니다.
+  #   done_message: 냉장고 문이 닫혔습니다.
+  #   notifiers:
+  #     - broadcast_all
+
+  ####################################################
+  #                                                  #
+  #                     Warning                      #
+  #                                                  #
+  ####################################################
+
+  study_interruption:
+    name: 공부 시간!
+    entity_id: binary_sensor.study_interruption
+    state: 'on'
+    repeat: 1
+    can_acknowledge: true
+    skip_first: true
+    notifiers:
+      - mobile_app_ys_macbook
+    data:
+      push:
+        sound:
+          name: default
+        interruption-level: time-sensitive
+      tag: study-interruption
+    message: 공부시간에 컴퓨터는 학습목적으로만 합시다.
+    title: 공부 시간!
+    done_message: clear_notification
+
+  # bedroom_plant_problem:
+  #   name: Bedroom Plant Problem
+  #   entity_id: plant.bedroom_plant
+  #   state: "problem"
+  #   repeat: 30
+  #   can_acknowledge: true
+  #   skip_first: false
+  #   message: "{{ states.plant.bedroom_plant }} needs help ({{ state_attr('plant.bedroom_plant', 'problem') }})"
+  #   done_message: Plant in bedroom is fine
+  #   notifiers:
+  #     - all_devices
+  #     - persistent_notification
+  #   data:
+  #     tag: bedroom-plant-problem
+
+  ####################################################
+  #                                                  #
+  #                      Notice                      #
+  #                                                  #
+  ####################################################
+# notify:
+# # Admin
+# - platform: group
+#   name: Admin
+#   services:
+#     - service: mobile_app_ys_iphoneair
+#     # - service: mobile_app_ys_ipad
+#     - service: mobile_app_ys_macbook
+
+# # All Devices
+# - platform: group
+#   name: All Devices
+#   services:
+#     - service: mobile_app_ys_iphoneair
+#     # - service: mobile_app_ys_ipad
+#     - service: mobile_app_ys_macbook
+
+# Persistent Notification
+# https://www.home-assistant.io/integrations/persistent_notification/#use-as-a-notifier
+
+# # Twitter
+# - name: twitter
+#   platform: twitter
+#   consumer_key: !secret twitter_consumer_key
+#   consumer_secret: !secret twitter_consumer_secret
+#   access_token: !secret twitter_access_token
+#   access_token_secret: !secret twitter_access_token_secret
+#   username: !secret twitter_username
+
+# telegram_bot:
+#   - platform: polling
+#     api_key: !secret telegram_bot_api_key
+#     allowed_chat_ids:
+#       - !secret telegram_bot_chat_id_homeassistant_gpt

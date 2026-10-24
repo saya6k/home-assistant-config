@@ -1,0 +1,72 @@
+{#- docs/en/platform/add-ons.md — English mirror -#}
+{%- set categories = {
+    'Dev / Ops': [
+        'a0d7b954_ssh', 'a0d7b954_vscode', 'core_samba', 'core_git_pull',
+        '5c53de3b_filebrowser', '5c53de3b_filebrowser_lite',
+    ],
+    'Network / Security': [
+        'core_nginx_proxy', 'core_letsencrypt', 'a0d7b954_adguard',
+    ],
+    'Devices / Protocols': [
+        '5c53de3b_esphome', 'core_matter_server', 'core_mosquitto',
+        'core_openthread_border_router', '26aa648f_shelly-manager',
+    ],
+    'Media / Voice': [
+        'd5369777_music_assistant', 'local_supertonic', 'local_voice_match',
+        '932a64e5_isponsorblocktv', 'c363c99b_voice',
+    ],
+    'AI / Automation': [
+        'local_llm_conversation_agent', 'local_openai_to_ollama_bridge',
+        '3d1b46f3_hass_mcpproxy', 'local_playwright', 'local_rethink',
+    ],
+    'Services / Productivity': [
+        'ba53f40c_homedetector', 'local_wardrowbe', 'local_zensical',
+        'local_paperless_ngx', 'local_pocket_id',
+    ],
+    'Monitoring / Data': [
+        'b69c5888_otelcol',
+    ],
+} -%}
+{%- set categorized_slugs = [] -%}
+{%- for slugs in categories.values() %}{% set _ = categorized_slugs.extend(slugs) %}{% endfor -%}
+{%- set addon_by_slug = {} -%}
+{%- for a in addons %}{% set _ = addon_by_slug.update({a.slug: a}) %}{% endfor -%}
+---
+title: Add-ons
+---
+
+# Add-ons
+
+Currently **{{ addons | count }}** add-ons installed, grouped as follows.
+{% for cat, slugs in categories.items() %}
+{%- set present = [] -%}
+{%- for s in slugs %}
+  {%- if s in addon_by_slug %}{% set _ = present.append(addon_by_slug[s]) %}{% endif -%}
+{%- endfor -%}
+{%- if present | count > 0 %}
+
+## {{ cat }}
+
+| Name | Version | State |
+| --- | --- | --- |
+{%- for a in present | sort(attribute='name') %}
+| [{{ a.name }}](https://my.home-assistant.io/redirect/supervisor_addon/?addon={{ a.slug }}) | `{{ a.version }}` | {{ a.state }} |
+{%- endfor %}
+{%- endif %}
+{%- endfor %}
+
+{%- set uncategorized = addons | rejectattr('slug', 'in', categorized_slugs) | list %}
+{%- if uncategorized | count > 0 %}
+
+## Uncategorized
+
+> New add-ons land here. Add the slug to the `categories` map in `templates/docs/platform/add-ons.md.j2` (and the English mirror) to move it into the right section.
+
+| Name | Slug | Version | State |
+| --- | --- | --- | --- |
+{%- for a in uncategorized | sort(attribute='name') %}
+| {{ a.name }} | `{{ a.slug }}` | `{{ a.version }}` | {{ a.state }} |
+{%- endfor %}
+{%- endif %}
+
+See [Voice & AI](../voice-and-ai.md) for the audio/AI pipeline, [Observability](../observability.md) for the metrics/logs/traces stack.

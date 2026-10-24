@@ -1,146 +1,103 @@
-# ===========================
-# Logs and Databases
-# ===========================
-*.log
-*.log.*
-*.db
-*.db-shm
-*.db-wal
+# ============================================================
+# Allow-list gitignore: deny by default, allow specific types.
+# ============================================================
 
-# ===========================
-# Python
-# ===========================
-__pycache__/
-*.py[cod]
-*$py.class
+# Default: ignore everything
+*
 
-# ===========================
-# Node.js / JavaScript
-# ===========================
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnp.*
+# --- Allow source / config / docs file types ---
+!*.yaml
+!**/.??*.yaml
+!*.yml
+!**/.??*.yml
+!*.md
+!*.toml
+!*.j2
 
-# ===========================
-# Java / Gradle / Maven
-# ===========================
-*.class
-*.jar
-*.war
-*.ear
-*.iml
-*.log
-*.out
-target/
-build/
+# --- Allow specific JSON (avoid leaking credentials.json etc.) ---
+!.releaserc
+!.github/workflows/*.json
 
-# ===========================
-# C / C++
-# ===========================
-*.o
-*.obj
-*.exe
-*.dll
-*.so
-*.dylib
-*.out
+# --- Allow docs assets (restricted to docs/) ---
+!docs/**/*.png
+!docs/**/*.jpg
+!docs/**/*.jpeg
+!docs/**/*.svg
+!docs/**/*.css
 
-# ===========================
-# Rust
-# ===========================
-target/
-
-# ===========================
-# Go
-# ===========================
-bin/
-*.exe
-
-# ===========================
-# OS-specific files
-# ===========================
-# macOS
-.DS_Store
-.AppleDouble
-.LSOverride
-Icon?
-._*
-.Trashes
-.Spotlight-V100
-.DocumentRevisions-V100
-
-# Windows
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-$RECYCLE.BIN/
-*.lnk
-
-# Linux
-*~
-.nfs*
-
-# ===========================
-# Editor / IDE
-# ===========================
-.vscode/
-.theia/
-.Trash*
-
-# ===========================
-# Temp / Backup Files
-# ===========================
-*.tmp
-*.temp
-*.bak
-*.swp
-*.swo
-*.old
-*.orig
-.old_config
-
-# ===========================
-# Secrets / Config Templates
-# ===========================
-*.env
-*.local
-secret.yml
-secrets.yaml
-core
-image
-ip_bans.yaml
-
-# ===========================
-# Project-specific / Ignored directories
-# ===========================
-.cloud/
-.storage/
-deps/
-blueprints/*/homeassistant
-esphome/.*/
-addons_autoscripts/
-addons_config/
-packages/*
-tts/
-custom_components/*
-themes/*
-www/community/
-
-# Keep empty directories
+# --- Allow text/config files without extensions ---
+!LICENSE
+!CODEOWNERS
+!.prettierignore
 !.gitkeep
-!*/.gitkeep
 
-# ===========================
-# Git Hooks (local only)
-# ===========================
-.github/hooks/
+# --- Re-allow directory traversal so the rules above can reach nested files ---
+!*/
 
-# ===========================
-# Local / generated files
-# ===========================
-.rnd
-.shopping_list.json
-.aider*
-.youtube.com_cookies.txt
+# ============================================================
+# Re-ignore directories that contain runtime / generated / 3rd-party content.
+# Once a directory is matched here it cannot be re-included file-by-file
+# (gitignore "parent directory excluded" rule). Add explicit `!path` rules
+# below where individual files must still travel with the repo.
+# ============================================================
+
+# Brand icon cache regenerated from home-assistant/brands
+.cache/
+
+# Home Assistant Cloud account state
+.cloud/
+
+# Locally-installed integration deps
+deps/
+
+# Camera snapshots
+image/
+
+# TTS audio cache
+tts/
+
+# Voice satellite models/sounds
+voice_satellite/
+
+# HA frontend resources (HACS-managed)
+www/
+
+# HACS custom components — recoverable via HACS at restore time
+custom_components/*
+!custom_components/.gitkeep
+
+# .storage/ state (auth, registries, integration data) — only the lovelace
+# dashboard files travel with the repo
+.storage/*
+!.storage/lovelace
+!.storage/lovelace_dashboards
+!.storage/lovelace_resources
+!.storage/lovelace.*
+
+# ============================================================
+# Re-ignore individual files even though they match an allow-rule above
+# ============================================================
+
+# macOS metadata
+._*
+.DS_Store
+
+# Secrets
+secrets.yaml
+secrets.local.yaml
+esphome/secrets.yaml
+
+# Runtime state written by HA / supervisor
+.HA_VERSION
+.ha_run.lock
+ip_bans.yaml
+home-assistant.log
+home-assistant.log.*
+*.fault
+
+# zensical CI staging dir (built from docs/ in the pages workflow)
+docs/ko/
+
+# Local build / dev artifacts
+_site/
+_build/
