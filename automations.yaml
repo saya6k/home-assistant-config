@@ -2474,7 +2474,7 @@
   mode: single
 - id: '1792800000000'
   alias: 거실 옷장 문 열림 5분 알림
-  description: 거실 옷장 문이 5분 이상 열려 있으면 닫으라고 안내
+  description: 거실 옷장 문이 5분 이상 열려 있으면 닫을 때까지 30분마다 닫으라고 안내
   triggers:
   - trigger: door.opened
     target:
@@ -2486,6 +2486,8 @@
         minutes: 5
         seconds: 0
     id: 주 옷장
+    variables:
+      door_entity: binary_sensor.geosil_ju_osjang_door
   - trigger: door.opened
     target:
       device_id: c9ba2c9771a3ced352dbe56e6ca644d7
@@ -2496,12 +2498,22 @@
         minutes: 5
         seconds: 0
     id: 보조 옷장
+    variables:
+      door_entity: binary_sensor.geosil_bojo_osjang_door
   conditions: []
   actions:
-  - action: script.message_broadcast
-    metadata: {}
-    data:
-      default_target:
-        area_id: living_room
-      message: 거실 {{ trigger.id }} 문이 열려 있습니다. 문을 닫아 주세요.
+  - repeat:
+      sequence:
+      - action: script.message_broadcast
+        metadata: {}
+        data:
+          default_target:
+            area_id: living_room
+          message: 거실 {{ trigger.id }} 문이 열려 있습니다. 문을 닫아 주세요.
+      - wait_template: "{{ is_state(door_entity, 'off') }}"
+        timeout: 00:30:00
+        continue_on_timeout: true
+      until:
+      - condition: template
+        value_template: '{{ wait.completed }}'
   mode: parallel
