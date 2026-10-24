@@ -4,9 +4,9 @@ site_author      = "saya6k"
 site_url         = "https://saya6k.github.io/home-assistant-config/ko/"
 site_description = "🏡 My home automation setup built with Home Assistant"
 
-# .github/ 기준 → repo_root/docs/ko, repo_root/_site/ko.
-docs_dir = "../docs/ko"
-site_dir = "../_site/ko"
+# 저장소 루트 기준 → docs/ko, _site/ko.
+docs_dir = "docs/ko"
+site_dir = "_site/ko"
 
 use_directory_urls = false
 
