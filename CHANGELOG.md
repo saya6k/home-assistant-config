@@ -1,3 +1,13 @@
+## [1.11.0](https://github.com/saya6k/home-assistant-config/compare/v1.10.0...v1.11.0) (2026-10-24)
+
+### Features
+
+* Add recurring monthly chores to the chore list on the 1st ([#16](https://github.com/saya6k/home-assistant-config/issues/16)) ([3d4f4bd](https://github.com/saya6k/home-assistant-config/commit/3d4f4bd61ac563d633b6559ffe56d2b814c73803))
+
+### Bug Fixes
+
+* Point to-do automations at the chore and shopping lists ([#17](https://github.com/saya6k/home-assistant-config/issues/17)) ([70512f9](https://github.com/saya6k/home-assistant-config/commit/70512f9baf9719ba004e484f68ef746d101ec1d2))
+
 ## [1.10.0](https://github.com/saya6k/home-assistant-config/compare/v1.9.0...v1.10.0) (2026-10-24)
 
 ### Features
