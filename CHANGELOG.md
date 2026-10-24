@@ -1,3 +1,9 @@
+## [1.7.1](https://github.com/saya6k/home-assistant-config/compare/v1.7.0...v1.7.1) (2026-10-24)
+
+### Bug Fixes
+
+* Keep secrets out of the repository ([ac519ac](https://github.com/saya6k/home-assistant-config/commit/ac519ac36c32a52bd0aa54ece2b9411513b2b627))
+
 ## [1.7.0](https://github.com/saya6k/home-assistant-config/compare/v1.6.1...v1.7.0) (2026-10-24)
 
 ### Features
