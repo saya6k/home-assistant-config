@@ -1,3 +1,9 @@
+## [1.9.0](https://github.com/saya6k/home-assistant-config/compare/v1.8.0...v1.9.0) (2026-10-24)
+
+### Features
+
+* Repeat the wardrobe door reminder every 30 minutes until closed ([#14](https://github.com/saya6k/home-assistant-config/issues/14)) ([e85e7ac](https://github.com/saya6k/home-assistant-config/commit/e85e7ac23d394df27fc74bf2325caa6c409018fe))
+
 ## [1.8.0](https://github.com/saya6k/home-assistant-config/compare/v1.7.1...v1.8.0) (2026-10-24)
 
 ### Features
