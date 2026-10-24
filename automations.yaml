@@ -2583,3 +2583,37 @@
         target:
           entity_id: humidifier.bathroom_dehumidifier
   mode: restart
+- id: '1792900000001'
+  alias: 매월 1일 반복 집안일 추가
+  description: 매월 1일 집안일 목록에 반복되는 집안일을 추가합니다. 아직 완료하지 않은 같은 항목이 있으면 건너뜁니다.
+  triggers:
+  - trigger: time
+    at: 09:00:00
+  conditions:
+  - condition: template
+    value_template: '{{ now().day == 1 }}'
+  actions:
+  - action: todo.get_items
+    target:
+      entity_id: todo.chore
+    data:
+      status: needs_action
+    response_variable: chores
+  - repeat:
+      for_each:
+      - 달력 최신화
+      - 면도기 날 리필
+      - 세탁기 통 청소
+      sequence:
+      - if:
+        - condition: template
+          value_template: "{{ repeat.item not in chores['todo.chore']['items'] | map(attribute='summary')
+            | list }}"
+        then:
+        - action: todo.add_item
+          target:
+            entity_id: todo.chore
+          data:
+            item: '{{ repeat.item }}'
+            due_date: '{{ now().date() }}'
+  mode: single
