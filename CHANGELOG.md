@@ -1,3 +1,25 @@
+## [1.7.0](https://github.com/saya6k/home-assistant-config/compare/v1.6.1...v1.7.0) (2026-10-24)
+
+### Features
+
+* Add some automations and scenes ([0ccb2ac](https://github.com/saya6k/home-assistant-config/commit/0ccb2acf44f7bcd67f0cc07065a425ebbea0a80f))
+* Add some automations, scenes and scripts ([30966a6](https://github.com/saya6k/home-assistant-config/commit/30966a6a8d13e09f522a2261e00546d078efb0ae))
+* Add some blueprints ([fdd3b0b](https://github.com/saya6k/home-assistant-config/commit/fdd3b0b7ee788aca5645674ba6429590a734d93c))
+* Disable brightness adjusting in flux ([2bf8202](https://github.com/saya6k/home-assistant-config/commit/2bf8202c03e9a61b78a3dc47629f750735c3f466))
+* Welcome home on entrance MagSafe and move Spotify playback to living room ([9c5fc02](https://github.com/saya6k/home-assistant-config/commit/9c5fc028de5f74e26065b99a24836e57db064723))
+
+### Bug Fixes
+
+* Add Bed Occupancy to recorder ([810c185](https://github.com/saya6k/home-assistant-config/commit/810c185ee2cb8bab61c9dc318bd27acccf71e534))
+* Adjust ESPHome device settings ([b067578](https://github.com/saya6k/home-assistant-config/commit/b067578bda2b9903c1a8ff2d8a13d3a04b39414a))
+* Change alarm control panel name to Security System ([7ec6464](https://github.com/saya6k/home-assistant-config/commit/7ec64641d4409636b478559010ede125e9cd0b38))
+* Fix typo ([f25f750](https://github.com/saya6k/home-assistant-config/commit/f25f750336129c2dc34e207235307177659a3e3c))
+* Ignore local youtube cookies ([37bc44c](https://github.com/saya6k/home-assistant-config/commit/37bc44c940f58bfd484369072aecc43214a32213))
+* include ignored files ([07c6f39](https://github.com/saya6k/home-assistant-config/commit/07c6f396d992efd050956f0d5918fbb35e3986a9))
+* Remove fan and log command line sensors ([18300cf](https://github.com/saya6k/home-assistant-config/commit/18300cfd4d5d34fdc7af1e122fd859d3e0c52219))
+* Update Dashboard ([fd2182a](https://github.com/saya6k/home-assistant-config/commit/fd2182a178cba85f5c148e6e6cab4141a354991a))
+* Update site url ([01511b0](https://github.com/saya6k/home-assistant-config/commit/01511b082ba8386acdb9803454fcbe07cf29d6c0))
+
 ## [1.6.1](https://github.com/saya6k/home-assistant-config/compare/v1.6.0...v1.6.1) (2025-09-21)
 
 ### Bug Fixes
