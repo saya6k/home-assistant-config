@@ -1,3 +1,4 @@
+---
 esphome:
   name: living-room-assistant
   friendly_name: Living Room Assistant

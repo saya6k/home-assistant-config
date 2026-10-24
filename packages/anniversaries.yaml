@@ -1,3 +1,4 @@
+---
 template:
   - use_blueprint:
       path: edwin_d/anniversary.yaml

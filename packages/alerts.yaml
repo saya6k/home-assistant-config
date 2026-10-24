@@ -1,3 +1,4 @@
+---
 homeassistant:
   customize:
     alert.ping_lost:
@@ -136,6 +137,7 @@ alert:
     title: 공부 시간!
     done_message: clear_notification
 
+  # yamllint disable rule:comments-indentation
   # bedroom_plant_problem:
   #   name: Bedroom Plant Problem
   #   entity_id: plant.bedroom_plant

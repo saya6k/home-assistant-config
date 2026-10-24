@@ -1,3 +1,4 @@
+---
 switch:
   - platform: flux
     lights:

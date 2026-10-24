@@ -113,8 +113,10 @@ recorder:
       - sensor.moon_phase
       - binary_sensor.workday_sensor
 
+    # yamllint disable rule:comments-indentation
     # event_types:
     #   - system_log_event
+    # yamllint enable rule:comments-indentation
 
 ####################################################
 #                                                  #
