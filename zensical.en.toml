@@ -4,8 +4,8 @@ site_author      = "saya6k"
 site_url         = "https://saya6k.github.io/home-assistant-config/en/"
 site_description = "🏡 My home automation setup built with Home Assistant"
 
-docs_dir = "../docs/en"
-site_dir = "../_site/en"
+docs_dir = "docs/en"
+site_dir = "_site/en"
 
 use_directory_urls = false
 
