@@ -1,3 +1,4 @@
+---
 sensor:
   - platform: citybikes
     name: 뱅뱅사거리 랜드마크타워 앞

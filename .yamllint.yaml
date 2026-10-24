@@ -2,6 +2,12 @@
 ignore: |
   automations.yaml
   blueprints/*/homeassistant/*.yaml
+  # Third-party blueprints, kept as imported
+  blueprints/automation/censay/
+  blueprints/automation/haojai_6button_blueprint.yaml
+  blueprints/script/music-assistant/
+  blueprints/template/TheFes/
+  blueprints/template/edwin_d/
   custom_components/
   esphome/.esphome/
   ip_bans.yaml
@@ -9,7 +15,7 @@ ignore: |
   scripts.yaml
   ui-lovelace.yaml
   README.md
-  themes/*.yaml
+  themes/
 
 rules:
   braces:
@@ -32,6 +38,8 @@ rules:
   comments:
     level: error
     require-starting-space: true
+    # prettier writes a single space before inline comments
+    min-spaces-from-content: 1
   comments-indentation:
     level: error
   document-end:

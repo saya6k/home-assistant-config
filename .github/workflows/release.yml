@@ -16,67 +16,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  preview_any_branch:
-    name: 🔍 Preview Release Steps
-    # Only run on the upstream repo's own main-branch run.
-    # Fork PRs must not enter a job that checks out PR-controlled code.
-    if: >
-      github.repository == 'saya6k/home-assistant-config' &&
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.head_branch == 'main' &&
-      github.event.workflow_run.event == 'push' &&
-      github.event.workflow_run.head_repository.full_name == 'saya6k/home-assistant-config'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - name: ⤵️ Checkout at triggering SHA
-        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
-        with:
-          ref: ${{ github.event.workflow_run.head_sha }}
-          fetch-depth: 0
-          persist-credentials: false
-
-      - name: 🔧 Setup Node (for semantic-release)
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
-        with:
-          node-version: 20
-
-      - name: 🧪 Install deps if present (optional)
-        run: |
-          set -euo pipefail
-          if [ -f package-lock.json ] || [ -f package.json ]; then
-            npm ci
-          fi
-
-      - name: 🚀 Run semantic-release (dry run)
-        id: semantic_dry_run
-        uses: cycjimmy/semantic-release-action@16ca923e6ccbb50770c415a0ccd43709a8c5f7a4 # v4
-        with:
-          branch: main
-          dry_run: true
-          extra_plugins: |
-            conventional-changelog-conventionalcommits
-            @semantic-release/commit-analyzer
-            @semantic-release/release-notes-generator
-            @semantic-release/changelog
-            @semantic-release/git
-            @semantic-release/github
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: 📄 Show Dry Run Result
-        env:
-          PUBLISHED: ${{ steps.semantic_dry_run.outputs.new_release_published }}
-          VERSION: ${{ steps.semantic_dry_run.outputs.new_release_version }}
-        run: |
-          set -euo pipefail
-          {
-            echo "Semantic Release Dry Run Result"
-            echo "published=${PUBLISHED}"
-            echo "version=${VERSION}"
-          } >> "${GITHUB_STEP_SUMMARY}"
-
   release:
     name: 🔖 Release (SemVer)
     if: >
