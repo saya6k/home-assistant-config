@@ -133,15 +133,14 @@
     data:
       status: needs_action
     target:
-      entity_id:
-      - todo.saya6k_me_com_hal_il
+      entity_id: todo.chore
     response_variable: today_todos
   - action: persistent_notification.create
     metadata: {}
     data:
       title: "\U0001F3E1 집에서 할 일이에요"
-      message: "{% set due_items = today_todos['todo.saya6k_me_com_hal_il']['items']
-        | selectattr('due', 'defined') | list %} {%\n  set no_due_items = today_todos['todo.saya6k_me_com_hal_il']['items']
+      message: "{% set due_items = today_todos['todo.chore']['items']
+        | selectattr('due', 'defined') | list %} {%\n  set no_due_items = today_todos['todo.chore']['items']
         | rejectattr('due', 'defined') | list %}\n  {% if due_items | length > 0 %}\n
         \ ### 오늘의 할일은 다음과 같아요:\n  \n  {% for item in due_items %}\n    - **{{ item.summary
         }}**: {{ item.description }}\n    \n  {% endfor %}\n  {% else %}  \n    ###
@@ -155,15 +154,15 @@
     target:
       device_id: 0c78f2cfc8dc12193e6387be92be74e2
     data:
-      message: '{% set due_items = today_todos[''todo.saya6k_me_com_hal_il''][''items'']
-        | selectattr(''due'', ''defined'') | list %} {% set no_due_items = today_todos[''todo.saya6k_me_com_hal_il''][''items'']
+      message: '{% set due_items = today_todos[''todo.chore''][''items''] | selectattr(''due'',
+        ''defined'') | list %} {% set no_due_items = today_todos[''todo.chore''][''items'']
         | rejectattr(''due'', ''defined'') | list %} {% if due_items | length > 0
         %}   오늘의 할일: {{ due_items | length }}개 {% endif %} {% if no_due_items | length
-        > 0 %}   그 외 할일: {{ due_items | length }}개 {% endif %}'
+        > 0 %}   그 외 할일: {{ no_due_items | length }}개 {% endif %}'
       title: "Welcome Back to Home \U0001F3E1"
       data:
         subtitle:
-        url: /todo?entity_id=todo.saya6k_me_com_hal_il
+        url: /todo?entity_id=todo.chore
         push:
           interruption-level: active
   mode: single
@@ -276,7 +275,7 @@
   actions:
   - target:
       entity_id:
-      - todo.saya6k_me_com_jangbaguni
+      - todo.shopping_list
     data:
       status: needs_action
     response_variable: my_wish_list
@@ -288,7 +287,7 @@
         }}**:\n{% if 'description' in trigger.to_state.attributes %}\n  {{ trigger.to_state.attributes.description
         if trigger.to_state.attributes.description != \"\" else 'N/A' }}\n{% else
         %}\n  N/A\n{% endif %}\n\n위 상품이 아래 나의 위시리스트에 있는 항목과 일치하는 경우, 내게 알려줘야 합니다.\n\n{%
-        for item in my_wish_list['todo.saya6k_me_com_jangbaguni']['items'] %}\n  -
+        for item in my_wish_list['todo.shopping_list']['items'] %}\n  -
         **{{ item.summary }}**:\n  {% if 'description' in item %}\n    {{ item.description
         if item.description != \"\" else 'N/A' }}\n  {% else %}\n    N/A\n  {% endif
         %}\n{% endfor %}\n\n이 메시지에 포함된 상품이 내 위시리스트에 있는 상품인가요?"
@@ -494,8 +493,8 @@
   mode: single
 - id: '1758263460650'
   alias: 귀가 시 환영 및 보조 기능 활성화
-  description: 집에 사람이 도착하면 조명을 켜고, 원규가 현관 맥세이프에 스마트폰을 붙이면 환영 장면과 환영 메시지를 재생합니다.
-    Spotify로 음악을 듣고 있었다면 폰에서 정지하고 거실에서 이어서 재생하고, 아니면 새 위클리 추천곡을 재생합니다.
+  description: 집에 사람이 도착하면 조명을 켜고, 원규가 현관 맥세이프에 스마트폰을 붙이면 환영 장면과 환영 메시지를 재생합니다. Spotify로
+    음악을 듣고 있었다면 폰에서 정지하고 거실에서 이어서 재생하고, 아니면 새 위클리 추천곡을 재생합니다.
   triggers:
   - trigger: zone.entered
     target:
@@ -2516,7 +2515,7 @@
           default_target:
             area_id: living_room
           message: 거실 {{ trigger.id }} 문이 열려 있습니다. 문을 닫아 주세요.
-      - wait_template: "{{ is_state(door_entity, 'off') }}"
+      - wait_template: '{{ is_state(door_entity, ''off'') }}'
         timeout: 00:30:00
         continue_on_timeout: true
       until:
@@ -2525,8 +2524,8 @@
   mode: parallel
 - id: '1792900000000'
   alias: 건조대 열림 시 제습기 빨래건조 모드
-  description: 건조대가 열려 있고 창문이 모두 닫혀 있으며 화장실 문이 열려 있으면 제습기를 빨래건조 모드로 돌리고, 조건이 깨지면
-    원래 모드로 되돌린 뒤 끕니다.
+  description: 건조대가 열려 있고 창문이 모두 닫혀 있으며 화장실 문이 열려 있으면 제습기를 빨래건조 모드로 돌리고, 조건이 깨지면 원래
+    모드로 되돌린 뒤 끕니다.
   triggers:
   - trigger: state
     entity_id:
