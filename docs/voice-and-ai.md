@@ -9,7 +9,7 @@ title: 음성과 AI
 ## 데이터 흐름
 
 ```
-[ Voice PE / ReSpeaker / 모바일 ]
+[ Voice PE / 모바일 ]
         │ Wyoming
         ▼
    ┌────────────┐
@@ -34,7 +34,6 @@ title: 음성과 AI
 ## 입력 디바이스
 
 - **Home Assistant Voice Preview Edition** × 2 — Wi-Fi, ESPHome 펌웨어
-- **ReSpeaker XVF3800 음성 위성** — `esphome/respeaker-voice-eada78.yaml`
 - **Voice Satellite 커스텀 컴포넌트** — 태블릿/폰/브라우저를 위성으로 사용
 
 ## STT / 추론

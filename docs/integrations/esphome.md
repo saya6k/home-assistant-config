@@ -6,20 +6,16 @@ title: ESPHome
 
 `esphome/` 디렉터리에 보관되며, ESPHome Device Builder 애드온으로 빌드/플래시합니다. `esphome/secrets.yaml`은 별도(저장소에서 제외).
 
-| 파일                          | 디바이스                         | 비고                                                       |
-| ----------------------------- | -------------------------------- | ---------------------------------------------------------- |
-| `esp-wallpad.yaml`            | 현대텔레콤 HNF-I2101 월패드      | 거실 벽 부착, ESPHome 펌웨어로 교체                        |
-| `esp-subphone.yaml`           | 인터폰(서브폰)                   | 출입/벨 이벤트 송출                                        |
-| `respeaker-voice-eada78.yaml` | ReSpeaker XVF3800 기반 음성 위성 | Whisper/Piper와 연동, [음성과 AI](../voice-and-ai.md) 참조 |
+| 파일                | 디바이스                    | 비고                                |
+| ------------------- | --------------------------- | ----------------------------------- |
+| `esp-wallpad.yaml`  | 현대텔레콤 HNF-I2101 월패드 | 거실 벽 부착, ESPHome 펌웨어로 교체 |
+| `esp-subphone.yaml` | 인터폰(서브폰)              | 출입/벨 이벤트 송출                 |
 
 ## 보관소
 
 `esphome/archive/` 아래 다음 구성이 보관되어 있습니다 — 더 이상 사용하지 않거나 교체된 디바이스.
 
 - `living-room-assistant.yaml`
-- `living-room-satellite.yaml`
-- `respeaker-voice-eada78.yaml` (구버전)
-- `xvf3800.yaml`
 - `nano-c6.yaml`
 
 ## CI 검증

@@ -70,8 +70,7 @@ ESPHome configurations are in `esphome/` directory:
 
 - `esp-wallpad.yaml`: Wall-mounted control panel integration
 - `esp-subphone.yaml`: Subphone/intercom integration
-- `respeaker-voice-eada78.yaml`: ReSpeaker-based voice satellite
-- `archive/`: Retired device configurations (e.g. `living-room-assistant.yaml`, `xvf3800.yaml`, `nano-c6.yaml`)
+- `archive/`: Retired device configurations (e.g. `living-room-assistant.yaml`, `nano-c6.yaml`)
 - `fonts/`: Bundled fonts for display devices
 - `esphome/` is also a separate git repo with its own `secrets.yaml`
 
