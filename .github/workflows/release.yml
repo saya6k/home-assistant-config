@@ -58,7 +58,7 @@ jobs:
 
       - name: 🚀 Run semantic-release (tags, GitHub Release, CHANGELOG)
         id: release
-        uses: cycjimmy/semantic-release-action@16ca923e6ccbb50770c415a0ccd43709a8c5f7a4 # v4
+        uses: cycjimmy/semantic-release-action@d9bf53a078bd2f86aaffaec796dbb3d28f1b6f34 # v4
         with:
           branch: main
           extra_plugins: |
