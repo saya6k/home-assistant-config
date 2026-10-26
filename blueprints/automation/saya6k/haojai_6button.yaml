@@ -1,0 +1,303 @@
+---
+blueprint:
+  name: HAOJAI 6 Button Smart Switch (Matter over Thread)
+  author: saya6k
+  description: >
+    HAOJAI 6버튼 스마트 스위치 (Matter over Thread) Blueprint.
+
+    버튼에 인쇄된 아이콘대로 기기만 할당하면 동작은 고정으로 정해집니다.
+
+    - 1 조명: 클릭 토글 / 더블 클릭 최대 밝기 / 길게 누르기 밝기 조절
+      (현재 50% 미만이면 밝게, 이상이면 어둡게)
+
+    - 2 커튼: 클릭 주 커튼 토글 / 더블 클릭 주 커튼과 보조 커튼 함께 토글 /
+      길게 누르기 모든 커튼 정지
+
+    - 3 스피커: 클릭 재생·일시정지 / 더블 클릭 다음 곡 / 길게 누르기 볼륨 업
+
+    - 4 해, 5 소파, 6 달: 클릭 시 할당한 장면 또는 스크립트 실행
+
+    Version: 2026-10-26
+  domain: automation
+  input:
+    switch_section:
+      name: Switch
+      icon: mdi:light-switch
+      input:
+        button_1_entity:
+          name: Button 1 Entity
+          description: 버튼 1(조명)의 event entity
+          selector:
+            entity:
+              filter:
+                - domain: event
+                  device_class: button
+        button_2_entity:
+          name: Button 2 Entity
+          description: 버튼 2(커튼)의 event entity
+          selector:
+            entity:
+              filter:
+                - domain: event
+                  device_class: button
+        button_3_entity:
+          name: Button 3 Entity
+          description: 버튼 3(스피커)의 event entity
+          selector:
+            entity:
+              filter:
+                - domain: event
+                  device_class: button
+        button_4_entity:
+          name: Button 4 Entity
+          description: 버튼 4(해)의 event entity
+          selector:
+            entity:
+              filter:
+                - domain: event
+                  device_class: button
+        button_5_entity:
+          name: Button 5 Entity
+          description: 버튼 5(소파)의 event entity
+          selector:
+            entity:
+              filter:
+                - domain: event
+                  device_class: button
+        button_6_entity:
+          name: Button 6 Entity
+          description: 버튼 6(달)의 event entity
+          selector:
+            entity:
+              filter:
+                - domain: event
+                  device_class: button
+    light_section:
+      name: "1: 조명"
+      icon: mdi:lightbulb
+      input:
+        lights:
+          name: 조명
+          default: []
+          selector:
+            entity:
+              multiple: true
+              filter:
+                - domain: light
+    curtain_section:
+      name: "2: 커튼"
+      icon: mdi:curtains
+      input:
+        main_curtains:
+          name: 주 커튼
+          description: 클릭으로 토글할 커튼
+          default: []
+          selector:
+            entity:
+              multiple: true
+              filter:
+                - domain: cover
+        extra_curtains:
+          name: 보조 커튼
+          description: 더블 클릭 시 주 커튼과 함께 토글할 커튼 (예. 속커튼)
+          default: []
+          selector:
+            entity:
+              multiple: true
+              filter:
+                - domain: cover
+    speaker_section:
+      name: "3: 스피커"
+      icon: mdi:speaker
+      input:
+        speakers:
+          name: 스피커
+          default: []
+          selector:
+            entity:
+              multiple: true
+              filter:
+                - domain: media_player
+    scene_section:
+      name: "4–6: 장면"
+      icon: mdi:palette
+      input:
+        sun_scene:
+          name: "4: 해"
+          default: ""
+          selector:
+            entity:
+              filter:
+                - domain:
+                    - scene
+                    - script
+        sofa_scene:
+          name: "5: 소파"
+          default: ""
+          selector:
+            entity:
+              filter:
+                - domain:
+                    - scene
+                    - script
+        moon_scene:
+          name: "6: 달"
+          default: ""
+          selector:
+            entity:
+              filter:
+                - domain:
+                    - scene
+                    - script
+
+mode: queued
+max: 10
+max_exceeded: silent
+
+variables:
+  lights: !input lights
+  main_curtains: !input main_curtains
+  extra_curtains: !input extra_curtains
+  speakers: !input speakers
+  scenes:
+    button_4: !input sun_scene
+    button_5: !input sofa_scene
+    button_6: !input moon_scene
+  event_type: "{{ trigger.to_state.attributes.event_type }}"
+  # Long press loops end on long_release, or after this many steps if the release is missed
+  max_hold_steps: 40
+
+triggers:
+  - trigger: state
+    entity_id: !input button_1_entity
+    not_from: unavailable
+    not_to: unavailable
+    id: button_1
+  - trigger: state
+    entity_id: !input button_2_entity
+    not_from: unavailable
+    not_to: unavailable
+    id: button_2
+  - trigger: state
+    entity_id: !input button_3_entity
+    not_from: unavailable
+    not_to: unavailable
+    id: button_3
+  - trigger: state
+    entity_id: !input button_4_entity
+    not_from: unavailable
+    not_to: unavailable
+    id: button_4
+  - trigger: state
+    entity_id: !input button_5_entity
+    not_from: unavailable
+    not_to: unavailable
+    id: button_5
+  - trigger: state
+    entity_id: !input button_6_entity
+    not_from: unavailable
+    not_to: unavailable
+    id: button_6
+
+actions:
+  - choose:
+      # === 1: 조명 ===
+      - conditions: "{{ trigger.id == 'button_1' and lights | length > 0 }}"
+        sequence:
+          - choose:
+              - conditions: "{{ event_type == 'multi_press_1' }}"
+                sequence:
+                  - action: light.toggle
+                    target:
+                      entity_id: "{{ lights }}"
+              - conditions: "{{ event_type == 'multi_press_2' }}"
+                sequence:
+                  - action: light.turn_on
+                    target:
+                      entity_id: "{{ lights }}"
+                    data:
+                      brightness_pct: 100
+              - conditions: "{{ event_type == 'long_press' }}"
+                sequence:
+                  - variables:
+                      levels: >-
+                        {{ expand(lights) | selectattr('state', 'eq', 'on')
+                           | map(attribute='attributes.brightness') | map('int', 0) | list }}
+                      step: >-
+                        {{ 5 if levels | length == 0 or (levels | average) < 128 else -5 }}
+                  - repeat:
+                      sequence:
+                        - action: light.turn_on
+                          target:
+                            entity_id: "{{ lights }}"
+                          data:
+                            brightness_step_pct: "{{ step }}"
+                            transition: 0.5
+                        - delay:
+                            milliseconds: 500
+                      until:
+                        - condition: template
+                          value_template: >-
+                            {% set levels = expand(lights) | selectattr('state', 'eq', 'on')
+                               | map(attribute='attributes.brightness') | map('int', 0) | list %}
+                            {{ is_state_attr(trigger.entity_id, 'event_type', 'long_release')
+                               or repeat.index >= max_hold_steps
+                               or (step > 0 and levels | length > 0 and levels | min >= 255)
+                               or (step < 0 and (levels | length == 0 or levels | max <= 13)) }}
+
+      # === 2: 커튼 ===
+      - conditions: "{{ trigger.id == 'button_2' and main_curtains | length > 0 }}"
+        sequence:
+          - choose:
+              - conditions: "{{ event_type == 'multi_press_1' }}"
+                sequence:
+                  - action: cover.toggle
+                    target:
+                      entity_id: "{{ main_curtains }}"
+              - conditions: "{{ event_type == 'multi_press_2' }}"
+                sequence:
+                  - action: cover.toggle
+                    target:
+                      entity_id: "{{ main_curtains + extra_curtains }}"
+              - conditions: "{{ event_type == 'long_press' }}"
+                sequence:
+                  - action: cover.stop_cover
+                    target:
+                      entity_id: "{{ main_curtains + extra_curtains }}"
+
+      # === 3: 스피커 ===
+      - conditions: "{{ trigger.id == 'button_3' and speakers | length > 0 }}"
+        sequence:
+          - choose:
+              - conditions: "{{ event_type == 'multi_press_1' }}"
+                sequence:
+                  - action: media_player.media_play_pause
+                    target:
+                      entity_id: "{{ speakers }}"
+              - conditions: "{{ event_type == 'multi_press_2' }}"
+                sequence:
+                  - action: media_player.media_next_track
+                    target:
+                      entity_id: "{{ speakers }}"
+              - conditions: "{{ event_type == 'long_press' }}"
+                sequence:
+                  - repeat:
+                      sequence:
+                        - action: media_player.volume_up
+                          target:
+                            entity_id: "{{ speakers }}"
+                        - delay:
+                            seconds: 1
+                      until:
+                        - condition: template
+                          value_template: >-
+                            {{ is_state_attr(trigger.entity_id, 'event_type', 'long_release')
+                               or repeat.index >= max_hold_steps }}
+
+      # === 4: 해, 5: 소파, 6: 달 ===
+      - conditions: >-
+          {{ trigger.id in scenes and scenes[trigger.id] and event_type == 'multi_press_1' }}
+        sequence:
+          - action: homeassistant.turn_on
+            target:
+              entity_id: "{{ scenes[trigger.id] }}"

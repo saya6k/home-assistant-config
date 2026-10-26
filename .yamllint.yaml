@@ -4,7 +4,6 @@ ignore: |
   blueprints/*/homeassistant/*.yaml
   # Third-party blueprints, kept as imported
   blueprints/automation/censay/
-  blueprints/automation/haojai_6button_blueprint.yaml
   blueprints/script/music-assistant/
   blueprints/template/TheFes/
   blueprints/template/edwin_d/
