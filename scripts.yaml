@@ -1222,8 +1222,8 @@ unknown_11:
     전달된 값은 해당 climate 엔티티가 실제로 지원하는지 먼저 검사합니다.
 
     지원하지 않는 값을 임의로 추측해서 사용하지 마세요.'
-llm_script_for_mealie_recipe_and_meal_plan_requests:
-  alias: LLM Script for Mealie recipe and meal plan requests
+llm_script_for_mealie_requests:
+  alias: LLM Script for Mealie requests
   use_blueprint:
     path: saya6k/mealie_llm_tool.yaml
     input:
@@ -1242,8 +1242,8 @@ llm_script_for_mealie_recipe_and_meal_plan_requests:
       note_text_prompt: 'note_title 식단 항목에 덧붙일 상세 내용 (선택).'
       mealplan_id_prompt: 'get_mealplan이 돌려준 mealplan_id. update_mealplan, delete_mealplan에서 사용합니다.'
       items_prompt: '장보기 항목 목록. add_shopping_items에는 "양파 2개" 같은 자유 문장을, check_shopping_items와 remove_shopping_items에는 get_shopping_list가 돌려준 item_id나 정확한 이름을 넣습니다.'
-llm_script_for_jellyfin_on_apple_tv_requests:
-  alias: LLM Script for Jellyfin on Apple TV requests
+llm_script_for_apple_tv_jellyfin_requests:
+  alias: LLM Script for Apple TV Jellyfin requests
   use_blueprint:
     path: saya6k/jellyfin_apple_tv_llm_tool.yaml
     input:
@@ -1257,3 +1257,20 @@ llm_script_for_jellyfin_on_apple_tv_requests:
       library_id_prompt: 'search 범위를 한 라이브러리로 좁힐 때 쓰는, browse가 돌려준 라이브러리 id. 생략하면 전체 라이브러리를 검색합니다.'
       id_prompt: 'search 또는 browse가 돌려준 항목 id.'
       offset_prompt: 'browse에서 긴 목록을 나눠 볼 때 건너뛸 항목 수.'
+llm_script_for_apple_tv_youtube_requests:
+  alias: LLM Script for Apple TV YouTube requests
+  use_blueprint:
+    path: saya6k/youtube_apple_tv_llm_tool.yaml
+    input:
+      apple_tv: media_player.living_room_apple_tv
+      tool_description_prompt: '거실 Apple TV의 YouTube 앱에서 YouTube 영상을 재생합니다. 사용자가 준 영상 URL이나 id를 그대로 전달하세요.'
+      youtube_prompt: '필수. YouTube 영상 URL(watch, youtu.be, shorts, live 링크) 또는 11자리 영상 id. 사용자가 준 URL이나 id만 쓰고, 절대 추측하지 마세요.'
+llm_script_for_apple_tv_apps_requests:
+  alias: LLM Script for Apple TV apps requests
+  use_blueprint:
+    path: saya6k/apple_tv_apps_llm_tool.yaml
+    input:
+      apple_tv: media_player.living_room_apple_tv
+      tool_description_prompt: '거실 Apple TV에 설치된 앱 목록을 보거나 앱을 엽니다. 앱의 정확한 이름을 모르면 먼저 "list_apps"로 목록을 확인한 뒤, 그 이름으로 "open_app"을 호출하세요.'
+      operation_prompt: '필수. list_apps, 또는 open_app (app).'
+      app_prompt: 'open_app에서 열 앱 이름. list_apps가 돌려준 이름을 쓰세요. 대소문자와 띄어쓰기는 무시합니다.'

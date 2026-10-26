@@ -1,6 +1,6 @@
 ---
 blueprint:
-  name: Jellyfin on Apple TV LLM tool
+  name: LLM Script for Apple TV Jellyfin requests
   author: saya6k
   description: >-
     Lets an LLM conversation agent browse and search the Jellyfin media source

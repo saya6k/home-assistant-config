@@ -1,0 +1,91 @@
+---
+blueprint:
+  name: LLM Script for Apple TV YouTube requests
+  author: saya6k
+  description: >-
+    Lets an LLM conversation agent play a YouTube video in the YouTube app on
+    an Apple TV from a video URL or id, through a youtube:// deep link.
+    Requires the Apple TV integration.
+  domain: script
+  homeassistant:
+    min_version: 2025.10.0
+  input:
+    apple_tv:
+      name: Apple TV
+      selector:
+        entity:
+          filter:
+            - integration: apple_tv
+              domain: media_player
+    prompt_settings:
+      name: Prompt settings for the LLM
+      icon: mdi:robot
+      description: >-
+        Fine-tune the tool and parameter descriptions sent to the LLM, for
+        example to write them in the language of your conversation agent.
+      collapsed: true
+      input:
+        tool_description_prompt:
+          name: "Tool description"
+          default: >-
+            Play a YouTube video in the YouTube app on the Apple TV.
+            Pass the video URL or id the user gave.
+          selector:
+            text:
+              multiline: true
+        youtube_prompt:
+          name: "Parameter: youtube"
+          default: >-
+            Required. A YouTube video URL (watch, youtu.be, shorts or
+            live link) or the 11-character video id. Only use a URL or
+            id the user provided; never guess one.
+          selector:
+            text:
+              multiline: true
+
+mode: queued
+max_exceeded: silent
+description: !input tool_description_prompt
+
+fields:
+  youtube:
+    name: YouTube video
+    description: !input youtube_prompt
+    required: true
+    selector:
+      text:
+
+variables:
+  apple_tv: !input apple_tv
+  video_id: >-
+    {%- set raw = youtube | default('', true) | string | trim -%}
+    {%- set found = raw | regex_findall('(?:[?&]v=|youtu\\.be/|/shorts/|/live/|/embed/)([A-Za-z0-9_-]{11})') -%}
+    {{ found[0] if found else (raw if raw is match('^[A-Za-z0-9_-]{11}$') else '') }}
+
+sequence:
+  - if: "{{ not video_id }}"
+    then:
+      - variables:
+          result:
+            error: Pass a YouTube video URL or 11-character video id.
+      - stop: ""
+        response_variable: result
+  - if: "{{ is_state(apple_tv, ['off', 'standby']) }}"
+    then:
+      - action: media_player.turn_on
+        target:
+          entity_id: "{{ apple_tv }}"
+      - delay:
+          seconds: 2
+  # The YouTube app starts playback on its own
+  - action: media_player.play_media
+    target:
+      entity_id: "{{ apple_tv }}"
+    data:
+      media_content_type: url
+      media_content_id: "youtube://watch/{{ video_id }}"
+  - variables:
+      result:
+        playing_youtube: "{{ video_id }}"
+  - stop: ""
+    response_variable: result

@@ -1,0 +1,125 @@
+---
+blueprint:
+  name: LLM Script for Apple TV apps requests
+  author: saya6k
+  description: >-
+    Lets an LLM conversation agent list the apps installed on an Apple TV and
+    switch to one, using the media player's input sources. Requires the Apple
+    TV integration.
+  domain: script
+  homeassistant:
+    min_version: 2025.10.0
+  input:
+    apple_tv:
+      name: Apple TV
+      selector:
+        entity:
+          filter:
+            - integration: apple_tv
+              domain: media_player
+    prompt_settings:
+      name: Prompt settings for the LLM
+      icon: mdi:robot
+      description: >-
+        Fine-tune the tool and parameter descriptions sent to the LLM, for
+        example to write them in the language of your conversation agent.
+      collapsed: true
+      input:
+        tool_description_prompt:
+          name: "Tool description"
+          default: >-
+            List the apps installed on the Apple TV, or open one. Use
+            "list_apps" when unsure of an app's exact name, then
+            "open_app" with the name.
+          selector:
+            text:
+              multiline: true
+        operation_prompt:
+          name: "Parameter: operation"
+          default: >-
+            Required. list_apps, or open_app (app).
+          selector:
+            text:
+              multiline: true
+        app_prompt:
+          name: "Parameter: app"
+          default: >-
+            For open_app, the app name as returned by list_apps.
+            Matching ignores case and spaces.
+          selector:
+            text:
+              multiline: true
+
+mode: queued
+max_exceeded: silent
+description: !input tool_description_prompt
+
+fields:
+  operation:
+    name: Operation
+    description: !input operation_prompt
+    required: true
+    selector:
+      select:
+        options:
+          - list_apps
+          - open_app
+  app:
+    name: App
+    description: !input app_prompt
+    selector:
+      text:
+
+variables:
+  apple_tv: !input apple_tv
+  apps: "{{ state_attr(apple_tv, 'source_list') or [] }}"
+
+sequence:
+  - choose:
+      - conditions: "{{ operation == 'list_apps' }}"
+        sequence:
+          - variables:
+              result:
+                apps: "{{ apps }}"
+                current_app: "{{ state_attr(apple_tv, 'app_name') }}"
+          - stop: ""
+            response_variable: result
+
+      - conditions: "{{ operation == 'open_app' }}"
+        sequence:
+          - variables:
+              # Prefer an exact name match, then a partial one
+              source: >-
+                {%- set needle = app | default('', true) | string | lower | replace(' ', '') -%}
+                {%- set ns = namespace(exact='', partial='') -%}
+                {%- for a in apps -%}
+                  {%- set key = a | lower | replace(' ', '') -%}
+                  {%- if needle and key == needle and not ns.exact -%}{%- set ns.exact = a -%}{%- endif -%}
+                  {%- if needle and needle in key and not ns.partial -%}{%- set ns.partial = a -%}{%- endif -%}
+                {%- endfor -%}
+                {{ ns.exact or ns.partial }}
+          - if: "{{ not source }}"
+            then:
+              - variables:
+                  result:
+                    error: No installed app matches that name.
+                    apps: "{{ apps }}"
+              - stop: ""
+                response_variable: result
+          - if: "{{ is_state(apple_tv, ['off', 'standby']) }}"
+            then:
+              - action: media_player.turn_on
+                target:
+                  entity_id: "{{ apple_tv }}"
+              - delay:
+                  seconds: 2
+          - action: media_player.select_source
+            target:
+              entity_id: "{{ apple_tv }}"
+            data:
+              source: "{{ source }}"
+          - variables:
+              result:
+                opened_app: "{{ source }}"
+          - stop: ""
+            response_variable: result

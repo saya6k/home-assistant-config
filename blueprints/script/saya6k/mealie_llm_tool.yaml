@@ -1,6 +1,6 @@
 ---
 blueprint:
-  name: Mealie LLM tool
+  name: LLM Script for Mealie requests
   author: saya6k
   description: >-
     Exposes a Mealie instance (connected through the Mealie integration) to an
