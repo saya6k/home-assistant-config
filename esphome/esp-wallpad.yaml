@@ -2,6 +2,8 @@
 substitutions:
   name: esp-wallpad
   friendly_name: ESP WallPad
+  ancs_name: ESP WallPad ANCS
+  ancs_ref: v1.1.3
 
 esphome:
   name: esp-wallpad
@@ -39,7 +41,8 @@ esphome:
 esp32:
   board: m5stack-atom
   framework:
-    type: arduino
+    # ANCS needs ESP-IDF (NimBLE)
+    type: esp-idf
 
 # https://github.com/eigger/espcomponents/tree/master/packages/wallpad
 packages:
@@ -50,6 +53,9 @@ packages:
       - packages/device_base.yaml
       - packages/esp32.yaml
       # - packages/wallpad/hyundai/hyundai_door.yaml
+  # https://github.com/wonderslug/esphome-ancs
+  # Fires esphome.ancs_notification / ancs_incoming_call / ancs_call_ended events
+  ancs: github://wonderslug/esphome-ancs/packages/ancs-ha-events.yaml@v1.1.3
 
 uart:
   baud_rate: 3880
@@ -122,6 +128,13 @@ uartex:
 # 7F 60 00 00 EE // W <- S 통화 종료
 
 binary_sensor:
+  - platform: ancs
+    ancs_id: my_ancs
+    connected:
+      name: 'iPhone Connected'
+    call_active:
+      name: 'iPhone Call Active'
+
   - platform: uartex
     name: 'Door Bell'
     icon: 'mdi:bell-ring'
@@ -152,7 +165,29 @@ binary_sensor:
       then:
         - script.execute: open_door_sequence
 
+text_sensor:
+  - platform: ancs
+    ancs_id: my_ancs
+    connected_device:
+      name: 'Connected iPhone'
+    last_title:
+      name: 'iPhone Last Notification'
+    last_message:
+      name: 'iPhone Last Message'
+    last_caller:
+      name: 'iPhone Last Caller'
+    last_app_id:
+      name: 'iPhone Last App'
+
 button:
+  # Forget all paired iPhones so a new one can pair
+  - platform: template
+    name: 'ANCS Clear Bonds'
+    icon: 'mdi:link-off'
+    entity_category: config
+    on_press:
+      - ancs.clear_bonds: my_ancs
+
   - platform: uartex
     id: id_door_open
     name: 'Door Open'
