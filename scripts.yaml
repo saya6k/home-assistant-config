@@ -1242,3 +1242,18 @@ llm_script_for_mealie_recipe_and_meal_plan_requests:
       note_text_prompt: 'note_title 식단 항목에 덧붙일 상세 내용 (선택).'
       mealplan_id_prompt: 'get_mealplan이 돌려준 mealplan_id. update_mealplan, delete_mealplan에서 사용합니다.'
       items_prompt: '장보기 항목 목록. add_shopping_items에는 "양파 2개" 같은 자유 문장을, check_shopping_items와 remove_shopping_items에는 get_shopping_list가 돌려준 item_id나 정확한 이름을 넣습니다.'
+llm_script_for_jellyfin_on_apple_tv_requests:
+  alias: LLM Script for Jellyfin on Apple TV requests
+  use_blueprint:
+    path: saya6k/jellyfin_apple_tv_llm_tool.yaml
+    input:
+      apple_tv: media_player.living_room_apple_tv
+      apple_tv_remote: remote.living_room_apple_tv
+      jellyfin_entry: 01KJMG88S7JKM5XY8T93HJSQEA
+      user_id: 6f66649783f24eb881a8bfe37cab76f6
+      tool_description_prompt: '집 Jellyfin 라이브러리의 영상을 찾아 거실 Apple TV에서 재생합니다. 제목으로 영화, TV 프로그램, 채널을 찾을 때는 "search"를, 라이브러리 목록을 보거나 프로그램의 시즌과 에피소드로 들어갈 때는 "browse"를 사용하세요. 그다음 영화, 프로그램, 시즌, 에피소드의 id로 "play"를 호출하면 Apple TV의 Jellyfin 앱에서 열립니다. id는 반환된 값 그대로 전달하세요.'
+      operation_prompt: '필수. search (query, library_id 선택), browse (id와 offset 선택, id를 생략하면 라이브러리 목록), play (id).'
+      query_prompt: '검색할 제목 단어. 대소문자와 띄어쓰기는 무시합니다.'
+      library_id_prompt: 'search 범위를 한 라이브러리로 좁힐 때 쓰는, browse가 돌려준 라이브러리 id. 생략하면 전체 라이브러리를 검색합니다.'
+      id_prompt: 'search 또는 browse가 돌려준 항목 id.'
+      offset_prompt: 'browse에서 긴 목록을 나눠 볼 때 건너뛸 항목 수.'

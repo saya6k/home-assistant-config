@@ -1,0 +1,315 @@
+---
+blueprint:
+  name: Jellyfin on Apple TV LLM tool
+  author: saya6k
+  description: >-
+    Lets an LLM conversation agent browse and search the Jellyfin media source
+    and open an item in the official Jellyfin (Swiftfin) app on an Apple TV via
+    a jellyfin:// deep link. Requires the Apple TV and Jellyfin integrations.
+    The deep link opens the item page; with auto play on, the remote then
+    presses Select to start the default Play button.
+  domain: script
+  homeassistant:
+    min_version: 2025.10.0
+  input:
+    apple_tv:
+      name: Apple TV
+      selector:
+        entity:
+          filter:
+            - integration: apple_tv
+              domain: media_player
+    apple_tv_remote:
+      name: Apple TV remote
+      description: Used to press Select on the item page for auto play.
+      selector:
+        entity:
+          filter:
+            - integration: apple_tv
+              domain: remote
+    jellyfin_entry:
+      name: Jellyfin integration
+      description: The Jellyfin server whose items are opened in the app.
+      selector:
+        config_entry:
+          integration: jellyfin
+    user_id:
+      name: Jellyfin user ID
+      description: >-
+        Id of the Jellyfin user signed in to the app on the Apple TV
+        (Dashboard → Users → user → the userId in the URL).
+      selector:
+        text:
+    auto_play:
+      name: Auto play
+      description: Press Select after the deep link opens the item page.
+      default: true
+      selector:
+        boolean:
+    play_delay:
+      name: Auto play delay
+      description: Seconds to wait for the app to open the item page before pressing Select.
+      default: 5
+      selector:
+        number:
+          min: 1
+          max: 20
+          unit_of_measurement: s
+    max_results:
+      name: Maximum results
+      description: Upper bound on items returned by browse and search.
+      default: 25
+      selector:
+        number:
+          min: 5
+          max: 100
+          mode: box
+    prompt_settings:
+      name: Prompt settings for the LLM
+      icon: mdi:robot
+      description: >-
+        Fine-tune the tool and parameter descriptions sent to the LLM, for
+        example to write them in the language of your conversation agent.
+      collapsed: true
+      input:
+        tool_description_prompt:
+          name: "Tool description"
+          default: >-
+            Find and play videos from the household Jellyfin library
+            on the Apple TV. Use "search" to find movies, TV shows,
+            or channels by title, and "browse" to list libraries or
+            drill into a show's seasons and episodes. Then call
+            "play" with the id of a movie, show, season, or episode
+            to open it in the Jellyfin app on the Apple TV. Pass ids
+            exactly as returned.
+          selector:
+            text:
+              multiline: true
+        operation_prompt:
+          name: "Parameter: operation"
+          default: >-
+            Required. search (query, optional library_id), browse
+            (optional id and offset; omit id to list libraries),
+            play (id).
+          selector:
+            text:
+              multiline: true
+        query_prompt:
+          name: "Parameter: query"
+          default: >-
+            Title words to search for. Matching ignores case and
+            spaces.
+          selector:
+            text:
+              multiline: true
+        library_id_prompt:
+          name: "Parameter: library_id"
+          default: >-
+            For search, limit to one library id from browse. Omit to
+            search all libraries.
+          selector:
+            text:
+              multiline: true
+        id_prompt:
+          name: "Parameter: id"
+          default: >-
+            Item id from search or browse.
+          selector:
+            text:
+              multiline: true
+        offset_prompt:
+          name: "Parameter: offset"
+          default: >-
+            For browse, skip this many items to page through long
+            lists.
+          selector:
+            text:
+              multiline: true
+
+mode: queued
+max_exceeded: silent
+description: !input tool_description_prompt
+
+fields:
+  operation:
+    name: Operation
+    description: !input operation_prompt
+    required: true
+    selector:
+      select:
+        options:
+          - search
+          - browse
+          - play
+  query:
+    name: Query
+    description: !input query_prompt
+    selector:
+      text:
+  library_id:
+    name: Library ID
+    description: !input library_id_prompt
+    selector:
+      text:
+  id:
+    name: ID
+    description: !input id_prompt
+    selector:
+      text:
+  offset:
+    name: Offset
+    description: !input offset_prompt
+    selector:
+      number:
+        min: 0
+        mode: box
+
+variables:
+  apple_tv: !input apple_tv
+  apple_tv_remote: !input apple_tv_remote
+  jellyfin_entry: !input jellyfin_entry
+  user_id: !input user_id
+  auto_play: !input auto_play
+  play_delay: !input play_delay
+  max_results: !input max_results
+  root_id: media-source://jellyfin
+  # Accept either a bare Jellyfin item id or a full media source id
+  item_id: "{{ (id | default('', true) | string).split('/') | last }}"
+
+sequence:
+  - choose:
+      - conditions: "{{ operation == 'browse' }}"
+        sequence:
+          - action: media_player.browse_media
+            target:
+              entity_id: "{{ apple_tv }}"
+            data:
+              media_content_id: "{{ root_id ~ '/' ~ item_id if item_id else root_id }}"
+            response_variable: resp
+          - variables:
+              start: "{{ offset | default(0, true) | int }}"
+          - variables:
+              result:
+                title: "{{ resp[apple_tv].title }}"
+                total: "{{ (resp[apple_tv].children or []) | length }}"
+                offset: "{{ start }}"
+                items: >-
+                  {% set ns = namespace(out=[]) %}
+                  {% for c in (resp[apple_tv].children or [])[start:start + max_results | int] %}
+                    {% set ns.out = ns.out + [{
+                      'id': c.media_content_id.split('/') | last,
+                      'title': c.title,
+                      'type': 'library' if c.media_class == 'directory' else c.media_class,
+                      'can_play': c.can_play or c.media_class in ['tv_show', 'season'],
+                      'can_browse': c.can_expand,
+                    }] %}
+                  {% endfor %}
+                  {{ ns.out }}
+          - stop: ""
+            response_variable: result
+
+      - conditions: "{{ operation == 'search' }}"
+        sequence:
+          - if: "{{ not query | default('', true) }}"
+            then:
+              - variables:
+                  result:
+                    error: "Missing parameter: query"
+              - stop: ""
+                response_variable: result
+          - action: media_player.browse_media
+            target:
+              entity_id: "{{ apple_tv }}"
+            data:
+              media_content_id: "{{ root_id }}"
+            response_variable: root
+          - variables:
+              needle: "{{ query | lower | replace(' ', '') }}"
+              libraries: >-
+                {% set ns = namespace(out=[]) %}
+                {% for c in root[apple_tv].children or [] %}
+                  {% set lid = c.media_content_id.split('/') | last %}
+                  {% if not library_id | default('', true) or lid == library_id %}
+                    {% set ns.out = ns.out + [{'id': lid, 'title': c.title}] %}
+                  {% endif %}
+                {% endfor %}
+                {{ ns.out }}
+              matches: []
+          - repeat:
+              for_each: "{{ libraries }}"
+              sequence:
+                - action: media_player.browse_media
+                  target:
+                    entity_id: "{{ apple_tv }}"
+                  data:
+                    media_content_id: "{{ root_id ~ '/' ~ repeat.item.id }}"
+                  response_variable: lib
+                - variables:
+                    matches: >-
+                      {% set ns = namespace(out=matches) %}
+                      {% for c in lib[apple_tv].children or [] %}
+                        {% if needle in (c.title | lower | replace(' ', '')) %}
+                          {% set ns.out = ns.out + [{
+                            'id': c.media_content_id.split('/') | last,
+                            'title': c.title,
+                            'type': c.media_class,
+                            'library': repeat.item.title,
+                          }] %}
+                        {% endif %}
+                      {% endfor %}
+                      {{ ns.out }}
+          - variables:
+              result:
+                total: "{{ matches | length }}"
+                items: "{{ matches[:max_results | int] }}"
+          - stop: ""
+            response_variable: result
+
+      - conditions: "{{ operation == 'play' }}"
+        sequence:
+          - if: "{{ not item_id }}"
+            then:
+              - variables:
+                  result:
+                    error: "Missing parameter: id"
+              - stop: ""
+                response_variable: result
+          - if: "{{ is_state(apple_tv, ['off', 'standby']) }}"
+            then:
+              - action: media_player.turn_on
+                target:
+                  entity_id: "{{ apple_tv }}"
+              - delay:
+                  seconds: 2
+          - action: media_player.play_media
+            target:
+              entity_id: "{{ apple_tv }}"
+            data:
+              media_content_type: url
+              # The server id is the identifier of the integration's server device
+              # (the one without a parent device); built inline so it stays a string
+              media_content_id: >-
+                {%- set ns = namespace(id='') -%}
+                {%- for e in integration_entities('jellyfin')
+                      if config_entry_id(e) == jellyfin_entry -%}
+                  {%- set d = device_id(e) -%}
+                  {%- if not ns.id and d and not device_attr(d, 'via_device_id') -%}
+                    {%- set ns.id = (device_attr(d, 'identifiers') | list | first)[1] -%}
+                  {%- endif -%}
+                {%- endfor -%}
+                jellyfin://{{ ns.id }}/{{ user_id }}/item/{{ item_id }}
+          - if: "{{ auto_play }}"
+            then:
+              - delay:
+                  seconds: "{{ play_delay | int }}"
+              - action: remote.send_command
+                target:
+                  entity_id: "{{ apple_tv_remote }}"
+                data:
+                  command: select
+          - variables:
+              result:
+                opened: "{{ item_id }}"
+                auto_play: "{{ auto_play }}"
+          - stop: ""
+            response_variable: result
