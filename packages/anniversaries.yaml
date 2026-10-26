@@ -1,26 +1,27 @@
 ---
+# 이름과 날짜는 개인정보라 secrets.yaml에 둔다 (저장소는 공개).
 template:
   - use_blueprint:
       path: edwin_d/anniversary.yaml
       input:
-        sensor_name: Bar Exam
-        special_date: '2000-01-01'
+        sensor_name: !secret anniversary_1_name
+        special_date: !secret anniversary_1_date
         year_unknown: false
         calendar_entity: calendar.anniversaries
-    unique_id: bar_exam
+    unique_id: anniversary_1
   - use_blueprint:
       path: edwin_d/anniversary.yaml
       input:
-        sensor_name: Birthday
-        special_date: '2000-01-01'
+        sensor_name: !secret anniversary_2_name
+        special_date: !secret anniversary_2_date
         year_unknown: false
         calendar_entity: calendar.anniversaries
-    unique_id: birthday
+    unique_id: anniversary_2
   - use_blueprint:
       path: edwin_d/anniversary.yaml
       input:
-        sensor_name: Anniversary 3
-        special_date: '2000-01-01'
+        sensor_name: !secret anniversary_3_name
+        special_date: !secret anniversary_3_date
         year_unknown: false
         calendar_entity: calendar.anniversaries
     unique_id: anniversary_3
