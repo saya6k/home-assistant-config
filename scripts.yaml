@@ -1222,3 +1222,23 @@ unknown_11:
     전달된 값은 해당 climate 엔티티가 실제로 지원하는지 먼저 검사합니다.
 
     지원하지 않는 값을 임의로 추측해서 사용하지 마세요.'
+llm_script_for_mealie_recipe_and_meal_plan_requests:
+  alias: LLM Script for Mealie recipe and meal plan requests
+  use_blueprint:
+    path: saya6k/mealie_llm_tool.yaml
+    input:
+      mealie_entry: 01KR7KQHXNQBZV7F9SB4YDH8NA
+      tool_description_prompt: '가정용 레시피 관리 앱 Mealie를 관리합니다. 레시피 검색·조회·가져오기, 식단 조회·편집, Mealie 장보기 목록 관리를 할 수 있습니다. "operation" 하나를 고르고 그 작업에 필요한 인자만 전달하세요. 레시피는 search_recipes가 돌려준 recipe_id나 slug로 지정합니다. 식단 항목은 get_mealplan이 돌려준 mealplan_id로 수정하거나 삭제합니다. 날짜는 현지 시간 기준 YYYY-MM-DD이며, "내일" 같은 상대 날짜는 호출 전에 실제 날짜로 바꾸세요. 사용자가 요리, 레시피, 식단, 장보기에 관해 요청하면 이 도구를 사용하세요.'
+      operation_prompt: '필수. search_recipes (search_terms 선택), get_recipe (recipe), import_recipe (url), get_mealplan (start_date, end_date), set_mealplan (date, entry_type, 그리고 recipe 또는 note_title), set_random_mealplan (date, entry_type), update_mealplan (mealplan_id, date, entry_type, 그리고 recipe 또는 note_title), delete_mealplan (mealplan_id), get_shopping_list, add_shopping_items (items), check_shopping_items (items), remove_shopping_items (items).'
+      search_terms_prompt: 'search_recipes에 쓸 검색어. 생략하면 레시피 목록을 반환합니다.'
+      recipe_prompt: 'search_recipes가 돌려준 레시피의 recipe_id 또는 slug. get_recipe, set_mealplan, update_mealplan에서 사용합니다.'
+      url_prompt: 'import_recipe로 가져올 레시피 웹페이지 URL.'
+      include_tags_prompt: 'import_recipe에서 페이지의 태그도 함께 가져올지 여부.'
+      date_prompt: '식단 날짜 (YYYY-MM-DD). 생략하면 오늘입니다.'
+      start_date_prompt: 'get_mealplan 조회 시작일 (YYYY-MM-DD). 생략하면 오늘입니다.'
+      end_date_prompt: 'get_mealplan 조회 종료일 (YYYY-MM-DD). 생략하면 start_date와 같습니다.'
+      entry_type_prompt: 'set_mealplan, set_random_mealplan, update_mealplan의 끼니 종류: breakfast(아침), lunch(점심), dinner(저녁), side(반찬), dessert(디저트), snack(간식), drink(음료). 생략하면 dinner입니다.'
+      note_title_prompt: 'set_mealplan, update_mealplan에서 레시피 대신 넣을 자유 메모 (예: "외식").'
+      note_text_prompt: 'note_title 식단 항목에 덧붙일 상세 내용 (선택).'
+      mealplan_id_prompt: 'get_mealplan이 돌려준 mealplan_id. update_mealplan, delete_mealplan에서 사용합니다.'
+      items_prompt: '장보기 항목 목록. add_shopping_items에는 "양파 2개" 같은 자유 문장을, check_shopping_items와 remove_shopping_items에는 get_shopping_list가 돌려준 item_id나 정확한 이름을 넣습니다.'

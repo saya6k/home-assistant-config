@@ -1,0 +1,534 @@
+---
+blueprint:
+  name: Mealie LLM tool
+  author: saya6k
+  description: >-
+    Exposes a Mealie instance (connected through the Mealie integration) to an
+    LLM conversation agent as one script tool. It can search, read, and import
+    recipes, read and edit meal plans, and manage a Mealie shopping list.
+    Expose the resulting script to Assist so the conversation agent can use it.
+  domain: script
+  homeassistant:
+    min_version: 2025.10.0
+  input:
+    mealie_entry:
+      name: Mealie integration
+      description: The Mealie config entry to manage.
+      selector:
+        config_entry:
+          integration: mealie
+    shopping_list:
+      name: Shopping list
+      description: >-
+        Mealie shopping list to-do entity. Leave empty to disable the shopping
+        list operations.
+      default: ""
+      selector:
+        entity:
+          filter:
+            - integration: mealie
+              domain: todo
+    max_results:
+      name: Maximum search results
+      description: Upper bound on recipes returned by search_recipes.
+      default: 10
+      selector:
+        number:
+          min: 1
+          max: 50
+          mode: box
+    prompt_settings:
+      name: Prompt settings for the LLM
+      icon: mdi:robot
+      description: >-
+        Fine-tune the tool and parameter descriptions sent to the LLM, for
+        example to write them in the language of your conversation agent.
+      collapsed: true
+      input:
+        tool_description_prompt:
+          name: "Tool description"
+          default: >-
+            Manage the household Mealie recipe manager: search, read
+            and import recipes, read and edit the meal plan, and
+            manage the Mealie shopping list. Pick one "operation"
+            and pass only the parameters that operation needs.
+            Recipe references accept the recipe_id or slug returned
+            by search_recipes. Meal plan entries are edited by the
+            mealplan_id returned by get_mealplan. Dates are
+            YYYY-MM-DD in local time; resolve relative dates such as
+            "tomorrow" before calling.
+          selector:
+            text:
+              multiline: true
+        operation_prompt:
+          name: "Parameter: operation"
+          default: >-
+            Required. search_recipes (search_terms optional),
+            get_recipe (recipe), import_recipe (url), get_mealplan
+            (start_date, end_date), set_mealplan (date, entry_type,
+            and recipe or note_title), set_random_mealplan (date,
+            entry_type), update_mealplan (mealplan_id, date,
+            entry_type, and recipe or note_title), delete_mealplan
+            (mealplan_id), get_shopping_list, add_shopping_items
+            (items), check_shopping_items (items),
+            remove_shopping_items (items).
+          selector:
+            text:
+              multiline: true
+        search_terms_prompt:
+          name: "Parameter: search_terms"
+          default: >-
+            Keywords for search_recipes. Omit to list recipes.
+          selector:
+            text:
+              multiline: true
+        recipe_prompt:
+          name: "Parameter: recipe"
+          default: >-
+            recipe_id or slug of a recipe, as returned by
+            search_recipes. Used by get_recipe, set_mealplan and
+            update_mealplan.
+          selector:
+            text:
+              multiline: true
+        url_prompt:
+          name: "Parameter: url"
+          default: >-
+            Recipe web page URL for import_recipe.
+          selector:
+            text:
+              multiline: true
+        include_tags_prompt:
+          name: "Parameter: include_tags"
+          default: >-
+            For import_recipe, also import the tags found on the
+            page.
+          selector:
+            text:
+              multiline: true
+        date_prompt:
+          name: "Parameter: date"
+          default: >-
+            Meal plan date (YYYY-MM-DD). Defaults to today.
+          selector:
+            text:
+              multiline: true
+        start_date_prompt:
+          name: "Parameter: start_date"
+          default: >-
+            First day for get_mealplan (YYYY-MM-DD). Defaults to
+            today.
+          selector:
+            text:
+              multiline: true
+        end_date_prompt:
+          name: "Parameter: end_date"
+          default: >-
+            Last day for get_mealplan (YYYY-MM-DD). Defaults to
+            start_date.
+          selector:
+            text:
+              multiline: true
+        entry_type_prompt:
+          name: "Parameter: entry_type"
+          default: >-
+            Meal slot for set/set_random/update_mealplan. Defaults
+            to dinner.
+          selector:
+            text:
+              multiline: true
+        note_title_prompt:
+          name: "Parameter: note_title"
+          default: >-
+            For set_mealplan/update_mealplan, a free-text meal (e.g.
+            "Eat out") instead of a recipe.
+          selector:
+            text:
+              multiline: true
+        note_text_prompt:
+          name: "Parameter: note_text"
+          default: >-
+            Optional details for a note_title meal plan entry.
+          selector:
+            text:
+              multiline: true
+        mealplan_id_prompt:
+          name: "Parameter: mealplan_id"
+          default: >-
+            mealplan_id from get_mealplan, for update_mealplan and
+            delete_mealplan.
+          selector:
+            text:
+              multiline: true
+        items_prompt:
+          name: "Parameter: items"
+          default: >-
+            Shopping list items. For add_shopping_items, free text
+            such as "2 onions". For check/remove_shopping_items, the
+            item_id or exact name from get_shopping_list.
+          selector:
+            text:
+              multiline: true
+
+mode: parallel
+max_exceeded: silent
+description: !input tool_description_prompt
+
+fields:
+  operation:
+    name: Operation
+    description: !input operation_prompt
+    required: true
+    selector:
+      select:
+        options:
+          - search_recipes
+          - get_recipe
+          - import_recipe
+          - get_mealplan
+          - set_mealplan
+          - set_random_mealplan
+          - update_mealplan
+          - delete_mealplan
+          - get_shopping_list
+          - add_shopping_items
+          - check_shopping_items
+          - remove_shopping_items
+  search_terms:
+    name: Search terms
+    description: !input search_terms_prompt
+    selector:
+      text:
+  recipe:
+    name: Recipe
+    description: !input recipe_prompt
+    selector:
+      text:
+  url:
+    name: URL
+    description: !input url_prompt
+    selector:
+      text:
+        type: url
+  include_tags:
+    name: Include tags
+    description: !input include_tags_prompt
+    selector:
+      boolean:
+  date:
+    name: Date
+    description: !input date_prompt
+    selector:
+      date:
+  start_date:
+    name: Start date
+    description: !input start_date_prompt
+    selector:
+      date:
+  end_date:
+    name: End date
+    description: !input end_date_prompt
+    selector:
+      date:
+  entry_type:
+    name: Meal type
+    description: !input entry_type_prompt
+    selector:
+      select:
+        options:
+          - breakfast
+          - lunch
+          - dinner
+          - side
+          - dessert
+          - snack
+          - drink
+  note_title:
+    name: Note title
+    description: !input note_title_prompt
+    selector:
+      text:
+  note_text:
+    name: Note text
+    description: !input note_text_prompt
+    selector:
+      text:
+  mealplan_id:
+    name: Meal plan ID
+    description: !input mealplan_id_prompt
+    selector:
+      text:
+  items:
+    name: Items
+    description: !input items_prompt
+    selector:
+      text:
+        multiple: true
+
+variables:
+  entry_id: !input mealie_entry
+  shopping_list: !input shopping_list
+  max_results: !input max_results
+  op_date: "{{ date | default(now().date() | string, true) }}"
+  op_entry_type: "{{ entry_type | default('dinner', true) }}"
+  op_items: >-
+    {% set raw = items | default([], true) %}
+    {% if raw is string %}{% set raw = raw.split(',') %}{% endif %}
+    {{ raw | map('string') | map('trim') | reject('eq', '') | list }}
+
+sequence:
+  - choose:
+      - conditions: "{{ operation == 'search_recipes' }}"
+        sequence:
+          - action: mealie.get_recipes
+            data:
+              config_entry_id: "{{ entry_id }}"
+              search_terms: "{{ search_terms | default('', true) }}"
+              result_limit: "{{ max_results | int }}"
+            response_variable: resp
+          - variables:
+              result:
+                recipes: >-
+                  {% set ns = namespace(out=[]) %}
+                  {% for r in resp.recipes['items'] %}
+                    {% set ns.out = ns.out + [{
+                      'recipe_id': r.recipe_id,
+                      'slug': r.slug,
+                      'name': r.name,
+                      'description': (r.description or '')[:200],
+                      'total_time': r.total_time,
+                      'rating': r.rating,
+                      'tags': r.tags | map(attribute='name') | list,
+                    }] %}
+                  {% endfor %}
+                  {{ ns.out }}
+          - stop: ""
+            response_variable: result
+
+      - conditions: "{{ operation == 'get_recipe' }}"
+        sequence:
+          - action: mealie.get_recipe
+            data:
+              config_entry_id: "{{ entry_id }}"
+              recipe_id: "{{ recipe }}"
+            response_variable: resp
+          - variables:
+              result:
+                recipe_id: "{{ resp.recipe.recipe_id }}"
+                slug: "{{ resp.recipe.slug }}"
+                name: "{{ resp.recipe.name }}"
+                description: "{{ resp.recipe.description }}"
+                servings: "{{ resp.recipe.recipe_servings }}"
+                yield: "{{ resp.recipe.recipe_yield }}"
+                prep_time: "{{ resp.recipe.prep_time }}"
+                total_time: "{{ resp.recipe.total_time }}"
+                source_url: "{{ resp.recipe.original_url }}"
+                ingredients: >-
+                  {% set ns = namespace(out=[]) %}
+                  {% for i in resp.recipe.ingredients %}
+                    {% set ns.out = ns.out + [i.display or i.original_text or i.note] %}
+                  {% endfor %}
+                  {{ ns.out | select | list }}
+                instructions: "{{ resp.recipe.instructions | map(attribute='text') | list }}"
+                notes: >-
+                  {{ (resp.recipe.notes or []) | map(attribute='text') | list }}
+          - stop: ""
+            response_variable: result
+
+      - conditions: "{{ operation == 'import_recipe' }}"
+        sequence:
+          - action: mealie.import_recipe
+            data:
+              config_entry_id: "{{ entry_id }}"
+              url: "{{ url }}"
+              include_tags: "{{ include_tags | default(false) | bool }}"
+            response_variable: resp
+          - variables:
+              result:
+                imported:
+                  recipe_id: "{{ resp.recipe.recipe_id }}"
+                  slug: "{{ resp.recipe.slug }}"
+                  name: "{{ resp.recipe.name }}"
+          - stop: ""
+            response_variable: result
+
+      - conditions: "{{ operation == 'get_mealplan' }}"
+        sequence:
+          - variables:
+              start: "{{ start_date | default(now().date() | string, true) }}"
+          - action: mealie.get_mealplan
+            data:
+              config_entry_id: "{{ entry_id }}"
+              start_date: "{{ start }}"
+              end_date: "{{ end_date | default(start, true) }}"
+            response_variable: resp
+          - variables:
+              result:
+                mealplan: >-
+                  {% set ns = namespace(out=[]) %}
+                  {% for m in resp.mealplan | sort(attribute='mealplan_date') %}
+                    {% set ns.out = ns.out + [{
+                      'mealplan_id': m.mealplan_id,
+                      'date': m.mealplan_date | string,
+                      'entry_type': m.entry_type | string,
+                      'title': m.recipe.name if m.recipe else m.title,
+                      'note_text': m.description,
+                      'recipe_id': m.recipe.recipe_id if m.recipe else none,
+                    }] %}
+                  {% endfor %}
+                  {{ ns.out }}
+          - stop: ""
+            response_variable: result
+
+      - conditions: "{{ operation in ['set_mealplan', 'update_mealplan'] }}"
+        sequence:
+          - variables:
+              missing: >-
+                {% if operation == 'update_mealplan' and not mealplan_id | default('', true) %}mealplan_id
+                {%- elif not recipe | default('', true) and not note_title | default('', true) %}recipe or note_title
+                {%- endif %}
+          - if: "{{ missing | length > 0 }}"
+            then:
+              - variables:
+                  result:
+                    error: "Missing parameter: {{ missing }}"
+              - stop: ""
+                response_variable: result
+          - if: "{{ recipe | default('', true) | length > 0 }}"
+            then:
+              # Resolve slugs to the recipe UUID the meal plan API expects
+              - action: mealie.get_recipe
+                data:
+                  config_entry_id: "{{ entry_id }}"
+                  recipe_id: "{{ recipe }}"
+                response_variable: found
+              - variables:
+                  plan_data:
+                    config_entry_id: "{{ entry_id }}"
+                    date: "{{ op_date }}"
+                    entry_type: "{{ op_entry_type }}"
+                    recipe_id: "{{ found.recipe.recipe_id }}"
+            else:
+              - variables:
+                  plan_data:
+                    config_entry_id: "{{ entry_id }}"
+                    date: "{{ op_date }}"
+                    entry_type: "{{ op_entry_type }}"
+                    note_title: "{{ note_title }}"
+                    note_text: "{{ note_text | default('', true) }}"
+          - if: "{{ operation == 'set_mealplan' }}"
+            then:
+              - action: mealie.set_mealplan
+                data: "{{ plan_data }}"
+                response_variable: resp
+            else:
+              - action: mealie.update_mealplan
+                data: "{{ dict(plan_data, mealplan_id=mealplan_id) }}"
+                response_variable: resp
+          - variables:
+              result:
+                mealplan_id: "{{ resp.mealplan.mealplan_id }}"
+                date: "{{ resp.mealplan.mealplan_date | string }}"
+                entry_type: "{{ resp.mealplan.entry_type | string }}"
+                title: >-
+                  {{ resp.mealplan.recipe.name if resp.mealplan.recipe else resp.mealplan.title }}
+          - stop: ""
+            response_variable: result
+
+      - conditions: "{{ operation == 'set_random_mealplan' }}"
+        sequence:
+          - action: mealie.set_random_mealplan
+            data:
+              config_entry_id: "{{ entry_id }}"
+              date: "{{ op_date }}"
+              entry_type: "{{ op_entry_type }}"
+            response_variable: resp
+          - variables:
+              result:
+                mealplan_id: "{{ resp.mealplan.mealplan_id }}"
+                date: "{{ resp.mealplan.mealplan_date | string }}"
+                entry_type: "{{ resp.mealplan.entry_type | string }}"
+                title: >-
+                  {{ resp.mealplan.recipe.name if resp.mealplan.recipe else resp.mealplan.title }}
+                recipe_id: >-
+                  {{ resp.mealplan.recipe.recipe_id if resp.mealplan.recipe else none }}
+          - stop: ""
+            response_variable: result
+
+      - conditions: "{{ operation == 'delete_mealplan' }}"
+        sequence:
+          - action: mealie.delete_mealplan
+            data:
+              config_entry_id: "{{ entry_id }}"
+              mealplan_id: "{{ mealplan_id }}"
+          - variables:
+              result:
+                deleted_mealplan_id: "{{ mealplan_id }}"
+          - stop: ""
+            response_variable: result
+
+      - conditions: "{{ operation.endswith('shopping_list') or operation.endswith('shopping_items') }}"
+        sequence:
+          - if: "{{ not shopping_list }}"
+            then:
+              - variables:
+                  result:
+                    error: No Mealie shopping list is configured for this tool.
+              - stop: ""
+                response_variable: result
+          - if: "{{ operation != 'get_shopping_list' and op_items | length == 0 }}"
+            then:
+              - variables:
+                  result:
+                    error: The items parameter is required for this operation.
+              - stop: ""
+                response_variable: result
+          - choose:
+              - conditions: "{{ operation == 'add_shopping_items' }}"
+                sequence:
+                  - repeat:
+                      for_each: "{{ op_items }}"
+                      sequence:
+                        - action: todo.add_item
+                          target:
+                            entity_id: "{{ shopping_list }}"
+                          data:
+                            item: "{{ repeat.item }}"
+              - conditions: "{{ operation == 'check_shopping_items' }}"
+                sequence:
+                  - repeat:
+                      for_each: "{{ op_items }}"
+                      sequence:
+                        - action: todo.update_item
+                          target:
+                            entity_id: "{{ shopping_list }}"
+                          data:
+                            item: "{{ repeat.item }}"
+                            status: completed
+              - conditions: "{{ operation == 'remove_shopping_items' }}"
+                sequence:
+                  - action: todo.remove_item
+                    target:
+                      entity_id: "{{ shopping_list }}"
+                    data:
+                      item: "{{ op_items }}"
+          # Always answer with the list as it is now
+          - action: mealie.get_shopping_list_items
+            target:
+              entity_id: "{{ shopping_list }}"
+            response_variable: resp
+          - variables:
+              result:
+                shopping_list: "{{ resp[shopping_list].name }}"
+                items: >-
+                  {% set ns = namespace(out=[]) %}
+                  {% for i in resp[shopping_list]['items'] | sort(attribute='position') %}
+                    {% set ns.out = ns.out + [{
+                      'item_id': i.item_id,
+                      'name': i.display or i.note,
+                      'checked': i.checked,
+                    }] %}
+                  {% endfor %}
+                  {{ ns.out }}
+          - stop: ""
+            response_variable: result
