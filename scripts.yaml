@@ -365,42 +365,6 @@ llm_script_for_music_assistant_voice_requests:
         요청이 "Guns and Roses 아티스트 틀어 줘"인 경우, 셔플을 언급하거나 요청하지 않았으므로 "shuffle"은 false로
         설정해야 합니다.'
   description: ''
-sleep_as_android_start_sleep_tracking:
-  alias: 'Sleep as Android: Start Sleep Tracking'
-  use_blueprint:
-    path: homeassistant/sleep_as_android_trigger_app_actions.yaml
-    input:
-      notify_device: fc2182e437cd03e52bdf4392c3693ccc
-      sleep_action: com.urbandroid.sleep.alarmclock.START_SLEEP_TRACK
-  description: ''
-sleep_as_android_snooze_alarm_for_15_minutes:
-  alias: 'Sleep as Android: Snooze Alarm for 15 minutes'
-  use_blueprint:
-    path: homeassistant/sleep_as_android_trigger_app_actions.yaml
-    input:
-      notify_device: fc2182e437cd03e52bdf4392c3693ccc
-      sleep_action: com.urbandroid.sleep.alarmclock.ALARM_SNOOZE
-      extra_snooze_time: 15
-  description: ''
-sleep_as_android_stop_lullaby:
-  alias: 'Sleep as Android: Stop Lullaby'
-  use_blueprint:
-    path: homeassistant/sleep_as_android_trigger_app_actions.yaml
-    input:
-      notify_device: fc2182e437cd03e52bdf4392c3693ccc
-      sleep_action: com.urbandroid.sleep.ACTION_LULLABY_STOP_PLAYBACK
-      alarm_state: false
-  description: ''
-sleep_as_android_stop_sleep_tracking:
-  alias: 'Sleep as Android: Stop Sleep Tracking'
-  use_blueprint:
-    path: homeassistant/sleep_as_android_trigger_app_actions.yaml
-    input:
-      notify_device: fc2182e437cd03e52bdf4392c3693ccc
-      sleep_action: com.urbandroid.sleep.alarmclock.STOP_SLEEP_TRACK
-      alarm_label: 알람
-      alarm_state: false
-  description: ''
 unknown_4:
   sequence:
   - variables:
