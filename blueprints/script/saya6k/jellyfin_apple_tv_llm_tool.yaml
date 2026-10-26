@@ -5,7 +5,8 @@ blueprint:
   description: >-
     Lets an LLM conversation agent browse and search the Jellyfin media source
     and open an item in the official Jellyfin (Swiftfin) app on an Apple TV via
-    a jellyfin:// deep link. Requires the Apple TV and Jellyfin integrations.
+    a swiftfin:// deep link (Swiftfin 1.5 or later). Requires the Apple TV and
+    Jellyfin integrations.
     The deep link opens the item page; with auto play on, the remote then
     presses Select to start the default Play button.
   domain: script
@@ -297,7 +298,7 @@ sequence:
                     {%- set ns.id = (device_attr(d, 'identifiers') | list | first)[1] -%}
                   {%- endif -%}
                 {%- endfor -%}
-                jellyfin://{{ ns.id }}/{{ user_id }}/item/{{ item_id }}
+                swiftfin://{{ ns.id }}/{{ user_id }}/item/{{ item_id }}
           - if: "{{ auto_play }}"
             then:
               - delay:

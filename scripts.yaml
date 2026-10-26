@@ -1250,7 +1250,7 @@ llm_script_for_jellyfin_on_apple_tv_requests:
       apple_tv: media_player.living_room_apple_tv
       apple_tv_remote: remote.living_room_apple_tv
       jellyfin_entry: 01KJMG88S7JKM5XY8T93HJSQEA
-      user_id: 6f66649783f24eb881a8bfe37cab76f6
+      user_id: f655846d5845492faeae687080a9c56e
       tool_description_prompt: '집 Jellyfin 라이브러리의 영상을 찾아 거실 Apple TV에서 재생합니다. 제목으로 영화, TV 프로그램, 채널을 찾을 때는 "search"를, 라이브러리 목록을 보거나 프로그램의 시즌과 에피소드로 들어갈 때는 "browse"를 사용하세요. 그다음 영화, 프로그램, 시즌, 에피소드의 id로 "play"를 호출하면 Apple TV의 Jellyfin 앱에서 열립니다. id는 반환된 값 그대로 전달하세요.'
       operation_prompt: '필수. search (query, library_id 선택), browse (id와 offset 선택, id를 생략하면 라이브러리 목록), play (id).'
       query_prompt: '검색할 제목 단어. 대소문자와 띄어쓰기는 무시합니다.'
