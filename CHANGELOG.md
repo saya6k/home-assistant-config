@@ -1,3 +1,9 @@
+## [1.11.1](https://github.com/saya6k/home-assistant-config/compare/v1.11.0...v1.11.1) (2026-10-26)
+
+### Bug Fixes
+
+* Keep anniversary names and dates out of the public repository ([3a544c7](https://github.com/saya6k/home-assistant-config/commit/3a544c7758643789acf9fe63165cf1f1ccabfeae))
+
 ## [1.11.0](https://github.com/saya6k/home-assistant-config/compare/v1.10.0...v1.11.0) (2026-10-24)
 
 ### Features
