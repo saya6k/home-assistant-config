@@ -2583,15 +2583,67 @@
           entity_id: humidifier.bathroom_dehumidifier
   mode: restart
 - id: '1792900000001'
-  alias: 매월 1일 반복 집안일 추가
-  description: 매월 1일 집안일 목록에 반복되는 집안일을 추가합니다. 아직 완료하지 않은 같은 항목이 있으면 건너뜁니다.
+  alias: 반복 집안일 추가
+  description: 매일 데일리 청소 루틴, 토요일에 주말 청소, 매월 1일에 월간 집안일을 집안일 목록에 추가합니다. 아직
+    완료하지 않은 같은 항목이 있으면 건너뜁니다.
   triggers:
   - trigger: time
-    at: 09:00:00
-  conditions:
-  - condition: template
-    value_template: '{{ now().day == 1 }}'
+    at: 06:00:00
+  conditions: []
   actions:
+  - variables:
+      daily:
+      - summary: 주방 데일리 청소
+        description: |-
+          - 바닥 이물질 닦기
+          - 행주 정리 & 스펀지 소독
+          - 카운터와 식탁 위 닦기
+          - 설거짓거리 넣어 놓기
+          - 소비기한 체크 & 음식물 쓰레기
+          - 싱크대 청소
+          - 주방용품 닦기 & 정리
+      - summary: 거실 데일리 청소
+        description: |-
+          - 쿠션 & 담요 정리
+          - 각종 책 & 잡지 정리
+          - 커피테이블 닦기
+          - 바닥 위 먼지 제거
+      - summary: 욕실 데일리 청소
+        description: |-
+          - 세면대 & 수도꼭지 닦기
+          - 변기 겉과 안 닦기
+          - 거울 닦기
+          - 수건 교체하기
+          - 바닥 닦기
+      - summary: 침실 데일리 청소
+        description: |-
+          - 매일 아침 침대 정리
+          - 모든 옷은 옷걸이나 빨래통에
+          - 나잇스탠드 위 정리
+      - summary: 먼지털이
+        description: 먼지털이는 매일 해야 효과가 있음!
+      - summary: 빨래 개기
+        description: https://www.youtube.com/shorts/or20JonUGGE
+      - summary: 외출 전 10분 정리
+        description: https://www.youtube.com/shorts/NKTtjHnVl7A
+      weekend:
+      - summary: 주방 주말 청소
+        description: https://www.youtube.com/shorts/14DBi8BMwd4
+      - summary: 화장실 주말 청소
+        description: https://www.youtube.com/shorts/lYEBrrXu8IU
+      - summary: 침실 주말 청소
+        description: ''
+      monthly:
+      - summary: 대청소
+        description: https://www.youtube.com/shorts/PBU-FMMS61I
+      - summary: 냉장고 청소
+        description: https://www.youtube.com/shorts/iNB2bem8uM8
+      - summary: 달력 최신화
+        description: ''
+      - summary: 면도기 날 리필
+        description: ''
+      - summary: 세탁기 통 청소
+        description: 과탄산소다와 워싱소다 1:1 (각 30g), 통세척이나 최고 온도 코스
   - action: todo.get_items
     target:
       entity_id: todo.chore
@@ -2599,20 +2651,23 @@
       status: needs_action
     response_variable: chores
   - repeat:
-      for_each:
-      - 달력 최신화
-      - 면도기 날 리필
-      - 세탁기 통 청소
+      for_each: "{% set ns = namespace(items=[]) %}{% for item in daily %}{% set ns.items
+        = ns.items + [dict(item, due=now().date() | string)] %}{% endfor %}{% if now().isoweekday()
+        == 6 %}{% for item in weekend %}{% set ns.items = ns.items + [dict(item, due=(now().date()
+        + timedelta(days=1)) | string)] %}{% endfor %}{% endif %}{% if now().day ==
+        1 %}{% for item in monthly %}{% set ns.items = ns.items + [dict(item, due=now().date()
+        | string)] %}{% endfor %}{% endif %}{{ ns.items }}"
       sequence:
       - if:
         - condition: template
-          value_template: "{{ repeat.item not in chores['todo.chore']['items'] | map(attribute='summary')
-            | list }}"
+          value_template: "{{ repeat.item.summary not in chores['todo.chore']['items']
+            | map(attribute='summary') | list }}"
         then:
         - action: todo.add_item
           target:
             entity_id: todo.chore
           data:
-            item: '{{ repeat.item }}'
-            due_date: '{{ now().date() }}'
+            item: '{{ repeat.item.summary }}'
+            description: '{{ repeat.item.description }}'
+            due_date: '{{ repeat.item.due }}'
   mode: single
