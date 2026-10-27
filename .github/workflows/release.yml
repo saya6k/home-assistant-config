@@ -32,9 +32,6 @@ jobs:
       contents: write
       issues: write
       pull-requests: write
-    outputs:
-      published: ${{ steps.release.outputs.new_release_published }}
-      version: ${{ steps.release.outputs.new_release_version }}
 
     steps:
       - name: ⤵️ Checkout at triggering SHA
@@ -81,42 +78,6 @@ jobs:
             echo "published=${PUBLISHED}"
             echo "version=${VERSION}"
           } >> "${GITHUB_STEP_SUMMARY}"
-
-  restart-addon:
-    name: 🔄 Restart Git Pull Addon
-    needs: release
-    if: >
-      github.repository == 'saya6k/home-assistant-config' &&
-      needs.release.outputs.published == 'true'
-    runs-on: ubuntu-latest
-    permissions: {}
-    steps:
-      - name: Restart Git Pull via HA API
-        env:
-          HA_URL: ${{ secrets.HA_URL }}
-          HA_TOKEN: ${{ secrets.HA_TOKEN }}
-        run: |
-          set -euo pipefail
-          # Defensive: re-mask the token in case the runner did not pick it up
-          # via the secrets context (e.g. when called through workflow_run).
-          echo "::add-mask::${HA_TOKEN}"
-
-          # Validate URL scheme — refuse to send the bearer token over plaintext
-          # or to an unexpected origin.
-          case "${HA_URL}" in
-            https://*) ;;
-            *)
-              echo "HA_URL must use https://" >&2
-              exit 1
-              ;;
-          esac
-
-          curl --fail-with-body --silent --show-error --no-progress-meter \
-            -X POST "${HA_URL%/}/api/services/hassio/addon_restart" \
-            -H "Authorization: Bearer ${HA_TOKEN}" \
-            -H "Content-Type: application/json" \
-            --data '{"addon":"core_git_pull"}' \
-            -o /dev/null
 
 # Note: GitHub Pages deployment is owned by the dedicated `Deploy docs`
 # workflow (.github/workflows/pages.yml), which builds the docs with
