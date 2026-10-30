@@ -4,7 +4,7 @@ title: 스토리지
 
 # 스토리지
 
-상태 데이터, 장기 메트릭, 그리고 빈번하게 갱신되는 런타임 파일을 어떻게 나눠 저장하는지 정리합니다.
+상태 데이터와 빈번하게 갱신되는 런타임 파일을 어떻게 나눠 저장하는지 정리합니다.
 
 ## Recorder = 원격 MariaDB 단일 계층
 
@@ -16,7 +16,7 @@ title: 스토리지
 
 > 이전엔 로컬 MariaDB 애드온을 썼으나, 로컬을 stateless로 운영하면서 원격 TrueNAS의 MariaDB로 이전했습니다. ([retired](../retired.md) 참조)
 
-장기 메트릭은 [옵저버빌리티](../observability.md)에서 별도로 다룹니다 — OpenTelemetry Collector(`otelcol`) sidecar가 HA의 Prometheus 엔드포인트를 스크래핑해 원격 otelcol gateway 로 전송, 거기서 Prometheus/Loki/Tempo 로 분기됩니다.
+Recorder DB 자체의 상태(크기, 느린 쿼리, 스레드 수)는 SQL 통합 센서로 수집합니다 — [옵저버빌리티](../observability.md) 참조.
 
 ## Recorder (원격 MariaDB)
 

@@ -8,35 +8,35 @@ title: 에너지
 
 ## 통합
 
-| 통합                         | 출처               | 측정                     |
-| ---------------------------- | ------------------ | ------------------------ |
-| KEPCO                        | `kr_component_kit` | 전기 사용량, 누진세 추정 |
-| Arisu (수돗물)               | `kr_component_kit` | 수도 사용량              |
-| GasApp                       | `kr_component_kit` | 가스 청구 / 사용량       |
-| Electricity Maps (co2signal) | 기본 통합          | 전력망의 탄소 강도       |
+| 통합                         | 출처                      | 측정                                                                   |
+| ---------------------------- | ------------------------- | ---------------------------------------------------------------------- |
+| 한전 (KEPCO)                 | `kr_public_data` (커스텀) | 전기 사용량, 요금 추정                                                 |
+| Shelly                       | 기본 통합 (+ Matter)      | Shelly EM Mini Gen4 ×2, Shelly Power Strip 4 Gen4 — 회로·콘센트별 전력 |
+| 유가정보                     | `kr_public_data` (커스텀) | 주변 주유소 유가                                                       |
+| Electricity Maps (co2signal) | 기본 통합                 | 전력망의 탄소 강도                                                     |
 
-## 도메인별 합계
+## 가스 · 수도
 
-대시보드와 자동화는 다음 분류로 사용량을 합산합니다 (template 센서로 구현):
+가스와 수도는 UI 에서 만든 헬퍼로 집계합니다.
 
-- HVAC (에어컨, 제습기)
-- 조명
-- 미디어 플레이어
-- 주방 가전 (전자레인지, 커피머신)
-- 전체 합계 (전기/가스/수도)
+| 헬퍼          | 엔티티                                                                                  |
+| ------------- | --------------------------------------------------------------------------------------- |
+| Template      | `Utility Total Gas/Water`, `Utility Last Day Gas/Water`, `Utility Last Month Gas/Water` |
+| Utility Meter | `Utility This Day Gas/Water`, `Utility This Month Gas/Water`                            |
 
 ## 데이터 저장
 
-[스토리지](./platform/storage.md) (단기, Recorder/MariaDB) + [옵저버빌리티](./observability.md) (장기 메트릭 — otelcol → Prometheus).
+[스토리지](./platform/storage.md) (Recorder / 원격 MariaDB) 의 장기 통계(long-term statistics)로 보관합니다.
 
 ## 대시보드
 
-Lovelace의 Energy 서브뷰. 스크린샷은 [대시보드](./dashboards.md) 페이지에 있습니다.
+HA 기본 Energy 대시보드에는 현재 **가스·수도** 소스만 등록되어 있습니다 (전력망·개별 기기 소비는 미등록). 스크린샷은 [대시보드](./dashboards.md) 페이지에 있습니다.
 
 ## 관련 자동화
 
 - **창문 열림 시 공조 자동 제어 (열림)** / **창문 닫힘 시 공조 자동 제어 (닫힘)**
 - **화장실 습도 50% 미만일 때 제습기 끄기** / **화장실 습도 70% 초과 시 제습기 켜기**
+- **건조대 열림 시 제습기 빨래건조 모드**
 - **고농도 이산화탄소 환기 알림**
 
 ## 정리 권장

@@ -1,19 +1,7 @@
 {#-
-docs/dashboards.md — Lovelace plugins table from `hacs_components` (plugin category).
-Themes are file-based (not in HA state), so that section stays static.
+docs/dashboards.md — static page. Lovelace plugins come from Marketplace, which
+jinja_files has no context for, so the plugin table is maintained by hand.
 -#}
-{%- set plugins = hacs_components | selectattr('category', 'equalto', 'plugin') | sort(attribute='name') | list -%}
-{%- set plugin_descriptions = {
-    'Auto Entities': '🔹 엔티티 목록을 동적으로 채워주는 카드',
-    'Button Card': '❇️ 강력한 커스텀 버튼 카드',
-    'Bubble Card': '💧 둥근 UI의 모던 카드 세트',
-    'Card Mod': '🔹 거의 모든 Lovelace 카드에 CSS 주입',
-    'Decluttering Card': '🧹 반복되는 카드 정의를 템플릿화',
-    'Homeii Flow': 'Music Assistant용 프리미엄 카드',
-    'Hui Element': '🔹 내장 엘리먼트를 자유 위치에',
-    'Mushroom': '🍄 부드러운 톤의 통합 카드 세트',
-    'Template Entity Row': '🔹 entities 카드의 행을 자유롭게',
-} -%}
 ---
 title: 대시보드
 ---
@@ -28,6 +16,13 @@ Lovelace는 **storage 모드** 로 운영합니다 (`configuration.yaml`의 `lov
 - **반응형**: 섹션 폭을 초기 3에서 2로 줄여 월패드 등 작은 화면에서도 보기 좋게.
 - **단일 인터페이스**: 좌측 단축 탭 숨김, 모든 정보를 한 Lovelace 화면에서.
 - **HomeKit 영감**: 아이폰 사용자에 맞춰 Apple HomeKit 스타일 차용.
+
+## 대시보드 목록
+
+| 대시보드 | 경로 | 비고 |
+| --- | --- | --- |
+| 기본 (Overview) | `lovelace` | `.storage/lovelace` 가 없어 HA가 자동 생성 |
+| 3D | `dashboard-3d` | floor3d-card 로 구성한 평면도 기반 3D 대시보드 |
 
 ## 주요 기능
 
@@ -56,13 +51,14 @@ Lovelace는 **storage 모드** 로 운영합니다 (`configuration.yaml`의 `lov
 
 ## Lovelace 플러그인
 
-`configuration.yaml`의 `frontend.extra_module_url`에 `card-mod`가 등록되어 있고, 나머지는 HACS를 통해 `.storage/lovelace_resources`에 등록됩니다. 현재 **{{ plugins | count }}개** 의 HACS 플러그인이 설치되어 있습니다.
+HACS 대신 Home Assistant 내장 **Marketplace** 로 설치하며, `www/community/` 에 받아 `.storage/lovelace_resources` 에 등록합니다.
 
 | 이름 | 설명 |
 | --- | --- |
-{%- for p in plugins %}
-| [{{ p.name }}]({{ p.documentation }}) | {{ plugin_descriptions.get(p.name, p.description or '') }} |
-{%- endfor %}
+| [floor3d-card](https://github.com/giosci1994/floor3d-card) | 3D 모델 위에 엔티티 상태를 표시하는 카드 |
+| [ha-homelab-map](https://github.com/kjanas/ha-homelab-map) | 직접 배치하는 홈랩 실시간 맵 카드 |
+
+`/local/floor3d/weather.js` 도 리소스로 등록되어 있습니다. `configuration.yaml` 의 `frontend.extra_module_url`(예전 `card-mod`)은 주석 처리되어 있습니다.
 
 ## 테마
 

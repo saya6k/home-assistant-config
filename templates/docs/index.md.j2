@@ -1,4 +1,4 @@
-{#- docs/index.md — rendered by jinja2docs. Insights table + HA version dynamic. -#}
+{#- docs/index.md — rendered by jinja_files. Insights table + HA version dynamic. -#}
 {%- set ha_version = states('sensor.home_assistant_versions') or '알 수 없음' -%}
 {%- set n_auto = states.automation | count -%}
 {%- set n_binary = states.binary_sensor | count -%}
@@ -10,7 +10,7 @@
 {%- set total = states | count -%}
 {%- set n_other = total - n_auto - n_binary - n_tracker - n_light - n_media - n_sensor - n_switch -%}
 {%- set n_addons = addons | count -%}
-{%- set n_hacs_int = hacs_components | selectattr('category', 'equalto', 'integration') | list | count -%}
+{%- set n_custom = custom_components | count -%}
 ---
 title: 홈
 ---
@@ -31,22 +31,22 @@ title: 홈
   <a href="https://www.buymeacoffee.com/my7nmfcm92k"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?logo=buymeacoffee&logoColor=000" alt="Buy Me a Coffee"></a>
 </p>
 
-2018년부터 운영 중인 개인 Home Assistant 설정입니다. 현재 **{{ total }}개 엔티티**, **{{ n_hacs_int }}개 HACS 통합**, **{{ n_addons }}개 애드온**으로 구성되어 있습니다.
+2018년부터 운영 중인 개인 Home Assistant 설정입니다. 현재 **{{ total }}개 엔티티**, **{{ n_custom }}개 커스텀 통합**, **{{ n_addons }}개 애드온**으로 구성되어 있습니다.
 
 > [!CAUTION]
-> 가정 환경은 계속 진화합니다. **이 문서가 최신이 아닐 수 있다는 점을 감안해 주세요** — 가능한 한 자주 갱신하려 노력하고 있습니다. (`jinja2docs.render` 로 자동 갱신)
+> 가정 환경은 계속 진화합니다. **이 문서가 최신이 아닐 수 있다는 점을 감안해 주세요** — 가능한 한 자주 갱신하려 노력하고 있습니다. (`jinja_files.render` 로 자동 갱신)
 
 ## 시스템 한눈에 보기
 
 ```
-┌─ 하드웨어   │ Piesia AD742A + Raspberry Pi 5, UniFi (로컬+원격), Matter/Thread/Wi-Fi
-├─ 플랫폼     │ HAOS (로컬, stateless) · 원격 TrueNAS (Recorder MariaDB, 옵저버빌리티 백엔드)
-├─ 통합       │ 100+ 기본 통합 + {{ n_hacs_int }} 커스텀 컴포넌트 + ESPHome 디바이스 3종
-├─ 자동화     │ {{ n_auto }} 자동화 (한국어 중심) · 시나리오/장면 다수
-├─ 대시보드   │ Lovelace storage 모드 + Mushroom/Bubble Card/Card Mod
-├─ 음성·AI    │ Whisper · Supertonic-MNN · Ollama · Voice Satellite · LLM 대화 에이전트 다중
-├─ 옵저버빌리티│ otelcol agent (로컬) ─VPN─▶ otelcol gateway (원격) ─▶ Prometheus / Loki / Tempo ─▶ Grafana
-├─ 백업       │ 로컬 3개 + 원격 TrueNAS 1개 + Nabu Casa Cloud 1개
+┌─ 하드웨어   │ Raspberry Pi 5 (HAOS), UniFi (로컬+원격), Matter/Thread/Wi-Fi
+├─ 플랫폼     │ HAOS (로컬, stateless) · 원격 TrueNAS (Recorder MariaDB, 백업)
+├─ 통합       │ 100+ 기본 통합 + {{ n_custom }} 커스텀 통합 (Marketplace) + ESPHome 디바이스 6대
+├─ 자동화     │ {{ n_auto }} 자동화 (한국어 중심) · 스크립트/장면 다수
+├─ 대시보드   │ Lovelace storage 모드 + floor3d-card (3D 대시보드)
+├─ 음성·AI    │ HA Cloud STT · Supertonic TTS · OpenAI/Claude/Gemini/llama.cpp · LLM 도구 스크립트
+├─ 옵저버빌리티│ SQL 통합 기반 RDB 지표 · System Monitor · alert 패키지
+├─ 백업       │ 매일 자동 백업 → 로컬 + 원격 TrueNAS + Nabu Casa Cloud (3개 보관)
 └─ 서비스     │ Paperless-ngx · Pocket ID  (모두 원격 TrueNAS)
 ```
 
@@ -75,8 +75,8 @@ title: 홈
     - [애드온](./platform/add-ons.md) — {{ n_addons }} 등록
 - 통합
     - [개요](./integrations/index.md) — 100+ 통합 목록
-    - [커스텀 컴포넌트](./integrations/custom-components.md) — {{ n_hacs_int }} HACS 통합
-    - [ESPHome](./integrations/esphome.md) — 월패드, 인터폰, 음성 위성
+    - [커스텀 컴포넌트](./integrations/custom-components.md) — {{ n_custom }}개
+    - [ESPHome](./integrations/esphome.md) — 월패드, 인터폰, 음성 디바이스
 - [자동화](./automations.md) — {{ n_auto }}개
 - [대시보드](./dashboards.md)
 - [음성과 AI](./voice-and-ai.md)

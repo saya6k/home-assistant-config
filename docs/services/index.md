@@ -13,10 +13,12 @@ title: 서비스
 
 ## HA 통합과의 연계
 
-| 서비스        | HA 통합                                                                                         |
-| ------------- | ----------------------------------------------------------------------------------------------- |
-| Paperless-ngx | [`paperless_ngx`](https://www.home-assistant.io/integrations/paperless_ngx/) — 원격 URL 로 연결 |
-| Pocket ID     | OIDC (계획), [`hass-oidc-auth`](https://github.com/christiaangoossens/hass-oidc-auth) 페어링    |
+| 서비스        | HA 통합                                                                                          |
+| ------------- | ------------------------------------------------------------------------------------------------ |
+| Paperless-ngx | [`paperless_ngx`](https://www.home-assistant.io/integrations/paperless_ngx/) — 원격 URL 로 연결  |
+| Pocket ID     | 현재 연동 없음 ([`hass-oidc-auth`](https://github.com/christiaangoossens/hass-oidc-auth) 미사용) |
+
+그 밖에 Jellyfin, Plex, Immich, Mealie, Traccar, Transmission, AdGuard Home 도 HA 밖에서 운영하며 각 HA 통합으로만 연결합니다.
 
 > [!NOTE]
 > 이전에 운영했던 Grocy, Firefly III, 자체 메일 서버는 [보관소](../retired.md)에 정리되어 있습니다.
