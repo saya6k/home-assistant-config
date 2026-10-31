@@ -1,3 +1,9 @@
+## [1.12.0](https://github.com/saya6k/home-assistant-config/compare/v1.11.1...v1.12.0) (2026-10-27)
+
+### Features
+
+* Add daily, weekend, and monthly cleaning routines to the chore list ([#20](https://github.com/saya6k/home-assistant-config/issues/20)) ([d0e5de0](https://github.com/saya6k/home-assistant-config/commit/d0e5de07a643e97365c9ad920f44ff2a3e009eec))
+
 ## [1.11.1](https://github.com/saya6k/home-assistant-config/compare/v1.11.0...v1.11.1) (2026-10-26)
 
 ### Bug Fixes
