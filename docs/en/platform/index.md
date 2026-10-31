@@ -8,29 +8,25 @@ Operational infrastructure around Home Assistant Core — networking, data stora
 
 ## Host
 
-- **OS**: Home Assistant OS (channel: `stable`)
-- **Hardware**: board `Generic x86-64` (Piesia AD742A · Intel N150 pico-itx · 16 GB RAM)
-- **Version**: `2026.5.4`
-- **Operating principle**: local is **stateless**. Anything stateful (metrics/logs/traces backends, Recorder DB) lives on the remote TrueNAS.
+- **OS**: Home Assistant OS 18.4 (channel: `beta`)
+- **Hardware**: board `rpi5-64` (Raspberry Pi 5 · 128 GB NVMe data disk)
+- **Version**: `2026.10.4`
+- **Operating principle**: local is **stateless**. Anything stateful (Recorder DB, backup copies) lives on the remote TrueNAS.
 
 ## Operational layout
 
 Local and remote components are joined by a site-to-site VPN into a single logical system.
 
-| Area                     | Choice                                                | Location                        | Notes                                                             |
-| ------------------------ | ----------------------------------------------------- | ------------------------------- | ----------------------------------------------------------------- |
-| Recorder DB              | MariaDB                                               | Remote TrueNAS                  | Over VPN, external URL in `secrets.yaml`. `commit_interval: 120s` |
-| Metrics-collection agent | OpenTelemetry Collector (`otelcol`)                   | Local HA sidecar                | Scrapes HA's `/api/prometheus` + exports logs → remote gateway    |
-| Observability gateway    | OpenTelemetry Collector (gateway mode)                | Remote TrueNAS                  | Routing hub for metrics / logs / traces                           |
-| Metrics backend          | Prometheus                                            | Remote TrueNAS                  |                                                                   |
-| Log backend              | Grafana Loki                                          | Remote TrueNAS                  |                                                                   |
-| Trace backend            | Grafana Tempo                                         | Remote TrueNAS                  | OTLP traces                                                       |
-| Visualization            | Grafana                                               | Remote TrueNAS                  | Prometheus + Loki + Tempo data sources                            |
-| TLS termination          | NGINX Home Assistant SSL Proxy                        | Local (HA add-on)               | Let's Encrypt certs, auto-renewal automation                      |
-| Auth                     | HA built-in + OIDC (`hass-oidc-auth` validated in CI) | Local client → remote Pocket ID | [Pocket ID](../services/pocket-id.md) runs on TrueNAS             |
-| Document management      | Paperless-ngx (HA integration)                        | Local client → remote Paperless | [Paperless-ngx](../services/paperless.md) runs on TrueNAS         |
-| DNS / ad blocking        | AdGuard Home add-on                                   | Local                           |                                                                   |
-| Code sync                | Git Pull add-on                                       | Local                           | Restarted via HA API at the end of the release workflow           |
+| Area                | Choice                                 | Location                        | Notes                                                                                 |
+| ------------------- | -------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------- |
+| Recorder DB         | MariaDB                                | Remote TrueNAS                  | Over VPN, external URL in `secrets.yaml`. `commit_interval: 120s`                     |
+| DB monitoring       | SQL integration                        | Local                           | Recorder DB size, slow queries, thread sensors ([Observability](../observability.md)) |
+| Backup copies       | Network storage (`TrueNAS_Backup`)     | Remote TrueNAS                  | Daily automatic backups ([Backups](../backups.md))                                    |
+| TLS termination     | NGINX Home Assistant SSL Proxy         | Local (HA add-on)               | Let's Encrypt certs, auto-renewal automation                                          |
+| Auth                | HA built-in (`homeassistant` provider) | Local                           | No OIDC in the current config ([Pocket ID](../services/pocket-id.md))                 |
+| Document management | Paperless-ngx (HA integration)         | Local client → remote Paperless | [Paperless-ngx](../services/paperless.md) runs on TrueNAS                             |
+| DNS / ad blocking   | AdGuard Home (HA integration)          | Remote                          | Local add-on removed; the integration only mirrors status/switches                    |
+| Code sync           | `/config` git clone                    | Local                           | Git Pull add-on removed; commits/pulls are done on the server directly                |
 
 ## Pages
 

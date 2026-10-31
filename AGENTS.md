@@ -73,7 +73,8 @@ ESPHome configurations are in `esphome/` directory:
 
 - **Lovelace**: Storage mode only (UI-managed dashboards in `.storage/`); no `ui-lovelace.yaml` is used
 - **Themes**: Custom themes in `themes/` directory (`Frosted Glass Light/`)
-- **Custom Cards**: Installed via Marketplace into `www/community/` and registered in `.storage/lovelace_resources` (currently `floor3d-card`, `ha-homelab-map`, plus `/local/floor3d/weather.js`)
+- **Custom Cards**: Registered in `.storage/lovelace_resources`: `floor3d-card` and `ha-homelab-map` from Marketplace (`www/community/`), plus the local `/local/floor3d/weather.js`, `/local/smarthome3d/smarthome3d-card.js` and `/local/appletv-card.js`
+- **3D dashboard**: `dashboard-smarthome` uses `smarthome3d-card` with the model at `www/floor3d/home.glb`. `www/` and the dashboard's storage file are not in git, so both live only on the server; bump the `?v=` of the resource or model URL after changing them
 - **Extra Modules**: None — the old `card-mod` entry under `frontend.extra_module_url` is commented out
 
 ### Add-ons
