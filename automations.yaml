@@ -75,6 +75,8 @@
     - action: script.message_broadcast
       metadata: {}
       data:
+        default_target:
+          area_id: bathroom
         message: 양치 하셨나요? 양치를 하세요
     else:
     - action: notify.send_message
@@ -812,6 +814,8 @@
         - action: script.message_broadcast
           metadata: {}
           data:
+            default_target:
+              area_id: bedroom
             message: '{% if has_value(''sensor.bedroom_awair_carbon_dioxide'') %}
 
               현재 집 안 이산화탄소 농도는 {{ states(''sensor.bedroom_awair_carbon_dioxide'')
@@ -1238,6 +1242,8 @@
     - action: script.message_broadcast
       metadata: {}
       data:
+        default_target:
+          area_id: living_room
         message: '날씨 알림.
 
 
@@ -1968,6 +1974,8 @@
     - action: script.message_broadcast
       metadata: {}
       data:
+        default_target:
+          entity_id: "{{ states.assist_satellite | rejectattr('state', 'in', ['unavailable', 'unknown']) | map(attribute='entity_id') | list }}"
         message: 보일러에서 일산화탄소 누출이 감지되었습니다.
   - action: notify.mobile_app_ys_iphoneair
     metadata: {}
@@ -2236,6 +2244,8 @@
         }}'
   - action: script.message_broadcast
     data:
+      default_target:
+        area_id: "{{ area_id(trigger.entity_id) or 'living_room' }}"
       message: "{% if event_type == '' %}\n  ⚠️ {{ friendly_name }}에서 알림이 발생했습니다.
         ThinQ 앱에서 자세한 내용을 확인하세요.\n\n{# ===================== 스타일러 =====================
         #} {% elif friendly_name == '스타일러 오류' %}\n\n  {% if event_type == 'styling_is_complete'
@@ -2610,6 +2620,8 @@
     then:
     - action: script.message_broadcast
       data:
+        default_target:
+          area_id: living_room
         message: '{{ sender }}님, {{ app_name }}에 인증 관련 메시지가 도착했습니다.'
     else:
     - alias: AI로 알림 판단 및 발표 문장 만들기
@@ -2655,6 +2667,8 @@
       - stop: AI가 읽지 않을 알림(광고·잡담 등)으로 판단
     - action: script.message_broadcast
       data:
+        default_target:
+          area_id: living_room
         message: "{% set speech = (result.data.speech | default('', true) | string
           | trim) if ai_ok else '' %}\n{% if speech %}\n  {{ speech }}\n{% elif subtitle
           | trim %}\n  {{ sender }}, {{ subtitle }}님 {{ app_name }}: {{ body | truncate(200,
@@ -2712,6 +2726,8 @@
   actions:
   - action: script.message_broadcast
     data:
+      default_target:
+        area_id: living_room
       message: '{% set d = trigger.event.data %}{{ d.app_name }} 알림: {{ d.title }}.
         {{ d.message | truncate(200) if d.message else '''' }}'
   mode: queued

@@ -838,8 +838,8 @@ unknown_10:
   description: 선택된 엔티티의 업데이트 정보를 AI로 분석하여 전체 요약, 주요 기능, 버그 수정, 주의사항을 포함하는 영구 알림을 생성합니다.
 message_broadcast:
   alias: 메시지 방송 (Message Broadcast)
-  description: '점유된 Area의 Satellite에 방송하고, 점유된 Area가 없으면 지정한 Target에 방송합니다. Target이
-    지정되지 않으면 모든 Satellite에 방송합니다.
+  description: 'Default Target이 있으면 그 구역에만 방송합니다. 없으면 점유된 Area의 Satellite에,
+    점유된 Area도 없으면 모든 Satellite에 방송합니다.
 
     '
   fields:
@@ -852,7 +852,7 @@ message_broadcast:
           multiline: true
     default_target:
       name: Default Target
-      description: '점유된 Area가 없을 때 사용할 대상 (Area, Device, Entity 모두 가능)
+      description: '방송할 대상. 지정하면 재실과 상관없이 여기에만 방송합니다 (Area, Device, Entity 모두 가능)
 
         '
       required: false
@@ -873,7 +873,18 @@ message_broadcast:
         %}\n    {% set ns.items = ns.items + found.satellites %}\n  {% endif %}\n\n{%
         endfor %}\n{{ ns.items }}\n"
   - choose:
-    - conditions:
+    - alias: 지정한 구역이 있으면 재실과 상관없이 그 구역에만 방송
+      conditions:
+      - condition: template
+        value_template: "{{ default_target is defined\n   and default_target not in\
+          \ (none, '', {}) }}\n"
+      sequence:
+      - action: assist_satellite.announce
+        target: '{{ default_target }}'
+        data:
+          message: '{{ message }}'
+    - alias: 지정이 없으면 재실 구역에 방송
+      conditions:
       - condition: template
         value_template: '{{ occupied_satellites | count > 0 }}'
       sequence:
@@ -883,22 +894,12 @@ message_broadcast:
         data:
           message: '{{ message }}'
     default:
-    - if:
-      - condition: template
-        value_template: "{{ default_target is defined\n   and default_target not in
-          (none, '', {}) }}\n"
-      then:
-      - action: assist_satellite.announce
-        target: '{{ default_target }}'
-        data:
-          message: '{{ message }}'
-      else:
-      - action: assist_satellite.announce
-        target:
-          entity_id: "{{ states.assist_satellite\n   | rejectattr('state', 'in', ['unavailable',
-            'unknown'])\n   | map(attribute='entity_id')\n   | list }}\n"
-        data:
-          message: '{{ message }}'
+    - action: assist_satellite.announce
+      target:
+        entity_id: "{{ states.assist_satellite\n   | rejectattr('state', 'in', ['unavailable',\
+          \ 'unknown'])\n   | map(attribute='entity_id')\n   | list }}\n"
+      data:
+        message: '{{ message }}'
   mode: queued
   max: 5
 unknown_11:
