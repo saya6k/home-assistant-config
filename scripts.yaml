@@ -838,8 +838,8 @@ unknown_10:
   description: 선택된 엔티티의 업데이트 정보를 AI로 분석하여 전체 요약, 주요 기능, 버그 수정, 주의사항을 포함하는 영구 알림을 생성합니다.
 message_broadcast:
   alias: 메시지 방송 (Message Broadcast)
-  description: 'Default Target이 있으면 그 구역에만 방송합니다. 없으면 점유된 Area의 Satellite에,
-    점유된 Area도 없으면 모든 Satellite에 방송합니다.
+  description: 'Default Target의 켜진 Satellite에만 방송합니다. 지정이 없거나 방송할 수 없으면 점유된 Area의
+    Satellite에, 그것도 없으면 모든 Satellite에 방송합니다.
 
     '
   fields:
@@ -862,6 +862,13 @@ message_broadcast:
             domain: assist_satellite
   sequence:
   - variables:
+      target_satellites: >-
+        {% set t = default_target if default_target is defined and default_target is mapping else {} %}
+        {% set ns = namespace(items=[]) %}
+        {% for e in [t.get('entity_id', [])] | flatten %}{% set ns.items = ns.items + [e] %}{% endfor %}
+        {% for x in [t.get('area_id', [])] | flatten %}{% set ns.items = ns.items + area_entities(x) %}{% endfor %}
+        {% for x in [t.get('device_id', [])] | flatten %}{% set ns.items = ns.items + device_entities(x) %}{% endfor %}
+        {{ ns.items | unique | select('match', 'assist_satellite\\.') | select('has_value') | list }}
       occupied_satellites: "{% set ns = namespace(items=[]) %}\n{% for area in areas()
         %}\n\n  {% set found = namespace(satellites=[], occupied=false) %}\n\n  {%
         for entity in area_entities(area) %}\n\n    {% if entity.startswith('assist_satellite.')\n
@@ -873,17 +880,17 @@ message_broadcast:
         %}\n    {% set ns.items = ns.items + found.satellites %}\n  {% endif %}\n\n{%
         endfor %}\n{{ ns.items }}\n"
   - choose:
-    - alias: 지정한 구역이 있으면 재실과 상관없이 그 구역에만 방송
+    - alias: 지정한 구역에 켜진 스피커가 있으면 그 스피커에만 방송
       conditions:
       - condition: template
-        value_template: "{{ default_target is defined\n   and default_target not in\
-          \ (none, '', {}) }}\n"
+        value_template: '{{ target_satellites | count > 0 }}'
       sequence:
       - action: assist_satellite.announce
-        target: '{{ default_target }}'
+        target:
+          entity_id: '{{ target_satellites }}'
         data:
           message: '{{ message }}'
-    - alias: 지정이 없으면 재실 구역에 방송
+    - alias: 지정이 없거나 방송할 수 없으면 재실 구역에 방송
       conditions:
       - condition: template
         value_template: '{{ occupied_satellites | count > 0 }}'
