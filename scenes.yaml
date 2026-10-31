@@ -406,12 +406,13 @@
     climate.air_conditioner:
       hvac_modes:
       - 'off'
-      - auto
-      - fan_only
       - cool
+      - fan_only
+      - auto
       - dry
-      min_temp: 7
-      max_temp: 35
+      min_temp: 16
+      max_temp: 30
+      target_temp_step: 0.5
       fan_modes:
       - slow_low
       - low
@@ -425,11 +426,12 @@
       swing_horizontal_modes:
       - 'on'
       - 'off'
-      current_temperature: 27.5
+      current_temperature: 29.5
+      temperature_unit: °C
       temperature:
-      current_humidity: 67
-      fan_mode: slow_low
-      swing_mode: 'off'
+      current_humidity: 43
+      fan_mode: high
+      swing_mode: 'on'
       swing_horizontal_mode: 'on'
       friendly_name: 에어컨
       supported_features: 937
@@ -445,20 +447,6 @@
     switch.flux:
       friendly_name: Flux
       state: 'off'
-    fan.living_room_air_purifier:
-      preset_modes:
-      - Auto
-      - Normal
-      direction: forward
-      oscillating: true
-      percentage:
-      percentage_step: 10
-      preset_mode: Auto
-      angle_low: 135
-      angle_high: 225
-      friendly_name: '공기청정기 '
-      supported_features: 63
-      state: 'off'
     cover.bedroom_main_curtain:
       is_closed: false
       current_position: 100
@@ -466,43 +454,6 @@
       friendly_name: 침실 겉커튼
       supported_features: 15
       state: open
-    select.bathroom_dehumidifier_operating_mode:
-      options:
-      - intensive_dry
-      - quiet_humidity
-      - rapid_humidity
-      - smart_humidity
-      friendly_name: 제습기 운전 모드
-      state: smart_humidity
-    switch.bathroom_dehumidifier_power:
-      device_class: switch
-      friendly_name: 제습기 파워
-      state: 'off'
-    select.bathroom_dehumidifier_speed:
-      options:
-      - high
-      - low
-      - mid
-      - auto
-      friendly_name: 제습기 속도
-      state: auto
-    humidifier.bathroom_dehumidifier:
-      min_humidity: 30
-      max_humidity: 70
-      target_humidity_step: 5
-      available_modes:
-      - intensive_dry
-      - quiet_humidity
-      - rapid_humidity
-      - smart_humidity
-      action: 'off'
-      current_humidity: 58
-      humidity: 50
-      mode: smart_humidity
-      device_class: dehumidifier
-      friendly_name: 제습기
-      supported_features: 1
-      state: 'off'
     media_player.hwajangsil:
       group_members: []
       volume_level: 1
@@ -516,7 +467,7 @@
       mass_player_type: player
       active_queue: up20f83b094eeb
       device_class: speaker
-      icon: speaker
+      icon: mdi:speaker
       friendly_name: 화장실
       supported_features: 8320575
       state: idle
@@ -541,21 +492,6 @@
       icon: mdi:mirror
       friendly_name: 거실 화장대
       supported_features: 32
-      state: 'off'
-    climate.boilreo:
-      hvac_modes:
-      - 'off'
-      - heat
-      min_temp: 5
-      max_temp: 40
-      current_temperature: 24
-      temperature: 24
-      friendly_name: 보일러
-      supported_features: 385
-      state: 'off'
-    switch.boilreo:
-      device_class: outlet
-      friendly_name: 보일러
       state: 'off'
     light.kajplats_e26_ws_globe_1521lm:
       min_color_temp_kelvin: 2202
@@ -583,6 +519,7 @@
       - NordVPN
       - Plex
       - Sing
+      - Spotify
       - Steam Link
       - Swiftfin tvOS
       - TV
@@ -596,12 +533,9 @@
       - 컴퓨터
       - 쿠팡플레이
       - 팟캐스트
-      media_position_updated_at: '2026-08-31T01:53:44.103624+00:00'
-      app_id: com.apple.TVAirPlay
-      app_name: AirPlay
       friendly_name: 거실 Apple TV
       supported_features: 450487
-      state: paused
+      state: 'off'
     remote.living_room_apple_tv:
       friendly_name: 거실 Apple TV
       supported_features: 0
