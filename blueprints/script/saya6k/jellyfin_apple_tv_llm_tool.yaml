@@ -28,6 +28,17 @@ blueprint:
           filter:
             - integration: apple_tv
               domain: remote
+    jellyfin_player:
+      name: Jellyfin session of the Apple TV
+      description: >-
+        The Jellyfin media player of the app on the Apple TV. Current playback
+        is stopped through it before another item is opened, because the app
+        ignores the Apple TV's own stop command.
+      selector:
+        entity:
+          filter:
+            - integration: jellyfin
+              domain: media_player
     jellyfin_entry:
       name: Jellyfin integration
       description: The Jellyfin server whose items are opened in the app.
@@ -48,8 +59,10 @@ blueprint:
       selector:
         boolean:
     play_delay:
-      name: Auto play delay
-      description: Seconds to wait for the app to open the item page before pressing Select.
+      name: Item page delay
+      description: >-
+        Seconds to wait for the app to open the item page, before the deep link
+        is sent again and before Select is pressed for auto play.
       default: 5
       selector:
         number:
@@ -168,6 +181,7 @@ fields:
 variables:
   apple_tv: !input apple_tv
   apple_tv_remote: !input apple_tv_remote
+  jellyfin_player: !input jellyfin_player
   jellyfin_entry: !input jellyfin_entry
   user_id: !input user_id
   auto_play: !input auto_play
@@ -175,7 +189,7 @@ variables:
   max_results: !input max_results
   root_id: media-source://jellyfin
   # Accept either a bare Jellyfin item id or a full media source id
-  item_id: "{{ (id | default('', true) | string).split('/') | last }}"
+  item_id: "{{ (id | default('', true) | string).split('/') | last | replace('-', '') }}"
 
 sequence:
   - choose:
@@ -282,14 +296,31 @@ sequence:
                   entity_id: "{{ apple_tv }}"
               - delay:
                   seconds: 2
-          - action: media_player.play_media
-            target:
-              entity_id: "{{ apple_tv }}"
-            data:
-              media_content_type: url
+          # Opening an item while one is playing leaves the old player running
+          # behind the new one, so stop it first and reject if it keeps playing
+          - if: "{{ is_state(jellyfin_player, ['playing', 'paused', 'buffering']) }}"
+            then:
+              - action: media_player.media_stop
+                target:
+                  entity_id: "{{ jellyfin_player }}"
+              # Wait past the integration's 10 s session poll for the real state
+              - delay:
+                  seconds: 11
+              - if: "{{ is_state(jellyfin_player, ['playing', 'paused', 'buffering']) }}"
+                then:
+                  - variables:
+                      result:
+                        error: >-
+                          Could not stop what is already playing, so nothing
+                          new was opened. Ask the user to stop the current
+                          playback on the Apple TV first.
+                        now_playing: "{{ state_attr(jellyfin_player, 'media_title') }}"
+                  - stop: ""
+                    response_variable: result
+          - variables:
               # The server id is the identifier of the integration's server device
-              # (the one without a parent device); built inline so it stays a string
-              media_content_id: >-
+              # (the one without a parent device)
+              deep_link_base: >-
                 {%- set ns = namespace(id='') -%}
                 {%- for e in integration_entities('jellyfin')
                       if config_entry_id(e) == jellyfin_entry -%}
@@ -298,7 +329,27 @@ sequence:
                     {%- set ns.id = (device_attr(d, 'identifiers') | list | first)[1] -%}
                   {%- endif -%}
                 {%- endfor -%}
-                swiftfin://{{ ns.id }}/{{ user_id }}/item/{{ item_id }}
+                swiftfin://{{ ns.id }}/{{ user_id }}/item/
+          # When the link switches the app's user, Swiftfin (1.6.1) drops the
+          # item route and keeps it pending, and the same link again does not
+          # count as a change. The item id in GUID form is a different link to
+          # the same item, so the second open always goes through.
+          - action: media_player.play_media
+            target:
+              entity_id: "{{ apple_tv }}"
+            data:
+              media_content_type: url
+              media_content_id: "{{ deep_link_base ~ item_id }}"
+          - delay:
+              seconds: "{{ play_delay | int }}"
+          - action: media_player.play_media
+            target:
+              entity_id: "{{ apple_tv }}"
+            data:
+              media_content_type: url
+              media_content_id: >-
+                {{ deep_link_base }}{{ item_id[0:8] }}-{{ item_id[8:12] }}-{{
+                item_id[12:16] }}-{{ item_id[16:20] }}-{{ item_id[20:] }}
           - if: "{{ auto_play }}"
             then:
               - delay:
@@ -308,9 +359,12 @@ sequence:
                   entity_id: "{{ apple_tv_remote }}"
                 data:
                   command: select
+              - wait_template: "{{ is_state(jellyfin_player, 'playing') }}"
+                timeout: 15
           - variables:
               result:
                 opened: "{{ item_id }}"
                 auto_play: "{{ auto_play }}"
+                now_playing: "{{ state_attr(jellyfin_player, 'media_title') if is_state(jellyfin_player, 'playing') else none }}"
           - stop: ""
             response_variable: result

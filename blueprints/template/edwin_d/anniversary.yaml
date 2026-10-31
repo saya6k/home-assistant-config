@@ -119,7 +119,7 @@ sensor:
     {{ 'mdi:calendar' if weeks_until | int else
        'mdi:calendar-alert' if days_until | int else
        'mdi:cake-variant' }}
-  unit_of_measurement: "days"
+  unit_of_measurement: "d"
   device_class: duration
   state: "{{ days_until | int }}"
   attributes:
