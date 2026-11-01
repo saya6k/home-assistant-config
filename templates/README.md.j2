@@ -1,21 +1,18 @@
 {#-
-  README.j2 — rendered by the `readme` custom integration into ./README.md
+  README.md.j2 — rendered by the `jinja_files` custom integration into ./README.md
   Available context:
     - states            : AllStates (use `states | count`, `states.sensor | count`, …)
     - addons            : list of installed Supervisor add-ons (.name, .version, .state, …)
-    - hacs_components   : list of HACS-downloaded repos (.category, .name, .documentation, …)
-    - custom_components : list of loaded custom integrations (.domain, .name, .documentation, …)
-  Service:    readme.generate
+    - hacs_components   : list of HACS-downloaded repos — always empty now (HACS is not installed)
+    - custom_components : list of loaded custom integrations (.domain, .name, .documentation, .version, …)
+  Service:    jinja_files.render (override: true to replace existing files)
 -#}
-{#- The readme component uses plain Jinja2 (not the HA template engine), so HA-only
+{#- jinja_files uses plain Jinja2 (not the HA template engine), so HA-only
     globals such as `now()` are NOT available. Anything dynamic must come from
-    `states`, `addons`, `hacs_components`, or `custom_components`. -#}
+    `states`, `addons`, or `custom_components`. -#}
 {%- set ha_version = states('sensor.home_assistant_versions') or 'unknown' -%}
 {%- set today = states('sensor.date') or '' -%}
 {%- set current_year = today.split('-')[0] if '-' in today else '2026' -%}
-{%- set hacs_integrations = hacs_components | selectattr('category', 'equalto', 'integration') | list -%}
-{%- set hacs_plugins = hacs_components | selectattr('category', 'equalto', 'plugin') | list -%}
-{%- set hacs_themes = hacs_components | selectattr('category', 'equalto', 'theme') | list -%}
 # Home Assistant Config
 
 [![Maintained][maintenance-img]][github-url]
@@ -43,8 +40,7 @@
   <img src="https://img.shields.io/badge/integrations-100%2B-1f6feb" alt="Integrations">
   <img src="https://img.shields.io/badge/automations-{{ states.automation | count }}-1f6feb" alt="Automations">
   <img src="https://img.shields.io/badge/add--ons-{{ addons | count }}-1f6feb" alt="Add-ons">
-  <img src="https://img.shields.io/badge/HACS_integrations-{{ hacs_integrations | count }}-1f6feb" alt="HACS Integrations">
-  <img src="https://img.shields.io/badge/HACS_plugins-{{ hacs_plugins | count }}-1f6feb" alt="HACS Plugins">
+  <img src="https://img.shields.io/badge/custom_integrations-{{ custom_components | count }}-1f6feb" alt="Custom Integrations">
 </p>
 
 <details>
@@ -59,54 +55,31 @@
 </details>
 
 <details>
-<summary><strong>🧩 HACS · 커스텀 통합</strong> ({{ hacs_integrations | count }})</summary>
+<summary><strong>🧩 커스텀 통합</strong> ({{ custom_components | count }})</summary>
 
-{% for c in hacs_integrations | sort(attribute='name') -%}
-- [{{ c.name }}]({{ c.documentation }})
+{% for c in custom_components | sort(attribute='name') -%}
+- [{{ c.name }}]({{ c.documentation }}) `{{ c.version }}`
 {% endfor %}
 </details>
-
-<details>
-<summary><strong>🎨 HACS · Lovelace 플러그인</strong> ({{ hacs_plugins | count }})</summary>
-
-{% for c in hacs_plugins | sort(attribute='name') -%}
-- [{{ c.name }}]({{ c.documentation }})
-{% endfor %}
-</details>
-{%- if hacs_themes | count > 0 %}
-
-<details>
-<summary><strong>🌈 HACS · 테마</strong> ({{ hacs_themes | count }})</summary>
-
-{% for c in hacs_themes | sort(attribute='name') -%}
-- [{{ c.name }}]({{ c.documentation }})
-{% endfor %}
-</details>
-{%- endif %}
 
 ### 플랫폼
 
 <p>
   <img src="https://img.shields.io/badge/HAOS-{{ ha_version | urlencode }}-41BDF5?logo=homeassistant&logoColor=white" alt="HAOS">
-  <img src="https://img.shields.io/badge/host-Generic_x86--64-555?logo=intel&logoColor=white" alt="Generic x86-64">
+  <img src="https://img.shields.io/badge/host-Raspberry_Pi_5-A22846?logo=raspberrypi&logoColor=white" alt="Raspberry Pi 5">
   <img src="https://img.shields.io/badge/Recorder-MariaDB-003545?logo=mariadb&logoColor=white" alt="MariaDB">
-  <img src="https://img.shields.io/badge/otelcol-OpenTelemetry-425CC7?logo=opentelemetry&logoColor=white" alt="OpenTelemetry Collector">
-  <img src="https://img.shields.io/badge/Prometheus-Metrics-E6522C?logo=prometheus&logoColor=white" alt="Prometheus">
-  <img src="https://img.shields.io/badge/Grafana-Dashboards-F46800?logo=grafana&logoColor=white" alt="Grafana">
-  <img src="https://img.shields.io/badge/Loki-Logs-F46800?logo=grafana&logoColor=white" alt="Loki">
   <img src="https://img.shields.io/badge/NGINX-SSL%20Proxy-009639?logo=nginx&logoColor=white" alt="NGINX">
   <img src="https://img.shields.io/badge/TLS-Let's%20Encrypt-003A70?logo=letsencrypt&logoColor=white" alt="Let's Encrypt">
   <img src="https://img.shields.io/badge/AdGuard-DNS-68BC71?logo=adguard&logoColor=white" alt="AdGuard">
 </p>
 
-### 프로토콜 · HACS
+### 프로토콜
 
 <p>
   <img src="https://img.shields.io/badge/Matter-2A2A2A?logo=matter&logoColor=white" alt="Matter">
   <img src="https://img.shields.io/badge/Thread-Border%20Router-FF6B00" alt="Thread">
   <img src="https://img.shields.io/badge/MQTT-Mosquitto-660066?logo=mqtt&logoColor=white" alt="MQTT">
   <img src="https://img.shields.io/badge/ESPHome-000000?logo=esphome&logoColor=white" alt="ESPHome">
-  <img src="https://img.shields.io/badge/HACS-41BDF5?logo=homeassistantcommunitystore&logoColor=white" alt="HACS">
 </p>
 
 ### 음성과 AI
@@ -116,9 +89,9 @@
   <img src="https://img.shields.io/badge/GPT-OpenAI-412991?logo=openai&logoColor=white" alt="GPT">
   <img src="https://img.shields.io/badge/Gemini-Google-4285F4?logo=googlegemini&logoColor=white" alt="Gemini">
   <img src="https://img.shields.io/badge/Open%20Router-000000" alt="Open Router">
-  <img src="https://img.shields.io/badge/Ollama-Local-000000?logo=ollama&logoColor=white" alt="Ollama">
-  <img src="https://img.shields.io/badge/Whisper-STT-74AA9C?logo=openai&logoColor=white" alt="Whisper">
-  <img src="https://img.shields.io/badge/Supertonic--MNN-TTS-7C3AED" alt="Supertonic-MNN">
+  <img src="https://img.shields.io/badge/llama.cpp-Local-000000" alt="llama.cpp">
+  <img src="https://img.shields.io/badge/Supertonic-TTS-7C3AED" alt="Supertonic">
+  <img src="https://img.shields.io/badge/ElevenLabs-TTS-000000?logo=elevenlabs&logoColor=white" alt="ElevenLabs">
   <img src="https://img.shields.io/badge/MCP-Tools-FF6B6B" alt="MCP">
 </p>
 
@@ -130,6 +103,8 @@
   <img src="https://img.shields.io/badge/Music_Assistant-1E88E5?logo=musicassistant&logoColor=white" alt="Music Assistant">
   <img src="https://img.shields.io/badge/Jellyfin-00A4DC?logo=jellyfin&logoColor=white" alt="Jellyfin">
   <img src="https://img.shields.io/badge/Plex-E5A00D?logo=plex&logoColor=white" alt="Plex">
+  <img src="https://img.shields.io/badge/Immich-4250AF?logo=immich&logoColor=white" alt="Immich">
+  <img src="https://img.shields.io/badge/Mealie-E58325" alt="Mealie">
 </p>
 
 ---
@@ -195,6 +170,6 @@ MIT — see [LICENSE](LICENSE). `secrets.yaml` 은 포함되지 않습니다.
 [docs-img]: https://img.shields.io/badge/docs-saya6k.github.io-1f6feb?style=flat-square&logo=github
 
 <!--
-Generated by the [readme custom integration](https://github.com/custom-components/readme).
-Service: readme.generate
+Generated by the [jinja_files custom integration](https://saya6k.github.io/hacs-jinja-files/).
+Service: jinja_files.render
 -->

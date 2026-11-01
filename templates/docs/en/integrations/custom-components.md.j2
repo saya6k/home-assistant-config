@@ -1,62 +1,25 @@
 {#- docs/en/integrations/custom-components.md — English mirror -#}
-{%- set integrations = hacs_components | selectattr('category', 'equalto', 'integration') | list -%}
+{%- set integrations = custom_components -%}
 {%- set categories = {
-    'Korean services / region': [
-        'redchupa/kr_component_kit', 'saya6k/ha-chzzk',
-    ],
-    'Appliances / devices': [
-        'libdyson-wg/ha-dyson', '3dg1luk43/ha_washdata',
-        'saya6k/ha-xbloom', 'saya6k/ha-wardrowbe',
-    ],
-    'Location / presence': [
-        'pnbruckner/ha-life360', 'AlbinLind/dawarich-home-assistant',
-    ],
-    'Voice / AI': [
-        'jxlarrea/voice-satellite-card-integration',
-        'jxlarrea/voice-satellite-card-llm-tools',
-    ],
-    'Data / external': [
-        'pinkywafer/Anniversaries', 'ringleader/cyclist',
-        'boralyl/steam-wishlist', 'LordBoos/discord_game',
-        'tomaae/homeassistant-truenas',
-    ],
+    'Korean services / local': ['kr_public_data', 'chzzk', 'naver_map', 'pweb_amano'],
+    'Appliances / devices': ['dyson_local', 'localthings', 'xbloom', 'wardrowbe', 'ancs'],
+    'Location / presence': ['life360'],
+    'Data / external': ['truenas_ce'],
     'Utilities': [
-        'hacs/integration', 'frenck/spook',
-        'andreadegiovine/homeassistant-restore-persistent-notifications',
+        'jinja_files', 'spook', 'spook_calibration', 'spook_inverse',
+        'spook_time_in_state', 'restore_persistent_notifications',
     ],
 } -%}
-{%- set categorized_repos = [] -%}
-{%- for repos in categories.values() %}{% set _ = categorized_repos.extend(repos) %}{% endfor -%}
-{%- set int_by_repo = {} -%}
-{%- for c in integrations %}{% set _ = int_by_repo.update({c.full_name: c}) %}{% endfor -%}
-{%- set brand_overrides = {
-    'redchupa/kr_component_kit': 'kr_component_kit',
-    'saya6k/ha-chzzk': 'chzzk',
-    'libdyson-wg/ha-dyson': 'dyson_local',
-    '3dg1luk43/ha_washdata': 'ha_washdata',
-    'saya6k/ha-xbloom': 'xbloom',
-    'saya6k/ha-wardrowbe': 'wardrowbe',
-    'pnbruckner/ha-life360': 'life360',
-    'AlbinLind/dawarich-home-assistant': 'dawarich',
-    'jxlarrea/voice-satellite-card-integration': 'voice_satellite',
-    'jxlarrea/voice-satellite-card-llm-tools': 'voice_satellite_llm_tools',
-    'pinkywafer/Anniversaries': 'anniversaries',
-    'ringleader/cyclist': 'cyclist',
-    'boralyl/steam-wishlist': 'steam_wishlist',
-    'LordBoos/discord_game': 'discord_game',
-    'tomaae/homeassistant-truenas': 'truenas',
-    'hacs/integration': 'hacs',
-    'frenck/spook': 'spook',
-    'andreadegiovine/homeassistant-restore-persistent-notifications': 'restore_persistent_notifications',
-} -%}
+{%- set categorized_domains = [] -%}
+{%- for domains in categories.values() %}{% set _ = categorized_domains.extend(domains) %}{% endfor -%}
+{%- set int_by_domain = {} -%}
+{%- for c in integrations %}{% set _ = int_by_domain.update({c.domain: c}) %}{% endfor -%}
 {#- Domains present in analytics.home-assistant.io/custom_integrations.json get an
     "active installations" badge (via shields.io dynamic JSON). Domains not listed
     there have no public stats, so they render "—". Add a domain here once it appears
     in HA's custom-integrations analytics. -#}
 {%- set analytics_domains = [
-    'dyson_local', 'ha_washdata', 'life360', 'dawarich', 'voice_satellite',
-    'anniversaries', 'steam_wishlist', 'discord_game', 'truenas',
-    'hacs', 'spook', 'restore_persistent_notifications',
+    'dyson_local', 'life360', 'spook', 'restore_persistent_notifications',
 ] -%}
 {%- set badge_base = 'https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fanalytics.home-assistant.io%2Fcustom_integrations.json&query=%24.' -%}
 {%- set badge_tail = '.total&label=installs&color=2ea44f&style=flat-square' -%}
@@ -66,35 +29,34 @@ title: Custom components
 
 # Custom components
 
-Integrations installed via HACS or by hand. Currently **{{ integrations | count }}** — the code lives in `custom_components/` (excluded from git via `.gitignore`); only manifests are tracked.
-{% for cat, repos in categories.items() %}
+Integrations installed through Home Assistant's built-in **Marketplace** or by hand (HACS is no longer used). Currently **{{ integrations | count }}** — the code lives in `custom_components/`, which `.gitignore` keeps out of the repository.
+{% for cat, domains in categories.items() %}
 {%- set present = [] -%}
-{%- for r in repos %}
-  {%- if r in int_by_repo %}{% set _ = present.append(int_by_repo[r]) %}{% endif -%}
+{%- for d in domains %}
+  {%- if d in int_by_domain %}{% set _ = present.append(int_by_domain[d]) %}{% endif -%}
 {%- endfor -%}
 {%- if present | count > 0 %}
 
 ## {{ cat }}
 
-| Name | Installs | Description |
+| Name | Version | Installs |
 | --- | --- | --- |
 {%- for c in present | sort(attribute='name') %}
-{%- set brand = brand_overrides.get(c.full_name, c.name | lower | replace(' ', '_')) %}
-| [<img src="https://brands.home-assistant.io/_/{{ brand }}/icon.png" height="24"/> {{ c.name }}]({{ c.documentation }}) | {% if brand in analytics_domains %}<img src="{{ badge_base }}{{ brand }}{{ badge_tail }}" alt="HACS active installations"/>{% else %}—{% endif %} | {{ c.description or '' }} |
+| [<img src="https://brands.home-assistant.io/_/{{ c.domain }}/icon.png" height="24"/> {{ c.name }}]({{ c.documentation }}) | `{{ c.version }}` | {% if c.domain in analytics_domains %}<img src="{{ badge_base }}{{ c.domain }}{{ badge_tail }}" alt="active installations"/>{% else %}—{% endif %} |
 {%- endfor %}
 {%- endif %}
 {%- endfor %}
 
-{%- set uncategorized = integrations | rejectattr('full_name', 'in', categorized_repos) | list %}
+{%- set uncategorized = integrations | rejectattr('domain', 'in', categorized_domains) | list %}
 {%- if uncategorized | count > 0 %}
 
 ## Uncategorized
 
-> New HACS integrations land here. Add the `full_name` to the `categories` map in `templates/docs/integrations/custom-components.md.j2` (and the English mirror) to move it into the right section.
+> New custom integrations land here. Add the domain to the `categories` map in `templates/docs/integrations/custom-components.md.j2` (and the English mirror) to move it into the right section.
 
-| Name | Repository | Description |
+| Name | Domain | Version |
 | --- | --- | --- |
 {%- for c in uncategorized | sort(attribute='name') %}
-| [{{ c.name }}]({{ c.documentation }}) | `{{ c.full_name }}` | {{ c.description or '' }} |
+| [{{ c.name }}]({{ c.documentation }}) | `{{ c.domain }}` | `{{ c.version }}` |
 {%- endfor %}
 {%- endif %}

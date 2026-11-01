@@ -1,30 +1,24 @@
 {#- docs/en/platform/add-ons.md — English mirror -#}
 {%- set categories = {
     'Dev / Ops': [
-        'a0d7b954_ssh', 'a0d7b954_vscode', 'core_samba', 'core_git_pull',
-        '5c53de3b_filebrowser', '5c53de3b_filebrowser_lite',
+        'a0d7b954_ssh', '03f32180_codemirror', 'core_samba',
     ],
     'Network / Security': [
-        'core_nginx_proxy', 'core_letsencrypt', 'a0d7b954_adguard',
+        'core_nginx_proxy', 'core_letsencrypt',
     ],
     'Devices / Protocols': [
         '5c53de3b_esphome', 'core_matter_server', 'core_mosquitto',
-        'core_openthread_border_router', '26aa648f_shelly-manager',
+        'core_openthread_border_router',
     ],
     'Media / Voice': [
-        'd5369777_music_assistant', 'local_supertonic', 'local_voice_match',
-        '932a64e5_isponsorblocktv', 'c363c99b_voice',
+        'd5369777_music_assistant', 'd5369777_ytm_po_token_generator',
+        '03f32180_supertonic', 'core_whisper',
     ],
-    'AI / Automation': [
-        'local_llm_conversation_agent', 'local_openai_to_ollama_bridge',
-        '3d1b46f3_hass_mcpproxy', 'local_playwright', 'local_rethink',
+    'AI / MCP': [
+        '03f32180_crw', '03f32180_memory',
     ],
-    'Services / Productivity': [
-        'ba53f40c_homedetector', 'local_wardrowbe', 'local_zensical',
-        'local_paperless_ngx', 'local_pocket_id',
-    ],
-    'Monitoring / Data': [
-        'b69c5888_otelcol',
+    'Services / Data': [
+        '03f32180_wardrowbe', '7159c92d_nilm',
     ],
 } -%}
 {%- set categorized_slugs = [] -%}
@@ -69,4 +63,4 @@ Currently **{{ addons | count }}** add-ons installed, grouped as follows.
 {%- endfor %}
 {%- endif %}
 
-See [Voice & AI](../voice-and-ai.md) for the audio/AI pipeline, [Observability](../observability.md) for the metrics/logs/traces stack.
+See [Voice & AI](../voice-and-ai.md) for the audio/AI pipeline, [Observability](../observability.md) for monitoring.

@@ -1,5 +1,4 @@
-{#- docs/en/automations.md — English mirror. Detail descriptions are dropped
-    here because aliases are mostly Korean; the dynamic summary table is the
+{#- docs/en/automations.md — English mirror; the dynamic summary table is the
     same data, just with English column headers. -#}
 {%- set autos = states.automation | sort(attribute='name') | list -%}
 ---
@@ -20,4 +19,4 @@ The raw source lives at [`automations.yaml`](https://github.com/saya6k/home-assi
 | {{ a.attributes.get('friendly_name', a.name) }} | `{{ a.attributes.get('mode', 'single') }}` | {{ a.state }} |
 {%- endfor %}
 
-See the [Korean version](../automations.md) for per-automation descriptions.
+See [`automations.yaml`](https://github.com/saya6k/home-assistant-config/blob/main/automations.yaml) for each automation's triggers, conditions, and description.

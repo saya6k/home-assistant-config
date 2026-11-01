@@ -27,19 +27,21 @@ Home Assistant 측은 [UniFi Network 통합](https://www.home-assistant.io/integ
 
 ## DNS / 광고 차단
 
-- **AdGuard Home 애드온** — 내부 DNS 리졸버. 클라이언트별 필터링 적용.
+- **AdGuard Home** — 내부 DNS 리졸버. HA 애드온이 아니라 원격 호스트에서 운영하며, HA 는 [AdGuard Home 통합](https://www.home-assistant.io/integrations/adguard/)으로 통계와 필터 스위치만 가져옵니다.
+- **Cloudflare 통합** — 외부 도메인의 DNS 레코드를 현재 공인 IP 로 갱신.
 
 ## 외부 노출
 
 - **NGINX Home Assistant SSL Proxy** 애드온이 80/443 종단을 담당
-- **Let's Encrypt** 애드온이 ACME 챌린지 처리. 인증서 만료 임박 시 자동화 `Let's Encrypt 자동 시작`이 트리거 (참고: [자동화](../automations.md))
-- `configuration.yaml`의 `http:` 블록은 `cors_allowed_origins`, `trusted_proxies`, `ip_ban_enabled`, `login_attempts_threshold` 를 모두 `secrets.yaml` 기반으로 설정
+- **Let's Encrypt** 애드온이 ACME 챌린지 처리. 평소엔 정지 상태이고, 인증서가 유효하지 않으면 자동화 `인증서 만료시 재발급`이 애드온을 시작 (참고: [자동화](../automations.md))
+- Certificate Expiry 통합이 외부 도메인 인증서의 만료일을 감시
+- `configuration.yaml` 에는 `http:` 블록이 없습니다 — HA 기본값으로 동작
 
 ## 인증
 
-- Home Assistant 기본 인증
-- 실험적: [`hass-oidc-auth`](https://github.com/christiaangoossens/hass-oidc-auth) CI에서 빌드 검증, **원격 TrueNAS 의 [Pocket ID](../services/pocket-id.md)** 와 OIDC 페어링 계획 (현재 `configuration.yaml`에는 주석 상태)
+- Home Assistant 기본 인증 (`auth_providers: homeassistant` 만 사용)
+- [`hass-oidc-auth`](https://github.com/christiaangoossens/hass-oidc-auth) 로 원격 [Pocket ID](../services/pocket-id.md) 와 OIDC 연동하는 방안은 현재 설정에 없습니다
 
 ## 침입 차단
 
-HA `http.ip_ban_enabled` + `login_attempts_threshold` 가 기본 방어선입니다. 외부 IPS는 현재 미운영 (이전 CrowdSec 구성은 [보관소](../retired.md) 참조).
+`http:` 블록이 없어 HA 기본값으로 동작합니다 — `ip_ban_enabled` 는 켜져 있지만 `login_attempts_threshold` 가 설정되지 않아 로그인 실패로 IP 가 자동 차단되지는 않습니다. 외부 IPS는 현재 미운영 (이전 CrowdSec 구성은 [보관소](../retired.md) 참조).

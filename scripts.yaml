@@ -133,9 +133,11 @@ entity_history:
     response_variable: result
 unknown_2:
   sequence:
-  - action: ai_task.generate_data
+  - action: ai_task.evaluate
     metadata: {}
     data:
+      task_name: Traffic cameras
+      entity_id: ai_task.openai_evaluation
       attachments:
         media_content_id: media-source://camera/camera.baengbaeng_junction
         media_content_type: application/vnd.apple.mpegurl
@@ -148,15 +150,11 @@ unknown_2:
           - {}
           - media_content_type: app
             media_content_id: media-source://camera
-      task_name: Traffic cameras
-      instructions: '이건 사무실로 가는 길의 CCTV 영상이야.
-
-
-        현재 차로 길이 막혀서 교통에 지장이 있는 중이면 true로 답해.'
-      structure:
-        true_or_false:
-          selector:
-            boolean:
+      state: 이건 사무실로 가는 길의 CCTV 영상이야.
+      questions:
+        traffic_jam:
+          type: noul
+          instructions: 현재 차로 길이 막혀서 교통에 지장이 있나요?
     response_variable: traffic_jam
   alias: '교통 카메라: 교통 체증 여부 확인'
   description: 공개 교통 카메라를 통해 경로의 교통 체증 여부를 확인합니다.
@@ -246,49 +244,6 @@ unknown_3:
       notification_id: weather_home
   alias: 날씨 및 쾌적성 유머 보고서
   description: 현재 실외 날씨와 실내 쾌적도를 유머러스하게 분석하여 알림으로 생성합니다.
-entity_attributes:
-  alias: Entity Attributes
-  icon: mdi:format-list-bulleted
-  description: 'Returns the attributes of a given entity.
-
-    You MUST know the entity_id before calling this tool.
-
-    entity_id is MANDATORY and must always be provided.
-
-    '
-  mode: single
-  fields:
-    entity_id:
-      name: Entity ID
-      description: A single entity_id to look up attributes for (e.g. "climate.living_room").
-        MANDATORY!
-      required: true
-      selector:
-        text: {}
-  sequence:
-  - variables:
-      eid: '{{ entity_id | string | trim | lower }}'
-  - variables:
-      entity_exists: '{{ states[eid] is defined }}'
-  - if:
-    - condition: template
-      value_template: '{{ not entity_exists }}'
-    then:
-    - variables:
-        result: "{{ {\n  'error': 'Entity not found. Use only names returned from
-          \"Entity Index\" or that you looked up in the data provided to you.',\n
-          \ 'code': 'entity_not_found',\n  'entity_id': eid\n} }}"
-    - stop: ''
-      response_variable: result
-  - variables:
-      result: "{%- set excluded = ['friendly_name', 'state_class', 'icon', 'unit_of_measurement',
-        'entity_id'] -%}\n{%- set ns = namespace(filtered={}) -%}\n{%- for key, value
-        in states[eid].attributes.items() -%}\n  {%- if key not in excluded -%}\n
-        \   {%- set ns.filtered = ns.filtered | combine({key: value}) -%}\n  {%- endif
-        -%}\n{%- endfor -%}\n{{ {\n  'entity_id': eid,\n  'state': states(eid),\n
-        \ 'attributes': ns.filtered\n} }}"
-  - stop: ''
-    response_variable: result
 llm_script_for_music_assistant_voice_requests:
   alias: LLM Script for Music Assistant voice requests
   use_blueprint:
@@ -364,42 +319,6 @@ llm_script_for_music_assistant_voice_requests:
 
         요청이 "Guns and Roses 아티스트 틀어 줘"인 경우, 셔플을 언급하거나 요청하지 않았으므로 "shuffle"은 false로
         설정해야 합니다.'
-  description: ''
-sleep_as_android_start_sleep_tracking:
-  alias: 'Sleep as Android: Start Sleep Tracking'
-  use_blueprint:
-    path: homeassistant/sleep_as_android_trigger_app_actions.yaml
-    input:
-      notify_device: fc2182e437cd03e52bdf4392c3693ccc
-      sleep_action: com.urbandroid.sleep.alarmclock.START_SLEEP_TRACK
-  description: ''
-sleep_as_android_snooze_alarm_for_15_minutes:
-  alias: 'Sleep as Android: Snooze Alarm for 15 minutes'
-  use_blueprint:
-    path: homeassistant/sleep_as_android_trigger_app_actions.yaml
-    input:
-      notify_device: fc2182e437cd03e52bdf4392c3693ccc
-      sleep_action: com.urbandroid.sleep.alarmclock.ALARM_SNOOZE
-      extra_snooze_time: 15
-  description: ''
-sleep_as_android_stop_lullaby:
-  alias: 'Sleep as Android: Stop Lullaby'
-  use_blueprint:
-    path: homeassistant/sleep_as_android_trigger_app_actions.yaml
-    input:
-      notify_device: fc2182e437cd03e52bdf4392c3693ccc
-      sleep_action: com.urbandroid.sleep.ACTION_LULLABY_STOP_PLAYBACK
-      alarm_state: false
-  description: ''
-sleep_as_android_stop_sleep_tracking:
-  alias: 'Sleep as Android: Stop Sleep Tracking'
-  use_blueprint:
-    path: homeassistant/sleep_as_android_trigger_app_actions.yaml
-    input:
-      notify_device: fc2182e437cd03e52bdf4392c3693ccc
-      sleep_action: com.urbandroid.sleep.alarmclock.STOP_SLEEP_TRACK
-      alarm_label: 알람
-      alarm_state: false
   description: ''
 unknown_4:
   sequence:
@@ -479,15 +398,15 @@ unknown_5:
   - action: media_player.volume_set
     metadata: {}
     data:
-      volume_level: 0.2
+      volume_level: 0.75
     target:
-      device_id: 1784dcdcc4b0bc47a1df1fbe2c596fd5
+      device_id: d969dd9bc44486dbfd711efc6b1ff640
   - action: media_player.shuffle_set
     metadata: {}
     data:
       shuffle: true
     target:
-      device_id: 1784dcdcc4b0bc47a1df1fbe2c596fd5
+      area_id: living_room
   - action: media_player.play_media
     metadata: {}
     data:
@@ -508,12 +427,12 @@ unknown_5:
           browse_entity_id: media_player.living_room
       enqueue: replace
     target:
-      device_id: 1784dcdcc4b0bc47a1df1fbe2c596fd5
+      area_id: living_room
   - action: media_player.media_next_track
     metadata: {}
     data: {}
     target:
-      device_id: 1784dcdcc4b0bc47a1df1fbe2c596fd5
+      area_id: living_room
   - action: media_player.play_media
     data:
       media:
@@ -528,14 +447,6 @@ unknown_5:
     enabled: false
     target:
       entity_id: media_player.living_room_apple_tv
-  - action: media_player.join
-    metadata: {}
-    target:
-      entity_id: media_player.geosil
-    data:
-      group_members:
-      - media_player.magic_mirror
-    enabled: false
   alias: 새 위클리 추천곡 재생
   description: 거실에서 이번주의 새 위클리 추천곡을 재생합니다.
 unknown:
@@ -543,7 +454,7 @@ unknown:
   - action: media_player.volume_set
     metadata: {}
     data:
-      volume_level: 0.1
+      volume_level: 0.5
     target:
       area_id: living_room
   - action: media_player.shuffle_set
@@ -578,13 +489,6 @@ unknown:
     data: {}
     target:
       area_id: living_room
-  - action: media_player.join
-    metadata: {}
-    target:
-      area_id: living_room
-    data:
-      group_members:
-      - media_player.magic_mirror
   alias: 포근 편안 폭신 플레이리스트 재생
   description: 거실에서 포근 편안 폭신 플레이리스트를 재생합니다.
 unknown_6:
@@ -934,8 +838,8 @@ unknown_10:
   description: 선택된 엔티티의 업데이트 정보를 AI로 분석하여 전체 요약, 주요 기능, 버그 수정, 주의사항을 포함하는 영구 알림을 생성합니다.
 message_broadcast:
   alias: 메시지 방송 (Message Broadcast)
-  description: '점유된 Area의 Satellite에 방송하고, 점유된 Area가 없으면 지정한 Target에 방송합니다. Target이
-    지정되지 않으면 모든 Satellite에 방송합니다.
+  description: 'Default Target의 켜진 Satellite에만 방송합니다. 지정이 없거나 방송할 수 없으면 점유된 Area의
+    Satellite에, 그것도 없으면 모든 Satellite에 방송합니다.
 
     '
   fields:
@@ -948,7 +852,7 @@ message_broadcast:
           multiline: true
     default_target:
       name: Default Target
-      description: '점유된 Area가 없을 때 사용할 대상 (Area, Device, Entity 모두 가능)
+      description: '방송할 대상. 지정하면 재실과 상관없이 여기에만 방송합니다 (Area, Device, Entity 모두 가능)
 
         '
       required: false
@@ -958,6 +862,13 @@ message_broadcast:
             domain: assist_satellite
   sequence:
   - variables:
+      target_satellites: >-
+        {% set t = default_target if default_target is defined and default_target is mapping else {} %}
+        {% set ns = namespace(items=[]) %}
+        {% for e in [t.get('entity_id', [])] | flatten %}{% set ns.items = ns.items + [e] %}{% endfor %}
+        {% for x in [t.get('area_id', [])] | flatten %}{% set ns.items = ns.items + area_entities(x) %}{% endfor %}
+        {% for x in [t.get('device_id', [])] | flatten %}{% set ns.items = ns.items + device_entities(x) %}{% endfor %}
+        {{ ns.items | unique | select('match', 'assist_satellite\\.') | select('has_value') | list }}
       occupied_satellites: "{% set ns = namespace(items=[]) %}\n{% for area in areas()
         %}\n\n  {% set found = namespace(satellites=[], occupied=false) %}\n\n  {%
         for entity in area_entities(area) %}\n\n    {% if entity.startswith('assist_satellite.')\n
@@ -969,7 +880,18 @@ message_broadcast:
         %}\n    {% set ns.items = ns.items + found.satellites %}\n  {% endif %}\n\n{%
         endfor %}\n{{ ns.items }}\n"
   - choose:
-    - conditions:
+    - alias: 지정한 구역에 켜진 스피커가 있으면 그 스피커에만 방송
+      conditions:
+      - condition: template
+        value_template: '{{ target_satellites | count > 0 }}'
+      sequence:
+      - action: assist_satellite.announce
+        target:
+          entity_id: '{{ target_satellites }}'
+        data:
+          message: '{{ message }}'
+    - alias: 지정이 없거나 방송할 수 없으면 재실 구역에 방송
+      conditions:
       - condition: template
         value_template: '{{ occupied_satellites | count > 0 }}'
       sequence:
@@ -979,22 +901,12 @@ message_broadcast:
         data:
           message: '{{ message }}'
     default:
-    - if:
-      - condition: template
-        value_template: "{{ default_target is defined\n   and default_target not in
-          (none, '', {}) }}\n"
-      then:
-      - action: assist_satellite.announce
-        target: '{{ default_target }}'
-        data:
-          message: '{{ message }}'
-      else:
-      - action: assist_satellite.announce
-        target:
-          entity_id: "{{ states.assist_satellite\n   | rejectattr('state', 'in', ['unavailable',
-            'unknown'])\n   | map(attribute='entity_id')\n   | list }}\n"
-        data:
-          message: '{{ message }}'
+    - action: assist_satellite.announce
+      target:
+        entity_id: "{{ states.assist_satellite\n   | rejectattr('state', 'in', ['unavailable',\
+          \ 'unknown'])\n   | map(attribute='entity_id')\n   | list }}\n"
+      data:
+        message: '{{ message }}'
   mode: queued
   max: 5
 unknown_11:
@@ -1258,3 +1170,78 @@ unknown_11:
     전달된 값은 해당 climate 엔티티가 실제로 지원하는지 먼저 검사합니다.
 
     지원하지 않는 값을 임의로 추측해서 사용하지 마세요.'
+llm_script_for_mealie_requests:
+  alias: LLM Script for Mealie requests
+  use_blueprint:
+    path: saya6k/mealie_llm_tool.yaml
+    input:
+      mealie_entry: 01KR7KQHXNQBZV7F9SB4YDH8NA
+      tool_description_prompt: 가정용 레시피 관리 앱 Mealie를 관리합니다. 레시피 검색·조회·가져오기, 식단 조회·편집,
+        Mealie 장보기 목록 관리를 할 수 있습니다. "operation" 하나를 고르고 그 작업에 필요한 인자만 전달하세요. 레시피는
+        search_recipes가 돌려준 recipe_id나 slug로 지정합니다. 식단 항목은 get_mealplan이 돌려준 mealplan_id로
+        수정하거나 삭제합니다. 날짜는 현지 시간 기준 YYYY-MM-DD이며, "내일" 같은 상대 날짜는 호출 전에 실제 날짜로 바꾸세요.
+        사용자가 요리, 레시피, 식단, 장보기에 관해 요청하면 이 도구를 사용하세요.
+      operation_prompt: 필수. search_recipes (search_terms 선택), get_recipe (recipe),
+        import_recipe (url), get_mealplan (start_date, end_date), set_mealplan (date,
+        entry_type, 그리고 recipe 또는 note_title), set_random_mealplan (date, entry_type),
+        update_mealplan (mealplan_id, date, entry_type, 그리고 recipe 또는 note_title),
+        delete_mealplan (mealplan_id), get_shopping_list, add_shopping_items (items),
+        check_shopping_items (items), remove_shopping_items (items).
+      search_terms_prompt: search_recipes에 쓸 검색어. 생략하면 레시피 목록을 반환합니다.
+      recipe_prompt: search_recipes가 돌려준 레시피의 recipe_id 또는 slug. get_recipe, set_mealplan,
+        update_mealplan에서 사용합니다.
+      url_prompt: import_recipe로 가져올 레시피 웹페이지 URL.
+      include_tags_prompt: import_recipe에서 페이지의 태그도 함께 가져올지 여부.
+      date_prompt: 식단 날짜 (YYYY-MM-DD). 생략하면 오늘입니다.
+      start_date_prompt: get_mealplan 조회 시작일 (YYYY-MM-DD). 생략하면 오늘입니다.
+      end_date_prompt: get_mealplan 조회 종료일 (YYYY-MM-DD). 생략하면 start_date와 같습니다.
+      entry_type_prompt: 'set_mealplan, set_random_mealplan, update_mealplan의 끼니 종류:
+        breakfast(아침), lunch(점심), dinner(저녁), side(반찬), dessert(디저트), snack(간식), drink(음료).
+        생략하면 dinner입니다.'
+      note_title_prompt: 'set_mealplan, update_mealplan에서 레시피 대신 넣을 자유 메모 (예: "외식").'
+      note_text_prompt: note_title 식단 항목에 덧붙일 상세 내용 (선택).
+      mealplan_id_prompt: get_mealplan이 돌려준 mealplan_id. update_mealplan, delete_mealplan에서
+        사용합니다.
+      items_prompt: 장보기 항목 목록. add_shopping_items에는 "양파 2개" 같은 자유 문장을, check_shopping_items와
+        remove_shopping_items에는 get_shopping_list가 돌려준 item_id나 정확한 이름을 넣습니다.
+llm_script_for_apple_tv_jellyfin_requests:
+  alias: LLM Script for Apple TV Jellyfin requests
+  use_blueprint:
+    path: saya6k/jellyfin_apple_tv_llm_tool.yaml
+    input:
+      apple_tv: media_player.living_room_apple_tv
+      apple_tv_remote: remote.living_room_apple_tv
+      jellyfin_player: media_player.appletv
+      jellyfin_entry: 01KJMG88S7JKM5XY8T93HJSQEA
+      user_id: f655846d5845492faeae687080a9c56e
+      tool_description_prompt: 집 Jellyfin 라이브러리의 영상을 찾아 거실 Apple TV에서 재생합니다. 제목으로
+        영화, TV 프로그램, 채널을 찾을 때는 "search"를, 라이브러리 목록을 보거나 프로그램의 시즌과 에피소드로 들어갈 때는 "browse"를
+        사용하세요. 그다음 영화, 프로그램, 시즌, 에피소드의 id로 "play"를 호출하면 Apple TV의 Jellyfin 앱에서 열립니다.
+        id는 반환된 값 그대로 전달하세요.
+      operation_prompt: 필수. search (query, library_id 선택), browse (id와 offset 선택,
+        id를 생략하면 라이브러리 목록), play (id).
+      query_prompt: 검색할 제목 단어. 대소문자와 띄어쓰기는 무시합니다.
+      library_id_prompt: search 범위를 한 라이브러리로 좁힐 때 쓰는, browse가 돌려준 라이브러리 id. 생략하면 전체
+        라이브러리를 검색합니다.
+      id_prompt: search 또는 browse가 돌려준 항목 id.
+      offset_prompt: browse에서 긴 목록을 나눠 볼 때 건너뛸 항목 수.
+llm_script_for_apple_tv_youtube_requests:
+  alias: LLM Script for Apple TV YouTube requests
+  use_blueprint:
+    path: saya6k/youtube_apple_tv_llm_tool.yaml
+    input:
+      apple_tv: media_player.living_room_apple_tv
+      tool_description_prompt: 거실 Apple TV의 YouTube 앱에서 YouTube 영상을 재생합니다. 사용자가 준
+        영상 URL이나 id를 그대로 전달하세요.
+      youtube_prompt: 필수. YouTube 영상 URL(watch, youtu.be, shorts, live 링크) 또는 11자리
+        영상 id. 사용자가 준 URL이나 id만 쓰고, 절대 추측하지 마세요.
+llm_script_for_apple_tv_apps_requests:
+  alias: LLM Script for Apple TV apps requests
+  use_blueprint:
+    path: saya6k/apple_tv_apps_llm_tool.yaml
+    input:
+      apple_tv: media_player.living_room_apple_tv
+      tool_description_prompt: 거실 Apple TV에 설치된 앱 목록을 보거나 앱을 엽니다. 앱의 정확한 이름을 모르면 먼저
+        "list_apps"로 목록을 확인한 뒤, 그 이름으로 "open_app"을 호출하세요.
+      operation_prompt: 필수. list_apps, 또는 open_app (app).
+      app_prompt: open_app에서 열 앱 이름. list_apps가 돌려준 이름을 쓰세요. 대소문자와 띄어쓰기는 무시합니다.

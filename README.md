@@ -1,7 +1,7 @@
 # Home Assistant Config
 
 [![Maintained][maintenance-img]][github-url]
-[![HA Version](https://img.shields.io/badge/Home%20Assistant-2026.5.4-41BDF5?style=flat-square&logo=homeassistant&logoColor=white)](https://github.com/home-assistant/core/releases/tag/2026.5.4)
+[![HA Version](https://img.shields.io/badge/Home%20Assistant-2026.10.4-41BDF5?style=flat-square&logo=homeassistant&logoColor=white)](https://github.com/home-assistant/core/releases/tag/2026.10.4)
 [![Last Commit][last-commit-img]][github-url]
 [![Commit Activity][commit-activity-img]][github-url]
 [![CI][ci-img]][github-url]
@@ -9,7 +9,7 @@
 [![Stars][stars-img]][github-url]
 [![Docs][docs-img]][docs-url]
 
-> 2018년부터 운영 중인 개인 Home Assistant 설정. 1인 가구, 한국어 자동화 중심. (2026-05-31 갱신)
+> 2018년부터 운영 중인 개인 Home Assistant 설정. 1인 가구, 한국어 자동화 중심. (2026-10-30 갱신)
 
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?logo=buymeacoffee&logoColor=000)](https://www.buymeacoffee.com/my7nmfcm92k)
 [![Language](https://img.shields.io/badge/lang-한국어%20·%20English-success)](https://saya6k.github.io/home-assistant-config)
@@ -21,105 +21,76 @@
 ## 한눈에 보기
 
 <p>
-  <img src="https://img.shields.io/badge/entities-2008-1f6feb" alt="Entities">
+  <img src="https://img.shields.io/badge/entities-3113-1f6feb" alt="Entities">
   <img src="https://img.shields.io/badge/integrations-100%2B-1f6feb" alt="Integrations">
-  <img src="https://img.shields.io/badge/automations-49-1f6feb" alt="Automations">
-  <img src="https://img.shields.io/badge/add--ons-23-1f6feb" alt="Add-ons">
-  <img src="https://img.shields.io/badge/HACS_integrations-17-1f6feb" alt="HACS Integrations">
-  <img src="https://img.shields.io/badge/HACS_plugins-8-1f6feb" alt="HACS Plugins">
+  <img src="https://img.shields.io/badge/automations-50-1f6feb" alt="Automations">
+  <img src="https://img.shields.io/badge/add--ons-17-1f6feb" alt="Add-ons">
+  <img src="https://img.shields.io/badge/custom_integrations-14-1f6feb" alt="Custom Integrations">
 </p>
 
 <details>
-<summary><strong>📦 애드온</strong> (23)</summary>
+<summary><strong>📦 애드온</strong> (17)</summary>
 
 | 이름 | 버전 | 상태 |
 | --- | --- | --- |
-| Advanced SSH & Web Terminal | `23.0.9` | started |
-| ESPHome Device Builder | `2026.5.1` | started |
-| Git pull | `9.0.1` | unknown |
-| HASS MCP Proxy | `1.0.20` | started |
-| Home Detector | `0.0.13` | started |
-| iSponsorBlockTV add-on | `2.6.2` | started |
-| Let's Encrypt | `6.3.2` | stopped |
-| LLM Conversation Agent | `1.14.5` | started |
-| Matter Server | `8.5.0` | started |
-| Mosquitto broker | `7.1.0` | started |
-| Music Assistant | `2.8.8` | started |
-| NGINX Home Assistant SSL proxy | `4.2.0` | started |
-| OpenTelemetry Collector | `0.12.14` | started |
-| OpenThread Border Router | `3.0.0` | started |
-| openWakeWord | `2.1.0` | started |
-| Rematters | `0.1.28` | started |
-| rethink | `0.1.0` | unknown |
-| Samba share | `12.6.1` | started |
-| Shelly Manager | `1.1.4` | started |
-| Studio Code Server | `6.0.1` | started |
-| Supertonic | `2.0.0` | started |
-| Wardrowbe | `1.4.0` | started |
-| Zensical | `0.1.0` | started |
+| Advanced SSH & Web Terminal | `24.2.0` | started |
+| CodeMirror | `0.7.0` | started |
+| CRW Web Tools | `0.4.0` | started |
+| ESPHome Device Builder | `2026.10.1` | started |
+| Let's Encrypt | `6.5.0` | stopped |
+| Matter Server | `9.2.0` | started |
+| Memory | `0.6.0` | started |
+| Mosquitto broker | `7.1.3` | started |
+| Music Assistant | `2.10.8` | started |
+| NGINX Home Assistant SSL proxy | `4.5.1` | started |
+| NILM | `1.1.11` | stopped |
+| OpenThread Border Router | `3.3.0` | started |
+| Samba share | `12.10.0` | started |
+| Supertonic | `2.7.0` | started |
+| Wardrowbe | `4.3.7` | started |
+| Whisper | `3.5.3` | stopped |
+| YT Music PO Token Generator | `2.0.2` | started |
 
 </details>
 
 <details>
-<summary><strong>🧩 HACS · 커스텀 통합</strong> (17)</summary>
+<summary><strong>🧩 커스텀 통합</strong> (14)</summary>
 
-- [Anniversaries](https://github.com/pinkywafer/Anniversaries)
-- [Dawarich](https://github.com/AlbinLind/dawarich-home-assistant)
-- [Discord Game](https://github.com/LordBoos/discord_game)
-- [Dyson](https://github.com/libdyson-wg/ha-dyson)
-- [HACS](https://github.com/hacs/integration)
-- [Koreader](https://github.com/hudsonbrendon/ha-koreader)
-- [Kr Component Kit](https://github.com/redchupa/kr_component_kit)
-- [Life360](https://github.com/pnbruckner/ha-life360)
-- [Openid Connect/Sso Authentication](https://github.com/christiaangoossens/hass-oidc-auth)
-- [Remote Logger For Home Assistant](https://github.com/rhizomatics/remote_logger)
-- [Restore Persistent Notification](https://github.com/andreadegiovine/homeassistant-restore-persistent-notifications)
-- [Spook 👻 Your Homie](https://github.com/frenck/spook)
-- [Steam Wishlist](https://github.com/boralyl/steam-wishlist)
-- [Truenas](https://github.com/tomaae/homeassistant-truenas)
-- [Voice Satellite](https://github.com/jxlarrea/voice-satellite-card-integration)
-- [Voice Satellite   Llm Tools](https://github.com/jxlarrea/voice-satellite-card-llm-tools)
-- [Washdata](https://github.com/3dg1luk43/ha_washdata)
-
-</details>
-
-<details>
-<summary><strong>🎨 HACS · Lovelace 플러그인</strong> (8)</summary>
-
-- [Auto Entities](https://github.com/thomasloven/lovelace-auto-entities)
-- [Button Card](https://github.com/custom-cards/button-card)
-- [Card Mod](https://github.com/thomasloven/lovelace-card-mod)
-- [Decluttering Card](https://github.com/custom-cards/decluttering-card)
-- [Homeii Flow](https://github.com/r11a/homeii-music-flow)
-- [Hui Element](https://github.com/thomasloven/lovelace-hui-element)
-- [Mushroom](https://github.com/piitaya/lovelace-mushroom)
-- [Template Entity Row](https://github.com/thomasloven/lovelace-template-entity-row)
+- [Amano Parking System](https://saya6k.github.io/hacs-pweb-amano/) `0.3.1`
+- [ANCS (iPhone Notifications)](https://github.com/saya6k/hacs-ancs) `0.0.0`
+- [Chzzk](https://saya6k.github.io/hacs-chzzk/) `0.8.0`
+- [Dyson](https://github.com/libdyson-wg/ha-dyson) `1.5.7`
+- [Jinja Files](https://saya6k.github.io/hacs-jinja-files/) `1.1.0`
+- [Korean Public Data](https://saya6k.github.io/hacs-korea-public-data/) `5.0.3`
+- [Life360](https://github.com/pnbruckner/ha-life360/blob/0.10.4/README.md) `0.10.4`
+- [LocalThings](https://github.com/mbillow/localthings) `0.35.0`
+- [Naver Map](https://github.com/saya6k/hacs-naver-map) `0.4.0`
+- [Restore Persistent Notifications](https://github.com/andreadegiovine/homeassistant-restore-persistent-notifications) `2025.11.9`
+- [Spook](https://spook.boo) `5.11.1`
+- [TrueNAS CE](https://github.com/kayl-codes/homeassistant-truenas) `2.13.0`
+- [Wardrowbe](https://saya6k.github.io/hacs-wardrowbe/) `0.4.0`
+- [xBloom Coffee Machine](https://saya6k.github.io/hacs-xbloom/) `2.2.1`
 
 </details>
 
 ### 플랫폼
 
 <p>
-  <img src="https://img.shields.io/badge/HAOS-2026.5.4-41BDF5?logo=homeassistant&logoColor=white" alt="HAOS">
-  <img src="https://img.shields.io/badge/host-Generic_x86--64-555?logo=intel&logoColor=white" alt="Generic x86-64">
+  <img src="https://img.shields.io/badge/HAOS-2026.10.4-41BDF5?logo=homeassistant&logoColor=white" alt="HAOS">
+  <img src="https://img.shields.io/badge/host-Raspberry_Pi_5-A22846?logo=raspberrypi&logoColor=white" alt="Raspberry Pi 5">
   <img src="https://img.shields.io/badge/Recorder-MariaDB-003545?logo=mariadb&logoColor=white" alt="MariaDB">
-  <img src="https://img.shields.io/badge/otelcol-OpenTelemetry-425CC7?logo=opentelemetry&logoColor=white" alt="OpenTelemetry Collector">
-  <img src="https://img.shields.io/badge/Prometheus-Metrics-E6522C?logo=prometheus&logoColor=white" alt="Prometheus">
-  <img src="https://img.shields.io/badge/Grafana-Dashboards-F46800?logo=grafana&logoColor=white" alt="Grafana">
-  <img src="https://img.shields.io/badge/Loki-Logs-F46800?logo=grafana&logoColor=white" alt="Loki">
   <img src="https://img.shields.io/badge/NGINX-SSL%20Proxy-009639?logo=nginx&logoColor=white" alt="NGINX">
   <img src="https://img.shields.io/badge/TLS-Let's%20Encrypt-003A70?logo=letsencrypt&logoColor=white" alt="Let's Encrypt">
   <img src="https://img.shields.io/badge/AdGuard-DNS-68BC71?logo=adguard&logoColor=white" alt="AdGuard">
 </p>
 
-### 프로토콜 · HACS
+### 프로토콜
 
 <p>
   <img src="https://img.shields.io/badge/Matter-2A2A2A?logo=matter&logoColor=white" alt="Matter">
   <img src="https://img.shields.io/badge/Thread-Border%20Router-FF6B00" alt="Thread">
   <img src="https://img.shields.io/badge/MQTT-Mosquitto-660066?logo=mqtt&logoColor=white" alt="MQTT">
   <img src="https://img.shields.io/badge/ESPHome-000000?logo=esphome&logoColor=white" alt="ESPHome">
-  <img src="https://img.shields.io/badge/HACS-41BDF5?logo=homeassistantcommunitystore&logoColor=white" alt="HACS">
 </p>
 
 ### 음성과 AI
@@ -129,9 +100,9 @@
   <img src="https://img.shields.io/badge/GPT-OpenAI-412991?logo=openai&logoColor=white" alt="GPT">
   <img src="https://img.shields.io/badge/Gemini-Google-4285F4?logo=googlegemini&logoColor=white" alt="Gemini">
   <img src="https://img.shields.io/badge/Open%20Router-000000" alt="Open Router">
-  <img src="https://img.shields.io/badge/Ollama-Local-000000?logo=ollama&logoColor=white" alt="Ollama">
-  <img src="https://img.shields.io/badge/Whisper-STT-74AA9C?logo=openai&logoColor=white" alt="Whisper">
-  <img src="https://img.shields.io/badge/Supertonic--MNN-TTS-7C3AED" alt="Supertonic-MNN">
+  <img src="https://img.shields.io/badge/llama.cpp-Local-000000" alt="llama.cpp">
+  <img src="https://img.shields.io/badge/Supertonic-TTS-7C3AED" alt="Supertonic">
+  <img src="https://img.shields.io/badge/ElevenLabs-TTS-000000?logo=elevenlabs&logoColor=white" alt="ElevenLabs">
   <img src="https://img.shields.io/badge/MCP-Tools-FF6B6B" alt="MCP">
 </p>
 
@@ -143,6 +114,8 @@
   <img src="https://img.shields.io/badge/Music_Assistant-1E88E5?logo=musicassistant&logoColor=white" alt="Music Assistant">
   <img src="https://img.shields.io/badge/Jellyfin-00A4DC?logo=jellyfin&logoColor=white" alt="Jellyfin">
   <img src="https://img.shields.io/badge/Plex-E5A00D?logo=plex&logoColor=white" alt="Plex">
+  <img src="https://img.shields.io/badge/Immich-4250AF?logo=immich&logoColor=white" alt="Immich">
+  <img src="https://img.shields.io/badge/Mealie-E58325" alt="Mealie">
 </p>
 
 ---
@@ -168,15 +141,15 @@
 
 | Domain | Count |
 | --- | --- |
-| automations | 49 |
-| binary_sensors | 221 |
-| device_trackers | 17 |
-| lights | 14 |
-| media_players | 16 |
-| sensors | 988 |
-| switches | 168 |
-| others | 535 |
-| **Total** | **2008** |
+| automations | 50 |
+| binary_sensors | 265 |
+| device_trackers | 16 |
+| lights | 17 |
+| media_players | 21 |
+| sensors | 1356 |
+| switches | 429 |
+| others | 959 |
+| **Total** | **3113** |
 
 ## 화면
 
@@ -208,6 +181,6 @@ MIT — see [LICENSE](LICENSE). `secrets.yaml` 은 포함되지 않습니다.
 [docs-img]: https://img.shields.io/badge/docs-saya6k.github.io-1f6feb?style=flat-square&logo=github
 
 <!--
-Generated by the [readme custom integration](https://github.com/custom-components/readme).
-Service: readme.generate
+Generated by the [jinja_files custom integration](https://saya6k.github.io/hacs-jinja-files/).
+Service: jinja_files.render
 -->

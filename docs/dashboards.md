@@ -13,6 +13,13 @@ Lovelace는 **storage 모드** 로 운영합니다 (`configuration.yaml`의 `lov
 - **단일 인터페이스**: 좌측 단축 탭 숨김, 모든 정보를 한 Lovelace 화면에서.
 - **HomeKit 영감**: 아이폰 사용자에 맞춰 Apple HomeKit 스타일 차용.
 
+## 대시보드 목록
+
+| 대시보드        | 경로           | 비고                                           |
+| --------------- | -------------- | ---------------------------------------------- |
+| 기본 (Overview) | `lovelace`     | `.storage/lovelace` 가 없어 HA가 자동 생성     |
+| 3D              | `dashboard-3d` | floor3d-card 로 구성한 평면도 기반 3D 대시보드 |
+
 ## 주요 기능
 
 - **동적 섹션**: Home / Climate / Energy / System 등 목적별 분리.
@@ -40,18 +47,14 @@ Lovelace는 **storage 모드** 로 운영합니다 (`configuration.yaml`의 `lov
 
 ## Lovelace 플러그인
 
-`configuration.yaml`의 `frontend.extra_module_url`에 `card-mod`가 등록되어 있고, 나머지는 HACS를 통해 `.storage/lovelace_resources`에 등록됩니다. 현재 **8개** 의 HACS 플러그인이 설치되어 있습니다.
+HACS 대신 Home Assistant 내장 **Marketplace** 로 설치하며, `www/community/` 에 받아 `.storage/lovelace_resources` 에 등록합니다.
 
-| 이름                                                                               | 설명                                    |
-| ---------------------------------------------------------------------------------- | --------------------------------------- |
-| [Auto Entities](https://github.com/thomasloven/lovelace-auto-entities)             | 🔹 엔티티 목록을 동적으로 채워주는 카드 |
-| [Button Card](https://github.com/custom-cards/button-card)                         | ❇️ 강력한 커스텀 버튼 카드              |
-| [Card Mod](https://github.com/thomasloven/lovelace-card-mod)                       | 🔹 거의 모든 Lovelace 카드에 CSS 주입   |
-| [Decluttering Card](https://github.com/custom-cards/decluttering-card)             | 🧹 반복되는 카드 정의를 템플릿화        |
-| [Homeii Flow](https://github.com/r11a/homeii-music-flow)                           | Music Assistant용 프리미엄 카드         |
-| [Hui Element](https://github.com/thomasloven/lovelace-hui-element)                 | 🔹 내장 엘리먼트를 자유 위치에          |
-| [Mushroom](https://github.com/piitaya/lovelace-mushroom)                           | 🍄 부드러운 톤의 통합 카드 세트         |
-| [Template Entity Row](https://github.com/thomasloven/lovelace-template-entity-row) | 🔹 entities 카드의 행을 자유롭게        |
+| 이름                                                       | 설명                                     |
+| ---------------------------------------------------------- | ---------------------------------------- |
+| [floor3d-card](https://github.com/giosci1994/floor3d-card) | 3D 모델 위에 엔티티 상태를 표시하는 카드 |
+| [ha-homelab-map](https://github.com/kjanas/ha-homelab-map) | 직접 배치하는 홈랩 실시간 맵 카드        |
+
+`/local/floor3d/weather.js` 도 리소스로 등록되어 있습니다. `configuration.yaml` 의 `frontend.extra_module_url`(예전 `card-mod`)은 주석 처리되어 있습니다.
 
 ## 테마
 

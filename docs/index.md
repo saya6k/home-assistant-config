@@ -6,7 +6,7 @@ title: 홈
 
 <p>
   <a href="https://github.com/saya6k/home-assistant-config"><img src="https://img.shields.io/maintenance/yes/2026?style=flat-square" alt="Maintained"></a>
-  <a href="https://github.com/home-assistant/core/releases/tag/2026.5.4"><img src="https://img.shields.io/badge/Home%20Assistant-2026.5.4-41BDF5?style=flat-square&logo=homeassistant&logoColor=white" alt="HA Version"></a>
+  <a href="https://github.com/home-assistant/core/releases/tag/2026.10.4"><img src="https://img.shields.io/badge/Home%20Assistant-2026.10.4-41BDF5?style=flat-square&logo=homeassistant&logoColor=white" alt="HA Version"></a>
   <a href="https://github.com/saya6k/home-assistant-config"><img src="https://img.shields.io/github/last-commit/saya6k/home-assistant-config?style=flat-square" alt="Last Commit"></a>
   <a href="https://github.com/saya6k/home-assistant-config"><img src="https://img.shields.io/github/commit-activity/m/saya6k/home-assistant-config?style=flat-square" alt="Commit Activity"></a>
   <a href="https://github.com/saya6k/home-assistant-config/actions"><img src="https://img.shields.io/github/actions/workflow/status/saya6k/home-assistant-config/release.yml?style=flat-square&label=CI" alt="CI"></a>
@@ -18,22 +18,22 @@ title: 홈
   <a href="https://www.buymeacoffee.com/my7nmfcm92k"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?logo=buymeacoffee&logoColor=000" alt="Buy Me a Coffee"></a>
 </p>
 
-2018년부터 운영 중인 개인 Home Assistant 설정입니다. 현재 **2008개 엔티티**, **17개 HACS 통합**, **23개 애드온**으로 구성되어 있습니다.
+2018년부터 운영 중인 개인 Home Assistant 설정입니다. 현재 **3113개 엔티티**, **14개 커스텀 통합**, **17개 애드온**으로 구성되어 있습니다.
 
 > [!CAUTION]
-> 가정 환경은 계속 진화합니다. **이 문서가 최신이 아닐 수 있다는 점을 감안해 주세요** — 가능한 한 자주 갱신하려 노력하고 있습니다. (`jinja2docs.render` 로 자동 갱신)
+> 가정 환경은 계속 진화합니다. **이 문서가 최신이 아닐 수 있다는 점을 감안해 주세요** — 가능한 한 자주 갱신하려 노력하고 있습니다. (`jinja_files.render` 로 자동 갱신)
 
 ## 시스템 한눈에 보기
 
 ```
-┌─ 하드웨어   │ Piesia AD742A + Raspberry Pi 5, UniFi (로컬+원격), Matter/Thread/Wi-Fi
-├─ 플랫폼     │ HAOS (로컬, stateless) · 원격 TrueNAS (Recorder MariaDB, 옵저버빌리티 백엔드)
-├─ 통합       │ 100+ 기본 통합 + 17 커스텀 컴포넌트 + ESPHome 디바이스 3종
-├─ 자동화     │ 49 자동화 (한국어 중심) · 시나리오/장면 다수
-├─ 대시보드   │ Lovelace storage 모드 + Mushroom/Bubble Card/Card Mod
-├─ 음성·AI    │ Whisper · Supertonic-MNN · Ollama · Voice Satellite · LLM 대화 에이전트 다중
-├─ 옵저버빌리티│ otelcol agent (로컬) ─VPN─▶ otelcol gateway (원격) ─▶ Prometheus / Loki / Tempo ─▶ Grafana
-├─ 백업       │ 로컬 3개 + 원격 TrueNAS 1개 + Nabu Casa Cloud 1개
+┌─ 하드웨어   │ Raspberry Pi 5 (HAOS), UniFi (로컬+원격), Matter/Thread/Wi-Fi
+├─ 플랫폼     │ HAOS (로컬, stateless) · 원격 TrueNAS (Recorder MariaDB, 백업)
+├─ 통합       │ 100+ 기본 통합 + 14 커스텀 통합 (Marketplace) + ESPHome 디바이스 6대
+├─ 자동화     │ 50 자동화 (한국어 중심) · 스크립트/장면 다수
+├─ 대시보드   │ Lovelace storage 모드 + floor3d-card (3D 대시보드)
+├─ 음성·AI    │ HA Cloud STT · Supertonic TTS · OpenAI/Claude/Gemini/llama.cpp · LLM 도구 스크립트
+├─ 옵저버빌리티│ SQL 통합 기반 RDB 지표 · System Monitor · alert 패키지
+├─ 백업       │ 매일 자동 백업 → 로컬 + 원격 TrueNAS + Nabu Casa Cloud (3개 보관)
 └─ 서비스     │ Paperless-ngx · Pocket ID  (모두 원격 TrueNAS)
 ```
 
@@ -41,15 +41,15 @@ title: 홈
 
 | Domain          |    Value |
 | --------------- | -------: |
-| automations     |       49 |
-| binary_sensors  |      221 |
-| device_trackers |       17 |
-| lights          |       14 |
-| media_players   |       16 |
-| sensors         |      988 |
-| switches        |      168 |
-| others          |      535 |
-| **Total**       | **2008** |
+| automations     |       50 |
+| binary_sensors  |      265 |
+| device_trackers |       16 |
+| lights          |       17 |
+| media_players   |       21 |
+| sensors         |     1356 |
+| switches        |      429 |
+| others          |      959 |
+| **Total**       | **3113** |
 
 ## 문서 내비게이션
 
@@ -59,12 +59,12 @@ title: 홈
   - [네트워크](./platform/network.md) — AdGuard · NGINX · UniFi · 인증
   - [스토리지](./platform/storage.md) — MariaDB · `.storage`
   - [백업](./platform/backups.md)
-  - [애드온](./platform/add-ons.md) — 23 등록
+  - [애드온](./platform/add-ons.md) — 17 등록
 - 통합
   - [개요](./integrations/index.md) — 100+ 통합 목록
-  - [커스텀 컴포넌트](./integrations/custom-components.md) — 17 HACS 통합
-  - [ESPHome](./integrations/esphome.md) — 월패드, 인터폰, 음성 위성
-- [자동화](./automations.md) — 49개
+  - [커스텀 컴포넌트](./integrations/custom-components.md) — 14개
+  - [ESPHome](./integrations/esphome.md) — 월패드, 인터폰, 음성 디바이스
+- [자동화](./automations.md) — 50개
 - [대시보드](./dashboards.md)
 - [음성과 AI](./voice-and-ai.md)
 - [옵저버빌리티](./observability.md)

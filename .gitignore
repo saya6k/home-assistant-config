@@ -73,6 +73,10 @@ custom_components/*
 !.storage/lovelace_dashboards
 !.storage/lovelace_resources
 !.storage/lovelace.*
+# Backups and the 3D dashboard (room layout, places) stay on the server: this repo is public
+.storage/*.bak*
+.storage/lovelace.dashboard_smarthome
+.storage/lovelace.dashboard_test
 
 # ============================================================
 # Re-ignore individual files even though they match an allow-rule above

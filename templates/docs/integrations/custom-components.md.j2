@@ -1,68 +1,30 @@
 {#-
-docs/integrations/custom-components.md — HACS integrations from `hacs_components`.
+docs/integrations/custom-components.md — loaded custom integrations from `custom_components`.
 
-Categorization is editorial — defined here as full_name → group mapping.
-Unknown repos fall into "기타".
+Categorization is editorial — defined here as domain → group mapping.
+Unknown domains fall into "기타".
 -#}
-{%- set integrations = hacs_components | selectattr('category', 'equalto', 'integration') | list -%}
+{%- set integrations = custom_components -%}
 {%- set categories = {
-    '한국 서비스 / 지역': [
-        'redchupa/kr_component_kit', 'saya6k/ha-chzzk',
-    ],
-    '가전 / 디바이스': [
-        'libdyson-wg/ha-dyson', '3dg1luk43/ha_washdata',
-        'saya6k/ha-xbloom', 'saya6k/ha-wardrowbe',
-    ],
-    '위치 / 존재': [
-        'pnbruckner/ha-life360', 'AlbinLind/dawarich-home-assistant',
-    ],
-    '음성 / AI': [
-        'jxlarrea/voice-satellite-card-integration',
-        'jxlarrea/voice-satellite-card-llm-tools',
-    ],
-    '데이터 / 외부': [
-        'pinkywafer/Anniversaries', 'ringleader/cyclist',
-        'boralyl/steam-wishlist', 'LordBoos/discord_game',
-        'tomaae/homeassistant-truenas',
-    ],
+    '한국 서비스 / 지역': ['kr_public_data', 'chzzk', 'naver_map', 'pweb_amano'],
+    '가전 / 디바이스': ['dyson_local', 'localthings', 'xbloom', 'wardrowbe', 'ancs'],
+    '위치 / 존재': ['life360'],
+    '데이터 / 외부': ['truenas_ce'],
     '유틸리티': [
-        'hacs/integration', 'frenck/spook',
-        'andreadegiovine/homeassistant-restore-persistent-notifications',
+        'jinja_files', 'spook', 'spook_calibration', 'spook_inverse',
+        'spook_time_in_state', 'restore_persistent_notifications',
     ],
 } -%}
-{%- set categorized_repos = [] -%}
-{%- for repos in categories.values() %}{% set _ = categorized_repos.extend(repos) %}{% endfor -%}
-{%- set int_by_repo = {} -%}
-{%- for c in integrations %}{% set _ = int_by_repo.update({c.full_name: c}) %}{% endfor -%}
-{#- Map a HACS repo's known domain (icon slug) for the brand image. If missing, fall back to the lowercased name. -#}
-{%- set brand_overrides = {
-    'redchupa/kr_component_kit': 'kr_component_kit',
-    'saya6k/ha-chzzk': 'chzzk',
-    'libdyson-wg/ha-dyson': 'dyson_local',
-    '3dg1luk43/ha_washdata': 'ha_washdata',
-    'saya6k/ha-xbloom': 'xbloom',
-    'saya6k/ha-wardrowbe': 'wardrowbe',
-    'pnbruckner/ha-life360': 'life360',
-    'AlbinLind/dawarich-home-assistant': 'dawarich',
-    'jxlarrea/voice-satellite-card-integration': 'voice_satellite',
-    'jxlarrea/voice-satellite-card-llm-tools': 'voice_satellite_llm_tools',
-    'pinkywafer/Anniversaries': 'anniversaries',
-    'ringleader/cyclist': 'cyclist',
-    'boralyl/steam-wishlist': 'steam_wishlist',
-    'LordBoos/discord_game': 'discord_game',
-    'tomaae/homeassistant-truenas': 'truenas',
-    'hacs/integration': 'hacs',
-    'frenck/spook': 'spook',
-    'andreadegiovine/homeassistant-restore-persistent-notifications': 'restore_persistent_notifications',
-} -%}
+{%- set categorized_domains = [] -%}
+{%- for domains in categories.values() %}{% set _ = categorized_domains.extend(domains) %}{% endfor -%}
+{%- set int_by_domain = {} -%}
+{%- for c in integrations %}{% set _ = int_by_domain.update({c.domain: c}) %}{% endfor -%}
 {#- Domains present in analytics.home-assistant.io/custom_integrations.json get an
     "active installations" badge (via shields.io dynamic JSON). Domains not listed
     there have no public stats, so they render "—". Add a domain here once it appears
     in HA's custom-integrations analytics. -#}
 {%- set analytics_domains = [
-    'dyson_local', 'ha_washdata', 'life360', 'dawarich', 'voice_satellite',
-    'anniversaries', 'steam_wishlist', 'discord_game', 'truenas',
-    'hacs', 'spook', 'restore_persistent_notifications',
+    'dyson_local', 'life360', 'spook', 'restore_persistent_notifications',
 ] -%}
 {%- set badge_base = 'https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fanalytics.home-assistant.io%2Fcustom_integrations.json&query=%24.' -%}
 {%- set badge_tail = '.total&label=installs&color=2ea44f&style=flat-square' -%}
@@ -72,35 +34,34 @@ title: 커스텀 컴포넌트
 
 # 커스텀 컴포넌트
 
-HACS 또는 수동으로 설치한 통합입니다. 현재 **{{ integrations | count }}개** — `custom_components/` 디렉터리에 코드가 있고 `.gitignore`로 추적은 제외, 매니페스트만 추적합니다.
-{% for cat, repos in categories.items() %}
+Home Assistant 내장 **Marketplace** 또는 수동으로 설치한 통합입니다 (HACS는 더 이상 사용하지 않음). 현재 **{{ integrations | count }}개** — 코드는 `custom_components/` 디렉터리에 있고 `.gitignore`로 저장소에서는 제외됩니다.
+{% for cat, domains in categories.items() %}
 {%- set present = [] -%}
-{%- for r in repos %}
-  {%- if r in int_by_repo %}{% set _ = present.append(int_by_repo[r]) %}{% endif -%}
+{%- for d in domains %}
+  {%- if d in int_by_domain %}{% set _ = present.append(int_by_domain[d]) %}{% endif -%}
 {%- endfor -%}
 {%- if present | count > 0 %}
 
 ## {{ cat }}
 
-| 이름 | 설치 수 | 설명 |
+| 이름 | 버전 | 설치 수 |
 | --- | --- | --- |
 {%- for c in present | sort(attribute='name') %}
-{%- set brand = brand_overrides.get(c.full_name, c.name | lower | replace(' ', '_')) %}
-| [<img src="https://brands.home-assistant.io/_/{{ brand }}/icon.png" height="24"/> {{ c.name }}]({{ c.documentation }}) | {% if brand in analytics_domains %}<img src="{{ badge_base }}{{ brand }}{{ badge_tail }}" alt="HACS active installations"/>{% else %}—{% endif %} | {{ c.description or '' }} |
+| [<img src="https://brands.home-assistant.io/_/{{ c.domain }}/icon.png" height="24"/> {{ c.name }}]({{ c.documentation }}) | `{{ c.version }}` | {% if c.domain in analytics_domains %}<img src="{{ badge_base }}{{ c.domain }}{{ badge_tail }}" alt="active installations"/>{% else %}—{% endif %} |
 {%- endfor %}
 {%- endif %}
 {%- endfor %}
 
-{%- set uncategorized = integrations | rejectattr('full_name', 'in', categorized_repos) | list %}
+{%- set uncategorized = integrations | rejectattr('domain', 'in', categorized_domains) | list %}
 {%- if uncategorized | count > 0 %}
 
 ## 기타 (분류 미지정)
 
-> 새 HACS 통합이 설치되면 여기에 표시됩니다. `templates/docs/integrations/custom-components.md.j2` 의 `categories` 맵에 `full_name`을 추가하면 적절한 섹션으로 이동합니다.
+> 새 커스텀 통합이 설치되면 여기에 표시됩니다. `templates/docs/integrations/custom-components.md.j2` 의 `categories` 맵에 도메인을 추가하면 적절한 섹션으로 이동합니다.
 
-| 이름 | 저장소 | 설명 |
+| 이름 | 도메인 | 버전 |
 | --- | --- | --- |
 {%- for c in uncategorized | sort(attribute='name') %}
-| [{{ c.name }}]({{ c.documentation }}) | `{{ c.full_name }}` | {{ c.description or '' }} |
+| [{{ c.name }}]({{ c.documentation }}) | `{{ c.domain }}` | `{{ c.version }}` |
 {%- endfor %}
 {%- endif %}
