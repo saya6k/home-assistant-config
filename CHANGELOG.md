@@ -1,3 +1,9 @@
+## [1.13.1](https://github.com/saya6k/home-assistant-config/compare/v1.13.0...v1.13.1) (2026-11-01)
+
+### Bug Fixes
+
+* Fall back to an available satellite for the iPhone call question ([#23](https://github.com/saya6k/home-assistant-config/issues/23)) ([101fe4c](https://github.com/saya6k/home-assistant-config/commit/101fe4cc198398b20adee54f209a6f20e6394c74))
+
 ## [1.13.0](https://github.com/saya6k/home-assistant-config/compare/v1.12.0...v1.13.0) (2026-11-01)
 
 ### Features
