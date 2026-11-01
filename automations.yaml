@@ -2839,9 +2839,10 @@
         | rejectattr(''state'', ''in'', [''unavailable'', ''unknown'']) %}{% set a
         = area_id(s.entity_id) %}{% if a and area_entities(a) | select(''is_state_attr'',
         ''device_class'', ''occupancy'') | select(''is_state'', ''on'') | list | count
-        > 0 %}{% set ns.found = ns.found + [s.entity_id] %}{% endif %}{% endfor %}{{
-        (ns.found + [''assist_satellite.geosil_mirror_assist_satellite'']) | first
-        }}'
+        > 0 %}{% set ns.found = ns.found + [s.entity_id] %}{% endif %}{% endfor %}{%
+        set live = states.assist_satellite | rejectattr(''state'', ''in'', [''unavailable'',
+        ''unknown'']) | map(attribute=''entity_id'') | list %}{{ (ns.found + (area_entities(''living_room'')
+        | select(''in'', live) | list) + live) | first }}'
   - action: assist_satellite.ask_question
     data:
       entity_id: '{{ satellite }}'
