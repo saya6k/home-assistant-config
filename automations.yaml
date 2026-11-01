@@ -345,9 +345,11 @@
       for: 00:00:00
       zone: zone.home
   actions:
-  - action: assist_satellite.ask_question
+  - action: script.ask_question
     metadata: {}
     data:
+      default_target:
+        area_id: bedroom
       question: '{% set people = states.person | selectattr("state", "equalto", "home")
         | list %} {% set count = people | count %} {% if count == 1 %}   {{ people[0].attributes.friendly_name
         }}님, 지금 침대에 누워 계신 것 같아요. {%if is_state(''binary_sensor.night'',''on'')%}취침{%else%}취침{%endif%}
@@ -2834,18 +2836,8 @@
       entity_id: alarm_control_panel.security_system
       state: armed_night
   actions:
-  - variables:
-      satellite: '{% set ns = namespace(found=[]) %}{% for s in states.assist_satellite
-        | rejectattr(''state'', ''in'', [''unavailable'', ''unknown'']) %}{% set a
-        = area_id(s.entity_id) %}{% if a and area_entities(a) | select(''is_state_attr'',
-        ''device_class'', ''occupancy'') | select(''is_state'', ''on'') | list | count
-        > 0 %}{% set ns.found = ns.found + [s.entity_id] %}{% endif %}{% endfor %}{%
-        set live = states.assist_satellite | rejectattr(''state'', ''in'', [''unavailable'',
-        ''unknown'']) | map(attribute=''entity_id'') | list %}{{ (ns.found + (area_entities(''living_room'')
-        | select(''in'', live) | list) + live) | first }}'
-  - action: assist_satellite.ask_question
+  - action: script.ask_question
     data:
-      entity_id: '{{ satellite }}'
       question: '{{ trigger.event.data.caller }} 전화가 왔어요. 받을까요?'
       preannounce: true
       answers:
