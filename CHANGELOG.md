@@ -1,3 +1,9 @@
+## [1.14.0](https://github.com/saya6k/home-assistant-config/compare/v1.13.1...v1.14.0) (2026-11-01)
+
+### Features
+
+* Ask questions through a shared script that defaults to the living room ([c8bf122](https://github.com/saya6k/home-assistant-config/commit/c8bf1229b04f9c6f9f0880d34d235ebd68cb559c))
+
 ## [1.13.1](https://github.com/saya6k/home-assistant-config/compare/v1.13.0...v1.13.1) (2026-11-01)
 
 ### Bug Fixes
