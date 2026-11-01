@@ -1,3 +1,21 @@
+## [1.13.0](https://github.com/saya6k/home-assistant-config/compare/v1.12.0...v1.13.0) (2026-11-01)
+
+### Features
+
+* Add a black Mirror theme for the living-room mirror dashboard ([f8f383c](https://github.com/saya6k/home-assistant-config/commit/f8f383c51c238ac2991412e79e4f126820879e07))
+* Add an LLM script blueprint for managing Mealie ([d1aab42](https://github.com/saya6k/home-assistant-config/commit/d1aab4267b8d050c7f8937e193059c147e11faca))
+* Add an LLM script blueprint for playing Jellyfin on the Apple TV ([bab8b4c](https://github.com/saya6k/home-assistant-config/commit/bab8b4ca07e7932a72b208dc7b4d36b0d0745de3))
+* Add Apple TV YouTube and apps LLM scripts and align LLM script names ([111d222](https://github.com/saya6k/home-assistant-config/commit/111d2227c223f1eeeb4807d2ba9c7c243fbd902d))
+* Add iPhone ANCS automations and reflect the automations running on the server ([bc8440e](https://github.com/saya6k/home-assistant-config/commit/bc8440eacdc8aded1d0204a6a1969cd847dd9b5f))
+* Assign devices to the HAOJAI 6-button switch instead of per-press actions ([0592920](https://github.com/saya6k/home-assistant-config/commit/0592920fa8226b921fa9885366d942af159c879d))
+* Broadcast messages only to their assigned area ([3602499](https://github.com/saya6k/home-assistant-config/commit/36024991dc51cafee6a42f56b29bcd709f2c8723))
+* Fall back when the broadcast target has no available speaker ([34b1636](https://github.com/saya6k/home-assistant-config/commit/34b1636811ad6d80ef85803e2d4632627db5e7fa))
+* Stop current Jellyfin playback before opening another item on the Apple TV ([ee543fb](https://github.com/saya6k/home-assistant-config/commit/ee543fb12b21f904af953ac461c38a799b3c1bc5))
+
+### Bug Fixes
+
+* Open Jellyfin items with the swiftfin:// scheme as the Apple TV user ([093c378](https://github.com/saya6k/home-assistant-config/commit/093c37857976d678bdb73dadc7a13c55c56d58fb))
+
 ## [1.12.0](https://github.com/saya6k/home-assistant-config/compare/v1.11.1...v1.12.0) (2026-10-27)
 
 ### Features
