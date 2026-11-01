@@ -909,6 +909,77 @@ message_broadcast:
         message: '{{ message }}'
   mode: queued
   max: 5
+ask_question:
+  alias: 질문하기 (Ask Question)
+  description: 'Satellite 한 대로 질문하고 대답을 돌려줍니다. Default Target의 켜진 Satellite에, 지정이 없거나
+    쓸 수 없으면 거실, 재실 구역, 켜진 아무 Satellite 순으로 묻습니다. 대답은 ask_question 응답(id, sentence, slots)이며
+    물을 Satellite가 없으면 id가 none입니다.
+
+    '
+  fields:
+    question:
+      name: 질문
+      required: true
+      selector:
+        text:
+    answers:
+      name: 답변 목록
+      description: 'ask_question의 answers (id, sentences 목록)'
+      required: true
+      selector:
+        object:
+    default_target:
+      name: Default Target
+      description: 물어볼 대상 (Area, Device, Entity). 지정이 없으면 거실
+      required: false
+      selector:
+        target:
+          entity:
+            domain: assist_satellite
+    preannounce:
+      name: 알림음
+      default: true
+      selector:
+        boolean:
+  sequence:
+  - variables:
+      live: >-
+        {{ states.assist_satellite | rejectattr('state', 'in', ['unavailable', 'unknown'])
+        | map(attribute='entity_id') | list }}
+      requested: >-
+        {% set t = default_target if default_target is defined and default_target is mapping else {} %}
+        {% set ns = namespace(items=[]) %}
+        {% for e in [t.get('entity_id', [])] | flatten %}{% set ns.items = ns.items + [e] %}{% endfor %}
+        {% for x in [t.get('area_id', [])] | flatten %}{% set ns.items = ns.items + area_entities(x) %}{% endfor %}
+        {% for x in [t.get('device_id', [])] | flatten %}{% set ns.items = ns.items + device_entities(x) %}{% endfor %}
+        {{ ns.items | unique | select('in', live) | list }}
+      occupied: >-
+        {% set ns = namespace(items=[]) %}
+        {% for s in live %}{% set a = area_id(s) %}
+        {% if a and area_entities(a) | select('is_state_attr', 'device_class', 'occupancy')
+        | select('is_state', 'on') | list | count > 0 %}{% set ns.items = ns.items + [s] %}{% endif %}
+        {% endfor %}{{ ns.items }}
+      satellite: >-
+        {{ (requested + (area_entities('living_room') | select('in', live) | list) + occupied + live)
+        | first | default('') }}
+      no_reply:
+        id:
+  - if:
+    - condition: template
+      value_template: '{{ satellite == '''' }}'
+    then:
+    - stop: 물어볼 Satellite가 없음
+      response_variable: no_reply
+  - action: assist_satellite.ask_question
+    data:
+      entity_id: '{{ satellite }}'
+      question: '{{ question }}'
+      answers: '{{ answers }}'
+      preannounce: '{{ preannounce | default(true) }}'
+    response_variable: reply
+  - stop: 대답 반환
+    response_variable: reply
+  mode: parallel
 unknown_11:
   mode: queued
   max: 10
