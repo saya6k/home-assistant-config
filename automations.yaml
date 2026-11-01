@@ -375,11 +375,6 @@
       target:
         entity_id: scene.sleep
       data: {}
-    - action: script.turn_on
-      metadata: {}
-      target:
-        entity_id: script.sleep_as_android_start_sleep_tracking
-      data: {}
   mode: single
 - id: '1754101632706'
   alias: TTS 캐시 지우기
@@ -678,10 +673,6 @@
         data: {}
         target:
           entity_id: scene.sleep
-      - action: script.sleep_as_android_start_sleep_tracking
-        metadata: {}
-        data: {}
-        enabled: false
     - conditions:
       - condition: not
         conditions:
