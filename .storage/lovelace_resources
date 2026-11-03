@@ -5,16 +5,6 @@
   "data": {
     "items": [
       {
-        "id": "092f312f183e4a479dcbaf6fe9a58a8d",
-        "url": "/local/community/floor3d-card/floor3d-card.js?v=13975243882132",
-        "type": "module"
-      },
-      {
-        "id": "28c674a8dc904cf6a037117ab59436bf",
-        "url": "/local/floor3d/weather.js?v=2",
-        "type": "module"
-      },
-      {
         "id": "895cf535343b4121ae6b00edfc051ff7",
         "url": "/local/community/ha-homelab-map/ha-homelab-map.js?v=1425707356-v1.1.0",
         "type": "module"

@@ -43,12 +43,11 @@ These show the previous sections-based dashboard.
 
 Installed through Home Assistant's built-in **Marketplace** (not HACS) into `www/community/` and registered in `.storage/lovelace_resources`.
 
-| Name                                                       | Description                                                                            |
-| ---------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| [floor3d-card](https://github.com/giosci1994/floor3d-card) | Shows entity states on a 3D model (registered, but not used by the current dashboards) |
-| [ha-homelab-map](https://github.com/kjanas/ha-homelab-map) | Hand-placed live map of the homelab                                                    |
+| Name                                                       | Description                         |
+| ---------------------------------------------------------- | ----------------------------------- |
+| [ha-homelab-map](https://github.com/kjanas/ha-homelab-map) | Hand-placed live map of the homelab |
 
-The local `/local/smarthome3d/smarthome3d-card.js` and `/local/floor3d/weather.js` are also registered as resources. `frontend.extra_module_url` in `configuration.yaml` (formerly `card-mod`) is commented out.
+The local `/local/smarthome3d/smarthome3d-card.js` is also registered as a resource. `frontend.extra_module_url` in `configuration.yaml` (formerly `card-mod`) is commented out.
 
 ## Themes
 
