@@ -25,10 +25,8 @@ jobs:
       github.event.workflow_run.event == 'push' &&
       github.event.workflow_run.head_repository.full_name == 'saya6k/home-assistant-config'
     runs-on: ubuntu-latest
-    # semantic-release/github pushes the tag and creates the GitHub Release. No
-    # release commit is made: the HA server (Home Assistant Version Control) is
-    # the only writer to main, so a CHANGELOG commit would make its push
-    # non-fast-forward. PAT is still required if branch protection
+    # semantic-release/git + semantic-release/github need to push commits/tags
+    # and create the GitHub Release. PAT is still required if branch protection
     # forbids GITHUB_TOKEN pushes — otherwise consider switching to GITHUB_TOKEN.
     permissions:
       contents: write
@@ -55,7 +53,7 @@ jobs:
             npm ci
           fi
 
-      - name: 🚀 Run semantic-release (tags, GitHub Release)
+      - name: 🚀 Run semantic-release (tags, GitHub Release, CHANGELOG)
         id: release
         uses: cycjimmy/semantic-release-action@d9bf53a078bd2f86aaffaec796dbb3d28f1b6f34 # v8.1.3
         with:
@@ -64,6 +62,8 @@ jobs:
             conventional-changelog-conventionalcommits@9
             @semantic-release/commit-analyzer
             @semantic-release/release-notes-generator
+            @semantic-release/changelog
+            @semantic-release/git
             @semantic-release/github
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}

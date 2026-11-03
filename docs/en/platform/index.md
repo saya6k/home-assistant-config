@@ -17,16 +17,16 @@ Operational infrastructure around Home Assistant Core — networking, data stora
 
 Local and remote components are joined by a site-to-site VPN into a single logical system.
 
-| Area                | Choice                                               | Location                        | Notes                                                                                                                       |
-| ------------------- | ---------------------------------------------------- | ------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| Recorder DB         | MariaDB                                              | Remote TrueNAS                  | Over VPN, external URL in `secrets.yaml`. `commit_interval: 120s`                                                           |
-| DB monitoring       | SQL integration                                      | Local                           | Recorder DB size, slow queries, thread sensors ([Observability](../observability.md))                                       |
-| Backup copies       | Network storage (`TrueNAS_Backup`)                   | Remote TrueNAS                  | Daily automatic backups ([Backups](../backups.md))                                                                          |
-| TLS termination     | NGINX Home Assistant SSL Proxy                       | Local (HA add-on)               | Let's Encrypt certs, auto-renewal automation                                                                                |
-| Auth                | HA built-in (`homeassistant` provider)               | Local                           | No OIDC in the current config ([Pocket ID](../services/pocket-id.md))                                                       |
-| Document management | Paperless-ngx (HA integration)                       | Local client → remote Paperless | [Paperless-ngx](../services/paperless.md) runs on TrueNAS                                                                   |
-| DNS / ad blocking   | AdGuard Home (HA integration)                        | Remote                          | Local add-on removed; the integration only mirrors status/switches                                                          |
-| Code sync           | Home Assistant Version Control (`/config` git clone) | Local → GitHub                  | Auto-commits changes and pushes to `main`. It does not pull, so changes merged from the Mac need a `git pull` on the server |
+| Area                | Choice                                 | Location                        | Notes                                                                                 |
+| ------------------- | -------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------- |
+| Recorder DB         | MariaDB                                | Remote TrueNAS                  | Over VPN, external URL in `secrets.yaml`. `commit_interval: 120s`                     |
+| DB monitoring       | SQL integration                        | Local                           | Recorder DB size, slow queries, thread sensors ([Observability](../observability.md)) |
+| Backup copies       | Network storage (`TrueNAS_Backup`)     | Remote TrueNAS                  | Daily automatic backups ([Backups](../backups.md))                                    |
+| TLS termination     | NGINX Home Assistant SSL Proxy         | Local (HA add-on)               | Let's Encrypt certs, auto-renewal automation                                          |
+| Auth                | HA built-in (`homeassistant` provider) | Local                           | No OIDC in the current config ([Pocket ID](../services/pocket-id.md))                 |
+| Document management | Paperless-ngx (HA integration)         | Local client → remote Paperless | [Paperless-ngx](../services/paperless.md) runs on TrueNAS                             |
+| DNS / ad blocking   | AdGuard Home (HA integration)          | Remote                          | Local add-on removed; the integration only mirrors status/switches                    |
+| Code sync           | `/config` git clone                    | Local                           | Git Pull add-on removed; commits/pulls are done on the server directly                |
 
 ## Pages
 
