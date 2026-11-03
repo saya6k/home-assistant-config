@@ -60,20 +60,30 @@
       preset_mode: Auto
       angle_low: 135
       angle_high: 225
-      friendly_name: '공기청정기 '
+      friendly_name: 공기청정기
       supported_features: 63
       state: 'on'
     switch.air_purifier_night_mode:
       icon: mdi:power-sleep
       friendly_name: 공기청정기 Night Mode
-      state: 'off'
+      state: 'on'
     media_player.hwajangsil:
+      group_members: []
+      volume_level: 1
+      is_volume_muted: false
+      media_content_type: music
+      app_id: music_assistant
+      source: Music Assistant Queue
+      shuffle: false
+      repeat: 'off'
+      entity_picture_local:
+      mass_player_type: player
+      active_queue: up20f83b094eeb
       device_class: speaker
-      icon: speaker
+      icon: mdi:speaker
       friendly_name: 화장실
       supported_features: 8320575
-      restored: true
-      state: unavailable
+      state: idle
     light.living_room_vanity:
       min_color_temp_kelvin: 2202
       max_color_temp_kelvin: 6535
@@ -406,13 +416,12 @@
     climate.air_conditioner:
       hvac_modes:
       - 'off'
-      - cool
-      - fan_only
       - auto
+      - fan_only
+      - cool
       - dry
-      min_temp: 16
-      max_temp: 30
-      target_temp_step: 0.5
+      min_temp: 7
+      max_temp: 35
       fan_modes:
       - slow_low
       - low
@@ -426,10 +435,10 @@
       swing_horizontal_modes:
       - 'on'
       - 'off'
-      current_temperature: 29.5
+      current_temperature: 28
       temperature_unit: °C
       temperature:
-      current_humidity: 43
+      current_humidity: 44
       fan_mode: high
       swing_mode: 'on'
       swing_horizontal_mode: 'on'
@@ -518,6 +527,7 @@
       - Netflix
       - NordVPN
       - Plex
+      - RetroArch
       - Sing
       - Spotify
       - Steam Link
@@ -540,6 +550,20 @@
       friendly_name: 거실 Apple TV
       supported_features: 0
       state: 'on'
+    fan.living_room_air_purifier:
+      preset_modes:
+      - Auto
+      - Normal
+      direction: forward
+      oscillating: true
+      percentage:
+      percentage_step: 10
+      preset_mode: Auto
+      angle_low: 135
+      angle_high: 225
+      friendly_name: 공기청정기
+      supported_features: 63
+      state: 'off'
   icon: mdi:lock
   metadata:
     alarm_control_panel.security_system:
@@ -600,25 +624,26 @@
       - Normal
       direction: forward
       oscillating: true
-      percentage: 100
+      percentage: 0
       percentage_step: 10
       preset_mode: Normal
       angle_low: 135
       angle_high: 225
-      friendly_name: '공기청정기 '
+      friendly_name: 공기청정기
       supported_features: 63
-      state: 'on'
+      state: 'off'
     climate.air_conditioner:
       hvac_modes:
       - 'off'
-      - auto
-      - cool
       - dry
+      - auto
       - fan_only
+      - cool
       min_temp: 16
       max_temp: 30
       target_temp_step: 0.5
       fan_modes:
+      - slow_low
       - low
       - medium
       - high
@@ -630,9 +655,10 @@
       swing_horizontal_modes:
       - 'on'
       - 'off'
-      current_temperature: 28
+      current_temperature: 23.5
+      temperature_unit: °C
       temperature:
-      current_humidity: 49
+      current_humidity: 44
       fan_mode: high
       swing_mode: 'on'
       swing_horizontal_mode: 'on'

@@ -21,12 +21,7 @@
       },
       {
         "id": "de370db15d7b47a9b7b8c644bf6651cf",
-        "url": "/local/smarthome3d/smarthome3d-card.js?v=36",
-        "type": "module"
-      },
-      {
-        "id": "25831201351b4a149c38cc77cf79f285",
-        "url": "/local/appletv-card.js",
+        "url": "/local/smarthome3d/smarthome3d-card.js?v=41",
         "type": "module"
       }
     ]
