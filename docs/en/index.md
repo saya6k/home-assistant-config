@@ -30,7 +30,7 @@ A personal Home Assistant setup, running since 2018. Currently **3113 entities**
 ├─ Platform       │ HAOS (local, stateless) · Remote TrueNAS (Recorder MariaDB, backups)
 ├─ Integrations   │ 100+ built-in + 14 custom integrations (Marketplace) + 6 ESPHome devices
 ├─ Automations    │ 50 automations (mostly Korean) · scripts/scenes
-├─ Dashboards     │ Lovelace storage mode + floor3d-card (3D dashboard)
+├─ Dashboards     │ Lovelace storage mode + smarthome3d-card (3D dashboard)
 ├─ Voice & AI     │ HA Cloud STT · Supertonic TTS · OpenAI/Claude/Gemini/llama.cpp · LLM tool scripts
 ├─ Observability  │ SQL-based recorder DB metrics · System Monitor · alert package
 ├─ Backups        │ Daily automatic backups → local + remote TrueNAS + Nabu Casa Cloud (3 kept)

@@ -8,45 +8,39 @@ title: 대시보드
 
 # 대시보드
 
-Lovelace는 **storage 모드** 로 운영합니다 (`configuration.yaml`의 `lovelace: mode: storage`). 대시보드는 `.storage/lovelace*` 파일로 저장되며 — 이 4종은 `.gitignore` 예외로 저장소에 포함됩니다.
-
-## 디자인 원칙
-
-- **자동화 + 템플릿 우선**: 수동 조작을 최소화. template 센서, group, label, Jinja2 템플릿으로 동적 구성.
-- **반응형**: 섹션 폭을 초기 3에서 2로 줄여 월패드 등 작은 화면에서도 보기 좋게.
-- **단일 인터페이스**: 좌측 단축 탭 숨김, 모든 정보를 한 Lovelace 화면에서.
-- **HomeKit 영감**: 아이폰 사용자에 맞춰 Apple HomeKit 스타일 차용.
+Lovelace는 **storage 모드** 로 운영합니다 (`configuration.yaml`의 `lovelace: mode: storage`). 저장소에는 대시보드 목록(`.storage/lovelace_dashboards`)과 리소스(`.storage/lovelace_resources`)만 포함됩니다. 대시보드 내용(`.storage/lovelace.*`)은 방 배치가 담겨 있어 서버에만 둡니다.
 
 ## 대시보드 목록
 
-| 대시보드 | 경로 | 비고 |
+| 대시보드 | 경로 | 사이드바 | 비고 |
+| --- | --- | --- | --- |
+| 둘러보기 (기본) | `lovelace` | 표시 | `default_panel`. 로컬 `smarthome3d-card` 로 만든 3D 대시보드 |
+| Mirror | `dashboard-test` | 숨김 | `Mirror` 테마를 쓰는 시계·날짜·날씨 화면 |
+
+## 둘러보기 뷰
+
+| 뷰 | 경로 | 구성 |
 | --- | --- | --- |
-| 기본 (Overview) | `lovelace` | `.storage/lovelace` 가 없어 HA가 자동 생성 |
-| 3D | `dashboard-3d` | floor3d-card 로 구성한 평면도 기반 3D 대시보드 |
+| 둘러보기 | `home` | `smarthome3d-card` 3D 홈 (모델 `www/floor3d/home.glb`) |
+| 홈랩 | `homelab` | `ha-homelab-map` 홈랩 맵 |
+| xBloom | `xbloom` | `smarthome3d-panel-card` |
+| 유지보수 | `maintenance` | 유지보수 뷰 |
+| 지도 | `naver-map` | `smarthome3d-panel-card` |
+| 음악 | `music` | `smarthome3d-panel-card` |
+| 일정 | `schedule` | 캘린더 (sections) |
+| 소비전력 | `power` | 타일 + 히스토리 그래프 (sections) |
 
-## 주요 기능
-
-- **동적 섹션**: Home / Climate / Energy / System 등 목적별 분리.
-- **인터랙티브 카드**: 미디어, 조명, 공조 등 직접 제어.
-- **커스텀 비주얼**: 커스텀 카드 + 테마 조합.
-- **실시간 갱신**: 날씨 예보, 교통, 시스템 상태가 실시간으로 표시.
+`www/` 와 대시보드 저장 파일은 git에 없으므로 카드 스크립트나 모델을 바꾼 뒤에는 리소스·모델 URL의 `?v=` 를 올립니다.
 
 ## 스크린샷
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/overview.png" alt="Overview" width="32%">
-  <img src="https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/mobile.png" alt="Mobile" width="32%">
-  <img src="https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/living-room-subview.png" alt="Living Room" width="32%">
-</p>
+이전 섹션형 대시보드의 화면입니다.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/system.png" alt="System" width="32%">
-  <img src="https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/climate.png" alt="Climate" width="32%">
-  <img src="https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/energy.png" alt="Energy" width="32%">
-</p>
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/music.png" alt="Music" width="32%">
+  <img src="https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/overview.png" alt="Overview" width="24%">
+  <img src="https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/mobile.png" alt="Mobile" width="24%">
+  <img src="https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/energy.png" alt="Energy" width="24%">
+  <img src="https://raw.githubusercontent.com/saya6k/home-assistant-config/main/www/lovelace/music.png" alt="Music" width="24%">
 </p>
 
 ## Lovelace 플러그인
@@ -55,10 +49,9 @@ HACS 대신 Home Assistant 내장 **Marketplace** 로 설치하며, `www/communi
 
 | 이름 | 설명 |
 | --- | --- |
-| [floor3d-card](https://github.com/giosci1994/floor3d-card) | 3D 모델 위에 엔티티 상태를 표시하는 카드 |
 | [ha-homelab-map](https://github.com/kjanas/ha-homelab-map) | 직접 배치하는 홈랩 실시간 맵 카드 |
 
-`/local/floor3d/weather.js` 도 리소스로 등록되어 있습니다. `configuration.yaml` 의 `frontend.extra_module_url`(예전 `card-mod`)은 주석 처리되어 있습니다.
+로컬 리소스로 `/local/smarthome3d/smarthome3d-card.js` 가 등록되어 있습니다. `configuration.yaml` 의 `frontend.extra_module_url`(예전 `card-mod`)은 주석 처리되어 있습니다.
 
 ## 테마
 
@@ -69,6 +62,7 @@ HACS 대신 Home Assistant 내장 **Marketplace** 로 설치하며, `www/communi
 | Frosted Glass Auto | 시스템 라이트/다크 추종 |
 | Frosted Glass Dark | 다크 전용 |
 | Frosted Glass Light | 라이트 전용 |
+| Mirror | Mirror 대시보드 전용 |
 
 ## 보조 통합
 

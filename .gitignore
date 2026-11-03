@@ -77,6 +77,7 @@ custom_components/*
 .storage/*.bak*
 .storage/lovelace.dashboard_smarthome
 .storage/lovelace.dashboard_test
+.storage/lovelace.lovelace
 
 # ============================================================
 # Re-ignore individual files even though they match an allow-rule above

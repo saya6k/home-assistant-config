@@ -73,7 +73,7 @@ ESPHome configurations are in `esphome/` directory:
 
 - **Lovelace**: Storage mode only (UI-managed dashboards in `.storage/`); no `ui-lovelace.yaml` is used
 - **Themes**: Custom themes in `themes/` directory (`Frosted Glass Light/`)
-- **Custom Cards**: Registered in `.storage/lovelace_resources`: `floor3d-card` and `ha-homelab-map` from Marketplace (`www/community/`), plus the local `/local/floor3d/weather.js`, `/local/smarthome3d/smarthome3d-card.js` and `/local/appletv-card.js`
+- **Custom Cards**: Registered in `.storage/lovelace_resources`: `ha-homelab-map` from Marketplace (`www/community/`), plus the local `/local/smarthome3d/smarthome3d-card.js`
 - **3D dashboard**: The default dashboard (`lovelace`, set as `default_panel`) uses `smarthome3d-card` with the model at `www/floor3d/home.glb`. `www/` and the dashboard's storage file are not in git, so both live only on the server; bump the `?v=` of the resource or model URL after changing them
 - **Extra Modules**: None — the old `card-mod` entry under `frontend.extra_module_url` is commented out
 
@@ -81,7 +81,7 @@ ESPHome configurations are in `esphome/` directory:
 
 The system runs these Home Assistant add-ons (apps):
 
-- **Development**: Advanced SSH & Web Terminal, CodeMirror, Samba share
+- **Development**: Advanced SSH & Web Terminal, CodeMirror, Samba share, Git Pull
 - **Devices / protocols**: ESPHome Device Builder, Matter Server, Mosquitto broker, OpenThread Border Router
 - **Network**: NGINX Home Assistant SSL proxy, Let's Encrypt (started on demand)
 - **Voice / media**: Supertonic (TTS, Wyoming), Whisper (stopped), Music Assistant, YT Music PO Token Generator

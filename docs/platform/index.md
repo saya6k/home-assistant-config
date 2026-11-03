@@ -17,16 +17,16 @@ Home Assistant Core를 둘러싼 운영 인프라 — 네트워크, 데이터 �
 
 로컬 컴포넌트와 원격 컴포넌트가 사이트-투-사이트 VPN 으로 묶여 단일 논리적 시스템을 이룹니다.
 
-| 영역          | 채택                                 | 위치                             | 비고                                                                         |
-| ------------- | ------------------------------------ | -------------------------------- | ---------------------------------------------------------------------------- |
-| Recorder DB   | MariaDB                              | 원격 TrueNAS                     | VPN 너머, `secrets.yaml`의 외부 URL 사용. commit_interval 120s               |
-| DB 모니터링   | SQL 통합                             | 로컬                             | Recorder DB 크기·느린 쿼리·스레드 센서 ([옵저버빌리티](../observability.md)) |
-| 백업 사본     | 네트워크 스토리지 (`TrueNAS_Backup`) | 원격 TrueNAS                     | 매일 자동 백업 ([백업](../backups.md))                                       |
-| SSL 종단      | NGINX Home Assistant SSL Proxy       | 로컬 (HA 애드온)                 | Let's Encrypt 인증서, 만료 시 자동 재발급 자동화 보유                        |
-| 인증          | HA 기본 (`homeassistant` 공급자)     | 로컬                             | OIDC 연동은 현재 설정에 없음 ([Pocket ID](../services/pocket-id.md))         |
-| 문서 관리     | Paperless-ngx (HA 통합)              | 로컬 클라이언트 → 원격 Paperless | [Paperless-ngx](../services/paperless.md) 는 TrueNAS 측에서 운영             |
-| DNS/광고 차단 | AdGuard Home (HA 통합)               | 원격                             | 로컬 애드온은 제거, 통합으로 상태·스위치만 연동                              |
-| 코드 동기화   | `/config` git 클론                   | 로컬                             | Git Pull 애드온은 제거됨. 서버에서 직접 커밋/풀                              |
+| 영역          | 채택                                 | 위치                             | 비고                                                                                              |
+| ------------- | ------------------------------------ | -------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Recorder DB   | MariaDB                              | 원격 TrueNAS                     | VPN 너머, `secrets.yaml`의 외부 URL 사용. commit_interval 120s                                    |
+| DB 모니터링   | SQL 통합                             | 로컬                             | Recorder DB 크기·느린 쿼리·스레드 센서 ([옵저버빌리티](../observability.md))                      |
+| 백업 사본     | 네트워크 스토리지 (`TrueNAS_Backup`) | 원격 TrueNAS                     | 매일 자동 백업 ([백업](../backups.md))                                                            |
+| SSL 종단      | NGINX Home Assistant SSL Proxy       | 로컬 (HA 애드온)                 | Let's Encrypt 인증서, 만료 시 자동 재발급 자동화 보유                                             |
+| 인증          | HA 기본 (`homeassistant` 공급자)     | 로컬                             | OIDC 연동은 현재 설정에 없음 ([Pocket ID](../services/pocket-id.md))                              |
+| 문서 관리     | Paperless-ngx (HA 통합)              | 로컬 클라이언트 → 원격 Paperless | [Paperless-ngx](../services/paperless.md) 는 TrueNAS 측에서 운영                                  |
+| DNS/광고 차단 | AdGuard Home (HA 통합)               | 원격                             | 로컬 애드온은 제거, 통합으로 상태·스위치만 연동                                                   |
+| 코드 동기화   | Git Pull 애드온 (`core_git_pull`)    | GitHub → 로컬                    | 5분마다 `main`을 pull하고 설정 검사를 통과하면 재시작. HA에서 고친 내용은 서버에서 직접 커밋/push |
 
 ## 페이지
 

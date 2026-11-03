@@ -5,20 +5,21 @@
   "data": {
     "items": [
       {
-        "id": "dashboard_smarthome",
-        "url_path": "dashboard-smarthome",
-        "title": "스마트홈 3D",
-        "icon": "mdi:home-floor-3",
-        "show_in_sidebar": true,
-        "require_admin": false,
-        "mode": "storage"
-      },
-      {
         "id": "dashboard_test",
         "require_admin": false,
         "show_in_sidebar": false,
-        "title": "test",
+        "title": "Mirror",
         "url_path": "dashboard-test",
+        "mode": "storage",
+        "icon": "mdi:mirror-rectangle"
+      },
+      {
+        "id": "lovelace",
+        "icon": "mdi:view-dashboard",
+        "title": "둘러보기",
+        "url_path": "lovelace",
+        "require_admin": false,
+        "show_in_sidebar": true,
         "mode": "storage"
       }
     ]
