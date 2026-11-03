@@ -73,7 +73,7 @@ ESPHome configurations are in `esphome/` directory:
 
 - **Lovelace**: Storage mode only (UI-managed dashboards in `.storage/`); no `ui-lovelace.yaml` is used
 - **Themes**: Custom themes in `themes/` directory (`Frosted Glass Light/`)
-- **Custom Cards**: Registered in `.storage/lovelace_resources`: `floor3d-card` and `ha-homelab-map` from Marketplace (`www/community/`), plus the local `/local/floor3d/weather.js`, `/local/smarthome3d/smarthome3d-card.js` and `/local/appletv-card.js`
+- **Custom Cards**: Registered in `.storage/lovelace_resources`: `floor3d-card` and `ha-homelab-map` from Marketplace (`www/community/`), plus the local `/local/floor3d/weather.js` and `/local/smarthome3d/smarthome3d-card.js`
 - **3D dashboard**: The default dashboard (`lovelace`, set as `default_panel`) uses `smarthome3d-card` with the model at `www/floor3d/home.glb`. `www/` and the dashboard's storage file are not in git, so both live only on the server; bump the `?v=` of the resource or model URL after changing them
 - **Extra Modules**: None — the old `card-mod` entry under `frontend.extra_module_url` is commented out
 
@@ -81,7 +81,7 @@ ESPHome configurations are in `esphome/` directory:
 
 The system runs these Home Assistant add-ons (apps):
 
-- **Development**: Advanced SSH & Web Terminal, CodeMirror, Samba share
+- **Development**: Advanced SSH & Web Terminal, CodeMirror, Samba share, Home Assistant Version Control
 - **Devices / protocols**: ESPHome Device Builder, Matter Server, Mosquitto broker, OpenThread Border Router
 - **Network**: NGINX Home Assistant SSL proxy, Let's Encrypt (started on demand)
 - **Voice / media**: Supertonic (TTS, Wyoming), Whisper (stopped), Music Assistant, YT Music PO Token Generator
@@ -248,6 +248,7 @@ MariaDB (Recorder) is monitored via `sql` integration sensors (`Home Assistant R
 - **Integration Count**: 100+ integrations (default + custom)
 - **Storage**: Local HA is stateless. Recorder runs on a remote MariaDB on TrueNAS (over VPN). The local `home-assistant_v2.db` SQLite file is not used.
 - **Backups**: Daily automatic backups to the local disk, the `TrueNAS_Backup` network storage mount, and Home Assistant Cloud; 3 copies retained
-- **Update Strategy**: Semantic release automation configured (`.releaserc`)
+- **Update Strategy**: Semantic release automation configured (`.releaserc`); it only tags and creates GitHub Releases, with no `chore(release)` commit, so `CHANGELOG.md` is no longer updated
+- **Code sync**: The [Home Assistant Version Control](https://github.com/saihgupr/HomeAssistantVersionControl) app (repository `https://github.com/saihgupr/ha-addons`) auto-commits changes in `/config` and pushes them to `main`. It never pulls: after merging a PR from the Mac, run `git pull` in `/config` on the server before the next HA-side change, or its push is rejected as non-fast-forward. Its commit messages are timestamps, so they don't trigger a release
 - **Git**: Pre-commit hooks enforce YAML linting and formatting (`yamllint`, `prettier`)
 - **CLAUDE.md**: Symlink to `AGENTS.md` — edit `AGENTS.md` only

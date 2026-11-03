@@ -28,7 +28,7 @@ Home Assistant Core를 둘러싼 운영 인프라 — 네트워크, 데이터 �
 | 인증 | HA 기본 (`homeassistant` 공급자) | 로컬 | OIDC 연동은 현재 설정에 없음 ([Pocket ID](../services/pocket-id.md)) |
 | 문서 관리 | Paperless-ngx (HA 통합) | 로컬 클라이언트 → 원격 Paperless | [Paperless-ngx](../services/paperless.md) 는 TrueNAS 측에서 운영 |
 | DNS/광고 차단 | AdGuard Home (HA 통합) | 원격 | 로컬 애드온은 제거, 통합으로 상태·스위치만 연동 |
-| 코드 동기화 | `/config` git 클론 | 로컬 | Git Pull 애드온은 제거됨. 서버에서 직접 커밋/풀 |
+| 코드 동기화 | Home Assistant Version Control (`/config` git 클론) | 로컬 → GitHub | 변경을 자동 커밋해 `main`에 push. pull은 하지 않으므로 Mac에서 머지한 변경은 서버에서 `git pull` |
 
 ## 페이지
 
