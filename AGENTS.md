@@ -81,7 +81,7 @@ ESPHome configurations are in `esphome/` directory:
 
 The system runs these Home Assistant add-ons (apps):
 
-- **Development**: Advanced SSH & Web Terminal, CodeMirror, Samba share
+- **Development**: Advanced SSH & Web Terminal, CodeMirror, Samba share, Git Pull
 - **Devices / protocols**: ESPHome Device Builder, Matter Server, Mosquitto broker, OpenThread Border Router
 - **Network**: NGINX Home Assistant SSL proxy, Let's Encrypt (started on demand)
 - **Voice / media**: Supertonic (TTS, Wyoming), Whisper (stopped), Music Assistant, YT Music PO Token Generator
