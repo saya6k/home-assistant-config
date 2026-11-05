@@ -2872,3 +2872,85 @@
         continue_on_error: true
   mode: single
   max_exceeded: silent
+- id: '1792900000004'
+  alias: 집 안에서 휴대폰 배터리 20% 미만 충전 알림
+  description: 원규의 iPhone이 집 안(Private BLE 기준)에 있고 충전 중이 아닐 때 배터리가 20% 미만이면 충전하라고
+    알립니다. 배터리가 낮은 상태로 집에 들어와도 알립니다.
+  triggers:
+  - trigger: numeric_state
+    entity_id: sensor.ys_iphoneair_battery_level
+    below: 20
+  - trigger: state
+    entity_id: device_tracker.private_ble_device_e4c117
+    to: home
+  conditions:
+  - condition: state
+    entity_id: device_tracker.private_ble_device_e4c117
+    state: home
+  - condition: numeric_state
+    entity_id: sensor.ys_iphoneair_battery_level
+    below: 20
+  - condition: state
+    entity_id: sensor.ys_iphoneair_battery_state
+    state: Not Charging
+  actions:
+  - action: notify.mobile_app_ys_iphoneair
+    data:
+      title: 배터리 부족
+      message: 휴대폰 배터리가 {{ states('sensor.ys_iphoneair_battery_level') }}%입니다.
+        충전해 주세요.
+      data:
+        tag: phone_low_battery
+  mode: single
+- id: '1792900000005'
+  alias: 귀가 시 스피커/위성 최소 음량 맞추기
+  description: 누군가 집에 들어오면 집 안 스피커와 위성 중 음량이 40% 미만인 기기만 40%로 올립니다.
+  triggers:
+  - trigger: zone.entered
+    target:
+      entity_id:
+      - person.eunbi
+      - person.abba
+      - person.eomma
+      - person.weongyu
+    options:
+      for: 00:00:00
+      behavior: each
+      zone: zone.home
+  conditions: []
+  actions:
+  - repeat:
+      for_each:
+      - media_player.hwajangsil
+      - media_player.echo_show_5
+      - media_player.echo_show_5_speaker
+      - media_player.geosil_apple_tv
+      sequence:
+      - if:
+        - condition: template
+          value_template: '{{ has_value(repeat.item) and (state_attr(repeat.item, ''volume_level'')
+            or 0) < 0.4 }}'
+        then:
+        - action: media_player.volume_set
+          target:
+            entity_id: '{{ repeat.item }}'
+          data:
+            volume_level: 0.4
+          continue_on_error: true
+  - repeat:
+      for_each:
+      - number.rockchip_rk3399_android11_volume
+      - number.cimsil_amzn_echo_show_8_1st_gen_ks_volume
+      sequence:
+      - if:
+        - condition: template
+          value_template: '{{ has_value(repeat.item) and states(repeat.item) | float(0)
+            < 40 }}'
+        then:
+        - action: number.set_value
+          target:
+            entity_id: '{{ repeat.item }}'
+          data:
+            value: 40
+          continue_on_error: true
+  mode: queued
