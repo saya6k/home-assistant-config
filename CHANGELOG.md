@@ -1,3 +1,9 @@
+## [1.15.0](https://github.com/saya6k/home-assistant-config/compare/v1.14.0...v1.15.0) (2026-11-05)
+
+### Features
+
+* Add low phone battery alert and arrival volume floor ([#27](https://github.com/saya6k/home-assistant-config/issues/27)) ([e9b11ca](https://github.com/saya6k/home-assistant-config/commit/e9b11ca22f737934afb9e93b9d4d69751028210f))
+
 ## [1.14.0](https://github.com/saya6k/home-assistant-config/compare/v1.13.1...v1.14.0) (2026-11-01)
 
 ### Features
