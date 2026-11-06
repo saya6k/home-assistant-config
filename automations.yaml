@@ -935,9 +935,26 @@
 
           {{ fetch.text }}
 
-          Is this mail about tracking number? If true, Find package content tracking
-          number from email and fill in the tracking number. For package name, insert
-          shopping mall name + date with YYYYMMDD format.'
+          Decide whether this email says a package has been shipped and contains
+          a courier tracking number (송장번호 / 운송장번호 / 등기번호 / tracking number),
+          not just an order confirmation or payment receipt.
+
+          Rules:
+
+          - The tracking number is issued by the courier (CJ대한통운, 한진, 롯데, 우체국,
+          로젠, 쿠팡, DHL, UPS, FedEx, Cainiao, etc.) and is usually labelled 송장번호,
+          운송장번호, 등기번호 or Tracking number.
+
+          - Never use the order number (주문번호, Order number, Order ID), payment or
+          approval number (결제번호, 승인번호), product number or customer number as
+          the tracking number. Put the order number, if any, in order_number.
+
+          - If the email has no explicit tracking number, set true_or_false to false
+          and leave tracking_number empty. Do not guess.
+
+          - Copy the tracking number exactly as written, without spaces or hyphens.
+
+          - For package_name, use the shopping mall name + the date in YYYYMMDD format.'
         task_name: Tracking Number
         structure:
           true_or_false:
@@ -949,17 +966,27 @@
           tracking_number:
             selector:
               text:
+          order_number:
+            selector:
+              text:
       response_variable: result
+    - variables:
+        tracking: '{{ result.data.tracking_number | default('''', true) | replace(''-'',
+          '''') | replace('' '', '''') | trim }}'
+        order: '{{ result.data.order_number | default('''', true) | replace(''-'',
+          '''') | replace('' '', '''') | trim }}'
     - if:
       - condition: template
-        value_template: '{{ result.data.true_or_false }}'
+        value_template: '{# the order number keeps coming back as the tracking number:
+          drop it, and anything not actually in the mail #} {# variables turn digit
+          strings into ints #} {% set t = tracking | string %} {{ result.data.true_or_false
+          and t | length >= 8 and t != order | string and t in (fetch.text | replace(''-'',
+          '''') | replace('' '', '''')) }}'
       then:
       - action: seventeentrack.add_package
         data:
           config_entry_id: 01JYMYFVHJ5ZHF1Y8DVE1CCDQB
-          package_tracking_number: '{{ result.data.tracking_number }}
-
-            '
+          package_tracking_number: '{{ tracking }}'
           package_friendly_name: '{{ result.data.package_name }}
 
             '
@@ -974,7 +1001,7 @@
             보낸 사람 - {{ trigger.event.data[''sender''] }}
 
 
-            송장번호: {{ result.data.tracking_number }}'
+            송장번호: {{ tracking }}'
           title: 택배 발송 알림 - {{ result.data.package_name }}
         action: notify.mobile_app_ys_iphoneair
         enabled: true
