@@ -1,3 +1,9 @@
+## [1.18.0](https://github.com/saya6k/home-assistant-config/compare/v1.17.0...v1.18.0) (2026-11-06)
+
+### Features
+
+* Arm night mode when the bed is occupied with two people home ([#31](https://github.com/saya6k/home-assistant-config/issues/31)) ([5db5ac8](https://github.com/saya6k/home-assistant-config/commit/5db5ac8a467f0d901f65cec7bdd39fbf7fc237da))
+
 ## [1.17.0](https://github.com/saya6k/home-assistant-config/compare/v1.16.1...v1.17.0) (2026-11-06)
 
 ### Features
