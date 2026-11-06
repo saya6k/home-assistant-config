@@ -1,3 +1,9 @@
+## [1.16.1](https://github.com/saya6k/home-assistant-config/compare/v1.16.0...v1.16.1) (2026-11-06)
+
+### Bug Fixes
+
+* Stop registering order numbers as tracking numbers ([#29](https://github.com/saya6k/home-assistant-config/issues/29)) ([d6fc553](https://github.com/saya6k/home-assistant-config/commit/d6fc5534304868588a7068bd1f1db6b5dfa35447))
+
 ## [1.16.0](https://github.com/saya6k/home-assistant-config/compare/v1.15.0...v1.16.0) (2026-11-06)
 
 ### Features
