@@ -1,3 +1,9 @@
+## [1.17.0](https://github.com/saya6k/home-assistant-config/compare/v1.16.1...v1.17.0) (2026-11-06)
+
+### Features
+
+* Add Seohyeon's iPhone to the low phone battery alert ([#30](https://github.com/saya6k/home-assistant-config/issues/30)) ([9627667](https://github.com/saya6k/home-assistant-config/commit/96276671c32db1341b057d9c6e24c6e4f3f35a68))
+
 ## [1.16.1](https://github.com/saya6k/home-assistant-config/compare/v1.16.0...v1.16.1) (2026-11-06)
 
 ### Bug Fixes
