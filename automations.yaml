@@ -2994,3 +2994,41 @@
             value: 30
           continue_on_error: true
   mode: queued
+- id: '1792900000006'
+  alias: 두 명 이상 있을 때 침대 점유 시 취침 보안 모드
+  description: 해가 진 뒤(자정~기상 시각 포함) 집에 2명 이상 있고 침대가 30분 이상 점유되면 보안 시스템을 취침 모드로
+    바꿔 TTS 알림이 울리지 않게 합니다. 집 모드(armed_home)일 때만 바꿉니다.
+  triggers:
+  - trigger: state
+    entity_id: binary_sensor.withings_in_bed
+    to: 'on'
+    for:
+      minutes: 30
+  - trigger: numeric_state
+    entity_id: zone.home
+    above: 1
+  - trigger: sun
+    event: sunset
+  conditions:
+  - condition: state
+    entity_id: binary_sensor.withings_in_bed
+    state: 'on'
+    for:
+      minutes: 30
+  - condition: numeric_state
+    entity_id: zone.home
+    above: 1
+  - condition: state
+    entity_id: alarm_control_panel.security_system
+    state: armed_home
+  - condition: or
+    conditions:
+    - condition: sun
+      after: sunset
+    - condition: time
+      before: input_datetime.wake_up
+  actions:
+  - action: alarm_control_panel.alarm_arm_night
+    target:
+      entity_id: alarm_control_panel.security_system
+  mode: single
