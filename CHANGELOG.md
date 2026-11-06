@@ -1,3 +1,9 @@
+## [1.16.0](https://github.com/saya6k/home-assistant-config/compare/v1.15.0...v1.16.0) (2026-11-06)
+
+### Features
+
+* Lower the arrival volume floor for satellites to 30% ([#28](https://github.com/saya6k/home-assistant-config/issues/28)) ([cdb336b](https://github.com/saya6k/home-assistant-config/commit/cdb336b2e1429df3cc371c391257ac32f422a3ca))
+
 ## [1.15.0](https://github.com/saya6k/home-assistant-config/compare/v1.14.0...v1.15.0) (2026-11-05)
 
 ### Features
