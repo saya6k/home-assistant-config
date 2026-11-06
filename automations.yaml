@@ -2904,7 +2904,8 @@
   mode: single
 - id: '1792900000005'
   alias: 귀가 시 스피커/위성 최소 음량 맞추기
-  description: 누군가 집에 들어오면 집 안 스피커와 위성 중 음량이 40% 미만인 기기만 40%로 올립니다.
+  description: 누군가 집에 들어오면 음량이 최소값 미만인 기기만 최소값으로 올립니다. 위성은 30%, 거실 Apple TV 스피커는
+    40%입니다.
   triggers:
   - trigger: zone.entered
     target:
@@ -2921,21 +2922,25 @@
   actions:
   - repeat:
       for_each:
-      - media_player.hwajangsil
-      - media_player.echo_show_5
-      - media_player.echo_show_5_speaker
-      - media_player.geosil_apple_tv
+      - entity: media_player.hwajangsil
+        min: 0.3
+      - entity: media_player.echo_show_5
+        min: 0.3
+      - entity: media_player.echo_show_5_speaker
+        min: 0.3
+      - entity: media_player.geosil_apple_tv
+        min: 0.4
       sequence:
       - if:
         - condition: template
-          value_template: '{{ has_value(repeat.item) and (state_attr(repeat.item, ''volume_level'')
-            or 0) < 0.4 }}'
+          value_template: '{{ has_value(repeat.item.entity) and (state_attr(repeat.item.entity,
+            ''volume_level'') or 0) < repeat.item.min }}'
         then:
         - action: media_player.volume_set
           target:
-            entity_id: '{{ repeat.item }}'
+            entity_id: '{{ repeat.item.entity }}'
           data:
-            volume_level: 0.4
+            volume_level: '{{ repeat.item.min }}'
           continue_on_error: true
   - repeat:
       for_each:
@@ -2945,12 +2950,12 @@
       - if:
         - condition: template
           value_template: '{{ has_value(repeat.item) and states(repeat.item) | float(0)
-            < 40 }}'
+            < 30 }}'
         then:
         - action: number.set_value
           target:
             entity_id: '{{ repeat.item }}'
           data:
-            value: 40
+            value: 30
           continue_on_error: true
   mode: queued
