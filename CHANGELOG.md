@@ -1,3 +1,9 @@
+## [1.19.0](https://github.com/saya6k/home-assistant-config/compare/v1.18.0...v1.19.0) (2026-11-08)
+
+### Features
+
+* Move the 5-bulb vanity light behind the TV as ambient lighting ([#32](https://github.com/saya6k/home-assistant-config/issues/32)) ([720f7f9](https://github.com/saya6k/home-assistant-config/commit/720f7f98ac2458695a06d12b3c56196c13cc4965))
+
 ## [1.18.0](https://github.com/saya6k/home-assistant-config/compare/v1.17.0...v1.18.0) (2026-11-06)
 
 ### Features
