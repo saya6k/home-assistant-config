@@ -1,0 +1,44 @@
+---
+# iPhone app notifications sent by a Shortcuts automation to a webhook.
+# They are re-fired as ancs_notification events, so the automations that
+# read messages and delivery updates handle them as if ANCS had sent them.
+# The webhook ID lives in secrets.yaml because this repository is public.
+
+automation:
+  - id: iphone_shortcut_notification
+    alias: 아이폰 단축어 알림 수신
+    description: >-
+      아이폰 단축어가 webhook으로 보낸 앱 알림(app, title, subtitle, message)을 ANCS와 같은
+      ancs_notification 이벤트로 다시 내보냅니다. 기존 메시지 읽어주기·배달 앱 알림 자동화가 그대로
+      처리합니다.
+    triggers:
+      - trigger: webhook
+        webhook_id: !secret iphone_notification_webhook_id
+        allowed_methods:
+          - POST
+        local_only: false
+    actions:
+      - variables:
+          p: >-
+            {{ trigger.json if trigger.json is mapping
+               else (trigger.data if trigger.data is mapping else {}) }}
+          app: "{{ p.get('app', '') | string | trim }}"
+          # the read-messages automation matches these apps by bundle ID
+          ids:
+            메시지: com.apple.MobileSMS
+            Messages: com.apple.MobileSMS
+            카카오톡: com.iwilab.KakaoTalk
+            KakaoTalk: com.iwilab.KakaoTalk
+      - condition: template
+        value_template: "{{ app != '' or p.get('message', '') | string | trim != '' }}"
+      - event: ancs_notification
+        event_data:
+          event_type: added
+          source: shortcut
+          app_name: '{{ app }}'
+          app_identifier: "{{ ids.get(app, app if '.' in app else '') }}"
+          title: "{{ p.get('title', '') }}"
+          subtitle: "{{ p.get('subtitle', '') }}"
+          message: "{{ p.get('message', '') }}"
+    mode: queued
+    max: 20
