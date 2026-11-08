@@ -1,3 +1,9 @@
+## [1.20.0](https://github.com/saya6k/home-assistant-config/compare/v1.19.0...v1.20.0) (2026-11-08)
+
+### Features
+
+* Receive iPhone app notifications from a Shortcuts webhook and drop ANCS automations ([#33](https://github.com/saya6k/home-assistant-config/issues/33)) ([244829c](https://github.com/saya6k/home-assistant-config/commit/244829cf37c88d8a575643f8c15c0239e8bd3933))
+
 ## [1.19.0](https://github.com/saya6k/home-assistant-config/compare/v1.18.0...v1.19.0) (2026-11-08)
 
 ### Features
