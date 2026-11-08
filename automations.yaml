@@ -492,7 +492,7 @@
       - action: light.turn_on
         metadata: {}
         target:
-          entity_id: light.living_room_vanity
+          entity_id: light.living_room_tv_ambient
         data: {}
       else:
       - action: light.turn_on
@@ -626,7 +626,7 @@
         target:
           entity_id:
           - light.bedroom_floor_lamp
-          - light.living_room_vanity
+          - light.living_room_tv_ambient
         data:
           brightness_pct: 10
           color_temp_kelvin: 2000
@@ -717,7 +717,7 @@
   - action: light.turn_on
     metadata: {}
     target:
-      entity_id: light.living_room_vanity
+      entity_id: light.living_room_tv_ambient
     data:
       transition: 2
       brightness_pct: 1
@@ -742,7 +742,7 @@
     metadata: {}
     data: {}
     target:
-      entity_id: light.living_room_vanity
+      entity_id: light.living_room_tv_ambient
   mode: single
 - id: '1759583414854'
   alias: 고농도 이산화탄소 환기 알림
@@ -935,19 +935,19 @@
 
           {{ fetch.text }}
 
-          Decide whether this email says a package has been shipped and contains
-          a courier tracking number (송장번호 / 운송장번호 / 등기번호 / tracking number),
-          not just an order confirmation or payment receipt.
+          Decide whether this email says a package has been shipped and contains a
+          courier tracking number (송장번호 / 운송장번호 / 등기번호 / tracking number), not just
+          an order confirmation or payment receipt.
 
           Rules:
 
-          - The tracking number is issued by the courier (CJ대한통운, 한진, 롯데, 우체국,
-          로젠, 쿠팡, DHL, UPS, FedEx, Cainiao, etc.) and is usually labelled 송장번호,
-          운송장번호, 등기번호 or Tracking number.
+          - The tracking number is issued by the courier (CJ대한통운, 한진, 롯데, 우체국, 로젠,
+          쿠팡, DHL, UPS, FedEx, Cainiao, etc.) and is usually labelled 송장번호, 운송장번호,
+          등기번호 or Tracking number.
 
           - Never use the order number (주문번호, Order number, Order ID), payment or
-          approval number (결제번호, 승인번호), product number or customer number as
-          the tracking number. Put the order number, if any, in order_number.
+          approval number (결제번호, 승인번호), product number or customer number as the tracking
+          number. Put the order number, if any, in order_number.
 
           - If the email has no explicit tracking number, set true_or_false to false
           and leave tracking_number empty. Do not guess.
@@ -1127,7 +1127,7 @@
     data:
       scene_id: away_prev
       snapshot_entities:
-      - light.living_room_vanity
+      - light.living_room_tv_ambient
       - light.geosil_ceonjang
       - light.jubang_ceonjang
       - light.hyeongwan_ceonjang
@@ -1498,7 +1498,7 @@
       - action: light.toggle
         metadata: {}
         target:
-          entity_id: light.living_room_vanity
+          entity_id: light.living_room_tv_ambient
         data: {}
       button2_single: []
       button1_double:
@@ -1508,7 +1508,7 @@
           color_temp_kelvin: 5000
           brightness_pct: 100
         target:
-          entity_id: light.living_room_vanity
+          entity_id: light.living_room_tv_ambient
       button1_long_press:
       - repeat:
           until:
@@ -1520,7 +1520,7 @@
           sequence:
           - action: light.turn_on
             target:
-              entity_id: light.living_room_vanity
+              entity_id: light.living_room_tv_ambient
             data:
               brightness_step_pct: 10
               transition: 1
@@ -1540,7 +1540,7 @@
           sequence:
           - action: light.turn_off
             target:
-              entity_id: light.living_room_vanity
+              entity_id: light.living_room_tv_ambient
             data: {}
             enabled: false
           - delay:
@@ -2921,14 +2921,14 @@
     to: home
     id: ddoddo
   variables:
-    ble: "{{ {'ys_iphoneair': 'device_tracker.private_ble_device_e4c117', 'ddoddo':\
-      \ 'device_tracker.private_ble_device_720b57'}[trigger.id] }}"
+    ble: '{{ {''ys_iphoneair'': ''device_tracker.private_ble_device_e4c117'', ''ddoddo'':
+      ''device_tracker.private_ble_device_720b57''}[trigger.id] }}'
     level: sensor.{{ trigger.id }}_battery_level
   conditions:
   - condition: template
-    value_template: "{{ is_state(ble, 'home') and states(level) | int(100)\
-      \ < 20 and is_state('sensor.' ~ trigger.id ~ '_battery_state', 'Not Charging')\
-      \ }}"
+    value_template: '{{ is_state(ble, ''home'') and states(level) | int(100) < 20
+      and is_state(''sensor.'' ~ trigger.id ~ ''_battery_state'', ''Not Charging'')
+      }}'
   actions:
   - action: notify.mobile_app_{{ trigger.id }}
     data:
@@ -2939,8 +2939,7 @@
   mode: queued
 - id: '1792900000005'
   alias: 귀가 시 스피커/위성 최소 음량 맞추기
-  description: 누군가 집에 들어오면 음량이 최소값 미만인 기기만 최소값으로 올립니다. 위성은 30%, 거실 Apple TV 스피커는
-    40%입니다.
+  description: 누군가 집에 들어오면 음량이 최소값 미만인 기기만 최소값으로 올립니다. 위성은 30%, 거실 Apple TV 스피커는 40%입니다.
   triggers:
   - trigger: zone.entered
     target:
@@ -2996,8 +2995,8 @@
   mode: queued
 - id: '1792900000006'
   alias: 두 명 이상 있을 때 침대 점유 시 취침 보안 모드
-  description: 해가 진 뒤(자정~기상 시각 포함) 집에 2명 이상 있고 침대가 30분 이상 점유되면 보안 시스템을 취침 모드로
-    바꿔 TTS 알림이 울리지 않게 합니다. 집 모드(armed_home)일 때만 바꿉니다.
+  description: 해가 진 뒤(자정~기상 시각 포함) 집에 2명 이상 있고 침대가 30분 이상 점유되면 보안 시스템을 취침 모드로 바꿔 TTS
+    알림이 울리지 않게 합니다. 집 모드(armed_home)일 때만 바꿉니다.
   triggers:
   - trigger: state
     entity_id: binary_sensor.withings_in_bed
@@ -3032,3 +3031,115 @@
     target:
       entity_id: alarm_control_panel.security_system
   mode: single
+- id: '1792900000007'
+  alias: TV 뒤 간접조명 제어
+  description: 해가 진 뒤 TV를 켜면 TV 뒤 조명을 6500K 5% 화면 뒤 조명으로 바꾸고, TV가 꺼져 있으면 따뜻한 간접조명으로
+    켭니다. 간접조명은 아무도 침대에 없고 보안 모드가 해제 또는 집 모드일 때만 켜고, 그렇지 않으면 TV를 끌 때 조명도 끕니다.
+  triggers:
+  - trigger: state
+    entity_id: media_player.living_room_apple_tv
+    to:
+    - 'off'
+    - standby
+    for:
+      seconds: 10
+    id: tv_off
+  - trigger: sun
+    event: sunset
+    id: sunset
+  - trigger: state
+    entity_id: media_player.living_room_apple_tv
+    from:
+    - 'off'
+    - standby
+    not_to:
+    - 'off'
+    - standby
+    - unavailable
+    - unknown
+    id: tv_on
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - tv_on
+        - sunset
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: media_player.living_room_apple_tv
+          state:
+          - 'off'
+          - standby
+          - unavailable
+          - unknown
+      - condition: state
+        entity_id: sun.sun
+        state: below_horizon
+      sequence:
+      - action: light.turn_on
+        target:
+          entity_id: light.living_room_tv_ambient
+        data:
+          brightness_pct: 5
+          color_temp_kelvin: 6500
+          transition: 2
+    - conditions:
+      - condition: trigger
+        id: tv_on
+      - condition: state
+        entity_id: light.living_room_tv_ambient
+        state: 'on'
+      sequence:
+      - action: light.turn_off
+        target:
+          entity_id: light.living_room_tv_ambient
+        data:
+          transition: 2
+    - conditions:
+      - condition: trigger
+        id:
+        - tv_off
+        - sunset
+      - condition: state
+        entity_id: media_player.living_room_apple_tv
+        state:
+        - 'off'
+        - standby
+      - condition: state
+        entity_id: sun.sun
+        state: below_horizon
+      - condition: numeric_state
+        entity_id: zone.home
+        above: 0
+      - condition: state
+        entity_id: binary_sensor.withings_in_bed
+        state: 'off'
+      - condition: state
+        entity_id: alarm_control_panel.security_system
+        state:
+        - disarmed
+        - armed_home
+      sequence:
+      - action: light.turn_on
+        target:
+          entity_id: light.living_room_tv_ambient
+        data:
+          brightness_pct: 30
+          color_temp_kelvin: 2700
+          transition: 3
+    - conditions:
+      - condition: trigger
+        id: tv_off
+      - condition: state
+        entity_id: light.living_room_tv_ambient
+        state: 'on'
+      sequence:
+      - action: light.turn_off
+        target:
+          entity_id: light.living_room_tv_ambient
+        data:
+          transition: 2
+  mode: restart
