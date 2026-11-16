@@ -1,3 +1,9 @@
+## [1.20.1](https://github.com/saya6k/home-assistant-config/compare/v1.20.0...v1.20.1) (2026-11-16)
+
+### Bug Fixes
+
+* Play the welcome scene when the phone is seen over Bluetooth instead of waiting for charging ([#35](https://github.com/saya6k/home-assistant-config/issues/35)) ([92810ae](https://github.com/saya6k/home-assistant-config/commit/92810aec2b46d257aa1305d7a552e8d8ecda5d79))
+
 ## [1.20.0](https://github.com/saya6k/home-assistant-config/compare/v1.19.0...v1.20.0) (2026-11-08)
 
 ### Features
