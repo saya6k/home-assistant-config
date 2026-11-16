@@ -1,3 +1,9 @@
+## [1.21.0](https://github.com/saya6k/home-assistant-config/compare/v1.20.1...v1.21.0) (2026-11-16)
+
+### Features
+
+* Report per-room temperature and humidity from the new room sensors ([#34](https://github.com/saya6k/home-assistant-config/issues/34)) ([8fd4307](https://github.com/saya6k/home-assistant-config/commit/8fd4307137e32e6fc0b5be4e685a5687bc40c56e))
+
 ## [1.20.1](https://github.com/saya6k/home-assistant-config/compare/v1.20.0...v1.20.1) (2026-11-16)
 
 ### Bug Fixes
