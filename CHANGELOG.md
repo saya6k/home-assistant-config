@@ -1,3 +1,9 @@
+## [1.22.0](https://github.com/saya6k/home-assistant-config/compare/v1.21.0...v1.22.0) (2026-11-16)
+
+### Features
+
+* Lower the arrival volume floor for satellites to 15% and cover the kitchen Echo Show 5 ([#36](https://github.com/saya6k/home-assistant-config/issues/36)) ([e7af7fd](https://github.com/saya6k/home-assistant-config/commit/e7af7fd75227ac750f16e8fd7ee77fc4f8b0be76))
+
 ## [1.21.0](https://github.com/saya6k/home-assistant-config/compare/v1.20.1...v1.21.0) (2026-11-16)
 
 ### Features
