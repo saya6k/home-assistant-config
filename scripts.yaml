@@ -74,21 +74,23 @@ unknown_3:
   - action: ai_task.generate_data
     data:
       task_name: weather comfort report
-      instructions: "{%- set indoor_areas = ['living_room', 'bedroom', 'kitchen',
-        'bathroom', 'mudroom'] -%}\n{%- set ns = namespace(temps=[], humidities=[])
-        -%}\n{%- for sensor in states.sensor -%}\n  {%- if area_id(sensor.entity_id)
-        in indoor_areas and sensor.state not in ['unknown', 'unavailable'] -%}\n    {%-
-        if sensor.attributes.get('device_class') == 'temperature' -%}\n      {%- set
-        ns.temps = ns.temps + [sensor.state | float] -%}\n    {%- elif sensor.attributes.get('device_class')
-        == 'humidity' -%}\n      {%- set ns.humidities = ns.humidities + [sensor.state
-        | float] -%}\n    {%- endif -%}\n  {%- endif -%}\n{%- endfor -%}\n{%- set
-        weather = states.weather | selectattr('attributes.temperature', 'defined')
-        | first %}\n현재의 상태:\n- 바깥 기온: {{ weather.attributes.temperature if weather
-        is defined else '알 수 없음' }}°C\n- 현재 날씨: {{ state_translated(weather.entity_id)
-        if weather is defined else '알 수 없음' }}\n- 실내 온도: {{ (ns.temps | average) |
-        round(1) if ns.temps else '알 수 없음' }}°C\n- 실내 습도: {{ (ns.humidities | average)
-        | round(1) if ns.humidities else '알 수 없음' }}%\n\n위 내용을 기반으로 간단하고 재치있게 바깥 날씨와
-        실내 쾌적성에 대한 보고를 본문만 각 한 문장으로 작성해.\n"
+      instructions: |
+        {%- set weather = states.weather | selectattr('attributes.temperature', 'defined') | first %}
+        현재의 상태:
+        - 바깥 기온: {{ weather.attributes.temperature if weather is defined else '알 수 없음' }}°C
+        - 현재 날씨: {{ state_translated(weather.entity_id) if weather is defined else '알 수 없음' }}
+        {%- set rooms = [
+          ['거실', 'sensor.geosil_onseubdo_ondo', 'sensor.geosil_onseubdo_seubdo'],
+          ['침실', 'sensor.bedroom_awair_temperature', 'sensor.bedroom_awair_humidity'],
+          ['주방', 'sensor.jubang_onseubdo_ondo', 'sensor.jubang_onseubdo_seubdo'],
+          ['화장실', 'sensor.hwajangsil_onseubdo_ondo', 'sensor.hwajangsil_onseubdo_seubdo'],
+        ] %}
+        - 실내 온습도:
+        {%- for name, t, h in rooms %}
+          - {{ name }}: {{ states(t) | float | round(1) if is_number(states(t)) else '-' }}°C, {{ states(h) | float | round(0) | int if is_number(states(h)) else '-' }}%
+        {%- endfor %}
+
+        위 내용을 기반으로 간단하고 재치있게 바깥 날씨와 실내 쾌적성에 대한 보고를 본문만 각 한 문장으로 작성해.
       structure:
         weather_description:
           description: A description of the current weather outside
@@ -568,51 +570,119 @@ unknown_9:
   sequence:
   - action: ai_task.generate_data
     data:
-      instructions: "현재의 집 상태:\n- 바깥 기온: {{ state_attr('weather.kma_forecast_seoulteugbyeolsi_seocogu',
-        'temperature') }}°C\n- 현재 날씨: {{ states('weather.kma_forecast_seoulteugbyeolsi_seocogu')
-        }}\n{% set areas = ['living_room', 'bedroom', 'kitchen'] %}\n{% set ns = namespace(t=[],
-        h=[]) %}\n{% for area in areas %}\n  {% set sensors = area_entities(area)
-        | select('match', 'sensor\\.') | list %}\n  {% set t = sensors\n       | select('is_state_attr',
-        'device_class', 'temperature')\n       | map('states') | select('is_number')
-        | map('float') | list %}\n  {% set h = sensors\n       | select('is_state_attr',
-        'device_class', 'humidity')\n       | map('states') | select('is_number')
-        | map('float') | list %}\n  {% if t %}{% set ns.t = ns.t + [t | average] %}{%
-        endif %}\n  {% if h %}{% set ns.h = ns.h + [h | average] %}{% endif %}\n{%
-        endfor %}\n- 실내 온도: {{ (ns.t | average) | round(1) if ns.t else '-' }}°C\n-
-        실내 습도: {{ (ns.h | average) | round(1) if ns.h else '-' }} %\n{% set open_doors_windows
-        = states.binary_sensor\n  | selectattr('attributes.device_class', 'in', ['door',
-        'window'])\n  | selectattr('state', 'eq', 'on')\n  | map(attribute='name')\n
-        \ | list %}\n\n- 열린 문/창문:\n  {% if open_doors_windows | length > 0 %}\n    {{
-        open_doors_windows | join(', ') }}\n  {% else %}\n    없음\n  {% endif %}\n\n{%
-        set lights_on = states.light\n  | selectattr('state', 'eq', 'on')\n  | map(attribute='name')\n
-        \ | list %}\n\n- 켜진 조명:\n  {% if lights_on | length > 0 %}\n    {{ lights_on
-        | join(', ') }}\n  {% else %}\n    없음\n  {% endif %}\n\n{% set climates_on
-        = states.climate\n  | rejectattr('state', 'in', ['off', 'unavailable', 'unknown'])\n
-        \ | map(attribute='name')\n  | list %}\n\n- 작동 중인 에어컨/난방:\n  {% if climates_on
-        | length > 0 %}\n    {{ climates_on | join(', ') }}\n  {% else %}\n    없음\n
-        \ {% endif %}\n\n{% set fans_on = states.fan\n  | selectattr('state', 'eq',
-        'on')\n  | map(attribute='name')\n  | list %}\n\n- 작동 중인 팬:\n  {% if fans_on
-        | length > 0 %}\n    {{ fans_on | join(', ') }}\n  {% else %}\n    없음\n  {%
-        endif %}\n\n{% set people_away = states.person\n  | rejectattr('state', 'eq',
-        'home')\n  | rejectattr('state', 'in', ['unknown', 'unavailable'])\n  | list
-        %}\n\n- 외출 중:\n  {% if people_away | length > 0 %}\n    {% for p in people_away
-        %}\n      {% set gps = namespace(entity_id=None, ts=0) %}\n\n      {% if p.attributes.source
-        is defined %}\n        {% for src in p.attributes.source %}\n          {%
-        if src is string and '.' in src and not src.startswith('get.') %}\n            \n
-        \           {% set state_obj = states[src] if src in states else None %}\n
-        \           \n            {% if state_obj \n                  and state_obj.attributes
-        is defined \n                  and state_obj.attributes.source_type == 'gps'
-        %}\n              \n              {% set ts = as_timestamp(state_obj.last_updated)
-        %}\n              \n              {% if ts > gps.ts %}\n                {%
-        set gps.entity_id = src %}\n                {% set gps.ts = ts %}\n              {%
-        endif %}\n            {% endif %}\n\n          {% endif %}\n        {% endfor
-        %}\n      {% endif %}\n\n      {% if gps.entity_id %}\n        {% set tracker
-        = states[gps.entity_id] %}\n        {{ p.name }}\n        (위치: {{ tracker.attributes.address
-        if tracker.attributes.address is defined else '주소 없음' }},\n         갱신: {{
-        relative_time(tracker.last_updated) }} 전)\n      {% else %}\n        {{ p.name
-        }}\n        (위치: {{ p.state }},\n         이동: {{ relative_time(p.last_changed)
-        }} 전)\n      {% endif %}\n\n    {% endfor %}\n  {% else %}\n    없음\n  {% endif
-        %}\n  \n위 내용을 기반으로 현재 외출중인 user에게 집 상태에 대한 요약을 작성해."
+      instructions: |
+        현재의 집 상태:
+        - 바깥 기온: {{ state_attr('weather.kma_forecast_seoulteugbyeolsi_seocogu', 'temperature') }}°C
+        - 현재 날씨: {{ states('weather.kma_forecast_seoulteugbyeolsi_seocogu') }}
+        {%- set rooms = [
+          ['거실', 'sensor.geosil_onseubdo_ondo', 'sensor.geosil_onseubdo_seubdo'],
+          ['침실', 'sensor.bedroom_awair_temperature', 'sensor.bedroom_awair_humidity'],
+          ['주방', 'sensor.jubang_onseubdo_ondo', 'sensor.jubang_onseubdo_seubdo'],
+          ['화장실', 'sensor.hwajangsil_onseubdo_ondo', 'sensor.hwajangsil_onseubdo_seubdo'],
+        ] %}
+        - 실내 온습도:
+        {%- for name, t, h in rooms %}
+          - {{ name }}: {{ states(t) | float | round(1) if is_number(states(t)) else '-' }}°C, {{ states(h) | float | round(0) | int if is_number(states(h)) else '-' }}%
+        {%- endfor %}
+        - 서버랙(현관) 온도: {{ states('sensor.hyeongwan_seobeoraeg_onseubdo_ondo') | float | round(1) if is_number(states('sensor.hyeongwan_seobeoraeg_onseubdo_ondo')) else '-' }}°C
+        {% set open_doors_windows = states.binary_sensor
+          | selectattr('attributes.device_class', 'in', ['door', 'window'])
+          | selectattr('state', 'eq', 'on')
+          | map(attribute='name')
+          | list %}
+
+        - 열린 문/창문:
+          {% if open_doors_windows | length > 0 %}
+            {{ open_doors_windows | join(', ') }}
+          {% else %}
+            없음
+          {% endif %}
+
+        {% set lights_on = states.light
+          | selectattr('state', 'eq', 'on')
+          | map(attribute='name')
+          | list %}
+
+        - 켜진 조명:
+          {% if lights_on | length > 0 %}
+            {{ lights_on | join(', ') }}
+          {% else %}
+            없음
+          {% endif %}
+
+        {% set climates_on = states.climate
+          | rejectattr('state', 'in', ['off', 'unavailable', 'unknown'])
+          | map(attribute='name')
+          | list %}
+
+        - 작동 중인 에어컨/난방:
+          {% if climates_on | length > 0 %}
+            {{ climates_on | join(', ') }}
+          {% else %}
+            없음
+          {% endif %}
+
+        {% set fans_on = states.fan
+          | selectattr('state', 'eq', 'on')
+          | map(attribute='name')
+          | list %}
+
+        - 작동 중인 팬:
+          {% if fans_on | length > 0 %}
+            {{ fans_on | join(', ') }}
+          {% else %}
+            없음
+          {% endif %}
+
+        {% set people_away = states.person
+          | rejectattr('state', 'eq', 'home')
+          | rejectattr('state', 'in', ['unknown', 'unavailable'])
+          | list %}
+
+        - 외출 중:
+          {% if people_away | length > 0 %}
+            {% for p in people_away %}
+              {% set gps = namespace(entity_id=None, ts=0) %}
+
+              {% if p.attributes.source is defined %}
+                {% for src in p.attributes.source %}
+                  {% if src is string and '.' in src and not src.startswith('get.') %}
+
+                    {% set state_obj = states[src] if src in states else None %}
+
+                    {% if state_obj
+                          and state_obj.attributes is defined
+                          and state_obj.attributes.source_type == 'gps' %}
+
+                      {% set ts = as_timestamp(state_obj.last_updated) %}
+
+                      {% if ts > gps.ts %}
+                        {% set gps.entity_id = src %}
+                        {% set gps.ts = ts %}
+                      {% endif %}
+                    {% endif %}
+
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+
+              {% if gps.entity_id %}
+                {% set tracker = states[gps.entity_id] %}
+                {{ p.name }}
+                (위치: {{ tracker.attributes.address if tracker.attributes.address is defined else '주소 없음' }},
+                 갱신: {{ relative_time(tracker.last_updated) }} 전)
+              {% else %}
+                {{ p.name }}
+                (위치: {{ p.state }},
+                 이동: {{ relative_time(p.last_changed) }} 전)
+              {% endif %}
+
+            {% endfor %}
+          {% else %}
+            없음
+          {% endif %}
+
+        위 내용을 기반으로 현재 외출중인 user에게 집 상태에 대한 요약을 작성해.
       structure:
         home_description:
           description: A description of home status
