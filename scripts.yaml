@@ -107,8 +107,8 @@ unknown_3:
     metadata: {}
     data:
       message: "![서울](/local/seoul_weather_visualization.png)\n\n\U0001F324️ **바깥
-        날씨:** {{ comfort_report.data.weather_description }}\n\n\U0001F6CB️ **실내 쾌적성:**
-        {{ comfort_report.data.indoor_comfort }}"
+        날씨:** {{ comfort_report.data.weather_description | replace('~', '–') }}\n\n\U0001F6CB️
+        **실내 쾌적성:** {{ comfort_report.data.indoor_comfort | replace('~', '–') }}"
       title: "\U0001F3E0 우리 집 환경 보고"
       notification_id: weather_home
   alias: 날씨 및 쾌적성 유머 보고서
