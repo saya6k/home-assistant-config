@@ -1,3 +1,9 @@
+## [1.22.3](https://github.com/saya6k/home-assistant-config/compare/v1.22.2...v1.22.3) (2026-11-17)
+
+### Bug Fixes
+
+* Check hot sales against the iCloud shopping cart list ([#39](https://github.com/saya6k/home-assistant-config/issues/39)) ([4ca2026](https://github.com/saya6k/home-assistant-config/commit/4ca2026666680631c89e57ca2bf053bfa58d1e0e))
+
 ## [1.22.2](https://github.com/saya6k/home-assistant-config/compare/v1.22.1...v1.22.2) (2026-11-17)
 
 ### Bug Fixes
