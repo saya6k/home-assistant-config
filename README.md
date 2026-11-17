@@ -24,12 +24,12 @@
   <img src="https://img.shields.io/badge/entities-2822-1f6feb" alt="Entities">
   <img src="https://img.shields.io/badge/integrations-100%2B-1f6feb" alt="Integrations">
   <img src="https://img.shields.io/badge/automations-54-1f6feb" alt="Automations">
-  <img src="https://img.shields.io/badge/add--ons-19-1f6feb" alt="Add-ons">
+  <img src="https://img.shields.io/badge/add--ons-18-1f6feb" alt="Add-ons">
   <img src="https://img.shields.io/badge/custom_integrations-13-1f6feb" alt="Custom Integrations">
 </p>
 
 <details>
-<summary><strong>📦 애드온</strong> (19)</summary>
+<summary><strong>📦 애드온</strong> (18)</summary>
 
 | 이름 | 버전 | 상태 |
 | --- | --- | --- |
@@ -51,7 +51,6 @@
 | Voice Support | `0.2.0` | started |
 | Wardrowbe | `4.3.8` | started |
 | Whisper | `3.5.3` | started |
-| 목소리 연습실 | `0.1.1` | started |
 
 </details>
 

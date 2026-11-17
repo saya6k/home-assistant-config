@@ -4,7 +4,7 @@ title: 애드온
 
 # 애드온
 
-현재 **19** 개의 애드온이 등록되어 있으며, 다음 카테고리로 분류할 수 있습니다.
+현재 **18** 개의 애드온이 등록되어 있으며, 다음 카테고리로 분류할 수 있습니다.
 
 ## 개발 / 운영
 
@@ -41,7 +41,6 @@ title: 애드온
 | [Whisper](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_whisper)                     | `3.5.3`   | started |
 | [Piper](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_piper)                         | `2.5.4`   | started |
 | [Voice Support](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_voice_support)         | `0.2.0`   | started |
-| [목소리 연습실](https://my.home-assistant.io/redirect/supervisor_addon/?addon=local_voice_trainer)        | `0.1.1`   | started |
 
 ## AI / MCP
 
