@@ -1,3 +1,9 @@
+## [1.22.2](https://github.com/saya6k/home-assistant-config/compare/v1.22.1...v1.22.2) (2026-11-17)
+
+### Bug Fixes
+
+* Point the dehumidifier automation at the renamed bedroom window sensor ([#38](https://github.com/saya6k/home-assistant-config/issues/38)) ([5d1e67d](https://github.com/saya6k/home-assistant-config/commit/5d1e67d0306b06f26b2787e76d13336b786dfdf8))
+
 ## [1.22.1](https://github.com/saya6k/home-assistant-config/compare/v1.22.0...v1.22.1) (2026-11-17)
 
 ### Bug Fixes
