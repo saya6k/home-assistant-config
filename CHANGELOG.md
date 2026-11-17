@@ -1,3 +1,9 @@
+## [1.22.4](https://github.com/saya6k/home-assistant-config/compare/v1.22.3...v1.22.4) (2026-11-17)
+
+### Bug Fixes
+
+* Keep ranges in the weather report from rendering as strikethrough ([#42](https://github.com/saya6k/home-assistant-config/issues/42)) ([be57a83](https://github.com/saya6k/home-assistant-config/commit/be57a83b4ce0eb3e5bfa4f885a306daff5f22f27))
+
 ## [1.22.3](https://github.com/saya6k/home-assistant-config/compare/v1.22.2...v1.22.3) (2026-11-17)
 
 ### Bug Fixes
