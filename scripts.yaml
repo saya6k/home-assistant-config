@@ -275,7 +275,7 @@ unknown_5:
     data:
       shuffle: true
     target:
-      area_id: living_room
+      entity_id: media_player.geosil_apple_tv
   - action: media_player.play_media
     metadata: {}
     data:
@@ -296,12 +296,12 @@ unknown_5:
           browse_entity_id: media_player.living_room
       enqueue: replace
     target:
-      area_id: living_room
+      entity_id: media_player.geosil_apple_tv
   - action: media_player.media_next_track
     metadata: {}
     data: {}
     target:
-      area_id: living_room
+      entity_id: media_player.geosil_apple_tv
   - action: media_player.play_media
     data:
       media:
