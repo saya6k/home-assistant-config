@@ -1,3 +1,9 @@
+## [1.22.1](https://github.com/saya6k/home-assistant-config/compare/v1.22.0...v1.22.1) (2026-11-17)
+
+### Bug Fixes
+
+* Send the home agenda push through the iPhone notifier and play the weekly playlist only on Music Assistant ([#37](https://github.com/saya6k/home-assistant-config/issues/37)) ([d05047f](https://github.com/saya6k/home-assistant-config/commit/d05047f2f559a58aee34f222784420a1a89b44e2))
+
 ## [1.22.0](https://github.com/saya6k/home-assistant-config/compare/v1.21.0...v1.22.0) (2026-11-16)
 
 ### Features
