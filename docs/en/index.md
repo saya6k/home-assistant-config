@@ -18,7 +18,7 @@ title: Home
   <a href="https://www.buymeacoffee.com/my7nmfcm92k"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?logo=buymeacoffee&logoColor=000" alt="Buy Me a Coffee"></a>
 </p>
 
-A personal Home Assistant setup, running since 2018. Currently **2822 entities**, **13 custom integrations**, and **19 add-ons**.
+A personal Home Assistant setup, running since 2018. Currently **2822 entities**, **13 custom integrations**, and **18 add-ons**.
 
 > [!CAUTION]
 > A home keeps evolving. **This documentation may be out of date** — best effort to keep it fresh.
@@ -59,7 +59,7 @@ A personal Home Assistant setup, running since 2018. Currently **2822 entities**
   - [Network](./platform/network.md) — AdGuard · NGINX · UniFi · auth
   - [Storage](./platform/storage.md) — MariaDB · `.storage`
   - [Backups](./platform/backups.md)
-  - [Add-ons](./platform/add-ons.md) — 19 installed
+  - [Add-ons](./platform/add-ons.md) — 18 installed
 - Integrations
   - [Overview](./integrations/index.md) — 100+ integrations
   - [Custom components](./integrations/custom-components.md) — 13 total

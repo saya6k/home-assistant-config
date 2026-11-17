@@ -18,7 +18,7 @@ title: 홈
   <a href="https://www.buymeacoffee.com/my7nmfcm92k"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?logo=buymeacoffee&logoColor=000" alt="Buy Me a Coffee"></a>
 </p>
 
-2018년부터 운영 중인 개인 Home Assistant 설정입니다. 현재 **2822개 엔티티**, **13개 커스텀 통합**, **19개 애드온**으로 구성되어 있습니다.
+2018년부터 운영 중인 개인 Home Assistant 설정입니다. 현재 **2822개 엔티티**, **13개 커스텀 통합**, **18개 애드온**으로 구성되어 있습니다.
 
 > [!CAUTION]
 > 가정 환경은 계속 진화합니다. **이 문서가 최신이 아닐 수 있다는 점을 감안해 주세요** — 가능한 한 자주 갱신하려 노력하고 있습니다.
@@ -59,7 +59,7 @@ title: 홈
   - [네트워크](./platform/network.md) — AdGuard · NGINX · UniFi · 인증
   - [스토리지](./platform/storage.md) — MariaDB · `.storage`
   - [백업](./platform/backups.md)
-  - [애드온](./platform/add-ons.md) — 19 등록
+  - [애드온](./platform/add-ons.md) — 18 등록
 - 통합
   - [개요](./integrations/index.md) — 100+ 통합 목록
   - [커스텀 컴포넌트](./integrations/custom-components.md) — 13개

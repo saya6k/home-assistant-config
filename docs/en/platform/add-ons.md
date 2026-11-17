@@ -4,7 +4,7 @@ title: Add-ons
 
 # Add-ons
 
-Currently **19** add-ons installed, grouped as follows.
+Currently **18** add-ons installed, grouped as follows.
 
 ## Dev / Ops
 
@@ -34,14 +34,13 @@ Currently **19** add-ons installed, grouped as follows.
 
 ## Media / Voice
 
-| Name                                                                                                               | Version   | State   |
-| ------------------------------------------------------------------------------------------------------------------ | --------- | ------- |
-| [Music Assistant](https://my.home-assistant.io/redirect/supervisor_addon/?addon=d5369777_music_assistant)          | `2.10.12` | started |
-| [Supertonic](https://my.home-assistant.io/redirect/supervisor_addon/?addon=03f32180_supertonic)                    | `2.9.0`   | started |
-| [Whisper](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_whisper)                              | `3.5.3`   | started |
-| [Piper](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_piper)                                  | `2.5.4`   | started |
-| [Voice Support](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_voice_support)                  | `0.2.0`   | started |
-| [Voice Trainer (목소리 연습실)](https://my.home-assistant.io/redirect/supervisor_addon/?addon=local_voice_trainer) | `0.1.1`   | started |
+| Name                                                                                                      | Version   | State   |
+| --------------------------------------------------------------------------------------------------------- | --------- | ------- |
+| [Music Assistant](https://my.home-assistant.io/redirect/supervisor_addon/?addon=d5369777_music_assistant) | `2.10.12` | started |
+| [Supertonic](https://my.home-assistant.io/redirect/supervisor_addon/?addon=03f32180_supertonic)           | `2.9.0`   | started |
+| [Whisper](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_whisper)                     | `3.5.3`   | started |
+| [Piper](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_piper)                         | `2.5.4`   | started |
+| [Voice Support](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_voice_support)         | `0.2.0`   | started |
 
 ## AI / MCP
 
