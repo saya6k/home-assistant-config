@@ -1,3 +1,9 @@
+## [1.22.5](https://github.com/saya6k/home-assistant-config/compare/v1.22.4...v1.22.5) (2026-11-17)
+
+### Bug Fixes
+
+* Announce the calendar reminder only in the living room at low volume ([#43](https://github.com/saya6k/home-assistant-config/issues/43)) ([301ddd9](https://github.com/saya6k/home-assistant-config/commit/301ddd97694785926ab1b5e7b7fda38700770469))
+
 ## [1.22.4](https://github.com/saya6k/home-assistant-config/compare/v1.22.3...v1.22.4) (2026-11-17)
 
 ### Bug Fixes
