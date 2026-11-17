@@ -2058,16 +2058,44 @@
       for: 00:00:00
       zone: zone.home
   actions:
-  - action: script.message_broadcast
-    metadata: {}
-    data:
+  - variables:
       message: '{% set loc = (trigger.calendar_event.location | default('''')).split(''\n'')[0]
         %}
 
         {% if loc %}{{ loc }} 에서 {% endif %}{{ trigger.calendar_event.summary }} 일정이
         시작되기 30분 전입니다'
-      default_target:
-        area_id: living_room
+      previous_volume: '{{ states(''number.rockchip_rk3399_android11_volume'') }}'
+  - if:
+    - condition: template
+      value_template: '{{ has_value(''assist_satellite.rockchip_rk3399_android11_assist_satellite'')
+        }}'
+    then:
+    - action: number.set_value
+      target:
+        entity_id: number.rockchip_rk3399_android11_volume
+      data:
+        value: 10
+      continue_on_error: true
+    - action: assist_satellite.announce
+      target:
+        entity_id: assist_satellite.rockchip_rk3399_android11_assist_satellite
+      data:
+        message: '{{ message }}'
+    - if:
+      - condition: template
+        value_template: '{{ is_number(previous_volume) }}'
+      then:
+      - action: number.set_value
+        target:
+          entity_id: number.rockchip_rk3399_android11_volume
+        data:
+          value: '{{ previous_volume }}'
+        continue_on_error: true
+    else:
+    - action: notify.mobile_app_ys_iphoneair
+      data:
+        title: 일정 알림
+        message: '{{ message }}'
   mode: single
 - id: '1783668487039'
   alias: 커피 머신 오류 알림 (종합)
