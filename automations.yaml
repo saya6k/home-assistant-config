@@ -275,7 +275,7 @@
   actions:
   - target:
       entity_id:
-      - todo.shopping_list
+      - todo.saya6k_me_com_jangbaguni
     data:
       status: needs_action
     response_variable: my_wish_list
@@ -289,7 +289,7 @@
         if 'description' in trigger.to_state.attributes %}\n  {{ trigger.to_state.attributes.description
         if trigger.to_state.attributes.description != \"\" else 'N/A' }}\n{% else
         %}\n  N/A\n{% endif %}\n\n위 상품이 아래 나의 위시리스트에 있는 항목과 일치하는 경우, 내게 알려줘야 합니다.\n\n{%
-        for item in my_wish_list['todo.shopping_list']['items'] %}\n  - **{{ item.summary
+        for item in my_wish_list['todo.saya6k_me_com_jangbaguni']['items'] %}\n  - **{{ item.summary
         }}**:\n  {% if 'description' in item %}\n    {{ item.description if item.description
         != \"\" else 'N/A' }}\n  {% else %}\n    N/A\n  {% endif %}\n{% endfor %}"
       questions:
