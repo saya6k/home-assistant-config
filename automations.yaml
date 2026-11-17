@@ -151,10 +151,8 @@
         }}**: {{ item.description }}\n  {% endfor %}\n  {% endif %}\n"
       notification_id: agenda_home
     enabled: false
-  - action: notify.send_message
+  - action: notify.mobile_app_ys_iphoneair
     metadata: {}
-    target:
-      device_id: 0c78f2cfc8dc12193e6387be92be74e2
     data:
       message: '{% set due_items = today_todos[''todo.chore''][''items''] | selectattr(''due'',
         ''defined'') | list %} {% set no_due_items = today_todos[''todo.chore''][''items'']
