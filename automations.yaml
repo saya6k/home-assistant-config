@@ -2468,7 +2468,7 @@
     entity_id:
     - binary_sensor.hwajangsil_mun_door
     - binary_sensor.cimsil_baggat_cangmun
-    - binary_sensor.cimsil_cimsil_cangmun
+    - binary_sensor.cimsil_cangmun
     to:
     - 'on'
     - 'off'
@@ -2486,7 +2486,7 @@
     - condition: state
       entity_id:
       - binary_sensor.cimsil_baggat_cangmun
-      - binary_sensor.cimsil_cimsil_cangmun
+      - binary_sensor.cimsil_cangmun
       state: 'off'
     then:
     - action: humidifier.turn_on
