@@ -10,7 +10,7 @@ Home Assistant Core를 둘러싼 운영 인프라 — 네트워크, 데이터 �
 
 - **OS**: Home Assistant OS 18.4 (channel: `beta`)
 - **하드웨어**: 보드 `rpi5-64` (Raspberry Pi 5 · 128GB NVMe 데이터 디스크)
-- **버전**: `2026.10.4`
+- **버전**: `2026.11.2`
 - **운영 원칙**: 로컬은 **stateless**. 상태가 있는 컴포넌트(Recorder DB, 백업 사본)는 원격 TrueNAS 로 분리.
 
 ## 운영 구성

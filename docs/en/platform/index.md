@@ -10,7 +10,7 @@ Operational infrastructure around Home Assistant Core — networking, data stora
 
 - **OS**: Home Assistant OS 18.4 (channel: `beta`)
 - **Hardware**: board `rpi5-64` (Raspberry Pi 5 · 128 GB NVMe data disk)
-- **Version**: `2026.10.4`
+- **Version**: `2026.11.2`
 - **Operating principle**: local is **stateless**. Anything stateful (Recorder DB, backup copies) lives on the remote TrueNAS.
 
 ## Operational layout

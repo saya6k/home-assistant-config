@@ -33,7 +33,7 @@ This is a Home Assistant configuration repository for a comprehensive smart home
 
 ### Custom Components
 
-`custom_components/` holds 17 custom integrations. HACS is no longer installed — custom integrations and Lovelace plugins are installed through Home Assistant's built-in **Marketplace** (`marketplace` integration). `ancs` is installed manually.
+`custom_components/` holds 16 custom integrations. HACS is no longer installed — custom integrations and Lovelace plugins are installed through Home Assistant's built-in **Marketplace** (`marketplace` integration). `ancs` is installed manually.
 
 **Korean-specific integrations:**
 
@@ -53,7 +53,6 @@ This is a Home Assistant configuration repository for a comprehensive smart home
 
 **Utilities:**
 
-- `jinja_files`: Renders every `templates/**/*.j2` into the matching path (`jinja_files.render`); generates `README.md` and parts of `docs/`
 - `spook` (+ `spook_calibration`, `spook_inverse`, `spook_time_in_state`): Advanced toolbox with additional services
 - `restore_persistent_notifications`: Persists notifications across restarts
 - `truenas_ce`: TrueNAS CE monitoring
@@ -140,15 +139,9 @@ Check add-on logs:
 ha apps logs 5c53de3b_esphome
 ```
 
-### Generated Docs
+### Docs
 
-`README.md` and the docs pages that have a `templates/**/*.j2` counterpart are generated on the HA server by the `jinja_files` integration. Edit the `.j2` template, not the rendered `.md`, then render on the server (existing files are skipped unless `override` is set):
-
-```yaml
-action: jinja_files.render
-data:
-  override: true
-```
+`README.md` and `docs/` are edited directly. Counts and version lists in them (entities, automations, apps, custom integrations, HA version) are snapshots: refresh them from the server (`ha apps`, the REST/WebSocket API) when you touch those pages.
 
 ### ESPHome
 

@@ -4,7 +4,7 @@ title: 자동화
 
 # 자동화
 
-`automations.yaml`에 정의된 **50개**의 자동화. 한국어 자동화가 다수이며, 모드(`single`/`restart`/`queued`/`parallel`)에 따라 동시 실행 정책이 다릅니다.
+`automations.yaml`에 정의된 **54개**의 자동화. 한국어 자동화가 다수이며, 모드(`single`/`restart`/`queued`/`parallel`)에 따라 동시 실행 정책이 다릅니다.
 
 전체 자동화 원본은 [`automations.yaml`](https://github.com/saya6k/home-assistant-config/blob/main/automations.yaml) 에서 확인할 수 있습니다.
 
@@ -21,22 +21,25 @@ title: 자동화
 | Notify to brush Teeth                          | `single`   | on   |
 | Notify Work Agenda                             | `single`   | on   |
 | TTS 캐시 지우기                                | `single`   | on   |
+| TV 뒤 간접조명 제어                            | `restart`  | on   |
 | 개인 일정 시작 30분 전 알림                    | `single`   | on   |
 | 거실 버튼 조명 제어                            | `restart`  | on   |
 | 거실 옷장 문 열림 5분 알림                     | `parallel` | on   |
 | 건조대 열림 시 제습기 빨래건조 모드            | `restart`  | on   |
 | 고농도 이산화탄소 환기 알림                    | `single`   | on   |
+| 귀가 시 스피커/위성 최소 음량 맞추기           | `queued`   | on   |
 | 귀가 시 환영 및 보조 기능 활성화               | `single`   | on   |
 | 기상 특보 수신 및 알림                         | `single`   | on   |
 | 긴급 상황 알림: 재난별 지침 전송               | `single`   | on   |
 | 날씨 이미지 시각화 생성 및 업데이트            | `single`   | off  |
+| 두 명 이상 있을 때 침대 점유 시 취침 보안 모드 | `single`   | on   |
 | 매월 반복 집안일 추가                          | `single`   | on   |
 | 매일 반복 집안일 추가                          | `single`   | on   |
 | 배달 앱 알림 알려주기                          | `queued`   | on   |
 | 샤워 시 플레이리스트 재생                      | `single`   | on   |
 | 수면 장면 활성화                               | `single`   | on   |
+| 아이폰 단축어 알림 수신                        | `queued`   | on   |
 | 아이폰 메시지 읽어주기                         | `queued`   | on   |
-| 아이폰 전화 받을지 묻기                        | `single`   | on   |
 | 아침 액자 이미지 변경                          | `single`   | on   |
 | 야간 화장실 이용간 조명 제어                   | `single`   | on   |
 | 오늘 강수 예보 알림                            | `single`   | on   |
@@ -49,6 +52,7 @@ title: 자동화
 | 주말 반복 집안일 추가                          | `single`   | on   |
 | 주방 진입 시 조명 장면 활성화                  | `single`   | on   |
 | 주요 기념일 7일 전 알림                        | `single`   | on   |
+| 집 안에서 휴대폰 배터리 20% 미만 충전 알림     | `queued`   | on   |
 | 집에 들어옴 알림                               | `single`   | on   |
 | 집에 사람이 없을 때 자리 비움 장면 활성화      | `single`   | on   |
 | 창문 닫힘 시 공조 자동 제어 (닫힘)             | `single`   | on   |

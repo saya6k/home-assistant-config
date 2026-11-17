@@ -6,7 +6,7 @@ title: Home
 
 <p>
   <a href="https://github.com/saya6k/home-assistant-config"><img src="https://img.shields.io/maintenance/yes/2026?style=flat-square" alt="Maintained"></a>
-  <a href="https://github.com/home-assistant/core/releases/tag/2026.10.4"><img src="https://img.shields.io/badge/Home%20Assistant-2026.10.4-41BDF5?style=flat-square&logo=homeassistant&logoColor=white" alt="HA Version"></a>
+  <a href="https://github.com/home-assistant/core/releases/tag/2026.11.2"><img src="https://img.shields.io/badge/Home%20Assistant-2026.11.2-41BDF5?style=flat-square&logo=homeassistant&logoColor=white" alt="HA Version"></a>
   <a href="https://github.com/saya6k/home-assistant-config"><img src="https://img.shields.io/github/last-commit/saya6k/home-assistant-config?style=flat-square" alt="Last Commit"></a>
   <a href="https://github.com/saya6k/home-assistant-config"><img src="https://img.shields.io/github/commit-activity/m/saya6k/home-assistant-config?style=flat-square" alt="Commit Activity"></a>
   <a href="https://github.com/saya6k/home-assistant-config/actions"><img src="https://img.shields.io/github/actions/workflow/status/saya6k/home-assistant-config/release.yml?style=flat-square&label=CI" alt="CI"></a>
@@ -18,18 +18,18 @@ title: Home
   <a href="https://www.buymeacoffee.com/my7nmfcm92k"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?logo=buymeacoffee&logoColor=000" alt="Buy Me a Coffee"></a>
 </p>
 
-A personal Home Assistant setup, running since 2018. Currently **3113 entities**, **14 custom integrations**, and **17 add-ons**.
+A personal Home Assistant setup, running since 2018. Currently **2822 entities**, **13 custom integrations**, and **19 add-ons**.
 
 > [!CAUTION]
-> A home keeps evolving. **This documentation may be out of date** — best effort to keep it fresh. (Auto-regenerated via `jinja_files.render`.)
+> A home keeps evolving. **This documentation may be out of date** — best effort to keep it fresh.
 
 ## System at a glance
 
 ```
 ┌─ Hardware       │ Raspberry Pi 5 (HAOS), UniFi (local + remote), Matter/Thread/Wi-Fi
 ├─ Platform       │ HAOS (local, stateless) · Remote TrueNAS (Recorder MariaDB, backups)
-├─ Integrations   │ 100+ built-in + 14 custom integrations (Marketplace) + 6 ESPHome devices
-├─ Automations    │ 50 automations (mostly Korean) · scripts/scenes
+├─ Integrations   │ 100+ built-in + 13 custom integrations (Marketplace) + 6 ESPHome devices
+├─ Automations    │ 54 automations (mostly Korean) · scripts/scenes
 ├─ Dashboards     │ Lovelace storage mode + smarthome3d-card (3D dashboard)
 ├─ Voice & AI     │ HA Cloud STT · Supertonic TTS · OpenAI/Claude/Gemini/llama.cpp · LLM tool scripts
 ├─ Observability  │ SQL-based recorder DB metrics · System Monitor · alert package
@@ -41,15 +41,15 @@ A personal Home Assistant setup, running since 2018. Currently **3113 entities**
 
 | Domain          |    Value |
 | --------------- | -------: |
-| automations     |       50 |
-| binary_sensors  |      265 |
-| device_trackers |       16 |
+| automations     |       54 |
+| binary_sensors  |      260 |
+| device_trackers |       43 |
 | lights          |       17 |
-| media_players   |       21 |
-| sensors         |     1356 |
-| switches        |      429 |
-| others          |      959 |
-| **Total**       | **3113** |
+| media_players   |       20 |
+| sensors         |     1390 |
+| switches        |      353 |
+| others          |      685 |
+| **Total**       | **2822** |
 
 ## Documentation
 
@@ -59,12 +59,12 @@ A personal Home Assistant setup, running since 2018. Currently **3113 entities**
   - [Network](./platform/network.md) — AdGuard · NGINX · UniFi · auth
   - [Storage](./platform/storage.md) — MariaDB · `.storage`
   - [Backups](./platform/backups.md)
-  - [Add-ons](./platform/add-ons.md) — 17 installed
+  - [Add-ons](./platform/add-ons.md) — 19 installed
 - Integrations
   - [Overview](./integrations/index.md) — 100+ integrations
-  - [Custom components](./integrations/custom-components.md) — 14 total
+  - [Custom components](./integrations/custom-components.md) — 13 total
   - [ESPHome](./integrations/esphome.md) — wall pad, intercom, voice devices
-- [Automations](./automations.md) — 50 total
+- [Automations](./automations.md) — 54 total
 - [Dashboards](./dashboards.md)
 - [Voice & AI](./voice-and-ai.md)
 - [Observability](./observability.md)
