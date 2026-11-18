@@ -3119,9 +3119,9 @@
       - paused
       active: '{{ home and playback in on_states and state_attr(player, ''app_id'')
         != airplay }}'
-      was_active: '{% set f = trigger.from_state %}{{ f is not none and (f.entity_id
-        != player or (f.state in on_states and f.attributes.app_id != airplay)) }}'
-      app: '{{ state_attr(player, ''app_name'') or ''홈 화면'' }}'
+      was_active: '{% set f = trigger.get(''from_state'') %}{{ f is not none and (f.entity_id
+        != player or (f.state in on_states and f.attributes.get(''app_id'') != airplay)) }}'
+      app: '{{ state_attr(player, ''app_name'') or ''켜짐'' }}'
       song: '{{ state_attr(player, ''media_title'') or app }}'
       artist: '{{ state_attr(player, ''media_artist'') or state_attr(player, ''media_series_title'')
         or app }}'
