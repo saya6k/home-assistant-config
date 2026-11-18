@@ -165,11 +165,7 @@ esphome upload esphome/esp-wallpad.yaml
 
 ### Code Quality
 
-Run pre-commit checks (yamllint, prettier, etc.):
-
-```bash
-pre-commit run --all-files
-```
+The server has no pre-commit, prettier, or yamllint. CI lints YAML and Markdown on every PR, so match the existing formatting by hand. Secrets are caught by a gitleaks `pre-push` hook in `/config/.git/hooks/` (binary at `/data/bin/gitleaks`).
 
 ## Important Patterns
 
@@ -179,7 +175,7 @@ pre-commit run --all-files
 - Use `!secret key_name` syntax in YAML files
 - No example/fake secrets file in the repo: CI generates mock secrets from `.github/workflows/mock-secrets-config.json` and `mock-esphome-secrets-config.json`. Don't add `*.example.yaml` under `esphome/` — the ESPHome dashboard picks up every top-level YAML there as a device
 - ESPHome has separate `esphome/secrets.yaml`
-- A pre-push gitleaks hook scans every commit being pushed (including commits made on the HA server, where hooks don't run); install with `pre-commit install`
+- A gitleaks `pre-push` hook on the server scans every commit being pushed; the repo is public, so never bypass it
 
 ### Entity Naming
 
@@ -215,7 +211,7 @@ Alerts defined in `packages/alerts.yaml`:
 ### Before Making Changes
 
 1. Always validate configuration with `ha core check`
-2. Run pre-commit hooks with `pre-commit run --all-files`
+2. Check the PR's CI lint before merging
 3. Test changes in development environment if possible
 4. This is a production system - changes affect active home automation
 
@@ -242,6 +238,6 @@ MariaDB (Recorder) is monitored via `sql` integration sensors (`Home Assistant R
 - **Storage**: Local HA is stateless. Recorder runs on a remote MariaDB on TrueNAS (over VPN). The local `home-assistant_v2.db` SQLite file is not used.
 - **Backups**: Daily automatic backups to the local disk, the `TrueNAS_Backup` network storage mount, and Home Assistant Cloud; 3 copies retained
 - **Update Strategy**: Semantic release automation configured (`.releaserc`)
-- **Sync**: No Git Pull add-on — the server is the source of truth, since most changes are made in the HA UI. Commit those on the server (over SSH) and open a PR; after merging changes made elsewhere, run `git pull` in `/config` on the server
+- **Workflow**: The server is the only copy — there is no local clone and no Git Pull add-on, since most changes are made in the HA UI. Work over SSH (`ssh homeassistant.local`) in `/config`: branch, commit, push, and open the PR with `gh` (config in `/data/gh`, so prefix commands with `GH_CONFIG_DIR=/data/gh`). After merging, switch back to `main` and `git pull`
 - **Git**: Pre-commit hooks enforce YAML linting and formatting (`yamllint`, `prettier`)
 - **CLAUDE.md**: Symlink to `AGENTS.md` — edit `AGENTS.md` only
