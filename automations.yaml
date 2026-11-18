@@ -3090,7 +3090,8 @@
   mode: restart
 - id: '1794996101611'
   alias: 거실 Apple TV - Now Playing Live Activity
-  description: 집에 있을 때 Apple TV 재생 정보를 아이폰 Live Activity로 표시
+  description: 집에 있을 때 Apple TV 자체 앱의 재생 정보를 아이폰 Live Activity로 표시 (AirPlay는
+    iOS 재생 화면과 겹치므로 제외)
   mode: restart
   triggers:
   - trigger: state
@@ -3107,6 +3108,12 @@
       player: media_player.living_room_apple_tv
       playback: '{{ states(player) }}'
       home: '{{ is_state(''person.weongyu'', ''home'') }}'
+      airplay: com.apple.TVAirPlay
+      active: '{{ home and playback in [''playing'', ''paused''] and state_attr(player,
+        ''app_id'') != airplay }}'
+      was_active: '{% set f = trigger.from_state %}{{ f is not none and (f.entity_id
+        != player or (f.state in [''playing'', ''paused''] and f.attributes.app_id
+        != airplay)) }}'
       song: '{{ state_attr(player, ''media_title'') or ''재생 중인 콘텐츠'' }}'
       artist: '{{ state_attr(player, ''media_artist'') or state_attr(player, ''app_name'')
         or ''Apple TV'' }}'
@@ -3115,7 +3122,7 @@
         u = state_attr(player, 'media_position_updated_at') %} {{ (p + ((now() - u).total_seconds()
         if u and playback == 'playing' else 0)) | int }}"
   - choose:
-    - conditions: '{{ home and playback in [''playing'', ''paused''] }}'
+    - conditions: '{{ active }}'
       sequence:
       - action: notify.mobile_app_ys_iphoneair
         data:
@@ -3129,9 +3136,10 @@
             %} {% if playback == 'playing' %} {% set d = dict(d, chronometer=true,
             when=[duration - position, 0] | max, when_relative=true) %} {% endif %}
             {% endif %} {{ d }}"
-    default:
-    - action: notify.mobile_app_ys_iphoneair
-      data:
-        message: clear_notification
+    - conditions: '{{ was_active }}'
+      sequence:
+      - action: notify.mobile_app_ys_iphoneair
         data:
-          tag: living-room-apple-tv
+          message: clear_notification
+          data:
+            tag: living-room-apple-tv
