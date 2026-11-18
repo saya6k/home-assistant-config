@@ -1,3 +1,9 @@
+## [1.24.0](https://github.com/saya6k/home-assistant-config/compare/v1.23.1...v1.24.0) (2026-11-18)
+
+### Features
+
+* Keep the Apple TV Live Activity up while the TV is on ([#50](https://github.com/saya6k/home-assistant-config/issues/50)) ([e2aaf32](https://github.com/saya6k/home-assistant-config/commit/e2aaf32c42dbdde6cb4c731c04c5b379fac1813e))
+
 ## [1.23.1](https://github.com/saya6k/home-assistant-config/compare/v1.23.0...v1.23.1) (2026-11-18)
 
 ### Bug Fixes
