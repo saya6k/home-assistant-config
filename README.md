@@ -46,7 +46,6 @@
 | OpenThread Border Router | `3.4.0` | started |
 | Piper | `2.5.4` | started |
 | Samba share | `12.11.0` | started |
-| Supertonic | `2.9.0` | started |
 | Terminal & SSH | `10.6.0` | started |
 | Voice Support | `0.2.0` | started |
 | Wardrowbe | `4.3.8` | started |
@@ -101,7 +100,7 @@
   <img src="https://img.shields.io/badge/Gemini-Google-4285F4?logo=googlegemini&logoColor=white" alt="Gemini">
   <img src="https://img.shields.io/badge/Open%20Router-000000" alt="Open Router">
   <img src="https://img.shields.io/badge/llama.cpp-Local-000000" alt="llama.cpp">
-  <img src="https://img.shields.io/badge/Supertonic-TTS-7C3AED" alt="Supertonic">
+  <img src="https://img.shields.io/badge/Piper-TTS-7C3AED" alt="Piper">
   <img src="https://img.shields.io/badge/ElevenLabs-TTS-000000?logo=elevenlabs&logoColor=white" alt="ElevenLabs">
   <img src="https://img.shields.io/badge/MCP-Tools-FF6B6B" alt="MCP">
 </p>

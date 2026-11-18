@@ -24,7 +24,7 @@ title: 음성과 AI
          │ 텍스트 + 액션
          ▼
    ┌────────────────┐
-   │   Supertonic   │  (TTS, Wyoming)
+   │     Piper      │  (TTS, Wyoming)
    └─────┬──────────┘
          │ 오디오
          ▼
@@ -37,10 +37,10 @@ title: 음성과 AI
 
 | 파이프라인                 | 대화 에이전트                | STT                  | TTS                  |
 | -------------------------- | ---------------------------- | -------------------- | -------------------- |
-| **Voice Assistant** (기본) | OpenAI                       | Home Assistant Cloud | Supertonic           |
+| **Voice Assistant** (기본) | OpenAI                       | Home Assistant Cloud | Piper                |
 | Home Assistant Cloud       | Home Assistant (내장 인텐트) | Home Assistant Cloud | Home Assistant Cloud |
 | Deep Research              | Home Assistant (내장 인텐트) | —                    | —                    |
-| Test                       | llama.cpp (로컬 Gemma 모델)  | Home Assistant Cloud | Supertonic           |
+| Test                       | llama.cpp (로컬 Gemma 모델)  | Home Assistant Cloud | Piper                |
 
 ## 입력 디바이스
 
@@ -68,14 +68,14 @@ title: 음성과 AI
 
 ## TTS
 
-| 엔진                 | 용도                                  |
-| -------------------- | ------------------------------------- |
-| Supertonic           | 메인 — 로컬 애드온, Wyoming 으로 연결 |
-| Home Assistant Cloud | Cloud 파이프라인용                    |
-| ElevenLabs           | 보조                                  |
-| Google Translate TTS | 폴백 / 다국어                         |
+| 엔진                 | 용도                                                      |
+| -------------------- | --------------------------------------------------------- |
+| Piper                | 메인 — 로컬 애드온(`ko_KR-kss-medium`), Wyoming 으로 연결 |
+| Home Assistant Cloud | Cloud 파이프라인용                                        |
+| ElevenLabs           | 보조                                                      |
+| Google Translate TTS | 폴백 / 다국어                                             |
 
-TTS 캐시는 `tts/` 디렉터리에 저장되고, 자동화 **TTS 캐시 지우기** 가 매주 월요일 오전 1시에 비웁니다. Whisper 애드온은 설치되어 있지만 정지 상태입니다(STT 는 Cloud 사용). 이전에 사용하던 Piper, Ollama, Voice Satellite 는 [보관소](./retired.md) 참조.
+TTS 캐시는 `tts/` 디렉터리에 저장되고, 자동화 **TTS 캐시 지우기** 가 매주 월요일 오전 1시에 비웁니다. Whisper 애드온은 설치되어 있지만 정지 상태입니다(STT 는 Cloud 사용). 이전에 사용하던 Supertonic, Ollama, Voice Satellite 는 [보관소](./retired.md) 참조.
 
 ## 자동화 연계
 

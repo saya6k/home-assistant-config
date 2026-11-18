@@ -37,7 +37,6 @@ title: 애드온
 | 이름                                                                                                      | 버전      | 상태    |
 | --------------------------------------------------------------------------------------------------------- | --------- | ------- |
 | [Music Assistant](https://my.home-assistant.io/redirect/supervisor_addon/?addon=d5369777_music_assistant) | `2.10.12` | started |
-| [Supertonic](https://my.home-assistant.io/redirect/supervisor_addon/?addon=03f32180_supertonic)           | `2.9.0`   | started |
 | [Whisper](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_whisper)                     | `3.5.3`   | started |
 | [Piper](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_piper)                         | `2.5.4`   | started |
 | [Voice Support](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_voice_support)         | `0.2.0`   | started |
