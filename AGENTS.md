@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-This is a Home Assistant configuration repository for a comprehensive smart home setup running on Home Assistant OS 18.4 on a Raspberry Pi 5 (Home Assistant Core on dev builds, currently `2026.12.0.dev`; check `ha core info` for the exact version). The configuration manages 2000+ entities across multiple domains including climate control, security, media, voice, and energy monitoring. This is a production system actively used since 2018.
+This is a Home Assistant configuration repository for a comprehensive smart home setup running on Home Assistant OS 18.5 on a Raspberry Pi 5 (Home Assistant Core on dev builds, currently `2026.12.0.dev`; check `ha core info` for the exact version). The configuration manages 2000+ entities across multiple domains including climate control, security, media, voice, and energy monitoring. This is a production system actively used since 2018.
 
 ## Key Architecture
 
@@ -233,7 +233,7 @@ MariaDB (Recorder) is monitored via `sql` integration sensors (`Home Assistant R
 ## Development Notes
 
 - **Language**: Mix of English (config structure) and Korean (entity names, automations, notifications)
-- **Platform**: Home Assistant OS 18.4 on a Raspberry Pi 5 (`rpi5-64` board, 128 GB NVMe data disk)
+- **Platform**: Home Assistant OS 18.5 on a Raspberry Pi 5 (`rpi5-64` board, 128 GB NVMe data disk)
 - **Integration Count**: 100+ integrations (default + custom)
 - **Storage**: Local HA is stateless. Recorder runs on a remote MariaDB on TrueNAS (over VPN). The local `home-assistant_v2.db` SQLite file is not used.
 - **Backups**: Daily automatic backups to the local disk, the `TrueNAS_Backup` network storage mount, and Home Assistant Cloud; 3 copies retained
