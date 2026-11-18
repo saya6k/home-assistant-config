@@ -1,3 +1,9 @@
+## [1.23.0](https://github.com/saya6k/home-assistant-config/compare/v1.22.5...v1.23.0) (2026-11-18)
+
+### Features
+
+* Show Apple TV now playing as an iPhone Live Activity ([#47](https://github.com/saya6k/home-assistant-config/issues/47)) ([1de770f](https://github.com/saya6k/home-assistant-config/commit/1de770f2cad84fecd3b7a9f67d5840d041ca723e))
+
 ## [1.22.5](https://github.com/saya6k/home-assistant-config/compare/v1.22.4...v1.22.5) (2026-11-17)
 
 ### Bug Fixes
