@@ -1,3 +1,9 @@
+## [1.23.1](https://github.com/saya6k/home-assistant-config/compare/v1.23.0...v1.23.1) (2026-11-18)
+
+### Bug Fixes
+
+* Skip the Apple TV Live Activity for AirPlay playback ([#49](https://github.com/saya6k/home-assistant-config/issues/49)) ([8ec1a8d](https://github.com/saya6k/home-assistant-config/commit/8ec1a8de60f0a80f45f1f14c8c3856d03c84f673))
+
 ## [1.23.0](https://github.com/saya6k/home-assistant-config/compare/v1.22.5...v1.23.0) (2026-11-18)
 
 ### Features
