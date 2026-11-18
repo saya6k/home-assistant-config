@@ -6,12 +6,12 @@
     "items": [
       {
         "id": "895cf535343b4121ae6b00edfc051ff7",
-        "url": "/local/community/ha-homelab-map/ha-homelab-map.js?v=1425707356-v1.1.0",
+        "url": "/local/community/ha-homelab-map/ha-homelab-map.js?v=1425707356-v1.2.0",
         "type": "module"
       },
       {
         "id": "de370db15d7b47a9b7b8c644bf6651cf",
-        "url": "/local/smarthome3d/smarthome3d-card.js?v=41",
+        "url": "/local/smarthome3d/smarthome3d-card.js?v=44",
         "type": "module"
       }
     ]

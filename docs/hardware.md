@@ -78,7 +78,7 @@ Welcome to the comprehensive list of hardware in my smart home setup. Some links
 
 ## 🎙️ Voice Control
 
-The default Assist pipeline uses [OpenAI](https://www.home-assistant.io/integrations/openai_conversation/) for conversation, Home Assistant Cloud for speech-to-text, and the local Supertonic add-on for text-to-speech. See [Voice & AI](./voice-and-ai.md).
+The default Assist pipeline uses [OpenAI](https://www.home-assistant.io/integrations/openai_conversation/) for conversation, Home Assistant Cloud for speech-to-text, and the local Piper add-on for text-to-speech. See [Voice & AI](./voice-and-ai.md).
 
 |                                     Device                                      | Quantity | Connection |                         Home Assistant                         |                                                     Notes                                                      |
 | :-----------------------------------------------------------------------------: | :------: | :--------: | :------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------: |

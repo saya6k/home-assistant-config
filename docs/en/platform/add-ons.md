@@ -12,7 +12,6 @@ Currently **18** add-ons installed, grouped as follows.
 | ----------------------------------------------------------------------------------------------- | --------- | ------- |
 | [CodeMirror](https://my.home-assistant.io/redirect/supervisor_addon/?addon=03f32180_codemirror) | `0.8.0`   | started |
 | [Samba share](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_samba)         | `12.11.0` | started |
-| [Git pull](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_git_pull)         | `9.1.1`   | started |
 | [Terminal & SSH](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_ssh)        | `10.6.0`  | started |
 
 ## Network / Security
@@ -37,7 +36,6 @@ Currently **18** add-ons installed, grouped as follows.
 | Name                                                                                                      | Version   | State   |
 | --------------------------------------------------------------------------------------------------------- | --------- | ------- |
 | [Music Assistant](https://my.home-assistant.io/redirect/supervisor_addon/?addon=d5369777_music_assistant) | `2.10.12` | started |
-| [Supertonic](https://my.home-assistant.io/redirect/supervisor_addon/?addon=03f32180_supertonic)           | `2.9.0`   | started |
 | [Whisper](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_whisper)                     | `3.5.3`   | started |
 | [Piper](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_piper)                         | `2.5.4`   | started |
 | [Voice Support](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_voice_support)         | `0.2.0`   | started |

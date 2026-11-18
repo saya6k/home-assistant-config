@@ -18,7 +18,7 @@ title: Home
   <a href="https://www.buymeacoffee.com/my7nmfcm92k"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?logo=buymeacoffee&logoColor=000" alt="Buy Me a Coffee"></a>
 </p>
 
-A personal Home Assistant setup, running since 2018. Currently **2822 entities**, **13 custom integrations**, and **18 add-ons**.
+A personal Home Assistant setup, running since 2018. Currently **2822 entities**, **13 custom integrations**, and **16 add-ons**.
 
 > [!CAUTION]
 > A home keeps evolving. **This documentation may be out of date** — best effort to keep it fresh.
@@ -31,7 +31,7 @@ A personal Home Assistant setup, running since 2018. Currently **2822 entities**
 ├─ Integrations   │ 100+ built-in + 13 custom integrations (Marketplace) + 6 ESPHome devices
 ├─ Automations    │ 54 automations (mostly Korean) · scripts/scenes
 ├─ Dashboards     │ Lovelace storage mode + smarthome3d-card (3D dashboard)
-├─ Voice & AI     │ HA Cloud STT · Supertonic TTS · OpenAI/Claude/Gemini/llama.cpp · LLM tool scripts
+├─ Voice & AI     │ HA Cloud STT · Piper TTS · OpenAI/Claude/Gemini/llama.cpp · LLM tool scripts
 ├─ Observability  │ SQL-based recorder DB metrics · System Monitor · alert package
 ├─ Backups        │ Daily automatic backups → local + remote TrueNAS + Nabu Casa Cloud (3 kept)
 └─ Services       │ Paperless-ngx · Pocket ID  (both on remote TrueNAS)

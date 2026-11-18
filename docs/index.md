@@ -18,7 +18,7 @@ title: 홈
   <a href="https://www.buymeacoffee.com/my7nmfcm92k"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?logo=buymeacoffee&logoColor=000" alt="Buy Me a Coffee"></a>
 </p>
 
-2018년부터 운영 중인 개인 Home Assistant 설정입니다. 현재 **2822개 엔티티**, **13개 커스텀 통합**, **18개 애드온**으로 구성되어 있습니다.
+2018년부터 운영 중인 개인 Home Assistant 설정입니다. 현재 **2822개 엔티티**, **13개 커스텀 통합**, **16개 애드온**으로 구성되어 있습니다.
 
 > [!CAUTION]
 > 가정 환경은 계속 진화합니다. **이 문서가 최신이 아닐 수 있다는 점을 감안해 주세요** — 가능한 한 자주 갱신하려 노력하고 있습니다.
@@ -31,7 +31,7 @@ title: 홈
 ├─ 통합       │ 100+ 기본 통합 + 14 커스텀 통합 (Marketplace) + ESPHome 디바이스 6대
 ├─ 자동화     │ 54 자동화 (한국어 중심) · 스크립트/장면 다수
 ├─ 대시보드   │ Lovelace storage 모드 + smarthome3d-card (3D 대시보드)
-├─ 음성·AI    │ HA Cloud STT · Supertonic TTS · OpenAI/Claude/Gemini/llama.cpp · LLM 도구 스크립트
+├─ 음성·AI    │ HA Cloud STT · Piper TTS · OpenAI/Claude/Gemini/llama.cpp · LLM 도구 스크립트
 ├─ 옵저버빌리티│ SQL 통합 기반 RDB 지표 · System Monitor · alert 패키지
 ├─ 백업       │ 매일 자동 백업 → 로컬 + 원격 TrueNAS + Nabu Casa Cloud (3개 보관)
 └─ 서비스     │ Paperless-ngx · Pocket ID  (모두 원격 TrueNAS)

@@ -80,10 +80,10 @@ ESPHome configurations are in `esphome/` directory:
 
 The system runs these Home Assistant add-ons (apps):
 
-- **Development**: Advanced SSH & Web Terminal, CodeMirror, Samba share, Git Pull
+- **Development**: Advanced SSH & Web Terminal, CodeMirror, Samba share
 - **Devices / protocols**: ESPHome Device Builder, Matter Server, Mosquitto broker, OpenThread Border Router
 - **Network**: NGINX Home Assistant SSL proxy, Let's Encrypt (started on demand)
-- **Voice / media**: Supertonic (TTS, Wyoming), Whisper (stopped), Music Assistant, YT Music PO Token Generator
+- **Voice / media**: Piper (TTS, Wyoming), Whisper (stopped), Music Assistant, YT Music PO Token Generator
 - **AI / MCP**: CRW Web Tools, Memory (both exposed to HA through the `mcp` integration)
 - **Services**: Wardrowbe, NILM (stopped)
 
@@ -242,5 +242,6 @@ MariaDB (Recorder) is monitored via `sql` integration sensors (`Home Assistant R
 - **Storage**: Local HA is stateless. Recorder runs on a remote MariaDB on TrueNAS (over VPN). The local `home-assistant_v2.db` SQLite file is not used.
 - **Backups**: Daily automatic backups to the local disk, the `TrueNAS_Backup` network storage mount, and Home Assistant Cloud; 3 copies retained
 - **Update Strategy**: Semantic release automation configured (`.releaserc`)
+- **Sync**: No Git Pull add-on — the server is the source of truth, since most changes are made in the HA UI. Commit those on the server (over SSH) and open a PR; after merging changes made elsewhere, run `git pull` in `/config` on the server
 - **Git**: Pre-commit hooks enforce YAML linting and formatting (`yamllint`, `prettier`)
 - **CLAUDE.md**: Symlink to `AGENTS.md` — edit `AGENTS.md` only
