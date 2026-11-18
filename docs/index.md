@@ -18,7 +18,7 @@ title: 홈
   <a href="https://www.buymeacoffee.com/my7nmfcm92k"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?logo=buymeacoffee&logoColor=000" alt="Buy Me a Coffee"></a>
 </p>
 
-2018년부터 운영 중인 개인 Home Assistant 설정입니다. 현재 **2822개 엔티티**, **13개 커스텀 통합**, **17개 애드온**으로 구성되어 있습니다.
+2018년부터 운영 중인 개인 Home Assistant 설정입니다. 현재 **2822개 엔티티**, **13개 커스텀 통합**, **16개 애드온**으로 구성되어 있습니다.
 
 > [!CAUTION]
 > 가정 환경은 계속 진화합니다. **이 문서가 최신이 아닐 수 있다는 점을 감안해 주세요** — 가능한 한 자주 갱신하려 노력하고 있습니다.

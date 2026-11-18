@@ -36,7 +36,6 @@
 | Barkley | `0.13.0` | started |
 | CodeMirror | `0.8.0` | started |
 | ESPHome Device Builder | `2026.10.2` | started |
-| Git pull | `9.1.1` | started |
 | Let's Encrypt | `6.5.0` | stopped |
 | Matter Server | `9.3.0` | started |
 | Memory | `0.7.1` | started |

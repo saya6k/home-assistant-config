@@ -12,7 +12,6 @@ Currently **18** add-ons installed, grouped as follows.
 | ----------------------------------------------------------------------------------------------- | --------- | ------- |
 | [CodeMirror](https://my.home-assistant.io/redirect/supervisor_addon/?addon=03f32180_codemirror) | `0.8.0`   | started |
 | [Samba share](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_samba)         | `12.11.0` | started |
-| [Git pull](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_git_pull)         | `9.1.1`   | started |
 | [Terminal & SSH](https://my.home-assistant.io/redirect/supervisor_addon/?addon=core_ssh)        | `10.6.0`  | started |
 
 ## Network / Security
