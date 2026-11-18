@@ -1,3 +1,9 @@
+## [1.24.1](https://github.com/saya6k/home-assistant-config/compare/v1.24.0...v1.24.1) (2026-11-18)
+
+### Bug Fixes
+
+* Let the Apple TV Live Activity run manually and show unknown apps ([#51](https://github.com/saya6k/home-assistant-config/issues/51)) ([c3cd293](https://github.com/saya6k/home-assistant-config/commit/c3cd2935a9953a494388bae2c53eb33f2958db61))
+
 ## [1.24.0](https://github.com/saya6k/home-assistant-config/compare/v1.23.1...v1.24.0) (2026-11-18)
 
 ### Features
