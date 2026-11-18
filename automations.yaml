@@ -3088,3 +3088,50 @@
         data:
           transition: 2
   mode: restart
+- id: '1794996101611'
+  alias: 거실 Apple TV - Now Playing Live Activity
+  description: 집에 있을 때 Apple TV 재생 정보를 아이폰 Live Activity로 표시
+  mode: restart
+  triggers:
+  - trigger: state
+    entity_id: media_player.living_room_apple_tv
+  - trigger: state
+    entity_id: media_player.living_room_apple_tv
+    attribute: media_title
+  - trigger: state
+    entity_id: person.weongyu
+  conditions: []
+  actions:
+  - delay: 2
+  - variables:
+      player: media_player.living_room_apple_tv
+      playback: '{{ states(player) }}'
+      home: '{{ is_state(''person.weongyu'', ''home'') }}'
+      song: '{{ state_attr(player, ''media_title'') or ''재생 중인 콘텐츠'' }}'
+      artist: '{{ state_attr(player, ''media_artist'') or state_attr(player, ''app_name'')
+        or ''Apple TV'' }}'
+      duration: '{{ state_attr(player, ''media_duration'') | int(0) }}'
+      position: "{% set p = state_attr(player, 'media_position') | float(0) %} {% set
+        u = state_attr(player, 'media_position_updated_at') %} {{ (p + ((now() - u).total_seconds()
+        if u and playback == 'playing' else 0)) | int }}"
+  - choose:
+    - conditions: '{{ home and playback in [''playing'', ''paused''] }}'
+      sequence:
+      - action: notify.mobile_app_ys_iphoneair
+        data:
+          title: 거실 Apple TV
+          message: '{{ song }} · {{ artist }}{{ '' (일시정지)'' if playback == ''paused''
+            }}'
+          data: "{% set d = {'tag': 'living-room-apple-tv', 'live_update': true, 'notification_icon':
+            'mdi:apple', 'notification_icon_color': '#9C27B0', 'silent': playback ==
+            'paused'} %} {% if duration > 0 %}
+            {% set d = dict(d, progress=[position, duration] | min, progress_max=duration)
+            %} {% if playback == 'playing' %} {% set d = dict(d, chronometer=true,
+            when=[duration - position, 0] | max, when_relative=true) %} {% endif %}
+            {% endif %} {{ d }}"
+    default:
+    - action: notify.mobile_app_ys_iphoneair
+      data:
+        message: clear_notification
+        data:
+          tag: living-room-apple-tv
