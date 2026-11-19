@@ -1,3 +1,9 @@
+## [1.24.2](https://github.com/saya6k/home-assistant-config/compare/v1.24.1...v1.24.2) (2026-11-19)
+
+### Bug Fixes
+
+* Announce a plain xBloom pour without an unknown recipe ([#53](https://github.com/saya6k/home-assistant-config/issues/53)) ([abc3b53](https://github.com/saya6k/home-assistant-config/commit/abc3b53596c8ddc523bdaebef45eabe3748ae7de))
+
 ## [1.24.1](https://github.com/saya6k/home-assistant-config/compare/v1.24.0...v1.24.1) (2026-11-18)
 
 ### Bug Fixes
