@@ -1,3 +1,9 @@
+## [1.25.0](https://github.com/saya6k/home-assistant-config/compare/v1.24.2...v1.25.0) (2026-11-19)
+
+### Features
+
+* Decide which iPhone messages to read with an AI evaluation ([#54](https://github.com/saya6k/home-assistant-config/issues/54)) ([696c2ae](https://github.com/saya6k/home-assistant-config/commit/696c2ae1c30bef2de8f208fdb104e3ad8d3e13e8))
+
 ## [1.24.2](https://github.com/saya6k/home-assistant-config/compare/v1.24.1...v1.24.2) (2026-11-19)
 
 ### Bug Fixes
