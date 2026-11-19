@@ -2176,14 +2176,19 @@
         id:
         - generated-p6tL
       sequence:
+      - variables:
+          recipe: '{{ states(''select.jubang_xbloom_coffee_machine_recipe'') }}'
+          has_recipe: '{{ recipe not in [''unknown'', ''unavailable'', ''''] }}'
       - action: script.message_broadcast
         metadata: {}
         target: {}
         data:
-          message: '{{ states(''select.jubang_xbloom_coffee_machine_recipe'') }} 레시피의
-            추출이 완료되었습니다.'
+          message: '{{ recipe ~ '' 레시피의 추출이 완료되었습니다.'' if has_recipe else ''물 붓기가
+            완료되었습니다.'' }}'
           default_target:
             area_id: kitchen
+      - condition: template
+        value_template: '{{ has_recipe }}'
       - wait_for_trigger:
         - trigger: event.received
           target:
